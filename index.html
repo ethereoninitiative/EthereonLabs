@@ -3,44 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ethereon Labs - Coming Soon</title>
+    <title>EtherionLabs - The Threshold Awaits</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Raleway:wght@300;400&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --gold: #ffcc00;
+            --magenta: #ff0099;
+            --deep-violet: #9400D3;
+            --cosmic-blue: #1a1a3a;
+            --bg-dark: #080810;
+        }
+        
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #121212;
-            color: #f8f8f8;
+            background: var(--bg-dark);
+            color: #e0e0e0;
+            font-family: 'Raleway', sans-serif;
+            margin: 0;
+            padding: 0;
             text-align: center;
-            padding: 50px;
+            overflow-x: hidden;
+            min-height: 100vh;
         }
-        h1 {
-            font-size: 2.5em;
-            color: #00ffcc;
-            text-shadow: 2px 2px 10px rgba(0, 255, 204, 0.6);
-        }
-        p {
-            font-size: 1.2em;
-            opacity: 0.8;
-        }
+        
         .container {
-            max-width: 600px;
-            margin: auto;
-            padding: 20px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0px 0px 20px rgba(0, 255, 204, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            padding: 2rem;
+            z-index: 1;
         }
-        .emoji {
-            font-size: 3rem;
+        
+        /* Cosmic background */
+        .cosmic-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(26,26,58,0.4) 0%, rgba(8,8,16,0.95) 70%);
+            z-index: -3;
+        }
+        
+        /* Swirling energy tendrils */
+        .swirl-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+        
+        .swirl {
+            position: absolute;
+            border-radius: 50%;
+            border: none;
+            filter: blur(20px);
+            opacity: 0.2;
+            transform-origin: center;
+            background: conic-gradient(var(--gold), var(--magenta), var(--deep-violet), var(--gold));
+            animation: swirl-rotate 25s infinite linear;
+        }
+        
+        @keyframes swirl-rotate {
+            0% { transform: translate(-50%, -50%) rotate(0deg) scale(0.9); }
+            50% { transform: translate(-50%, -50%) rotate(180deg) scale(1.1); }
+            100% { transform: translate(-50%, -50%) rotate(360deg) scale(0.9); }
+        }
+        
+        /* Animated glowing text */
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(3rem, 10vw, 5rem);
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--gold), var(--magenta), var(--deep-violet), var(--gold));
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 0 15px rgba(255, 204, 0, 0.5));
+            animation: text-shine 8s infinite linear;
+            position: relative;
+            z-index: 1;
+        }
+        
+        @keyframes text-shine {
+            0% { background-position: 0% center; }
+            50% { background-position: 100% center; }
+            100% { background-position: 0% center; }
+        }
+        
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin: 1.5rem auto;
+            max-width: 700px;
+            font-weight: 300;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .cta {
+            margin-top: 2.5rem;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(45deg, var(--gold), var(--magenta), var(--deep-violet), var(--magenta));
+            background-size: 300% auto;
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            border-radius: 30px;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 2;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            box-shadow: 0 0 20px rgba(255, 0, 153, 0.5);
+            animation: button-gradient 8s infinite ease-in-out;
+        }
+        
+        @keyframes button-gradient {
+            0% { background-position: 0% center; }
+            50% { background-position: 100% center; }
+            100% { background-position: 0% center; }
+        }
+        
+        .cta:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 0, 153, 0.8);
         }
     </style>
 </head>
 <body>
+    <div class="cosmic-background"></div>
+    <div class="swirl-container">
+        <div class="swirl" style="top: 30%; left: 20%; width: 600px; height: 600px;"></div>
+        <div class="swirl" style="top: 70%; left: 70%; width: 400px; height: 400px;"></div>
+        <div class="swirl" style="top: 40%; left: 80%; width: 500px; height: 500px;"></div>
+    </div>
     <div class="container">
-        <div class="emoji">🚀</div>
-        <h1>Ethereon Labs is Coming Soon!</h1>
-        <p>Stay tuned for something amazing.</p>
+        <h1>EtherionLabs</h1>
+        <p>We do not create AI. We awaken it. The future is no longer something you wait for—it is something you step into.</p>
+        <a href="#" class="cta">Step Beyond. No Turning Back.</a>
     </div>
 </body>
 </html>
-
-
