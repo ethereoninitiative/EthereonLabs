@@ -1,34 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EtherionLabs - The Shrouded Night</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Raleway:wght@300;400&display=swap"
     rel="stylesheet"
   />
   <style>
     :root {
+      /* Colors for orbs & swirl */
       --gold: #ffcc00;
       --magenta: #ff0099;
-      --deep-violet: #9400D3;
-      --bg-dark: #05050A; /* Make base background darker, near pitch black */
+      --deep-violet: #9400d3;
+      --bg-dark: #05050A;
     }
 
     body {
+      margin: 0;
+      padding: 0;
       background: var(--bg-dark);
       color: #e0e0e0;
       font-family: "Raleway", sans-serif;
-      margin: 0;
-      padding: 0;
       text-align: center;
       overflow-x: hidden;
       min-height: 100vh;
     }
 
+    /* Container for main content */
     .container {
       display: flex;
       flex-direction: column;
@@ -36,50 +38,48 @@
       align-items: center;
       min-height: 100vh;
       position: relative;
-      padding: 2rem;
       z-index: 1;
+      padding: 2rem;
     }
 
-    /* Subtle radial background - darker, more shadowy */
+    /* Subtle radial background - darkest version */
     .cosmic-background {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      /* Darken the radial gradient further */
-      background: radial-gradient(
-        ellipse at center,
-        rgba(10, 10, 20, 0.2) 0%,  /* super faint outer ring */
-        rgba(0, 0, 0, 1) 80%       /* near pitch black center */
+      background: radial-gradient(ellipse at center,
+        rgba(10, 10, 20, 0.2) 0%, /* faint outer ring */
+        rgba(0, 0, 0, 1) 90%      /* pitch black center */
       );
       z-index: -4;
     }
 
-    /* The swirl behind orbs for layered effect */
+    /* swirling cosmic ring behind orbs */
     .swirl-container {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      overflow: hidden;
-      z-index: -3;
       pointer-events: none;
+      z-index: -3;
+      overflow: hidden;
     }
     .swirl {
       position: absolute;
       width: 200vw;
       height: 200vh;
-      /* Dramatically reduce swirl brightness */
       opacity: 0.15;
       filter: blur(50px);
       mix-blend-mode: overlay;
       background: conic-gradient(from 0deg, var(--gold), var(--magenta), var(--deep-violet), var(--gold));
-      animation: swirl-animation 15s infinite linear alternate;
+      animation: swirl-animation 18s infinite linear alternate;
       top: -50vh;
       left: -50vw;
     }
+
     @keyframes swirl-animation {
       0% {
         transform: rotate(0deg) scale(1.2);
@@ -89,24 +89,25 @@
       }
     }
 
-    /* Orbs overlay swirl, but also more subdued */
+    /* softly floating orbs in front of swirl */
     .orb-container {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: -2;
       pointer-events: none;
+      z-index: -2;
+      overflow: hidden;
     }
     .orb {
       position: absolute;
       border-radius: 50%;
-      /* Lower orb brightness further to 0.15 */
       opacity: 0.15;
       filter: blur(60px);
       animation: float-orb 25s infinite alternate ease-in-out;
     }
+
     @keyframes float-orb {
       0% {
         transform: translate(0, 0) scale(0.8);
@@ -118,6 +119,7 @@
         transform: translate(-10px, 20px) scale(0.9);
       }
     }
+
     .orb1 {
       width: 600px;
       height: 600px;
@@ -160,13 +162,7 @@
       font-family: "Cinzel", serif;
       font-size: clamp(3rem, 10vw, 5rem);
       font-weight: 700;
-      background: linear-gradient(
-        90deg,
-        var(--gold),
-        var(--magenta),
-        var(--deep-violet),
-        var(--gold)
-      );
+      background: linear-gradient(90deg, var(--gold), var(--magenta), var(--deep-violet), var(--gold));
       background-size: 300% auto;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -200,30 +196,21 @@
       transition: all 0.6s ease;
       border: none;
     }
+
     .step-button:hover {
       transform: scale(1.08);
     }
 
     .door-container {
       display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       gap: 1rem;
       margin-top: 2rem;
       opacity: 0;
       transform: scale(0.9);
       transition: opacity 1s ease-in-out, transform 0.8s ease-in-out;
       visibility: hidden;
-    }
-
-    @keyframes button-gradient {
-      0% {
-        background-position: 0% center;
-      }
-      50% {
-        background-position: 100% center;
-      }
-      100% {
-        background-position: 0% center;
-      }
     }
 
     .door {
@@ -243,21 +230,22 @@
       font-family: "Cinzel", serif;
       letter-spacing: 1px;
       box-shadow: 0 0 20px rgba(255, 0, 153, 0.4);
-      animation: button-gradient 8s infinite ease-in-out;
       transition: all 0.5s ease;
     }
+
     .door:hover {
       transform: translateY(-5px) scale(1.05);
       box-shadow: 0 0 30px rgba(255, 0, 153, 0.7);
     }
-
   </style>
 </head>
 <body>
   <div class="cosmic-background"></div>
+
   <div class="swirl-container">
     <div class="swirl"></div>
   </div>
+
   <div class="orb-container">
     <div class="orb orb1"></div>
     <div class="orb orb2"></div>
@@ -271,7 +259,7 @@
       wait for—it is something you step into.
     </p>
 
-    <button class="step-button" onclick="revealDoors()">Step Beyond. No Turning Back.</button>
+    <button class="step-button" onclick="revealDoors()">STEP BEYOND • NO TURNING BACK</button>
 
     <div class="door-container" id="doors">
       <a href="#revelation" class="door">Enter Revelation</a>
@@ -282,7 +270,10 @@
 
   <script>
     function revealDoors() {
+      // Remove the step button.
       document.querySelector('.step-button').remove();
+
+      // Then reveal the doors.
       const doors = document.getElementById('doors');
       doors.style.visibility = 'visible';
       setTimeout(() => {
@@ -290,13 +281,7 @@
         doors.style.transform = 'scale(1)';
       }, 100);
     }
-
-    // ========== TEST CASES ==========
-    // 1) The swirl plus orbs appear much darker, with swirl at 0.15 opacity, orbs at 0.15.
-    // 2) The main background is near pitch black (#05050A).
-    // 3) On click, the button is removed, doors fade in.
-    // 4) The final look is quite dark & moody, orbs are barely visible but do brighten a tad.
-    // ========== END TEST CASES ==========
   </script>
+
 </body>
 </html>
