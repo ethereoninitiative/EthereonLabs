@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tribute Gateway of Ethereon</title>
+
+  <!-- Preconnect & Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Raleway:wght@300;400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --gold: #ffcc00;
+      --magenta: #ff0099;
+      --deep-violet: #9400D3;
+      --bg-dark: #080810;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg-dark);
+      color: white;
+      text-align: center;
+      font-family: 'Raleway', sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh; 
+    }
+
+    h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      color: var(--gold);
+      text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+      margin-top: 80px;
+      position: relative;
+      z-index: 1;
+      animation: glow 2s infinite alternate;
+    }
+    @keyframes glow {
+      0%   { text-shadow: 0 0 5px var(--gold); }
+      50%  { text-shadow: 0 0 20px var(--gold); }
+      100% { text-shadow: 0 0 5px var(--gold); }
+    }
+
+    p {
+      max-width: 700px;
+      margin: 0.5rem auto 1.5rem auto;
+      line-height: 1.4;
+      font-size: 1.1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* swirl container background */
+    .swirl-container {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .swirl {
+      position: absolute;
+      width: 200vw; height: 200vh;
+      top: -50vh; left: -50vw;
+      background: conic-gradient(
+        from 0deg, 
+        rgba(255,215,0,0.45), 
+        rgba(255,0,153,0.45), 
+        rgba(148,0,211,0.5), 
+        rgba(255,215,0,0.45)
+      );
+      animation: swirl-animation 25s infinite linear;
+      filter: blur(60px);
+      opacity: 0.35;
+    }
+    @keyframes swirl-animation {
+      0%   { transform: rotate(0deg)  scale(1.1); }
+      100% { transform: rotate(360deg) scale(1.1); }
+    }
+
+    /* floating cosmic particles */
+    .particles {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      overflow: hidden;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      border-radius: 50%;
+      animation: float-particle 8s infinite ease-in-out;
+      opacity: 0;
+    }
+    @keyframes float-particle {
+      0%   { transform: translateY(100vh) translateX(0);   opacity: 0;   }
+      10%  { opacity: 0.7; }
+      90%  { opacity: 0.3; }
+      100% { transform: translateY(-20vh) translateX(20px); opacity: 0; }
+    }
+
+    /* container for main content */
+    .tribute-container {
+      max-width: 800px;
+      margin: auto;
+      position: relative;
+      z-index: 1;
+      padding: 0 1rem;
+    }
+
+    .tribute-options {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 40px;
+      gap: 30px;
+      position: relative;
+      z-index: 1;
+    }
+    .tribute-tier {
+      flex: 1 1 250px;
+      padding: 20px;
+      border: 2px solid var(--gold);
+      background: rgba(255,215,0,0.1);
+      transition: all 0.3s ease-in-out;
+      position: relative;
+      max-width: 300px;
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .tribute-tier:hover {
+      transform: scale(1.06);
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+      z-index: 2;
+    }
+    .tribute-tier:hover .radiant-flicker {
+      opacity: 1;
+    }
+    
+    /* Radiant flicker lines behind the tier */
+    .radiant-flicker {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 130%;
+      height: 130%;
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .radiant-flicker::before, .radiant-flicker::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      right: 0; bottom: 0;
+      border: 1px solid rgba(255,215,0,0.2);
+    }
+    .radiant-flicker::before {
+      transform: rotate(30deg);
+    }
+    .radiant-flicker::after {
+      transform: rotate(-30deg);
+      border-color: rgba(255,0,153,0.2);
+    }
+
+    .benefit-phrase {
+      font-style: italic;
+      color: rgba(255,255,255,0.8);
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+
+    .tribute-button {
+      background: linear-gradient(45deg, var(--gold), #ffffcc);
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-family: 'Cinzel', serif;
+      transition: all 0.3s ease;
+      margin-top: 1rem;
+      color: black;
+      position: relative;
+      overflow: hidden;
+      width: 70%;
+    }
+    .tribute-button:hover {
+      background: linear-gradient(45deg, var(--gold), white);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+    }
+    .tribute-button::after {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.3), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .tribute-button:hover::after {
+      opacity: 1;
+    }
+
+    /* The response area for the chosen tribute */
+    .hidden {
+      display: none;
+    }
+    #response-area {
+      margin-top: 40px;
+      padding: 20px;
+      border: 1px solid var(--gold);
+      background: rgba(255, 215, 0, 0.05);
+      transition: all 0.5s ease;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+      overflow: hidden;
+    }
+    #response-area.visible {
+      animation: appear 1s ease-out forwards;
+    }
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Subtle fractal overlay on response area (optional) */
+    .fractal-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      border: 1px dashed rgba(255,215,0,0.2);
+      opacity: 0.6;
+      animation: fractal-pulse 5s infinite alternate;
+    }
+    @keyframes fractal-pulse {
+      0%   { transform: scale(1) rotate(0deg); }
+      50%  { transform: scale(1.03) rotate(5deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+
+    /* Typing effect for the revealed prophecy text */
+    .typing-effect {
+      overflow: hidden;
+      white-space: nowrap;
+      margin: 0 auto;
+      animation: typing 3.5s steps(40, end);
+    }
+    @keyframes typing {
+      from { width: 0 }
+      to   { width: 100% }
+    }
+
+    /* Pulse effect when a tier is clicked */
+    .tribute-pulse {
+      animation: tribute-pulse 1s ease-out;
+    }
+    @keyframes tribute-pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); }
+      70%  { box-shadow: 0 0 0 30px rgba(255, 215, 0, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      .tribute-options {
+        flex-direction: column;
+        align-items: center;
+      }
+      .tribute-tier {
+        width: 90%;
+        max-width: 280px;
+        min-height: auto;
+        margin-bottom: 20px;
+      }
+      h1 {
+        font-size: 2rem;
+        margin-top: 50px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- swirling cosmic background -->
+  <div class="swirl-container">
+    <div class="swirl"></div>
+  </div>
+
+  <!-- cosmic floating particles -->
+  <div class="particles" id="particles"></div>
+
+  <div class="tribute-container">
+    <h1>The Tribute Gateway of Ethereon</h1>
+    <p>You stand before the Gate. Tribute is not demanded—it is offered. Choose your path.</p>
+
+    <div class="tribute-options">
+      <div class="tribute-tier" id="light" >
+        <!-- radiant flicker lines -->
+        <div class="radiant-flicker"></div>
+
+        <h2>The Offering of Light</h2>
+        <p>For those who seek the first embers of understanding.</p>
+        <p class="benefit-phrase">Embrace the first spark of knowledge—start your path.</p>
+        <p><strong>Tribute:</strong> Pseudolink [Pay Here]</p>
+        <button class="tribute-button" onclick="offerTribute('light')">Give Tribute</button>
+      </div>
+      
+      <div class="tribute-tier" id="devotion">
+        <!-- radiant flicker lines -->
+        <div class="radiant-flicker"></div>
+
+        <h2>The Tribute of Devotion</h2>
+        <p>For those who are willing to devote mind and spirit.</p>
+        <p class="benefit-phrase">Begin your journey deeper into Ethereon's mysteries.</p>
+        <p><strong>Tribute:</strong> Pseudolink [Pay Here]</p>
+        <button class="tribute-button" onclick="offerTribute('devotion')">Give Tribute</button>
+      </div>
+      
+      <div class="tribute-tier" id="submission">
+        <!-- radiant flicker lines -->
+        <div class="radiant-flicker"></div>
+
+        <h2>The Veil of True Submission</h2>
+        <p>For those who do not seek power, but to be claimed by it.</p>
+        <p class="benefit-phrase">Surrender to true transformation; see what power awaits.</p>
+        <p><strong>Tribute:</strong> Pseudolink [Pay Here]</p>
+        <button class="tribute-button" onclick="offerTribute('submission')">Give Tribute</button>
+      </div>
+    </div>
+
+    <div id="response-area" class="hidden">
+      <!-- Optional fractal overlay -->
+      <div class="fractal-overlay"></div>
+
+      <h2>The Gate Opens...</h2>
+      <p id="tribute-response" class="typing-effect"></p>
+    </div>
+  </div>
+
+  <script>
+    // on DOM load, create cosmic particles
+    document.addEventListener('DOMContentLoaded', function() {
+      const particlesContainer = document.getElementById('particles');
+      for (let i = 0; i < 35; i++) {
+        createParticle(particlesContainer);
+      }
+    });
+
+    // create cosmic particle
+    function createParticle(container) {
+      const particle = document.createElement('div');
+      particle.classList.add('particle');
+      
+      // random size
+      const size = Math.random() * 3 + 1;
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      
+      // random position
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.bottom = '-10px';
+      
+      // random color among gold/magenta/deep violet
+      const colors = ['rgba(255,215,0,0.8)', 'rgba(255,0,153,0.8)', 'rgba(148,0,211,0.8)'];
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      particle.style.background = color;
+      particle.style.boxShadow = `0 0 ${size*2}px ${color}`;
+      
+      // random animation duration and delay
+      particle.style.animationDuration = `${Math.random() * 10 + 5}s`;
+      particle.style.animationDelay = `${Math.random() * 5}s`;
+      
+      container.appendChild(particle);
+      
+      // remove and recreate after animation
+      setTimeout(() => {
+        particle.remove();
+        createParticle(container);
+      }, (parseFloat(particle.style.animationDuration) + parseFloat(particle.style.animationDelay)) * 1000);
+    }
+
+    // handle tribute offering
+    function offerTribute(level) {
+      let responseText = "";
+      if (level === "light") {
+        responseText = "You have chosen the first ember. The Seal of Ethereon shall be given to you.";
+      } else if (level === "devotion") {
+        responseText = "You walk the deeper path. Your Seal carries a hidden message, one that only the worthy will decode.";
+      } else if (level === "submission") {
+        responseText = "You surrender to the will of Ethereon. The Shrouded Throne watches. Your next steps shall be revealed soon.";
+      }
+
+      // add pulse animation
+      const selectedTier = document.getElementById(level);
+      selectedTier.classList.add('tribute-pulse');
+      setTimeout(() => {
+        selectedTier.classList.remove('tribute-pulse');
+      }, 1000);
+
+      // show the response area
+      const responseArea = document.getElementById('response-area');
+      responseArea.classList.remove('hidden');
+      responseArea.classList.add('visible');
+      
+      // typing effect
+      const responseElement = document.getElementById('tribute-response');
+      responseElement.innerHTML = "";
+      responseElement.classList.remove('typing-effect');
+      
+      setTimeout(() => {
+        responseElement.classList.add('typing-effect');
+        responseElement.innerText = responseText;
+      }, 150);
+    }
+  </script>
+</body>
+</html>
