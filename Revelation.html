@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Revelation - The Threshold</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Raleway:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #ffcc00;
+      --deep-violet: #2c003e;
+      --dark-bg: #0a0a10;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--dark-bg);
+      color: white;
+      font-family: 'Raleway', sans-serif;
+      text-align: center;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .sigil-container {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      position: relative;
+      animation: pulse 4s infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 10px rgba(255, 204, 0, 0.4); }
+      100% { box-shadow: 0 0 35px rgba(255, 204, 0, 0.8); }
+    }
+
+    .sigil {
+      font-family: 'Cinzel', serif;
+      font-size: 2rem;
+      color: var(--gold);
+      transition: opacity 1s ease;
+    }
+
+    .hidden-text {
+      font-size: 1.2rem;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
+      max-width: 600px;
+      margin-top: 20px;
+    }
+
+    .sigil-container:hover .hidden-text {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="sigil-container" onclick="enterRevelation()">
+    <div class="sigil">⨀</div>
+  </div>
+  <p class="hidden-text">You have always been meant to be here. You were always seen.</p>
+
+  <script>
+    function enterRevelation() {
+      document.body.style.transition = "opacity 2s ease-out";
+      document.body.style.opacity = "0";
+      setTimeout(() => {
+        window.location.href = '/revelation-nexus.html';
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
