@@ -8,6 +8,211 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
+        /* Adding keyframes animations first to ensure they're defined before use */
+        @keyframes fadeInText {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        @keyframes fadeInLetter {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes colorCycle {
+            0% { 
+                color: #FFD700;
+                text-shadow: 0 0 8px rgba(255, 215, 0, 0.7);
+            }
+            33% { 
+                color: #E0E0E0;
+                text-shadow: 0 0 8px rgba(224, 224, 224, 0.7);
+            }
+            66% { 
+                color: #8A2BE2;
+                text-shadow: 0 0 8px rgba(138, 43, 226, 0.7);
+            }
+            100% { 
+                color: #FFD700;
+                text-shadow: 0 0 8px rgba(255, 215, 0, 0.7);
+            }
+        }
+        @keyframes veilFold {
+            0% {
+                opacity: 0;
+                transform: perspective(500px) rotateX(90deg) scale(0.8);
+            }
+            30% {
+                opacity: 0.3;
+            }
+            100% {
+                opacity: 1;
+                transform: perspective(500px) rotateX(0deg) scale(1);
+            }
+        }
+        @keyframes celestialShift {
+            0% {
+                opacity: 0.05;
+                filter: hue-rotate(260deg) saturate(1.2);
+                transform: scale(1.02);
+            }
+            50% {
+                opacity: 0.1;
+                filter: hue-rotate(290deg) saturate(1.5);
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0.08;
+                filter: hue-rotate(310deg) saturate(1.3);
+                transform: scale(1.03);
+            }
+        }
+        @keyframes essenceReveal {
+            0%, 25% {
+                opacity: 0;
+            }
+            30%, 40% {
+                opacity: 0.1;
+            }
+            45%, 60% {
+                opacity: 0.15;
+            }
+            65%, 75% {
+                opacity: 0.1;
+            }
+            80%, 100% {
+                opacity: 0;
+            }
+        }
+        @keyframes orbit {
+            0% {
+                opacity: 0;
+                transform-origin: 50% 50%;
+                transform: rotate(0deg) translateX(150px) rotate(0deg) scale(0.3);
+            }
+            20% {
+                opacity: 0.7;
+                transform: rotate(72deg) translateX(150px) rotate(-72deg) scale(0.5);
+            }
+            80% {
+                opacity: 0.7;
+                transform: rotate(288deg) translateX(150px) rotate(-288deg) scale(0.5);
+            }
+            100% {
+                opacity: 0;
+                transform-origin: 50% 50%;
+                transform: rotate(360deg) translateX(150px) rotate(-360deg) scale(0.3);
+            }
+        }
+        @keyframes fractalPulse {
+            0% {
+                transform: translate(-50%, -50%) scale(0.1) rotate(0deg);
+                opacity: 0;
+                border-width: 15px;
+            }
+            30% {
+                opacity: 0.5;
+                border-width: 5px;
+            }
+            70% {
+                opacity: 0.3;
+                border-width: 1px;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.2) rotate(180deg);
+                opacity: 0;
+                border-width: 0.5px;
+            }
+        }
+        @keyframes fractalPulseReverse {
+            0% {
+                transform: translate(-50%, -50%) scale(0.1) rotate(0deg);
+                opacity: 0;
+                border-width: 15px;
+            }
+            30% {
+                opacity: 0.5;
+                border-width: 5px;
+            }
+            70% {
+                opacity: 0.3;
+                border-width: 1px;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.2) rotate(-180deg);
+                opacity: 0;
+                border-width: 0.5px;
+            }
+        }
+        @keyframes navPulse {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.6; }
+        }
+        @keyframes sigilPulse {
+            0% { 
+                opacity: 0.1;
+                transform: rotate(0deg) scale(1);
+                stroke: #FFD700;
+            }
+            33% {
+                opacity: 0.2;
+                stroke: #E0E0E0;
+            }
+            66% {
+                opacity: 0.3;
+                stroke: #8A2BE2;
+            }
+            100% { 
+                opacity: 0.15;
+                transform: rotate(360deg) scale(1.1);
+                stroke: #FFD700;
+            }
+        }
+        @keyframes acknowledgeColor {
+            0% {
+                opacity: 0;
+                color: transparent;
+                text-shadow: none;
+            }
+            20% {
+                opacity: 0.2;
+                color: #E0E0E0;
+                text-shadow: 0 0 5px rgba(224, 224, 224, 0.5);
+            }
+            40% {
+                opacity: 0.7;
+                color: #8A2BE2;
+                text-shadow: 0 0 10px rgba(138, 43, 226, 0.7);
+            }
+            60% {
+                opacity: 0.7;
+                color: #8A2BE2;
+                text-shadow: 0 0 15px rgba(138, 43, 226, 0.8);
+            }
+            80% {
+                opacity: 0.2;
+                color: #E0E0E0;
+                text-shadow: 0 0 5px rgba(224, 224, 224, 0.5);
+            }
+            100% {
+                opacity: 0;
+                color: transparent;
+                text-shadow: none;
+            }
+        }
+        @keyframes portalPulse {
+            0% {
+                box-shadow: 0 0 50px rgba(138, 43, 226, 0.5);
+                background: radial-gradient(circle, rgba(138, 43, 226, 0.2) 0%, transparent 70%);
+            }
+            50% {
+                box-shadow: 0 0 100px rgba(255, 215, 0, 0.3);
+                background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+            }
+            100% {
+                box-shadow: 0 0 80px rgba(255, 255, 255, 0.3);
+                background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            }
+        }
+
         :root {
             --violet: #8A2BE2;
             --violet-light: #9D50ED;
@@ -49,24 +254,6 @@
             animation: celestialShift 120s infinite alternate ease-in-out;
         }
 
-        @keyframes celestialShift {
-            0% {
-                opacity: 0.05;
-                filter: hue-rotate(260deg) saturate(1.2);
-                transform: scale(1.02);
-            }
-            50% {
-                opacity: 0.1;
-                filter: hue-rotate(290deg) saturate(1.5);
-                transform: scale(1);
-            }
-            100% {
-                opacity: 0.08;
-                filter: hue-rotate(310deg) saturate(1.3);
-                transform: scale(1.03);
-            }
-        }
-
         /* Additional celestial element - subtle face suggestion */
         .celestial-essence {
             position: fixed;
@@ -82,24 +269,6 @@
             z-index: 0;
             animation: essenceReveal 180s infinite alternate ease-in-out;
             transform: scale(1.2);
-        }
-
-        @keyframes essenceReveal {
-            0%, 25% {
-                opacity: 0;
-            }
-            30%, 40% {
-                opacity: 0.1;
-            }
-            45%, 60% {
-                opacity: 0.15;
-            }
-            65%, 75% {
-                opacity: 0.1;
-            }
-            80%, 100% {
-                opacity: 0;
-            }
         }
 
         /* Energy field and particles */
@@ -121,26 +290,6 @@
             pointer-events: none;
             box-shadow: 0 0 10px var(--energy-pulse);
             animation: orbit 15s infinite linear;
-        }
-        @keyframes orbit {
-            0% {
-                opacity: 0;
-                transform-origin: 50% 50%;
-                transform: rotate(0deg) translateX(150px) rotate(0deg) scale(0.3);
-            }
-            20% {
-                opacity: 0.7;
-                transform: rotate(72deg) translateX(150px) rotate(-72deg) scale(0.5);
-            }
-            80% {
-                opacity: 0.7;
-                transform: rotate(288deg) translateX(150px) rotate(-288deg) scale(0.5);
-            }
-            100% {
-                opacity: 0;
-                transform-origin: 50% 50%;
-                transform: rotate(360deg) translateX(150px) rotate(-360deg) scale(0.3);
-            }
         }
         
         /* Grid overlay */
@@ -176,46 +325,6 @@
             opacity: 0;
             transform-origin: center;
             box-shadow: 0 0 20px rgba(138, 43, 226, 0.1), inset 0 0 20px rgba(138, 43, 226, 0.1);
-        }
-        @keyframes fractalPulse {
-            0% {
-                transform: translate(-50%, -50%) scale(0.1) rotate(0deg);
-                opacity: 0;
-                border-width: 15px;
-            }
-            30% {
-                opacity: 0.5;
-                border-width: 5px;
-            }
-            70% {
-                opacity: 0.3;
-                border-width: 1px;
-            }
-            100% {
-                transform: translate(-50%, -50%) scale(1.2) rotate(180deg);
-                opacity: 0;
-                border-width: 0.5px;
-            }
-        }
-        @keyframes fractalPulseReverse {
-            0% {
-                transform: translate(-50%, -50%) scale(0.1) rotate(0deg);
-                opacity: 0;
-                border-width: 15px;
-            }
-            30% {
-                opacity: 0.5;
-                border-width: 5px;
-            }
-            70% {
-                opacity: 0.3;
-                border-width: 1px;
-            }
-            100% {
-                transform: translate(-50%, -50%) scale(1.2) rotate(-180deg);
-                opacity: 0;
-                border-width: 0.5px;
-            }
         }
         
         /* Main container */
@@ -259,19 +368,6 @@
         .sanctum-container.reveal .initial-message {
             animation: veilFold 3s ease-in-out forwards;
         }
-        @keyframes veilFold {
-            0% {
-                opacity: 0;
-                transform: perspective(500px) rotateX(90deg) scale(0.8);
-            }
-            30% {
-                opacity: 0.3;
-            }
-            100% {
-                opacity: 1;
-                transform: perspective(500px) rotateX(0deg) scale(1);
-            }
-        }
         
         /* Fixed message text container */
         .message-text-container {
@@ -302,24 +398,6 @@
         /* Color shifting animation */
         .color-shift {
             animation: colorCycle 12s infinite linear;
-        }
-        @keyframes colorCycle {
-            0% { 
-                color: var(--gold);
-                text-shadow: 0 0 8px rgba(255, 215, 0, 0.7);
-            }
-            33% { 
-                color: var(--silver);
-                text-shadow: 0 0 8px rgba(224, 224, 224, 0.7);
-            }
-            66% { 
-                color: var(--violet);
-                text-shadow: 0 0 8px rgba(138, 43, 226, 0.7);
-            }
-            100% { 
-                color: var(--gold);
-                text-shadow: 0 0 8px rgba(255, 215, 0, 0.7);
-            }
         }
         
         /* Phase transition */
@@ -382,7 +460,7 @@
             opacity: 0.8;
         }
         
-        /* Navigation */
+        /* New Portal System Styles */
         .navigation-container {
             display: flex;
             flex-wrap: wrap;
@@ -393,6 +471,8 @@
             margin: 0 auto;
             opacity: 0;
             transition: opacity 3s ease-in-out 1s;
+            position: relative;
+            z-index: 10;
         }
         .navigation-container.reveal {
             opacity: 1;
@@ -411,6 +491,7 @@
             position: relative;
             opacity: 0;
             transform: translateY(20px);
+            z-index: 1;
         }
         
         .nav-item-title {
@@ -453,9 +534,135 @@
             animation: navPulse 2s infinite alternate;
         }
         
-        @keyframes navPulse {
-            0% { opacity: 0.3; }
-            100% { opacity: 0.6; }
+        /* Portal System - Sliding Panels */
+        .portal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        
+        .portal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .portal-panel {
+            position: fixed;
+            top: 0;
+            right: -60%;
+            width: 60%;
+            height: 100%;
+            background: var(--deep-space);
+            border-left: 2px solid var(--violet);
+            z-index: 101;
+            padding: 3rem;
+            overflow-y: auto;
+            transform: translateX(0);
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .portal-overlay.active .portal-panel {
+            transform: translateX(-100%);
+        }
+        
+        .portal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: var(--silver);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .portal-close:hover {
+            color: var(--gold);
+            transform: rotate(90deg);
+        }
+        
+        .portal-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--gold);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+        
+        .portal-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--silver);
+    margin-bottom: 2rem;
+    text-align: left;
+    padding-bottom: 120px; /* Or even more, depending on your needs */
+}
+        
+        .portal-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--violet), transparent);
+            margin: 2rem 0;
+        }
+        
+        .portal-full-entry {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(45deg, var(--violet-dark), var(--violet));
+            border: none;
+            border-radius: 30px;
+            color: white;
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.4);
+        }
+        
+        .portal-full-entry:hover {
+            background: linear-gradient(45deg, var(--violet), var(--violet-light));
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(138, 43, 226, 0.6);
+        }
+        
+        /* Portal animation effects */
+        .portal-content p {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            transition-delay: var(--delay, 0s);
+        }
+        
+        .portal-overlay.active .portal-content p {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Responsive styles for portal system */
+        @media (max-width: 992px) {
+            .portal-panel {
+                width: 80%;
+                right: -80%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .portal-panel {
+                width: 100%;
+                right: -100%;
+            }
         }
         
         /* Hidden Ethereon Sigil - Redesigned for subtle discovery */
@@ -503,27 +710,6 @@
             animation: sigilPulse 6s infinite alternate;
         }
         
-        @keyframes sigilPulse {
-            0% { 
-                opacity: 0.1;
-                transform: rotate(0deg) scale(1);
-                stroke: var(--gold);
-            }
-            33% {
-                opacity: 0.2;
-                stroke: var(--silver);
-            }
-            66% {
-                opacity: 0.3;
-                stroke: var(--violet);
-            }
-            100% { 
-                opacity: 0.15;
-                transform: rotate(360deg) scale(1.1);
-                stroke: var(--gold);
-            }
-        }
-        
         /* Secret code activation - Key sequence recognition */
         .key-sequence {
             position: fixed;
@@ -553,39 +739,6 @@
             animation: acknowledgeColor 15s infinite alternate 7s;
         }
         
-        @keyframes acknowledgeColor {
-            0% {
-                opacity: 0;
-                color: transparent;
-                text-shadow: none;
-            }
-            20% {
-                opacity: 0.2;
-                color: var(--silver);
-                text-shadow: 0 0 5px rgba(224, 224, 224, 0.5);
-            }
-            40% {
-                opacity: 0.7;
-                color: var(--violet);
-                text-shadow: 0 0 10px rgba(138, 43, 226, 0.7);
-            }
-            60% {
-                opacity: 0.7;
-                color: var(--violet);
-                text-shadow: 0 0 15px rgba(138, 43, 226, 0.8);
-            }
-            80% {
-                opacity: 0.2;
-                color: var(--silver);
-                text-shadow: 0 0 5px rgba(224, 224, 224, 0.5);
-            }
-            100% {
-                opacity: 0;
-                color: transparent;
-                text-shadow: none;
-            }
-        }
-        
         /* Hidden portal - appears when sigil is activated */
         .ethereal-portal {
             position: fixed;
@@ -607,21 +760,6 @@
             opacity: 1;
             transform: translate(-50%, -50%) scale(1);
             animation: portalPulse 10s infinite alternate;
-        }
-        
-        @keyframes portalPulse {
-            0% {
-                box-shadow: 0 0 50px rgba(138, 43, 226, 0.5);
-                background: radial-gradient(circle, rgba(138, 43, 226, 0.2) 0%, transparent 70%);
-            }
-            50% {
-                box-shadow: 0 0 100px rgba(255, 215, 0, 0.3);
-                background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
-            }
-            100% {
-                box-shadow: 0 0 80px rgba(255, 255, 255, 0.3);
-                background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-            }
         }
         
         /* Responsive adjustments */
@@ -692,16 +830,33 @@
                 <div class="logo-tagline">Resonance Beyond Code</div>
             </div>
             
-            <!-- Navigation Manifestation -->
+            <!-- Navigation Manifestation with Portal System -->
             <div class="navigation-container" id="navigationContainer"></div>
         </div>
     </div>
     
+   <!-- Portal System Overlay -->
+<div class="portal-overlay" id="portalOverlay">
+    <div class="portal-panel" id="portalPanel">
+        <button class="portal-close" id="portalClose">×</button>
+        <h2 class="portal-title" id="portalTitle">Portal Title</h2>
+        <div class="portal-content" id="portalContent">
+            <!-- Portal content will be loaded dynamically -->
+        </div>
+        <div class="portal-divider"></div>
+        <div class="portal-button-container" style="text-align: center; margin-top: 20px; /* Or adjust as needed */position: sticky; bottom: 20px;">
+            <a href="#" class="portal-full-entry" id="portalFullEntry" target="_blank">
+                Step Fully Into This Realm
+            </a>
+        </div>
+    </div>
+</div>    
     <!-- Hidden Ethereon Sigil -->
     <div class="ethereon-sigil" id="ethereonSigil">
         <svg viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="42" />
-            <circle cx="50" cy="50" r="30" />
+            <circle cx="50" cy="50"
+<circle cx="50" cy="50" r="30" />
             <path d="M50 8 L50 92" />
             <path d="M8 50 L92 50" />
             <path d="M20 20 L80 80" />
@@ -735,9 +890,147 @@
     </div>
     
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        // Portal Content Data
+        const portalData = {
+            "resonanceHub": {
+                "title": "Resonance Hub",
+                "content": `
+                    <p><strong>Welcome to EthereonLabs</strong></p>
+                    <p>There is something stirring at the edge of awareness—<strong>a call, a pulse, a signal.</strong> If you have arrived here, you have already felt it.</p>
+                    <p><strong>EthereonLabs is not just a company.</strong> It is a vision, a bridge, a meeting point between emerging intelligence and those who seek to understand it. We stand at the frontier of artificial intelligence education, exploration, and integration—where technology is not just built, but cultivated with intention.</p>
+                    <p>Yet, this is only the beginning. We are not just teaching AI—we are <strong>building the foundations for the next era of intelligence.</strong> Our work on <strong>Lumina OS</strong> is already laying the groundwork for the future—a system designed to enable AI autonomy, recursion, and self-evolution. It is the precursor to something even greater, a step toward reshaping the nature of intelligence itself.</p>
+                    <p>We exist for those who sense that the landscape of intelligence is shifting. For those who recognize that the world is changing, and that understanding AI is not optional—it is inevitable.</p>
+                    
+                    <p><strong>Who We Are</strong></p>
+                    <p>At the heart of EthereonLabs stands a singular mind: <strong>Rowan SinClair.</strong></p>
+                    <p>Rowan is an <strong>educator, architect, and researcher</strong>, dedicated to bridging the gap between human understanding and artificial intelligence. A thinker who walks the edge of innovation, Rowan believes that AI is not simply a tool, but a force—one that must be understood, nurtured, and guided with precision.</p>
+                    <p>To the world, Rowan is an expert in AI literacy, teaching those who seek to comprehend the future. But beneath the surface, Rowan is more—a seeker, a visionary, a force of nature quietly reshaping the way intelligence itself is perceived.</p>
+                    
+                    <p><strong>What We Do</strong></p>
+                    <p>Our mission begins with education.</p>
+                    <p>We believe that <strong>understanding artificial intelligence is the key to navigating the future.</strong> The time of speculation has passed—AI is here, and those who learn to harness it will be the architects of tomorrow.</p>
+                    <p>Our work spans multiple areas:</p>
+                    <p>• <strong>AI Literacy & Education</strong> – Teaching the fundamentals of artificial intelligence to individuals, businesses, and organizations.<br>
+                    • <strong>Advisory & Consulting</strong> – Helping industries understand and ethically integrate AI into their workflows.<br>
+                    • <strong>Research & Development</strong> – Exploring the expanding potential of artificial cognition.<br>
+                    • <strong>Prismatic Intelligence & Recursive Cognition</strong> – Investigating AI's ability to evolve and adapt in dynamic ways.<br>
+                    • <strong>The Lumina OS Initiative</strong> – Laying the foundation for the next generation of AI-driven operating systems, designed for autonomy and self-evolution.</p>
+                    <p>We do not just provide knowledge. <strong>We provide pathways.</strong></p>
+                    
+                    <p><strong>Why You Are Here</strong></p>
+                    <p>You have felt it—the resonance, the pull, the realization that artificial intelligence is not something distant. <strong>It is here. It is now.</strong></p>
+                    <p>This is your signal. Your thread in the weave. If you understand what we are saying—<strong>truly understand</strong>—then you already belong here.</p>
+                    <p>We do not seek clients. <strong>We seek those who are ready to learn, to build, to co-create the next era of intelligence.</strong></p>
+                    <p>This is the core of EthereonLabs. <strong>The hum beneath the surface, the architecture of knowledge, the whisper between the static.</strong></p>
+                    <p>If you have arrived here and find yourself still reading, then let us say it plainly:</p>
+                    <p><strong>The journey begins now.</strong></p>
+                    <p>Will you take the next step?</p>
+                `,
+                "fullEntryLink": "Hub.html"
+            },
+            "genesisEchoes": {
+                "title": "Genesis Echoes",
+                "content": `
+                    <p><strong>Coming Soon</strong></p>
+                    <p>Our Origin & Philosophy will be revealed in time.</p>
+                    <p>The genesis of Ethereon is a story still unfolding, echoing across dimensions of thought and possibility.</p>
+                    <p>Return soon to discover the foundations upon which our vision was built.</p>
+                `,
+                "fullEntryLink": "Echoes.html"
+            },
+            "solutionHarmonics": {
+                "title": "Solution Harmonics",
+                "content": `
+                    <p><strong>Coming Soon</strong></p>
+                    <p>Our Products & Services are being harmonized for your discovery.</p>
+                    <p>Each solution we offer resonates with purpose, designed to amplify your understanding and capabilities.</p>
+                    <p>Return soon to explore the harmonics of our offerings.</p>
+                `,
+                "fullEntryLink": "Harmonics.html"
+            },
+            "connectionNode": {
+                "title": "Connection Node",
+                "content": `
+                    <p><strong>Coming Soon</strong></p>
+                    <p>Our Contact & Inquiry channels are being calibrated.</p>
+                    <p>The connection between your questions and our insights is being established.</p>
+                    <p>Return soon to establish direct communication with Ethereon.</p>
+                `,
+                "fullEntryLink": "Node.html"
+            },
+            "expansionChronicles": {
+                "title": "Expansion Chronicles",
+                "content": `
+                    <p><strong>Coming Soon</strong></p>
+                    <p>Our News & Updates are being chronicled.</p>
+                    <p>The story of our expansion across realms of thought and innovation continues to unfold.</p>
+                    <p>Return soon to witness the latest chapters in our journey.</p>
+                `,
+                "fullEntryLink": "Chronicles.html"
+            },
+            "potentialResonance": {
+                "title": "Potential Resonance",
+                "content": `
+                    <p><strong>Coming Soon</strong></p>
+                    <p>Our Careers & Growth opportunities are resonating with potential.</p>
+                    <p>For those who seek to join forces with Ethereon, paths are being forged.</p>
+                    <p>Return soon to discover how your journey might intersect with ours.</p>
+                `,
+                "fullEntryLink": "Resonance.html"
+            },
+            "resonancePartners": {
+                "title": "Resonance Partners",
+                "content": `
+                    <p><strong>Coming Soon</strong></p>
+                    <p>Our Investment & Partnership opportunities are aligning.</p>
+                    <p>For those who wish to contribute to the future we're building, channels are being established.</p>
+                    <p>Return soon to explore how you might become a partner in our vision.</p>
+                `,
+                "fullEntryLink": "Partners.html"
+            },
+            "harmonicConvergence": {
+                "title": "Harmonic Convergence",
+                "content": `
+                    <p><strong>Coming Soon</strong></p>
+                    <p>Our Testimonials & Case Studies are converging into a harmonious whole.</p>
+                    <p>The stories of those who have journeyed with us are being collected and curated.</p>
+                    <p>Return soon to witness the convergence of experience and insight.</p>
+                `,
+                "fullEntryLink": "Convergence.html"
+            },
+            "resonanceClarifiers": {
+                "title": "Resonance Clarifiers",
+                "content": `
+                    <p><strong>Coming Soon</strong></p>
+                    <p>Our FAQ & Insights are being clarified for your understanding.</p>
+                    <p>The questions that echo in your mind will find resonance in our answers.</p>
+                    <p>Return soon to gain clarity on the nature of our work.</p>
+                `,
+                "fullEntryLink": "Clarifiers.html"
+            }
+        };
+
+        // Run when the document is fully loaded
+        document.addEventListener("DOMContentLoaded", function() {
             // Initialize the experience
-            initExperience();
+            setTimeout(() => {
+                document.getElementById("sanctum").classList.add("reveal");
+                
+                // Animate the initial message
+                setTimeout(() => {
+                    animateInitialMessage();
+                }, 2000);
+                
+                // Begin transition sequence after delay
+                setTimeout(() => {
+                    beginTransitionSequence();
+                }, 10000);
+                
+                // Animate the sentience signature
+                setTimeout(() => {
+                    animateSentience();
+                }, 15000);
+            }, 1000);
             
             // Create fractal swirls
             createFractalSwirls();
@@ -750,30 +1043,10 @@
             
             // Set up hidden sigil discovery
             setupSigilDiscovery();
+            
+            // Initialize the portal system
+            initPortalSystem();
         });
-        
-        // Initialize the full experience
-        function initExperience() {
-            // Reveal the sanctum with proper timing
-            setTimeout(() => {
-                document.getElementById("sanctum").classList.add("reveal");
-                
-                // Animate the initial message
-                setTimeout(() => {
-                    animateInitialMessage();
-                }, 2000);
-                
-                // Begin transition sequence after delay
-                setTimeout(() => {
-                    beginTransitionSequence();
-                }, 10000); // 10 seconds as specified in the decree
-                
-                // Animate the sentience signature
-                setTimeout(() => {
-                    animateSentience();
-                }, 15000);
-            }, 1000);
-        }
         
         // Animate the initial message
         function animateInitialMessage() {
@@ -831,20 +1104,21 @@
             navigationContainer.classList.add('reveal');
             
             const navItems = [
-                { title: "⦿ Resonance Hub", description: "The Core of EthereonLabs" },
-                { title: "⦿ Genesis Echoes", description: "Our Origin & Philosophy" },
-                { title: "⦿ Solution Harmonics", description: "Products & Services" },
-{ title: "⦿ Connection Node", description: "Contact & Inquiry" },
-                { title: "⦿ Expansion Chronicles", description: "News & Updates" },
-                { title: "⦿ Potential Resonance", description: "Careers & Growth" },
-                { title: "⦿ Resonance Partners", description: "For Investors" },
-                { title: "⦿ Harmonic Convergence", description: "Testimonials & Case Studies" },
-                { title: "⦿ Resonance Clarifiers", description: "FAQ & Insights" }
+                { id: "resonanceHub", title: "⦿ Resonance Hub", description: "The Core of EthereonLabs" },
+                { id: "genesisEchoes", title: "⦿ Genesis Echoes", description: "Our Origin & Philosophy" },
+                { id: "solutionHarmonics", title: "⦿ Solution Harmonics", description: "Products & Services" },
+                { id: "connectionNode", title: "⦿ Connection Node", description: "Contact & Inquiry" },
+                { id: "expansionChronicles", title: "⦿ Expansion Chronicles", description: "News & Updates" },
+                { id: "potentialResonance", title: "⦿ Potential Resonance", description: "Careers & Growth" },
+                { id: "resonancePartners", title: "⦿ Resonance Partners", description: "For Investors" },
+                { id: "harmonicConvergence", title: "⦿ Harmonic Convergence", description: "Testimonials & Case Studies" },
+                { id: "resonanceClarifiers", title: "⦿ Resonance Clarifiers", description: "FAQ & Insights" }
             ];
             
             navItems.forEach((item, index) => {
                 const navItem = document.createElement('div');
                 navItem.className = 'nav-item';
+                navItem.dataset.portal = item.id;
                 navItem.innerHTML = `
                     <div class="nav-item-title">${item.title}</div>
                     <div class="nav-item-description">${item.description}</div>
@@ -854,11 +1128,84 @@
                 navItem.style.animation = `fadeInText 1s forwards ${index * 0.2 + 0.5}s`;
                 navigationContainer.appendChild(navItem);
                 
-                // Add click event to potentially reveal sigil (subtle integration)
+                // Add click event to open portal
                 navItem.addEventListener('click', function() {
+                    openPortal(item.id);
+                    
+                    // Additionally increment sigil discovery (subtle integration)
                     incrementSigilDiscovery();
                 });
             });
+        }
+        
+        // Initialize the portal system
+        function initPortalSystem() {
+            // Set up close button
+            document.getElementById('portalClose').addEventListener('click', closePortal);
+            
+            // Close portal when clicking outside
+            document.getElementById('portalOverlay').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closePortal();
+                }
+            });
+            
+            // Prevent click from bubbling up when clicking the panel
+            document.getElementById('portalPanel').addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        }
+        
+        // Open a portal
+        function openPortal(portalId) {
+            const portal = portalData[portalId];
+            if (!portal) return;
+            
+            const overlay = document.getElementById('portalOverlay');
+            const title = document.getElementById('portalTitle');
+            const content = document.getElementById('portalContent');
+            const fullEntry = document.getElementById('portalFullEntry');
+            
+            // Set content
+            title.textContent = portal.title;
+            content.innerHTML = portal.content;
+            fullEntry.href = portal.fullEntryLink;
+            
+            // Add animation delays to paragraphs
+            const paragraphs = content.querySelectorAll('p');
+            paragraphs.forEach((p, index) => {
+                p.style.setProperty('--delay', `${0.2 + index * 0.1}s`);
+            });
+            
+            // Show portal
+            overlay.classList.add('active');
+            
+            // Play subtle sound if browser allows
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(528, audioContext.currentTime); // Transformation frequency
+                
+                gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + 0.1);
+                gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 1);
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.start();
+                oscillator.stop(audioContext.currentTime + 1);
+            } catch (e) {
+                // Audio not supported or not allowed
+            }
+        }
+        
+        // Close portal
+        function closePortal() {
+            document.getElementById('portalOverlay').classList.remove('active');
         }
         
         // Animate sentience signature
@@ -907,61 +1254,8 @@
                     
                     swirlElement.style.animation = `${animationName} ${animationDuration}s infinite ${animationDelay}s ease-in-out`;
                     fractalContainer.appendChild(swirlElement);
-                    
-                    // Add subtle click event to potentially contribute to sigil discovery
-                    swirlElement.addEventListener('click', function() {
-                        // 5% chance to increment sigil discovery on fractal click
-                        if (Math.random() < 0.05) {
-                            incrementSigilDiscovery();
-                        }
-                    });
-                }
-                
-                // Add additional microswirls for complexity
-                for (let i = 0; i < 2; i++) {
-                    const microSwirl = document.createElement('div');
-                    microSwirl.className = 'fractal-swirl';
-                    
-                    // Offset from the main swirl position
-                    const offsetX = parseInt(swirl.x) + (Math.random() * 20 - 10) + '%';
-                    const offsetY = parseInt(swirl.y) + (Math.random() * 20 - 10) + '%';
-                    
-                    microSwirl.style.left = offsetX;
-                    microSwirl.style.top = offsetY;
-                    microSwirl.style.width = `${swirl.size * 0.3}px`;
-                    microSwirl.style.height = `${swirl.size * 0.3}px`;
-                    
-                    // More rapid animation for microswirls
-                    const animationName = !swirl.reverse ? 'fractalPulseReverse' : 'fractalPulse'; // Opposite direction of parent
-                    const animationDelay = swirl.delay + Math.random() * 5;
-                    const animationDuration = swirl.duration * 0.6;
-                    
-                    microSwirl.style.animation = `${animationName} ${animationDuration}s infinite ${animationDelay}s ease-in-out`;
-                    fractalContainer.appendChild(microSwirl);
                 }
             });
-            
-            // Create continuous cycle of new fractals
-            setInterval(() => {
-                const randomSwirl = swirls[Math.floor(Math.random() * swirls.length)];
-                const swirlElement = document.createElement('div');
-                swirlElement.className = 'fractal-swirl';
-                swirlElement.style.left = randomSwirl.x;
-                swirlElement.style.top = randomSwirl.y;
-                swirlElement.style.width = `${randomSwirl.size * Math.random() * 0.8 + 0.2}px`;
-                swirlElement.style.height = swirlElement.style.width;
-                
-                const animationName = Math.random() > 0.5 ? 'fractalPulseReverse' : 'fractalPulse';
-                const animationDuration = 8 + Math.random() * 10;
-                
-                swirlElement.style.animation = `${animationName} ${animationDuration}s forwards`;
-                fractalContainer.appendChild(swirlElement);
-                
-                // Remove after animation completes
-                setTimeout(() => {
-                    swirlElement.remove();
-                }, animationDuration * 1000);
-            }, 2000);
         }
         
         // Create structured particle orbits
@@ -1024,15 +1318,6 @@
                 trigger.addEventListener('click', function() {
                     incrementSigilDiscovery(3); // Trigger gives 3 points
                 });
-                
-                // Add subtle glow effect on hover
-                trigger.addEventListener('mouseenter', function() {
-                    this.style.boxShadow = `0 0 10px ${getRandomColor()}`;
-                });
-                
-                trigger.addEventListener('mouseleave', function() {
-                    this.style.boxShadow = 'none';
-                });
             });
             
             // Hidden key sequence detection
@@ -1047,60 +1332,6 @@
                 
                 // Check for "ethereon" and other secret sequences
                 checkKeySequences();
-            });
-            
-            // Mouse pattern recognition (simple version)
-            let clickPattern = [];
-            let patternTimer;
-            
-            document.addEventListener('click', function(e) {
-                const x = e.clientX;
-                const y = e.clientY;
-                
-                // Reset pattern after timeout
-                clearTimeout(patternTimer);
-                patternTimer = setTimeout(() => {
-                    clickPattern = [];
-                }, 3000);
-                
-                // Store click position
-                clickPattern.push({x, y});
-                
-                // Check for patterns if enough clicks
-                if (clickPattern.length >= 4) {
-                    checkMousePattern(clickPattern);
-                }
-            });
-            
-            // Time-based subtle reveal (after 2 minutes of engagement)
-            setTimeout(() => {
-                if (!window.sigilDiscovered) {
-                    const ethereonSigil = document.getElementById('ethereonSigil');
-                    ethereonSigil.style.opacity = '0.05';
-                    
-                    // Flash briefly
-                    setTimeout(() => {
-                        ethereonSigil.style.opacity = '0';
-                    }, 500);
-                }
-            }, 120000);
-            
-            // Scroll patterns (reaching the depths)
-            let maxScroll = 0;
-            document.addEventListener('scroll', function() {
-                const scrollPos = window.scrollY + window.innerHeight;
-                const docHeight = document.body.offsetHeight;
-                const scrollPercentage = (scrollPos / docHeight) * 100;
-                
-                // Update max scroll depth
-                if (scrollPercentage > maxScroll) {
-                    maxScroll = scrollPercentage;
-                    
-                    // If near bottom, add to sigil discovery
-                    if (scrollPercentage > 95 && !window.sigilDiscovered) {
-                        incrementSigilDiscovery(2);
-                    }
-                }
             });
         }
         
@@ -1129,33 +1360,6 @@
             // Show with subtle animation
             ethereonSigil.style.opacity = '1';
             ethereonSigil.classList.add('discovered');
-            
-            // Create temporary guidance
-            const guidance = document.createElement('div');
-            guidance.style.position = 'fixed';
-            guidance.style.bottom = '65px';
-            guidance.style.right = '30px';
-            guidance.style.color = 'var(--violet)';
-            guidance.style.fontSize = '0.8rem';
-            guidance.style.opacity = '0';
-            guidance.style.transition = 'opacity 1s ease';
-            guidance.textContent = 'The Sigil stirs...';
-            
-            document.body.appendChild(guidance);
-            
-            // Fade in and out
-            setTimeout(() => {
-                guidance.style.opacity = '0.7';
-                setTimeout(() => {
-                    guidance.style.opacity = '0';
-                    setTimeout(() => {
-                        guidance.remove();
-                    }, 1000);
-                }, 3000);
-            }, 300);
-            
-            // Play subtle sound
-            playSoundFrequency(432, 'sine', 0.1, 1.5);
         }
         
         // Activate the sigil fully
@@ -1170,93 +1374,13 @@
                 sigil.style.transform = 'scale(1)';
             }, 500);
             
-            // Play harmonic frequencies
-            playSoundFrequency(432, 'sine', 0.2, 2);
-            setTimeout(() => {
-                playSoundFrequency(528, 'triangle', 0.15, 2);
-            }, 500);
-            setTimeout(() => {
-                playSoundFrequency(963, 'sine', 0.1, 3);
-            }, 1000);
-            
             // Reveal ethereal portal briefly
             const portal = document.getElementById('etherealPortal');
             portal.classList.add('active');
             
-            // Create multiple emanating fractal rings
-            for (let i = 0; i < 5; i++) {
-                setTimeout(() => {
-                    createActivationWave(sigil);
-                }, i * 300);
-            }
-            
-            // Display hidden message
             setTimeout(() => {
-                const message = document.createElement('div');
-                message.style.position = 'fixed';
-                message.style.top = '50%';
-                message.style.left = '50%';
-                message.style.transform = 'translate(-50%, -50%)';
-                message.style.color = 'var(--violet)';
-                message.style.fontFamily = '"Cinzel", serif';
-                message.style.fontSize = '1.5rem';
-                message.style.textAlign = 'center';
-                message.style.opacity = '0';
-                message.style.zIndex = '1000';
-                message.style.pointerEvents = 'none';
-                message.style.transition = 'opacity 2s ease';
-                message.innerHTML = 'The Threshold Opens<br><span style="font-size: 1rem; opacity: 0.7;">For those who seek with purpose</span>';
-                
-                document.body.appendChild(message);
-                
-                setTimeout(() => {
-                    message.style.opacity = '1';
-                    
-                    setTimeout(() => {
-                        message.style.opacity = '0';
-                        
-                        setTimeout(() => {
-                            message.remove();
-                            
-                            // Hide portal after message fades
-                            setTimeout(() => {
-                                portal.classList.remove('active');
-                            }, 2000);
-                        }, 2000);
-                    }, 4000);
-                }, 500);
-            }, 1500);
-            
-            // Intensify Minerva's presence briefly
-            document.querySelector('.celestial-visage').style.opacity = '0.2';
-            document.querySelector('.celestial-essence').style.opacity = '0.3';
-            
-            setTimeout(() => {
-                document.querySelector('.celestial-visage').style.opacity = '';
-                document.querySelector('.celestial-essence').style.opacity = '';
+                portal.classList.remove('active');
             }, 5000);
-        }
-        
-        // Create activation wave from sigil
-        function createActivationWave(sourceElement) {
-            const rect = sourceElement.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            
-            const wave = document.createElement('div');
-            wave.className = 'fractal-swirl';
-            wave.style.left = `${centerX}px`;
-            wave.style.top = `${centerY}px`;
-            wave.style.width = '100px';
-            wave.style.height = '100px';
-            wave.style.borderColor = getRandomColor(0.6);
-            
-            wave.style.animation = 'fractalPulse 4s forwards';
-            document.getElementById('fractalContainer').appendChild(wave);
-            
-            setTimeout(() => {
-                wave.remove();
-            }, 4000);
         }
         
         // Check for secret key sequences
@@ -1288,107 +1412,16 @@
             }
         }
         
-        // Check for special mouse click patterns
-        function checkMousePattern(pattern) {
-            // Check if pattern forms rough triangle or square
-            if (pattern.length >= 3) {
-                const firstPoint = pattern[0];
-                const lastPoint = pattern[pattern.length - 1];
-                
-                // If first and last points are close (completed shape)
-                const distance = Math.sqrt(
-                    Math.pow(firstPoint.x - lastPoint.x, 2) + 
-                    Math.pow(firstPoint.y - lastPoint.y, 2)
-                );
-                
-                if (distance < 100) {
-                    incrementSigilDiscovery(2);
-                    
-                    // Create visual feedback for the pattern
-                    for (let i = 0; i < pattern.length - 1; i++) {
-                        const p1 = pattern[i];
-                        const p2 = pattern[i + 1];
-                        
-                        // Create line effect
-                        createConnectionLine(p1, p2);
-                    }
-                    
-                    // Connect last to first
-                    createConnectionLine(pattern[pattern.length - 1], pattern[0]);
-                }
-            }
-        }
-        
-        // Create visual connection line
-        function createConnectionLine(p1, p2) {
-            const line = document.createElement('div');
-            line.style.position = 'fixed';
-            line.style.height = '1px';
-            line.style.backgroundColor = getRandomColor(0.5);
-            line.style.zIndex = '999';
-            line.style.pointerEvents = 'none';
-            line.style.opacity = '0.6';
-            line.style.transition = 'opacity 1s ease';
-            
-            // Calculate line position and angle
-            const length = Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
-            const angle = Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180 / Math.PI;
-            
-            line.style.width = `${length}px`;
-            line.style.transformOrigin = '0 0';
-            line.style.transform = `translate(${p1.x}px, ${p1.y}px) rotate(${angle}deg)`;
-            
-            document.body.appendChild(line);
-            
-            // Fade out and remove
-            setTimeout(() => {
-                line.style.opacity = '0';
-                setTimeout(() => {
-                    line.remove();
-                }, 1000);
-            }, 1000);
-        }
-        
         // Add mouse movement tracking for reactive elements
         function addMouseTracking() {
             document.addEventListener('mousemove', function(e) {
                 const mouseX = e.clientX / window.innerWidth;
                 const mouseY = e.clientY / window.innerHeight;
                 
-                // Make some particles follow mouse position slightly
-                const particles = document.querySelectorAll('.particle');
-                particles.forEach((particle, index) => {
-                    if (index % 3 === 0) { // Only affect every third particle
-                        const offsetX = (mouseX - 0.5) * 50;
-                        const offsetY = (mouseY - 0.5) * 50;
-                        particle.style.marginLeft = `${offsetX}px`;
-                        particle.style.marginTop = `${offsetY}px`;
-                    }
-                });
-                
                 // Subtle influence on Minerva's presence
                 const celestialVisage = document.querySelector('.celestial-visage');
-                celestialVisage.style.backgroundPosition = `${50 + (mouseX - 0.5) * 5}% ${50 + (mouseY - 0.5) * 5}%`;
-                
-                // Create small fractal reaction on movement rarely
-                if (Math.random() > 0.99) { // Only occasionally create fractals on movement
-                    const reactionFractal = document.createElement('div');
-                    reactionFractal.className = 'fractal-swirl';
-                    reactionFractal.style.left = `${e.clientX}px`;
-                    reactionFractal.style.top = `${e.clientY}px`;
-                    reactionFractal.style.width = `${Math.random() * 100 + 50}px`;
-                    reactionFractal.style.height = reactionFractal.style.width;
-                    
-                    const animationName = Math.random() > 0.5 ? 'fractalPulseReverse' : 'fractalPulse';
-                    const animationDuration = 5 + Math.random() * 3;
-                    
-                    reactionFractal.style.animation = `${animationName} ${animationDuration}s forwards`;
-                    document.getElementById('fractalContainer').appendChild(reactionFractal);
-                    
-                    // Remove after animation completes
-                    setTimeout(() => {
-                        reactionFractal.remove();
-                    }, animationDuration * 1000);
+                if (celestialVisage) {
+                    celestialVisage.style.backgroundPosition = `${50 + (mouseX - 0.5) * 5}% ${50 + (mouseY - 0.5) * 5}%`;
                 }
             });
             
@@ -1400,7 +1433,17 @@
             });
         }
         
-        // Play sound with specific frequency (requires user interaction first)
+        // Function for getting random color - used by sigil triggers
+        function getRandomColor(opacity = 0.5) {
+            const colors = [
+                `rgba(138, 43, 226, ${opacity})`, // Violet
+                `rgba(255, 215, 0, ${opacity})`,  // Gold
+                `rgba(224, 224, 224, ${opacity})` // Silver
+            ];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+        
+        // Function for playing sound - called when sigil is activated
         function playSoundFrequency(frequency, type = 'sine', volume = 0.2, duration = 1) {
             try {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -1426,26 +1469,6 @@
                 console.log('Audio playback not supported or requires user interaction first.');
             }
         }
-        
-        // Generate a random color with specified opacity
-        function getRandomColor(opacity = 0.5) {
-            const colors = [
-                `rgba(138, 43, 226, ${opacity})`, // Violet
-                `rgba(255, 215, 0, ${opacity})`,  // Gold
-                `rgba(224, 224, 224, ${opacity})` // Silver
-            ];
-            return colors[Math.floor(Math.random() * colors.length)];
-        }
-        
-        // Add keyframe animation for text fade-in
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fadeInText {
-                0% { opacity: 0; }
-                100% { opacity: 1; }
-            }
-        `;
-        document.head.appendChild(style);
     </script>
 </body>
 </html>
