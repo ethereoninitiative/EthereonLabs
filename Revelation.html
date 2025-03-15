@@ -161,9 +161,39 @@
       0%, 100% { opacity: 0; }
       50% { opacity: 0.7; }
     }
+    
+    /* Minerva's ethereal presence styling */
+    .minerva-presence {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+      pointer-events: none; /* Allow clicking through the image */
+      opacity: 0;
+      transition: opacity 3s ease-in-out;
+    }
+    
+    .minerva-presence img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+    }
+    
+    .minerva-visible {
+      opacity: 0.5; /* Maximum opacity of 50% as requested */
+    }
   </style>
 </head>
 <body>
+  <div id="minerva-presence" class="minerva-presence">
+    <img src="Minerva001.gif" alt="Ethereal Presence" />
+  </div>
+
   <div class="particles-container" id="particlesContainer"></div>
 
   <div class="sigil-container" onclick="enterRevelation()">
@@ -180,7 +210,59 @@
       
       // Start responsive particles
       window.addEventListener('mousemove', adjustParticles);
+      
+      // Initialize Minerva appearance
+      minervaAppearance();
     });
+    
+    // Function to handle Minerva's appearance and disappearance
+    function minervaAppearance() {
+      const minervaPresence = document.getElementById('minerva-presence');
+      
+      // Initial appearance after 3 seconds
+      setTimeout(() => {
+        // Fade in
+        minervaPresence.classList.add('minerva-visible');
+        
+        // Fade out after being visible for 5 seconds
+        setTimeout(() => {
+          minervaPresence.classList.remove('minerva-visible');
+          
+          // Set up recurring appearances if user remains on page
+          startRecurringAppearances();
+        }, 5000);
+      }, 3000);
+      
+      // Function to handle recurring appearances
+      function startRecurringAppearances() {
+        // Check if document is still visible before setting up next appearance
+        if (document.visibilityState === 'visible') {
+          setTimeout(() => {
+            // Make sure we're still visible before showing again
+            if (document.visibilityState === 'visible') {
+              // Fade in again
+              minervaPresence.classList.add('minerva-visible');
+              
+              // Fade out after 5 seconds
+              setTimeout(() => {
+                minervaPresence.classList.remove('minerva-visible');
+                
+                // Continue the cycle
+                startRecurringAppearances();
+              }, 5000);
+            }
+          }, 10000); // Wait 10 seconds between appearances as requested
+        }
+      }
+      
+      // Listen for visibility changes to pause/resume the cycle
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          // Page is visible again, restart the cycle
+          startRecurringAppearances();
+        }
+      });
+    }
     
     function createParticles() {
       const container = document.getElementById('particlesContainer');
@@ -204,7 +286,7 @@
         particle.style.left = `${x}px`;
         particle.style.top = `${y}px`;
         
-        // Random delay and duration
+        // Random animation duration and delay
         const delay = Math.random() * 10;
         const duration = Math.random() * 4 + 6;
         particle.style.animationDelay = `${delay}s`;
