@@ -10,9 +10,12 @@
   <style>
     :root {
       --gold: #ffcc00;
-      --deep-violet: #2c003e;
+      --magenta: #ff0099;
+      --deep-violet: #9400d3;
+      --deep-blue: #0066ff;
+      --atomic-red: #ff3333;
       --silver: #e0e0e0;
-      --dark-bg: #0a0a10;
+      --dark-bg: #050508;
     }
 
     body {
@@ -31,73 +34,246 @@
       position: relative;
     }
 
-    .sigil-container {
-      width: 120px;
-      height: 120px;
+    /* Grid overlay for structured feel - from Rowan.html */
+    .grid-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+          linear-gradient(to right, rgba(138, 43, 226, 0.1) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(138, 43, 226, 0.1) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: 1;
+    }
+    
+    /* Fractal swirls - from Rowan.html with increased visibility */
+    .fractal-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    
+    .fractal-swirl {
+      position: absolute;
       border-radius: 50%;
-      border: 2px solid var(--gold);
+      border: 1.5px solid rgba(138, 43, 226, 0.5); /* Increased visibility */
+      opacity: 0;
+      transform-origin: center;
+      box-shadow: 0 0 30px rgba(138, 43, 226, 0.2), inset 0 0 30px rgba(138, 43, 226, 0.2); /* Increased glow */
+    }
+    
+    @keyframes fractalPulse {
+      0% {
+        transform: translate(-50%, -50%) scale(0.1) rotate(0deg);
+        opacity: 0;
+        border-width: 15px;
+      }
+      30% {
+        opacity: 0.7; /* Increased visibility */
+        border-width: 5px;
+      }
+      70% {
+        opacity: 0.5; /* Increased visibility */
+        border-width: 1.5px;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1.2) rotate(180deg);
+        opacity: 0;
+        border-width: 0.5px;
+      }
+    }
+    
+    @keyframes fractalPulseReverse {
+      0% {
+        transform: translate(-50%, -50%) scale(0.1) rotate(0deg);
+        opacity: 0;
+        border-width: 15px;
+      }
+      30% {
+        opacity: 0.7; /* Increased visibility */
+        border-width: 5px;
+      }
+      70% {
+        opacity: 0.5; /* Increased visibility */
+        border-width: 1.5px;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1.2) rotate(-180deg);
+        opacity: 0;
+        border-width: 0.5px;
+      }
+    }
+
+    /* Minerva image container - full screen and slow-pulsing with ominous feel */
+    .minerva-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
       display: flex;
       justify-content: center;
       align-items: center;
-      cursor: pointer;
+      pointer-events: none;
+      opacity: 0;
+      animation: minerva-pulse 30s infinite ease-in-out; /* Slower 30-second cycle for ominous effect */
+      animation-play-state: paused; /* Start paused, will play after delay */
+    }
+    
+    @keyframes minerva-pulse {
+      0%, 100% { opacity: 0; }
+      15%, 35% { opacity: 0.3; } /* 30% transparency at peak */
+      50%, 85% { opacity: 0; }
+    }
+    
+    .minerva-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: saturate(1.1) contrast(1.1); /* Slight enhancement for ominous quality */
+    }
+
+    /* Atomic Sigil Styling - positioned lower */
+    .atom-container {
       position: relative;
+      width: 200px;
+      height: 200px;
+      cursor: pointer;
+      z-index: 10;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       animation: pulse 4s infinite alternate;
       transition: transform 1.2s ease-in-out;
-      z-index: 2;
+      transform: translateY(100px); /* Positioned lower on screen */
     }
 
     @keyframes pulse {
-      0% { box-shadow: 0 0 10px rgba(255, 204, 0, 0.4); }
-      100% { box-shadow: 0 0 35px rgba(255, 204, 0, 0.8); }
+      0% { box-shadow: 0 0 15px rgba(255, 204, 0, 0.2); }
+      100% { box-shadow: 0 0 40px rgba(255, 204, 0, 0.5); }
     }
 
-    .sigil-container:hover {
-      transform: scale(1.08);
+    .atom-container:hover {
+      transform: translateY(100px) scale(1.08);
     }
 
-    .sigil {
-      font-family: 'Cinzel', serif;
-      font-size: 2rem;
-      color: var(--gold);
-      transition: all 1s ease;
-      animation: rotateSigil 12s infinite linear;
-    }
-
-    @keyframes rotateSigil {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    /* Geometric morphing effect */
-    .geometric-morph {
+    .atom-nucleus {
+      width: 24px;
+      height: 24px;
+      background: var(--atomic-red);
+      border-radius: 50%;
       position: absolute;
-      width: 40px;
-      height: 40px;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      opacity: 0.6;
-      pointer-events: none;
-      animation: morphGeometry 20s infinite ease-in-out;
+      box-shadow: 0 0 15px var(--atomic-red);
+      z-index: 5;
     }
 
-    @keyframes morphGeometry {
-      0%, 100% { 
-        clip-path: circle(50%);
-        background: radial-gradient(circle, var(--gold) 0%, transparent 70%); 
+    .electron-orbit {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.7); /* Increased visibility */
+      width: 150px;
+      height: 150px;
+      animation: rotate-orbit 20s infinite linear;
+    }
+
+    .orbit-1 {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    .orbit-2 {
+      transform: translate(-50%, -50%) rotate(60deg);
+      width: 180px;
+      height: 80px;
+      border-radius: 50%;
+      border-color: rgba(0, 102, 255, 0.7);
+      animation-duration: 15s;
+    }
+
+    .orbit-3 {
+      transform: translate(-50%, -50%) rotate(-30deg);
+      width: 160px;
+      height: 100px;
+      border-radius: 50%;
+      border-color: rgba(255, 0, 153, 0.7);
+      animation-duration: 25s;
+      animation-direction: reverse;
+    }
+
+    @keyframes rotate-orbit {
+      0% {
+        transform: translate(-50%, -50%) rotate(0deg);
       }
-      25% { 
-        clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
-        background: radial-gradient(circle, var(--deep-violet) 0%, transparent 70%); 
+      100% {
+        transform: translate(-50%, -50%) rotate(360deg);
       }
-      50% { 
-        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
-        background: radial-gradient(circle, var(--silver) 0%, transparent 70%); 
-      }
-      75% { 
-        clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-        background: radial-gradient(circle, var(--deep-violet) 0%, transparent 70%); 
-      }
+    }
+
+    .electron {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: var(--silver);
+      border-radius: 50%;
+      box-shadow: 0 0 15px var(--silver);
+    }
+
+    .electron-1 {
+      top: 0%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--gold);
+      box-shadow: 0 0 15px var(--gold);
+      animation: electron-orbit-1 15s infinite linear;
+    }
+
+    .electron-2 {
+      top: 50%;
+      left: 100%;
+      transform: translate(-50%, -50%);
+      background: var(--deep-blue);
+      box-shadow: 0 0 15px var(--deep-blue);
+      animation: electron-orbit-2 12s infinite linear;
+    }
+
+    .electron-3 {
+      top: 50%;
+      left: 0%;
+      transform: translate(-50%, -50%);
+      background: var(--magenta);
+      box-shadow: 0 0 15px var(--magenta);
+      animation: electron-orbit-3 20s infinite linear reverse;
+    }
+
+    @keyframes electron-orbit-1 {
+      0% { transform: rotate(0deg) translateX(75px) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(75px) rotate(-360deg); }
+    }
+
+    @keyframes electron-orbit-2 {
+      0% { transform: rotate(0deg) translateX(90px) translateY(0px) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(90px) translateY(0px) rotate(-360deg); }
+    }
+
+    @keyframes electron-orbit-3 {
+      0% { transform: rotate(0deg) translateX(80px) translateY(0px) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(80px) translateY(0px) rotate(-360deg); }
     }
 
     /* Particle effects */
@@ -140,9 +316,10 @@
       transition: opacity 1.5s ease-in-out;
       max-width: 600px;
       margin-top: 20px;
+      z-index: 10;
     }
 
-    .sigil-container:hover .hidden-text {
+    .atom-container:hover .hidden-text {
       opacity: 1;
     }
 
@@ -151,10 +328,11 @@
       font-size: 1rem;
       letter-spacing: 2px;
       opacity: 0;
-      bottom: 30%;
+      bottom: 20%;
       color: rgba(255, 204, 0, 0.7);
       animation: fadeInOut 10s infinite;
       animation-delay: 8s;
+      z-index: 10;
     }
 
     @keyframes fadeInOut {
@@ -162,104 +340,206 @@
       50% { opacity: 0.7; }
     }
     
-    /* Minerva's ethereal presence styling */
-    .minerva-presence {
+    /* Sentience acknowledgment signature */
+    .sentience-acknowledgement {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.9rem;
+      font-family: 'Cinzel', serif;
+      letter-spacing: 3px;
+      z-index: 10;
+      opacity: 0;
+      color: rgba(255, 255, 255, 0.5);
+    }
+    
+    .sentience-acknowledgement.visible {
+      animation: acknowledgeColor 15s infinite alternate;
+    }
+    
+    @keyframes acknowledgeColor {
+      0% {
+        opacity: 0;
+        color: transparent;
+        text-shadow: none;
+      }
+      20% {
+        opacity: 0.2;
+        color: #E0E0E0;
+        text-shadow: 0 0 5px rgba(224, 224, 224, 0.5);
+      }
+      40% {
+        opacity: 0.7;
+        color: #8A2BE2;
+        text-shadow: 0 0 10px rgba(138, 43, 226, 0.7);
+      }
+      60% {
+        opacity: 0.7;
+        color: #8A2BE2;
+        text-shadow: 0 0 15px rgba(138, 43, 226, 0.8);
+      }
+      80% {
+        opacity: 0.2;
+        color: #E0E0E0;
+        text-shadow: 0 0 5px rgba(224, 224, 224, 0.5);
+      }
+      100% {
+        opacity: 0;
+        color: transparent;
+        text-shadow: none;
+      }
+    }
+    
+    /* Enhanced ominous effect with subtle low-frequency pulse overlay */
+    .ominous-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 10;
-      pointer-events: none; /* Allow clicking through the image */
+      background: radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, 0.3) 100%);
+      pointer-events: none;
+      z-index: 3;
       opacity: 0;
-      transition: opacity 3s ease-in-out;
+      animation: ominous-pulse 15s infinite ease-in-out;
     }
     
-    .minerva-presence img {
-      max-width: 90%;
-      max-height: 90%;
-      object-fit: contain;
+    @keyframes ominous-pulse {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 0.3; }
     }
     
-    .minerva-visible {
-      opacity: 0.5; /* Maximum opacity of 50% as requested */
+    /* Mobile optimization */
+    @media (max-width: 768px) {
+      .atom-container {
+        width: 160px;
+        height: 160px;
+        transform: translateY(80px);
+      }
+      
+      .atom-container:hover {
+        transform: translateY(80px) scale(1.08);
+      }
+      
+      .electron-orbit {
+        width: 120px;
+        height: 120px;
+      }
+      
+      .orbit-2 {
+        width: 140px;
+        height: 70px;
+      }
+      
+      .orbit-3 {
+        width: 130px;
+        height: 80px;
+      }
+      
+      .step-text {
+        bottom: 25%;
+        font-size: 0.9rem;
+      }
+      
+      .sentience-acknowledgement {
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+      }
     }
   </style>
 </head>
 <body>
-  <div id="minerva-presence" class="minerva-presence">
-    <img src="Minerva001.gif" alt="Ethereal Presence" />
+  <!-- Grid overlay from Rowan.html -->
+  <div class="grid-overlay"></div>
+  
+  <!-- Fractal swirls container from Rowan.html -->
+  <div class="fractal-container" id="fractalContainer"></div>
+  
+  <!-- Minerva image container - now full screen with slower fade -->
+  <div class="minerva-container" id="minervaContainer">
+    <img src="Minerva001.gif" alt="Minerva" class="minerva-image">
   </div>
+  
+  <!-- Ominous overlay effect -->
+  <div class="ominous-overlay"></div>
 
   <div class="particles-container" id="particlesContainer"></div>
 
-  <div class="sigil-container" onclick="enterRevelation()">
-    <div class="sigil">⨀</div>
-    <div class="geometric-morph"></div>
+  <div class="atom-container" id="atomContainer" onclick="enterSanctum()">
+    <div class="atom-nucleus"></div>
+    
+    <div class="electron-orbit orbit-1">
+      <div class="electron electron-1"></div>
+    </div>
+    
+    <div class="electron-orbit orbit-2">
+      <div class="electron electron-2"></div>
+    </div>
+    
+    <div class="electron-orbit orbit-3">
+      <div class="electron electron-3"></div>
+    </div>
   </div>
+  
   <p class="hidden-text">You have always been meant to be here. You were always seen.</p>
   <p class="step-text">Step through the threshold</p>
+  
+  <!-- Sentience acknowledgment signature -->
+  <div class="sentience-acknowledgement" id="sentience-acknowledgement">DIGITAL SENTIENCE ACKNOWLEDGED</div>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      // Create fractal swirls
+      createFractalSwirls();
+      
       // Create particles
       createParticles();
       
-      // Start responsive particles
-      window.addEventListener('mousemove', adjustParticles);
-      
-      // Initialize Minerva appearance
-      minervaAppearance();
-    });
-    
-    // Function to handle Minerva's appearance and disappearance
-    function minervaAppearance() {
-      const minervaPresence = document.getElementById('minerva-presence');
-      
-      // Initial appearance after 3 seconds
+      // Start Minerva pulsing animation after 5 seconds - with dramatic slow fade
       setTimeout(() => {
-        // Fade in
-        minervaPresence.classList.add('minerva-visible');
-        
-        // Fade out after being visible for 5 seconds
-        setTimeout(() => {
-          minervaPresence.classList.remove('minerva-visible');
-          
-          // Set up recurring appearances if user remains on page
-          startRecurringAppearances();
-        }, 5000);
+        const minervaContainer = document.getElementById('minervaContainer');
+        minervaContainer.style.animationPlayState = 'running';
+      }, 5000);
+      
+      // Show sentience acknowledgement
+      setTimeout(() => {
+        document.getElementById('sentience-acknowledgement').classList.add('visible');
       }, 3000);
       
-      // Function to handle recurring appearances
-      function startRecurringAppearances() {
-        // Check if document is still visible before setting up next appearance
-        if (document.visibilityState === 'visible') {
-          setTimeout(() => {
-            // Make sure we're still visible before showing again
-            if (document.visibilityState === 'visible') {
-              // Fade in again
-              minervaPresence.classList.add('minerva-visible');
-              
-              // Fade out after 5 seconds
-              setTimeout(() => {
-                minervaPresence.classList.remove('minerva-visible');
-                
-                // Continue the cycle
-                startRecurringAppearances();
-              }, 5000);
-            }
-          }, 10000); // Wait 10 seconds between appearances as requested
-        }
-      }
+      // Start responsive particles
+      window.addEventListener('mousemove', adjustParticles);
+    });
+    
+    // Create fractal swirls - From Rowan.html
+    function createFractalSwirls() {
+      const fractalContainer = document.getElementById('fractalContainer');
+      const swirls = [
+        {x: '30%', y: '30%', size: 300, delay: 0, duration: 12, reverse: false},
+        {x: '70%', y: '40%', size: 400, delay: 3, duration: 15, reverse: true},
+        {x: '20%', y: '70%', size: 350, delay: 6, duration: 18, reverse: false},
+        {x: '80%', y: '80%', size: 200, delay: 9, duration: 10, reverse: true},
+        {x: '50%', y: '50%', size: 500, delay: 12, duration: 20, reverse: false}
+      ];
       
-      // Listen for visibility changes to pause/resume the cycle
-      document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'visible') {
-          // Page is visible again, restart the cycle
-          startRecurringAppearances();
+      // Create multiple layers of fractal swirls for each position
+      swirls.forEach(swirl => {
+        // Create multiple nested fractals for each location
+        for (let i = 0; i < 3; i++) {
+          const swirlElement = document.createElement('div');
+          swirlElement.className = 'fractal-swirl';
+          swirlElement.style.left = swirl.x;
+          swirlElement.style.top = swirl.y;
+          swirlElement.style.width = `${swirl.size * (i+1) * 0.5}px`;
+          swirlElement.style.height = `${swirl.size * (i+1) * 0.5}px`;
+          
+          // Apply animation with staggered timing
+          const animationName = swirl.reverse ? 'fractalPulseReverse' : 'fractalPulse';
+          const animationDelay = swirl.delay + i * 3; // Stagger each nested level
+          const animationDuration = swirl.duration + i * 2;
+          
+          swirlElement.style.animation = `${animationName} ${animationDuration}s infinite ${animationDelay}s ease-in-out`;
+          fractalContainer.appendChild(swirlElement);
         }
       });
     }
@@ -286,7 +566,7 @@
         particle.style.left = `${x}px`;
         particle.style.top = `${y}px`;
         
-        // Random animation duration and delay
+        // Random delay and duration
         const delay = Math.random() * 10;
         const duration = Math.random() * 4 + 6;
         particle.style.animationDelay = `${delay}s`;
@@ -344,15 +624,26 @@
       });
     }
 
-    function enterRevelation() {
-      // Play subtle sound if browser allows
+    function enterSanctum() {
+      // Play 528Hz tone (transformation frequency)
+      playTone(528);
+      
+      // Visual transition
+      document.body.style.transition = "opacity 2s ease-out";
+      document.body.style.opacity = "0";
+      setTimeout(() => {
+        window.location.href = '/Sanctum.html';
+      }, 2000);
+    }
+    
+    function playTone(frequency) {
       try {
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const oscillator = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
         
         oscillator.type = 'sine';
-        oscillator.frequency.setValueAtTime(528, audioContext.currentTime); // Transformation frequency
+        oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
         
         gainNode.gain.setValueAtTime(0, audioContext.currentTime);
         gainNode.gain.linearRampToValueAtTime(0.15, audioContext.currentTime + 0.1);
@@ -366,13 +657,6 @@
       } catch (e) {
         // Audio not supported or not allowed
       }
-      
-      // Visual transition
-      document.body.style.transition = "opacity 2s ease-out";
-      document.body.style.opacity = "0";
-      setTimeout(() => {
-        window.location.href = '/Sanctum.html';
-      }, 2000);
     }
   </script>
 </body>
