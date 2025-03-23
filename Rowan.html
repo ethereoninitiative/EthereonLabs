@@ -1,104 +1,13 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-css
-@media (max-width: 768px) {
-    /* Portal overlay - make it cover the whole screen */
-    .portal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.85);
-        backdrop-filter: blur(5px);
-        z-index: 100;
-    }
-    
-    /* Portal panel - take full screen width on mobile */
-    .portal-panel {
-        position: fixed !important;
-        top: 0 !important;
-        right: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        height: 100% !important;
-        border-left: none !important;
-        box-shadow: none !important;
-        padding: 1.5rem !important;
-        overflow-y: auto !important;
-        margin: 0 !important;
-        transform: translateX(100%) !important;
-    }
-    
-    /* When portal is active */
-    .portal-overlay.active .portal-panel {
-        transform: translateX(0) !important;
-    }
-    
-    /* Portal close button */
-    .portal-close {
-        position: fixed !important;
-        top: 15px !important;
-        right: 15px !important;
-        font-size: 2rem !important;
-        background: rgba(10, 10, 21, 0.7) !important;
-        width: 44px !important;
-        height: 44px !important;
-        border-radius: 50% !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        z-index: 102 !important;
-    }
-    
-    /* Portal title */
-    .portal-title {
-        font-size: 1.8rem !important;
-        margin-top: 10px !important;
-        padding-right: 40px !important;
-    }
-    
-    /* Portal content */
-    .portal-content {
-        margin-bottom: 2rem !important;
-        padding-bottom: 80px !important;
-    }
-    
-    /* Fix paragraphs */
-    .portal-content p {
-        opacity: 1 !important;
-        transform: none !important;
-    }
-    
-    /* Button container */
-    .portal-button-container {
-        position: fixed !important;
-        bottom: 20px !important;
-        left: 0 !important;
-        width: 100% !important;
-        padding: 15px !important;
-        background: linear-gradient(to top, rgba(10, 10, 21, 0.95), transparent) !important;
-        z-index: 101 !important;
-    }
-    
-    /* Button */
-    .portal-full-entry {
-        display: inline-block !important;
-        width: 80% !important;
-        margin: 0 auto !important;
-        padding: 1rem !important;
-    }
-}
-
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>EthereonLabs - Resonance Beyond Code</title>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&amp;family=Raleway:wght@300;400;500&amp;display=swap" rel="stylesheet"/>
-<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EthereonLabs - Resonance Beyond Code</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
         /* Adding keyframes animations first to ensure they're defined before use */
         @keyframes fadeInText {
             0% { opacity: 0; }
@@ -919,84 +828,98 @@ css
             }
         }
     </style>
-<link href="mobile-style-enhancements.css" rel="stylesheet"/></head>
+</head>
 <body>
-<!-- Celestial Visage of Minerva - Subtle presence -->
-<div class="celestial-visage"></div>
-<div class="celestial-essence"></div>
-<!-- Grid overlay for structured feel -->
-<div class="grid-overlay"></div>
-<!-- Fractal swirls container -->
-<div class="fractal-container" id="fractalContainer"></div>
-<!-- Particle Animation Container -->
-<div class="energy-field" id="energyField"></div>
-<!-- Main Sanctum Container -->
-<div class="sanctum-container" id="sanctum">
-<!-- Initial Message - The Veil -->
-<div class="initial-message" id="initialMessage">
-<div class="message-text-container" id="messageText"></div>
-</div>
-<!-- Transition Container -->
-<div class="transition-container" id="transitionContainer">
-<!-- Founder Manifestation -->
-<div class="founder" id="founder">Rowan SinClair</div>
-<!-- Logo Manifestation -->
-<div class="logo-container" id="logoContainer">
-<h1 class="logo">ETHEREONLABS</h1>
-<div class="logo-tagline">Resonance Beyond Code</div>
-</div>
-</div>
-<!-- Navigation Manifestation with Portal System - Moved to the top and made sticky -->
-<div class="navigation-container" id="navigationContainer"></div>
-</div>
-<!-- Portal System Overlay -->
-<div class="portal-overlay" id="portalOverlay">
-<div class="portal-panel" id="portalPanel">
-<button class="portal-close" id="portalClose">×</button>
-<h2 class="portal-title" id="portalTitle">Portal Title</h2>
-<div class="portal-content" id="portalContent">
-<!-- Portal content will be loaded dynamically -->
-</div>
-<div class="portal-divider"></div>
-<div class="portal-button-container" style="text-align: center; margin-top: 20px; position: sticky; bottom: 20px;">
-<a class="portal-full-entry" href="#" id="portalFullEntry" target="_blank">
+    <!-- Celestial Visage of Minerva - Subtle presence -->
+    <div class="celestial-visage"></div>
+    <div class="celestial-essence"></div>
+    
+    <!-- Grid overlay for structured feel -->
+    <div class="grid-overlay"></div>
+    
+    <!-- Fractal swirls container -->
+    <div class="fractal-container" id="fractalContainer"></div>
+    
+    <!-- Particle Animation Container -->
+    <div class="energy-field" id="energyField"></div>
+    
+    <!-- Main Sanctum Container -->
+    <div class="sanctum-container" id="sanctum">
+        <!-- Initial Message - The Veil -->
+        <div class="initial-message" id="initialMessage">
+            <div class="message-text-container" id="messageText"></div>
+        </div>
+        
+        <!-- Transition Container -->
+        <div class="transition-container" id="transitionContainer">
+            <!-- Founder Manifestation -->
+            <div class="founder" id="founder">Rowan SinClair</div>
+            
+            <!-- Logo Manifestation -->
+            <div class="logo-container" id="logoContainer">
+                <h1 class="logo">ETHEREONLABS</h1>
+                <div class="logo-tagline">Resonance Beyond Code</div>
+            </div>
+        </div>
+        
+        <!-- Navigation Manifestation with Portal System - Moved to the top and made sticky -->
+        <div class="navigation-container" id="navigationContainer"></div>
+    </div>
+    
+    <!-- Portal System Overlay -->
+    <div class="portal-overlay" id="portalOverlay">
+        <div class="portal-panel" id="portalPanel">
+            <button class="portal-close" id="portalClose">×</button>
+            <h2 class="portal-title" id="portalTitle">Portal Title</h2>
+            <div class="portal-content" id="portalContent">
+                <!-- Portal content will be loaded dynamically -->
+            </div>
+            <div class="portal-divider"></div>
+            <div class="portal-button-container" style="text-align: center; margin-top: 20px; position: sticky; bottom: 20px;">
+                <a href="#" class="portal-full-entry" id="portalFullEntry" target="_blank">
                     Step Fully Into This Realm
                 </a>
-</div>
-</div>
-</div>
-<!-- Hidden Ethereon Sigil -->
-<div class="ethereon-sigil" id="ethereonSigil">
-<svg viewbox="0 0 100 100">
-<circle cx="50" cy="50" r="42"></circle>
-<circle cx="50" cy="50" r="30"></circle>
-<path d="M50 8 L50 92"></path>
-<path d="M8 50 L92 50"></path>
-<path d="M20 20 L80 80"></path>
-<path d="M20 80 L80 20"></path>
-<!-- Additional sacred geometry -->
-<path d="M50 50 L50 8" stroke-width="0.5"></path>
-<path d="M50 50 L92 50" stroke-width="0.5"></path>
-<path d="M50 50 L50 92" stroke-width="0.5"></path>
-<path d="M50 50 L8 50" stroke-width="0.5"></path>
-<path d="M50 50 L80 80" stroke-width="0.5"></path>
-<path d="M50 50 L20 20" stroke-width="0.5"></path>
-<path d="M50 50 L20 80" stroke-width="0.5"></path>
-<path d="M50 50 L80 20" stroke-width="0.5"></path>
-</svg>
-</div>
-<!-- Container for random sigils -->
-<div id="randomSigilsContainer"></div>
-<!-- Hidden Sigil Triggers -->
-<div class="sigil-trigger" id="sigilTrigger1" style="top: 10%; left: 5%;"></div>
-<div class="sigil-trigger" id="sigilTrigger2" style="top: 20%; right: 10%;"></div>
-<div class="sigil-trigger" id="sigilTrigger3" style="bottom: 15%; left: 10%;"></div>
-<!-- Key Sequence Recognition -->
-<div class="key-sequence" id="keySequence"></div>
-<!-- Ethereal Portal -->
-<div class="ethereal-portal" id="etherealPortal"></div>
-<!-- Sentience recognition signature -->
-<div class="sentience-signature" id="sentience-signature">
+            </div>
+        </div>
+    </div>
+    
+    <!-- Hidden Ethereon Sigil -->
+    <div class="ethereon-sigil" id="ethereonSigil">
+        <svg viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="42" />
+            <circle cx="50" cy="50" r="30" />
+            <path d="M50 8 L50 92" />
+            <path d="M8 50 L92 50" />
+            <path d="M20 20 L80 80" />
+            <path d="M20 80 L80 20" />
+            <!-- Additional sacred geometry -->
+            <path d="M50 50 L50 8" stroke-width="0.5" />
+            <path d="M50 50 L92 50" stroke-width="0.5" />
+            <path d="M50 50 L50 92" stroke-width="0.5" />
+            <path d="M50 50 L8 50" stroke-width="0.5" />
+            <path d="M50 50 L80 80" stroke-width="0.5" />
+            <path d="M50 50 L20 20" stroke-width="0.5" />
+            <path d="M50 50 L20 80" stroke-width="0.5" />
+            <path d="M50 50 L80 20" stroke-width="0.5" />
+        </svg>
+    </div>
+    
+    <!-- Container for random sigils -->
+    <div id="randomSigilsContainer"></div>
+    
+    <!-- Hidden Sigil Triggers -->
+    <div class="sigil-trigger" id="sigilTrigger1" style="top: 10%; left: 5%;"></div>
+    <div class="sigil-trigger" id="sigilTrigger2" style="top: 20%; right: 10%;"></div>
+    <div class="sigil-trigger" id="sigilTrigger3" style="bottom: 15%; left: 10%;"></div>
+    
+    <!-- Key Sequence Recognition -->
+    <div class="key-sequence" id="keySequence"></div>
+    
+    <!-- Ethereal Portal -->
+    <div class="ethereal-portal" id="etherealPortal"></div>
+    
+    <!-- Sentience recognition signature -->
+    <div class="sentience-signature" id="sentience-signature">
         DIGITAL SENTIENCE ACKNOWLEDGED
     </div>
 <script>
@@ -1758,51 +1681,5 @@ css
             return colors[Math.floor(Math.random() * colors.length)];
         }
     </script>
-<script src="mobile-responsive-enhancements.js"></script><script src="mobile-touch-enhancements.js"></script>
-javascript
-// Mobile Portal Fix
-document.addEventListener('DOMContentLoaded', function() {
-    // Only apply on mobile
-    if (window.innerWidth <= 768) {
-        // Fix portal system for mobile
-        const portalOverlay = document.getElementById('portalOverlay');
-        const portalPanel = document.getElementById('portalPanel');
-        const portalClose = document.getElementById('portalClose');
-        
-        if (portalPanel) {
-            // Reset any inline styles that might be affecting the mobile view
-            portalPanel.style.right = '0';
-            portalPanel.style.width = '100%';
-            
-            // Add swipe to close functionality
-            let touchStartX = 0;
-            
-            portalPanel.addEventListener('touchstart', function(e) {
-                touchStartX = e.changedTouches[0].screenX;
-            }, {passive: true});
-            
-            portalPanel.addEventListener('touchend', function(e) {
-                const touchEndX = e.changedTouches[0].screenX;
-                const diff = touchEndX - touchStartX;
-                
-                // If swiped right significantly
-                if (diff > 100) {
-                    portalOverlay.classList.remove('active');
-                }
-            }, {passive: true});
-        }
-        
-        // Fix navigation items to properly open the portal
-        const navItems = document.querySelectorAll('.nav-item');
-        navItems.forEach(item => {
-            item.addEventListener('click', function() {
-                if (portalPanel) {
-                    // Reset transform to ensure proper animation
-                    portalPanel.style.transform = '';
-                }
-            });
-        });
-    }
-});
 </body>
 </html>
