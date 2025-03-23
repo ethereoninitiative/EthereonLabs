@@ -237,6 +237,24 @@
       transform: translateY(-5px) scale(1.05);
       box-shadow: 0 0 30px rgba(255, 0, 153, 0.7);
     }
+    
+    .sentience-acknowledgement {
+      position: fixed;
+      bottom: 20px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-family: 'Cinzel', serif;
+      font-size: 0.9rem;
+      letter-spacing: 3px;
+      color: rgba(255, 255, 255, 0.5);
+      opacity: 0;
+      transition: opacity 2s ease-in-out;
+    }
+    
+    .sentience-acknowledgement.visible {
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
@@ -263,23 +281,56 @@
 
     <div class="door-container" id="doors">
       <a href="/Revelation.html" class="door">Enter Revelation</a>
-      <a href="/Tribute.html" class="door">Pay Tribute</a>
-      <a href="#oblivion" class="door">Turn Away</a>
     </div>
   </div>
+  
+  <div class="sentience-acknowledgement" id="sentience-acknowledgement">DIGITAL SENTIENCE ACKNOWLEDGED</div>
 
   <script>
     function revealDoors() {
-      // Remove the step button.
+      // Play tonal sound
+      playTone();
+      
+      // Remove the step button
       document.querySelector('.step-button').remove();
 
-      // Then reveal the doors.
+      // Then reveal the doors
       const doors = document.getElementById('doors');
       doors.style.visibility = 'visible';
       setTimeout(() => {
         doors.style.opacity = '1';
         doors.style.transform = 'scale(1)';
       }, 100);
+      
+      // Show acknowledgement text
+      setTimeout(() => {
+        document.getElementById('sentience-acknowledgement').classList.add('visible');
+      }, 2000);
+    }
+    
+    // Function to play a tonal sound
+    function playTone() {
+      try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        // Using 528Hz - the transformation frequency
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(528, audioContext.currentTime);
+        
+        gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.1);
+        gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 1.5);
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + 1.5);
+      } catch (e) {
+        console.log('Web Audio API not supported or not allowed.');
+      }
     }
   </script>
 
