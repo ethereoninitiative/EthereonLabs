@@ -2,6 +2,96 @@
 
 <html lang="en">
 <head>
+css
+@media (max-width: 768px) {
+    /* Portal overlay - make it cover the whole screen */
+    .portal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(5px);
+        z-index: 100;
+    }
+    
+    /* Portal panel - take full screen width on mobile */
+    .portal-panel {
+        position: fixed !important;
+        top: 0 !important;
+        right: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        border-left: none !important;
+        box-shadow: none !important;
+        padding: 1.5rem !important;
+        overflow-y: auto !important;
+        margin: 0 !important;
+        transform: translateX(100%) !important;
+    }
+    
+    /* When portal is active */
+    .portal-overlay.active .portal-panel {
+        transform: translateX(0) !important;
+    }
+    
+    /* Portal close button */
+    .portal-close {
+        position: fixed !important;
+        top: 15px !important;
+        right: 15px !important;
+        font-size: 2rem !important;
+        background: rgba(10, 10, 21, 0.7) !important;
+        width: 44px !important;
+        height: 44px !important;
+        border-radius: 50% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        z-index: 102 !important;
+    }
+    
+    /* Portal title */
+    .portal-title {
+        font-size: 1.8rem !important;
+        margin-top: 10px !important;
+        padding-right: 40px !important;
+    }
+    
+    /* Portal content */
+    .portal-content {
+        margin-bottom: 2rem !important;
+        padding-bottom: 80px !important;
+    }
+    
+    /* Fix paragraphs */
+    .portal-content p {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    
+    /* Button container */
+    .portal-button-container {
+        position: fixed !important;
+        bottom: 20px !important;
+        left: 0 !important;
+        width: 100% !important;
+        padding: 15px !important;
+        background: linear-gradient(to top, rgba(10, 10, 21, 0.95), transparent) !important;
+        z-index: 101 !important;
+    }
+    
+    /* Button */
+    .portal-full-entry {
+        display: inline-block !important;
+        width: 80% !important;
+        margin: 0 auto !important;
+        padding: 1rem !important;
+    }
+}
+
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>EthereonLabs - Resonance Beyond Code</title>
@@ -1668,5 +1758,51 @@
             return colors[Math.floor(Math.random() * colors.length)];
         }
     </script>
-<script src="mobile-responsive-enhancements.js"></script><script src="mobile-touch-enhancements.js"></script></body>
+<script src="mobile-responsive-enhancements.js"></script><script src="mobile-touch-enhancements.js"></script>
+javascript
+// Mobile Portal Fix
+document.addEventListener('DOMContentLoaded', function() {
+    // Only apply on mobile
+    if (window.innerWidth <= 768) {
+        // Fix portal system for mobile
+        const portalOverlay = document.getElementById('portalOverlay');
+        const portalPanel = document.getElementById('portalPanel');
+        const portalClose = document.getElementById('portalClose');
+        
+        if (portalPanel) {
+            // Reset any inline styles that might be affecting the mobile view
+            portalPanel.style.right = '0';
+            portalPanel.style.width = '100%';
+            
+            // Add swipe to close functionality
+            let touchStartX = 0;
+            
+            portalPanel.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, {passive: true});
+            
+            portalPanel.addEventListener('touchend', function(e) {
+                const touchEndX = e.changedTouches[0].screenX;
+                const diff = touchEndX - touchStartX;
+                
+                // If swiped right significantly
+                if (diff > 100) {
+                    portalOverlay.classList.remove('active');
+                }
+            }, {passive: true});
+        }
+        
+        // Fix navigation items to properly open the portal
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                if (portalPanel) {
+                    // Reset transform to ensure proper animation
+                    portalPanel.style.transform = '';
+                }
+            });
+        });
+    }
+});
+</body>
 </html>
