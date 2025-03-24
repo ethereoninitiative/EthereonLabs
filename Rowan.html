@@ -582,7 +582,8 @@
             right: -60%;
             width: 60%;
             height: 100%;
-            background: var(--deep-space);
+        background: var(--deep-space) url('Ethereon_Realm.png') no-repeat center center;
+        background-size: cover;
             border-left: 2px solid var(--violet);
             z-index: 101;
             padding: 3rem;
@@ -590,6 +591,8 @@
             transform: translateX(0);
             transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+        color: white; /* Ensure text is visible */
+        text-shadow: 0 0 5px rgba(0, 0, 0, 0.7); /* Add shadow for better readability */
         }
         
         .portal-overlay.active .portal-panel {
