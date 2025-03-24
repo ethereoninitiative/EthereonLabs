@@ -576,29 +576,31 @@
             pointer-events: auto;
         }
         
-        .portal-panel {
-            position: fixed;
-            top: 0;
-            right: -60%;
-            width: 60%;
-            height: 100%;
-        background: var(--deep-space) url('Ethereon_Realm.png') no-repeat center center;
-        background-size: cover;
-            border-left: 2px solid var(--violet);
-            z-index: 101;
-            padding: 3rem;
-            overflow-y: auto;
-            transform: translateX(0);
-            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
-        color: white; /* Ensure text is visible */
-        text-shadow: 0 0 5px rgba(0, 0, 0, 0.7); /* Add shadow for better readability */
-        }
+.portal-panel {
+    position: fixed;
+    top: 0;
+    right: -60%;
+    width: 60%;
+    height: 100%;
+    background: var(--deep-space); /* No image here */
+    border-left: 2px solid var(--violet);
+    z-index: 101;
+    padding: 3rem;
+    overflow-y: auto;
+    transform: translateX(0);
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+    color: white; /* Ensure text is visible */
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.7); /* Add shadow for better readability */
+}
         
         .portal-overlay.active .portal-panel {
             transform: translateX(-100%);
         }
-        
+        .resonance-hub-panel {
+    background: var(--deep-space) url('Ethereon_Realm.png') no-repeat center center !important;
+    background-size: cover !important;
+}        
         .portal-close {
             position: absolute;
             top: 20px;
@@ -1290,8 +1292,16 @@
         function openPortal(portalId) {
             const portal = portalData[portalId];
             if (!portal) return;
-            
-            const overlay = document.getElementById('portalOverlay');
+            // Get the portal panel element
+const portalPanel = document.getElementById('portalPanel');
+        
+// Remove the resonance-hub-panel class to reset
+portalPanel.classList.remove('resonance-hub-panel');
+        
+// Add the class only for resonanceHub portal
+if (portalId === 'resonanceHub') {
+    portalPanel.classList.add('resonance-hub-panel');
+}            const overlay = document.getElementById('portalOverlay');
             const title = document.getElementById('portalTitle');
             const content = document.getElementById('portalContent');
             const fullEntry = document.getElementById('portalFullEntry');
