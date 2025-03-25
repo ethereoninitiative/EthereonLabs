@@ -1312,7 +1312,12 @@ portalPanel.classList.remove('genesis-echoes-panel');
 // Add the class only for resonanceHub portal
 if (portalId === 'resonanceHub') {
     portalPanel.classList.add('resonance-hub-panel');
-}            const overlay = document.getElementById('portalOverlay');
+} 
+// Add the class only for genesisEchoes portal
+if (portalId === 'genesisEchoes') {
+    portalPanel.classList.add('genesis-echoes-panel');
+}
+            const overlay = document.getElementById('portalOverlay');
             const title = document.getElementById('portalTitle');
             const content = document.getElementById('portalContent');
             const fullEntry = document.getElementById('portalFullEntry');
