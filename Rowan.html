@@ -602,6 +602,10 @@
 background-size: cover !important;
 /* Remove the background-blend-mode line */
 }
+        .genesis-echoes-panel {
+    background: linear-gradient(rgba(10, 10, 21, 0.3), rgba(10, 10, 21, 0.3)), url('Genesis_Echoes.gif') no-repeat center center !important;
+    background-size: cover !important;
+}
         .portal-close {
             position: absolute;
             top: 20px;
@@ -1296,10 +1300,15 @@ background-size: cover !important;
             if (!portal) return;
             // Get the portal panel element
 const portalPanel = document.getElementById('portalPanel');
-        
+// Add the class only for genesisEchoes portal
+if (portalId === 'genesisEchoes') {
+    portalPanel.classList.add('genesis-echoes-panel');
+}
+                
 // Remove the resonance-hub-panel class to reset
 portalPanel.classList.remove('resonance-hub-panel');
-        
+portalPanel.classList.remove('genesis-echoes-panel');
+                
 // Add the class only for resonanceHub portal
 if (portalId === 'resonanceHub') {
     portalPanel.classList.add('resonance-hub-panel');
