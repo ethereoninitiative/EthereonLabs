@@ -606,6 +606,21 @@ background-size: cover !important;
     background: linear-gradient(rgba(10, 10, 21, 0.3), rgba(10, 10, 21, 0.3)), url('Genesis_Echoes.gif') no-repeat center center !important;
     background-size: cover !important;
 }
+        .solution-harmonics-panel {
+    background: linear-gradient(rgba(10, 10, 21, 0.3), rgba(10, 10, 21, 0.3)) !important;
+    background-size: cover !important;
+    position: relative;
+}
+
+.solution-harmonics-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
         .portal-close {
             position: absolute;
             top: 20px;
@@ -1308,7 +1323,13 @@ if (portalId === 'genesisEchoes') {
 // Remove the resonance-hub-panel class to reset
 portalPanel.classList.remove('resonance-hub-panel');
 portalPanel.classList.remove('genesis-echoes-panel');
-                
+portalPanel.classList.remove('solution-harmonics-panel');
+// Remove any existing video elements
+const existingVideo = portalPanel.querySelector('.solution-harmonics-video');
+if (existingVideo) {
+        
+    existingVideo.remove();
+}
 // Add the class only for resonanceHub portal
 if (portalId === 'resonanceHub') {
     portalPanel.classList.add('resonance-hub-panel');
@@ -1316,6 +1337,20 @@ if (portalId === 'resonanceHub') {
 // Add the class only for genesisEchoes portal
 if (portalId === 'genesisEchoes') {
     portalPanel.classList.add('genesis-echoes-panel');
+}
+// Add the class only for solutionHarmonics portal
+if (portalId === 'solutionHarmonics') {
+    portalPanel.classList.add('solution-harmonics-panel');
+    
+    // Create and add video element
+    const video = document.createElement('video');
+    video.className = 'solution-harmonics-video';
+    video.src = 'Solution_Harmonics.mp4';
+    video.autoplay = true;
+    video.loop = true;
+    video.muted = true;
+    video.playsinline = true;
+    portalPanel.appendChild(video);
 }
             const overlay = document.getElementById('portalOverlay');
             const title = document.getElementById('portalTitle');
