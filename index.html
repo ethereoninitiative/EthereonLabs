@@ -1,25 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>EthereonLabs — Adaptive digital environments</title>
-<meta name="description" content="EthereonLabs is building adaptive digital environments for how people actually work.">
-<style>
-:root{--bg:#07101d;--panel:rgba(15,24,42,.78);--line:rgba(138,164,255,.2);--text:#eef3ff;--muted:#a8b5d8;--a:#8aa4ff;--b:#7ef0d1}*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,sans-serif;color:var(--text);background:radial-gradient(circle at 15% 20%,rgba(138,164,255,.18),transparent 30%),radial-gradient(circle at 85% 15%,rgba(126,240,209,.12),transparent 30%),linear-gradient(180deg,#06101c,#0a1324 45%,#06101c);line-height:1.6}.wrap{width:min(1100px,calc(100% - 1.4rem));margin:auto;position:relative;z-index:1}header{position:sticky;top:0;background:rgba(5,9,18,.68);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.06)}nav{min-height:78px;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}.brand{font-weight:800;letter-spacing:.08em;text-transform:uppercase}.links{display:flex;gap:.8rem;flex-wrap:wrap}.links a,.sound{color:var(--muted);text-decoration:none;padding:.65rem .9rem;border-radius:999px;border:1px solid transparent;background:transparent}.links a:hover,.sound:hover{color:var(--text);background:rgba(138,164,255,.1);border-color:var(--line);cursor:pointer}.hero{padding:5rem 0 2.5rem;display:grid;grid-template-columns:1.15fr .85fr;gap:1.2rem;align-items:center}.eyebrow,.chip{display:inline-flex;padding:.45rem .75rem;border-radius:999px;border:1px solid rgba(126,240,209,.2);background:rgba(126,240,209,.06);color:var(--b);font-size:.82rem;text-transform:uppercase;letter-spacing:.08em}h1,h2,h3{line-height:1.03;margin:0}h1{font-size:clamp(2.8rem,6vw,5rem);letter-spacing:-.04em;max-width:11ch;margin:.9rem 0}p{margin:0}.lead{font-size:1.08rem;color:var(--muted);max-width:58ch}.actions{display:flex;gap:.8rem;flex-wrap:wrap;margin:1.4rem 0 1rem}.btn{display:inline-flex;align-items:center;justify-content:center;padding:.95rem 1.25rem;border-radius:999px;text-decoration:none;color:var(--text);border:1px solid var(--line);background:rgba(255,255,255,.03)}.btn.primary{background:linear-gradient(135deg,rgba(138,164,255,.22),rgba(126,240,209,.14))}.panel,.card{background:linear-gradient(180deg,rgba(19,28,50,.72),rgba(10,16,31,.88));border:1px solid var(--line);border-radius:24px;box-shadow:0 20px 60px rgba(0,0,0,.32)}.panel{padding:1rem}.dots{display:flex;gap:.45rem;margin-bottom:1rem}.dots span{width:10px;height:10px;border-radius:999px;background:#fff3}.dots span:nth-child(1){background:#ff90a1}.dots span:nth-child(2){background:#ffcb77}.dots span:nth-child(3){background:#7ef0d1}.mock{display:grid;gap:.8rem}.tile{padding:.9rem;border-radius:18px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08)}.tile strong{display:block;margin-bottom:.35rem}.tile span{color:var(--muted);font-size:.92rem}.block{padding:1rem 0 3.2rem}.head{margin-bottom:1rem}.head p{color:var(--muted);max-width:62ch}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}.card{padding:1.1rem}.card p{color:var(--muted)}footer{padding:2rem 0 2.4rem;color:var(--muted);border-top:1px solid rgba(255,255,255,.06)}@media (max-width:900px){.hero,.grid{grid-template-columns:1fr}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EthereonLabs — Adaptive digital environments</title>
+  <meta name="description" content="EthereonLabs is building practical prototypes for AI-guided workspaces, adaptive interfaces, and personalized digital environments." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body>
-<header><div class="wrap"><nav><div class="brand">EthereonLabs</div><div class="links"><a href="#build">Build</a><a href="#about">About</a><a href="#contact">Contact</a><button class="sound" id="sound">○</button></div></nav></div></header>
-<main class="wrap">
-<section class="hero"><div><span class="eyebrow">Prototype phase • grounded build</span><h1>Software should adapt to people. Not the other way around.</h1><p class="lead">EthereonLabs is building practical prototypes for AI-guided workspaces, adaptive interfaces, and personalized digital environments that support how people actually create, think, and work.</p><div class="actions"><a class="btn primary" href="#build">See what we're building</a><a class="btn" href="#contact">Follow the build</a></div><p class="lead">The direction is continuity, workflow, and personalization — not hype, not mystique, and not a bloated promise.</p></div><aside class="panel"><div class="dots"><span></span><span></span><span></span></div><div class="mock"><div class="tile"><strong>Workspace state</strong><span>Restore notes, tools, references, and layout together instead of rebuilding them each time.</span></div><div class="tile"><strong>Guidance layer</strong><span>Subtle, embedded, and preference-sensitive instead of trapped in a separate assistant box.</span></div><div class="tile"><strong>Image-derived skinning</strong><span>Let visual taste shape the environment while preserving readable, usable structure.</span></div></div></aside></section>
-<section class="block" id="build"><div class="head"><span class="chip">What we're building</span><h2>Adaptive environments with a practical first step.</h2><p>We are not trying to rebuild every app from scratch. We are building the continuity layer around software: the part that restores context, organizes tools around real behavior, and makes the machine feel more personal and less fragmented.</p></div><div class="grid"><article class="card"><h3>Adaptive workspaces</h3><p>Project spaces that bring back the right layout, references, notes, and tools when you return.</p></article><article class="card"><h3>Embedded guidance</h3><p>Context-aware assistance woven into the interface itself through hover, preview, and gentle nudges.</p></article><article class="card"><h3>Personalized skins</h3><p>Visual environments shaped by preference, with future image-based generation and refinement.</p></article></div></section>
-<section class="block" id="about"><div class="head"><span class="chip">About</span><h2>A creative R&amp;D effort exploring more adaptive digital environments.</h2><p>EthereonLabs is centered on a simple idea: software should do a better job adapting to how people actually work, create, and think. The long-term vision is large, but the current approach is practical and staged.</p></div><div class="grid"><article class="card"><h3>Continuity over fragmentation</h3><p>The machine should help preserve momentum rather than forcing a reset every time someone returns to a task.</p></article><article class="card"><h3>Adaptation over rigidity</h3><p>Layouts, themes, and guidance should respond to preference and habit without becoming unstable or unreadable.</p></article><article class="card"><h3>Clarity over mythology</h3><p>The work can still be atmospheric and imaginative, but public communication needs to remain understandable and buildable.</p></article></div></section>
-<section class="block" id="contact"><div class="head"><span class="chip">Contact</span><h2>Small, direct, and honest.</h2><p>For collaboration inquiries, thoughtful feedback, or early interest in the direction, email <a href="mailto:rowan@ethereonlabs.com" style="color:#eef3ff">rowan@ethereonlabs.com</a>.</p></div></section>
-</main>
-<footer><div class="wrap">EthereonLabs • Adaptive digital environments for how people actually work.</div></footer>
-<script>
-(()=>{let on=false,ctx=null;const btn=document.getElementById('sound');const ping=async(f=540)=>{if(!on)return;ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();if(ctx.state==='suspended')await ctx.resume();const o=ctx.createOscillator(),g=ctx.createGain(),n=ctx.currentTime;o.type='sine';o.frequency.setValueAtTime(f,n);g.gain.setValueAtTime(.0001,n);g.gain.linearRampToValueAtTime(.03,n+.01);g.gain.exponentialRampToValueAtTime(.0001,n+.07);o.connect(g);g.connect(ctx.destination);o.start(n);o.stop(n+.08)};btn.onclick=()=>{on=!on;btn.textContent=on?'✦':'○';ping(on?680:420)};document.querySelectorAll('a,.btn').forEach((el,i)=>{el.addEventListener('mouseenter',()=>ping(470+(i%5)*24));el.addEventListener('click',()=>ping(620+(i%4)*30));});})();
-</script>
+  <div class="orbit-field" aria-hidden="true">
+    <span></span><span></span><span></span>
+  </div>
+  <div class="page-shell">
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a class="brand ping-target" href="index.html">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-text">
+            <strong>EthereonLabs</strong>
+            <span>Adaptive digital environments</span>
+          </span>
+        </a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="index.html" aria-current="page">Home</a>
+          <a href="build.html">What We’re Building</a>
+          <a href="about.html">About</a>
+          <a href="updates.html">Updates</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+        <div class="header-actions">
+          <button class="icon-button ping-target" type="button" data-sound-toggle aria-label="Toggle interface sounds" aria-pressed="false">○</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-grid">
+          <div>
+            <span class="eyebrow">Prototype phase • grounded build</span>
+            <h1>Software should adapt to people. Not the other way around.</h1>
+            <p class="lead">
+              EthereonLabs is building practical prototypes for AI-guided workspaces, adaptive interfaces,
+              and personalized digital environments that support how people actually create, think, and work.
+            </p>
+            <div class="hero-actions">
+              <a class="button primary ping-target" href="build.html">See what we’re building</a>
+              <a class="button secondary ping-target" href="updates.html">Follow project updates</a>
+            </div>
+            <p class="hero-note">
+              This direction is focused on continuity, workflow, and personalization — not hype, not mystique, and not a bloated promise.
+            </p>
+          </div>
+
+          <aside class="interface-panel" data-glow>
+            <div class="panel-header">
+              <div class="panel-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+              <div class="panel-label">Adaptive workspace preview</div>
+            </div>
+            <div class="panel-grid">
+              <div class="interface-stack">
+                <div class="mock-card">
+                  <strong>Workspace state</strong>
+                  <span>References, notes, tools, and the current layout return together instead of forcing a rebuild every session.</span>
+                </div>
+                <div class="mock-strip">
+                  <span>Guidance layer active • context-aware, subtle, and optional</span>
+                </div>
+                <div class="mock-card">
+                  <strong>Image-derived skinning</strong>
+                  <span>Interface themes can be generated from visual taste while preserving readability and usable structure.</span>
+                </div>
+              </div>
+              <div class="mock-sidebar">
+                <div class="mock-node">
+                  <strong>Intent</strong>
+                  <span>What are you trying to do right now?</span>
+                </div>
+                <div class="mock-node">
+                  <strong>Continuity</strong>
+                  <span>Restore your pattern without rebuilding the machine by hand.</span>
+                </div>
+                <div class="mock-node">
+                  <strong>Plasticity</strong>
+                  <span>Let the environment adapt to preference, habit, and use over time.</span>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-header">
+            <div>
+              <h2>What EthereonLabs is actually doing</h2>
+              <p class="section-copy">
+                We are not trying to rebuild every piece of software from scratch. We are building the continuity layer around software:
+                the part that restores context, organizes tools around real behavior, and makes the digital environment feel more personal and less fragmented.
+              </p>
+            </div>
+          </div>
+          <div class="grid-3">
+            <article class="card" data-glow>
+              <h3>Adaptive workspaces</h3>
+              <p>Project spaces that bring back the right layout, notes, references, and tools when you return.</p>
+            </article>
+            <article class="card" data-glow>
+              <h3>Embedded guidance</h3>
+              <p>Assistance woven into the interface itself rather than trapped in a separate chatbot window.</p>
+            </article>
+            <article class="card" data-glow>
+              <h3>Personalized skins</h3>
+              <p>Visual environments shaped by preference, with future image-based generation and refinement.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-header">
+            <div>
+              <h2>Why this is different</h2>
+              <p class="section-copy">The goal is not to out-Windows Windows or out-macOS macOS. The goal is to organize experience, workflow, and continuity in a more human-centered way.</p>
+            </div>
+          </div>
+          <div class="compare-grid">
+            <section class="list-card">
+              <h3>Traditional systems</h3>
+              <ul class="compare-list">
+                <li>Launch apps well, but ask users to constantly rebuild context.</li>
+                <li>Treat files, tools, notes, and references as separate islands.</li>
+                <li>Offer themes and settings, but limited behavioral personalization.</li>
+                <li>Organize the computer more than the lived workflow.</li>
+              </ul>
+            </section>
+            <section class="list-card">
+              <h3>EthereonLabs direction</h3>
+              <ul class="compare-list">
+                <li>Restores the working state around real projects.</li>
+                <li>Stages tools and information as a coherent environment.</li>
+                <li>Lets the interface become more personal, plastic, and responsive.</li>
+                <li>Supports how someone actually spends time while creating and thinking.</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="status-banner">
+            <div>
+              <small>Current status</small>
+              <h3>Prototype and research phase</h3>
+              <p class="section-copy">We are building the first believable version carefully: one grounded, sensory-rich interface prototype with clear behavior and real design intent.</p>
+            </div>
+            <a class="button primary ping-target" href="contact.html">Join the list</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-row">
+        <div>EthereonLabs • Adaptive digital environments for how people actually work.</div>
+        <div><span data-year></span></div>
+      </div>
+    </footer>
+  </div>
+  <script src="assets/js/site.js"></script>
 </body>
 </html>
