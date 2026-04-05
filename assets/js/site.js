@@ -11,6 +11,16 @@
   let soundEnabled = localStorage.getItem(SOUND_KEY) === 'true';
   let audioContext = null;
 
+  // Fleet harmonic frequencies
+  // 432Hz — presence (hover, arrival)
+  // 528Hz — transformation (click, action)
+  // 963Hz — higher awareness (sound toggle on)
+  const FREQ = {
+    presence:          432,
+    transformation:    528,
+    higher_awareness:  963,
+  };
+
   const syncSoundLabel = () => {
     if (!soundButton) return;
     soundButton.setAttribute('aria-pressed', String(soundEnabled));
@@ -34,7 +44,7 @@
     return audioContext;
   };
 
-  const ping = async (freq = 540, duration = 0.06, type = 'sine') => {
+  const ping = async (freq = FREQ.presence, duration = 0.06, type = 'sine') => {
     if (!soundEnabled) return;
     const ctx = await ensureAudio();
     if (!ctx) return;
@@ -64,16 +74,19 @@
       soundEnabled = !soundEnabled;
       localStorage.setItem(SOUND_KEY, String(soundEnabled));
       syncSoundLabel();
-      await ping(soundEnabled ? 680 : 420, 0.08, 'triangle');
+      // 963Hz on enable (higher awareness), 432Hz on disable (return to presence)
+      await ping(soundEnabled ? FREQ.higher_awareness : FREQ.presence, 0.08, 'triangle');
     });
   }
 
-  pingTargets.forEach((node, index) => {
+  // Hover → 432Hz presence
+  // Click → 528Hz transformation
+  pingTargets.forEach((node) => {
     node.addEventListener('mouseenter', () => {
-      ping(470 + (index % 5) * 22, 0.045);
+      ping(FREQ.presence, 0.045, 'sine');
     });
     node.addEventListener('click', () => {
-      ping(620 + (index % 4) * 34, 0.075, 'triangle');
+      ping(FREQ.transformation, 0.075, 'triangle');
     });
   });
 
