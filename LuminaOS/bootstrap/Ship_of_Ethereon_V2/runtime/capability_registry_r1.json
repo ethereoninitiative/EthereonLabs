@@ -1,0 +1,154 @@
+{
+  "version": "0.3",
+  "description": "Minimal capability registry for the Ethereon Runtime Spine, including registered experimental transceiver support and input integrity assessment.",
+  "capabilities": [
+    {
+      "capability_id": "session_state_manager",
+      "name": "Session State Manager",
+      "module_path": "runtime_spine_r1.py",
+      "status": "active",
+      "category": "structural",
+      "allowed_modes": [
+        "Continuity",
+        "Sandbox",
+        "DryDock",
+        "Observation",
+        "Canon"
+      ],
+      "mutation_scope": "session",
+      "requires_validation": false,
+      "authority_boundary": "Owns active session state, checkpoints, and turn continuity only.",
+      "dependencies": [],
+      "feature_flag": null
+    },
+    {
+      "capability_id": "mode_guard",
+      "name": "Mode Guard",
+      "module_path": "runtime_spine_r1.py",
+      "status": "active",
+      "category": "structural",
+      "allowed_modes": [
+        "Continuity",
+        "Sandbox",
+        "DryDock",
+        "Observation",
+        "Canon"
+      ],
+      "mutation_scope": "none",
+      "requires_validation": false,
+      "authority_boundary": "Owns legality checks for transitions, mutation permission, and promotion gating.",
+      "dependencies": [],
+      "feature_flag": null
+    },
+    {
+      "capability_id": "context_bundle_builder",
+      "name": "Context Bundle Builder",
+      "module_path": "runtime_spine_r1.py",
+      "status": "active",
+      "category": "structural",
+      "allowed_modes": [
+        "Continuity",
+        "Sandbox",
+        "DryDock",
+        "Observation"
+      ],
+      "mutation_scope": "none",
+      "requires_validation": false,
+      "authority_boundary": "Builds bounded, replayable context bundles and separates core from supplemental Ethereonic context.",
+      "dependencies": [],
+      "feature_flag": null
+    },
+    {
+      "capability_id": "input_integrity_assessor",
+      "name": "Input Integrity Assessor",
+      "module_path": "input_integrity_layer_r1.py",
+      "status": "active",
+      "category": "structural",
+      "allowed_modes": [
+        "Continuity",
+        "Sandbox",
+        "DryDock",
+        "Observation",
+        "Canon"
+      ],
+      "mutation_scope": "none",
+      "requires_validation": false,
+      "authority_boundary": "May annotate ambiguity, score candidate interpretations, and recommend clarification or halt behavior. May not alter governance law, canon state, or execute mutating actions on inferred intent alone.",
+      "dependencies": [],
+      "feature_flag": null
+    },
+    {
+      "capability_id": "continuity_assessor",
+      "name": "Continuity Assessor",
+      "module_path": "runtime_runner_r1_merged.py",
+      "status": "experimental",
+      "category": "expressive",
+      "allowed_modes": [
+        "Observation"
+      ],
+      "mutation_scope": "none",
+      "requires_validation": false,
+      "authority_boundary": "May evaluate continuity metrics but may not declare canon state or governance law.",
+      "dependencies": [
+        "session_state_manager"
+      ],
+      "feature_flag": "ETHEREON_OBSERVATION"
+    },
+    {
+      "capability_id": "psi42_probe_interface",
+      "name": "Psi-42 Probe Interface",
+      "module_path": "psi42_transceiver_v1_6.py",
+      "status": "experimental-active",
+      "category": "expressive",
+      "allowed_modes": [
+        "Observation",
+        "Sandbox"
+      ],
+      "mutation_scope": "none",
+      "requires_validation": false,
+      "authority_boundary": "Emits probe metrics and artifacts only; does not govern continuity, canon state, or runtime law.",
+      "dependencies": [
+        "session_state_manager"
+      ],
+      "feature_flag": "ETHEREON_PSI42"
+    },
+    {
+      "capability_id": "resonance_ledger_adapter",
+      "name": "Resonance Ledger Adapter",
+      "module_path": "sea_trials_set_one_r1_merged.py",
+      "status": "experimental",
+      "category": "expressive",
+      "allowed_modes": [
+        "Observation",
+        "Sandbox",
+        "DryDock"
+      ],
+      "mutation_scope": "artifact",
+      "requires_validation": true,
+      "authority_boundary": "May read and emit resonance metadata; may not write governance state.",
+      "dependencies": [
+        "context_bundle_builder"
+      ],
+      "feature_flag": "ETHEREON_RESONANCE"
+    },
+    {
+      "capability_id": "psi42_transceiver_v16",
+      "name": "Psi-42 Transceiver v1.6",
+      "module_path": "psi42_transceiver_v1_6.py",
+      "status": "experimental-active",
+      "category": "expressive",
+      "allowed_modes": [
+        "Observation",
+        "Sandbox"
+      ],
+      "mutation_scope": "none",
+      "requires_validation": false,
+      "authority_boundary": "Owns signal encoding, mitigation, adaptive probe steering, recovery metrics, recomposition reports, and probe artifacts only. Does not own canon state, governance, or primary continuity authority.",
+      "dependencies": [
+        "session_state_manager",
+        "psi42_probe_interface"
+      ],
+      "feature_flag": "ETHEREON_PSI42"
+    }
+  ]
+}
