@@ -10,14 +10,49 @@ import subprocess
 import uuid
 
 try:
-    from ethereonic_layer_r1 import EthereonicLayerRegistry
+    from .ethereonic_layer_r1 import EthereonicLayerRegistry
 except Exception:
-    EthereonicLayerRegistry = None
+    try:
+        from ethereonic_layer_r1 import EthereonicLayerRegistry
+    except Exception:
+        EthereonicLayerRegistry = None
 
 try:
-    from governance_integrity_r1 import GovernanceIntegrityChain
+    from .governance_integrity_r1 import GovernanceIntegrityChain
 except Exception:
-    GovernanceIntegrityChain = None
+    try:
+        from governance_integrity_r1 import GovernanceIntegrityChain
+    except Exception:
+        GovernanceIntegrityChain = None
+
+try:
+    from .repo_paths_r1 import repo_root as _repo_root_helper
+except Exception:
+    try:
+        from repo_paths_r1 import repo_root as _repo_root_helper
+    except Exception:
+        _repo_root_helper = None
+
+
+def infer_repo_root(explicit_repo_path: Optional[str | Path] = None) -> Optional[Path]:
+    if explicit_repo_path:
+        candidate = Path(explicit_repo_path).resolve()
+        return candidate if candidate.exists() else None
+    if _repo_root_helper is not None:
+        try:
+            candidate = Path(_repo_root_helper()).resolve()
+            return candidate if candidate.exists() else None
+        except Exception:
+            pass
+    for parent in Path(__file__).resolve().parents:
+        if (parent / ".git").exists() or (parent / "LuminaOS").exists():
+            return parent
+    return None
+
+
+def infer_runtime_root() -> Optional[Path]:
+    candidate = Path(__file__).resolve().parent
+    return candidate if candidate.exists() else None
 
 
 def utc_now() -> str:
@@ -103,7 +138,7 @@ class SessionEngine:
             artifacts_in_scope=list(artifacts_in_scope or []),
         )
         if ethereonic_overlay:
-            state.ethereonic_overlay = EthereonicOverlay(**ethereonic_overlay)
+            state.ethereonic_overlay = EthereonicOverlay(**exthereonic_overlay)
         self.save_session(state)
         return state
 
@@ -332,7 +367,7 @@ class ContextBundleBuilder:
         available_tools: Optional[List[str]] = None,
         ethereonic_context: Optional[Dict[str, Any]] = None,
     ) -> ContextBundle:
-        repo = Path(repo_path) if repo_path else None
+        repo = infer_repo_root(repo_path)
         structural_context = self._collect_structural_context(repo)
         bundle = ContextBundle(
             bundle_id=str(uuid.uuid4()),
@@ -345,7 +380,11 @@ class ContextBundleBuilder:
                 "canon_lineage_source": "store" if self.canon_lineage_store is not None else "provided_or_none",
             },
             memory_context={"session_continuation_notes": list(continuation_notes or [])},
-            environment_context={"current_utc": utc_now(), "available_tools": list(available_tools or [])},
+            environment_context={
+                "current_utc": utc_now(),
+                "available_tools": list(available_tools or []),
+                "runtime_root": str(infer_runtime_root()) if infer_runtime_root() is not None else None,
+            },
             supplemental_ethereonic_context={},
         )
         if ethereonic_context:
@@ -386,6 +425,7 @@ class ContextBundleBuilder:
         return {
             "repo_available": True,
             "repo_path": str(repo_path),
+            "runtime_root": str(infer_runtime_root()) if infer_runtime_root() is not None else None,
             "current_branch": branch,
             "changed_files": status.splitlines() if status else [],
             "recent_commits": commits.splitlines() if commits else [],
@@ -393,7 +433,7 @@ class ContextBundleBuilder:
 
 
 class GovernanceLog:
-    """Append-only governance recorder backed by a verifiable integrity chain."""
+    """Append-only governance recorder backed by a verifiable integrity chain.""
 
     def __init__(self, log_path: str | Path):
         self.log_path = Path(log_path)
