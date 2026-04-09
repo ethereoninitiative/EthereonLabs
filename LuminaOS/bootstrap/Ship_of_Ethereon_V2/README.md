@@ -1,6 +1,6 @@
 # Ship of Ethereon V2 bootstrap core
 
-This folder is the first GitHub-side bootstrap import for beginning **Lumina OS** from the current **Ship of Ethereon V2** runtime/governance architecture.
+This folder is the GitHub bootstrap import for beginning **Lumina OS** from the current **Ship of Ethereon V2** runtime and governance architecture.
 
 ## Current bootstrap contents
 
@@ -8,31 +8,24 @@ This folder is the first GitHub-side bootstrap import for beginning **Lumina OS*
 - capability registry
 - governance integrity chain
 - canon lineage store
-- import manifest
+- runtime spine
+- context bundle builder
+- runtime runner
+- input integrity layer
+- Ethereonic layer registry helper
+- Psi-42 transceiver
+- sea-trials runner
 
-## Why this subset first
+## Current status
 
-The most important step for Lumina OS is establishing the load-bearing substrate:
+The core substrate is now present on `main`.
 
-- governance law
-- authority boundaries
-- append-only history
-- canon lineage
-- capability exposure discipline
+The remaining hardening priority is to make the bootstrap feel like a real repository checkout rather than a ChatGPT-container snapshot:
 
-These are the pieces that let later orchestration, interface, and continuity work begin from a lawful center rather than from a vague shell.
-
-## Next import wave
-
-The next files to add into this directory are:
-
-- `runtime_spine_r1.py`
-- `context_bundle_r1.py`
-- `runtime_runner_r1_merged.py`
-- `input_integrity_layer_r1.py`
-- `ethereonic_layer_r1.py`
-- `psi42_transceiver_v1_6.py`
-- `sea_trials_set_one_r1_merged.py`
+- repo-relative state and artifact paths
+- package-oriented intra-runtime imports
+- fuller Ψ-42 fidelity where possible
+- docs aligned to the live bootstrap state
 
 ## Intent
 
