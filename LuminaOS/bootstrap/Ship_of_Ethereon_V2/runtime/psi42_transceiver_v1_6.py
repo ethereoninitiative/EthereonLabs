@@ -5,7 +5,14 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 import hashlib
 import json
-import os
+
+try:
+    from .repo_paths_r1 import state_root as _state_root_helper
+except Exception:
+    try:
+        from repo_paths_r1 import state_root as _state_root_helper
+    except Exception:
+        _state_root_helper = None
 import random
 import time
 import uuid
@@ -16,6 +23,18 @@ import uuid
 # - May read: intent text, approved symbol maps, configuration.
 # - Emits: derived metrics and artifact files only.
 # - Does NOT own: canon state, governance law, or primary continuity authority.
+
+
+def infer_state_root() -> Path:
+    if _state_root_helper is not None:
+        try:
+            return Path(_state_root_helper())
+        except Exception:
+            pass
+    for parent in Path(__file__).resolve().parents:
+        if (parent / ".git").exists() or (parent / "LuminaOS").exists():
+            return parent / ".lumina_state" / "ship_of_ethereon_v2"
+    return Path(__file__).resolve().parents[4] / ".lumina_state" / "ship_of_ethereon_v2"
 
 
 @dataclass
@@ -35,7 +54,7 @@ class ResonanceTransceiverV16:
         self._last_pulse: Optional[Dict[str, Any]] = None
 
     def _artifact_path(self, filename: str) -> str:
-        root = Path(self.cfg.output_dir) if self.cfg.output_dir else Path("/mnt/data")
+        root = Path(self.cfg.output_dir) if self.cfg.output_dir else infer_state_root() / "psi42_artifacts"
         root.mkdir(parents=True, exist_ok=True)
         return str(root / filename)
 
