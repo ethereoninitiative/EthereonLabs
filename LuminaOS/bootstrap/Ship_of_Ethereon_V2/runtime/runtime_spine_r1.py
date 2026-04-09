@@ -138,7 +138,7 @@ class SessionEngine:
             artifacts_in_scope=list(artifacts_in_scope or []),
         )
         if ethereonic_overlay:
-            state.ethereonic_overlay = EthereonicOverlay(**exthereonic_overlay)
+            state.ethereonic_overlay = EthereonicOverlay(**ethereonic_overlay)
         self.save_session(state)
         return state
 
@@ -433,7 +433,7 @@ class ContextBundleBuilder:
 
 
 class GovernanceLog:
-    """Append-only governance recorder backed by a verifiable integrity chain.""
+    """Append-only governance recorder backed by a verifiable integrity chain."""
 
     def __init__(self, log_path: str | Path):
         self.log_path = Path(log_path)
