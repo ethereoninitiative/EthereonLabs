@@ -26,6 +26,27 @@ except Exception:
         GovernanceIntegrityChain = None
 
 try:
+    from .project_orientation_vector_v0_1 import (
+        ProjectOrientationVector,
+        attach_to_supplemental_context as attach_project_orientation_to_supplemental,
+        orient_artifacts,
+        orientation_resume_note,
+    )
+except Exception:
+    try:
+        from project_orientation_vector_v0_1 import (
+            ProjectOrientationVector,
+            attach_to_supplemental_context as attach_project_orientation_to_supplemental,
+            orient_artifacts,
+            orientation_resume_note,
+        )
+    except Exception:
+        ProjectOrientationVector = None
+        attach_project_orientation_to_supplemental = None
+        orient_artifacts = None
+        orientation_resume_note = None
+
+try:
     from .repo_paths_r1 import repo_root as _repo_root_helper
 except Exception:
     try:
@@ -61,6 +82,29 @@ def utc_now() -> str:
 
 def sha256_text(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def _coerce_project_orientation_vector(project_orientation_vector: Optional[Any]) -> Optional[Any]:
+    if project_orientation_vector is None:
+        return None
+    if ProjectOrientationVector is None:
+        raise ValueError("ProjectOrientationVector support is unavailable in this runtime")
+    if isinstance(project_orientation_vector, ProjectOrientationVector):
+        vector = project_orientation_vector
+    elif isinstance(project_orientation_vector, dict):
+        vector = ProjectOrientationVector(
+            focus=project_orientation_vector.get("focus", "continuity"),
+            depth=project_orientation_vector.get("depth", "structural"),
+            intent=project_orientation_vector.get("intent", "read"),
+            annotation=project_orientation_vector.get("annotation"),
+        )
+    else:
+        raise TypeError("project_orientation_vector must be a dict or ProjectOrientationVector instance")
+    if not vector.is_valid():
+        raise ValueError(
+            f"ProjectOrientationVector is invalid and cannot be attached: {vector.validation_errors()}"
+        )
+    return vector
 
 
 @dataclass
@@ -356,6 +400,23 @@ class ContextBundleBuilder:
                 return head.get("canon_version")
         return fallback
 
+    def attach_project_orientation_vector(
+        self,
+        bundle: ContextBundle,
+        vector: Any,
+    ) -> ContextBundle:
+        coerced = _coerce_project_orientation_vector(vector)
+        if coerced is None:
+            return bundle
+        if attach_project_orientation_to_supplemental is None:
+            raise ValueError("ProjectOrientationVector attachment is unavailable in this runtime")
+        payload = bundle.to_dict()
+        payload["supplemental_ethereonic_context"] = attach_project_orientation_to_supplemental(
+            payload.get("supplemental_ethereonic_context", {}),
+            coerced,
+        )
+        return ContextBundle(**payload)
+
     def build(
         self,
         *,
@@ -366,20 +427,33 @@ class ContextBundleBuilder:
         continuation_notes: Optional[List[str]] = None,
         available_tools: Optional[List[str]] = None,
         ethereonic_context: Optional[Dict[str, Any]] = None,
+        project_orientation_vector: Optional[Any] = None,
     ) -> ContextBundle:
         repo = infer_repo_root(repo_path)
         structural_context = self._collect_structural_context(repo)
+        vector = _coerce_project_orientation_vector(project_orientation_vector)
+        ordered_artifacts = (
+            orient_artifacts(list(artifacts or []), vector)
+            if vector is not None and orient_artifacts is not None
+            else list(artifacts or [])
+        )
+        notes = list(continuation_notes or [])
+        if vector is not None and orientation_resume_note is not None:
+            note = orientation_resume_note(vector)
+            if note and note not in notes:
+                notes.append(note)
+
         bundle = ContextBundle(
             bundle_id=str(uuid.uuid4()),
             created_at=utc_now(),
             active_mode=active_mode,
             structural_context=structural_context,
             artifact_context={
-                "active_design_docs": list(artifacts or []),
+                "active_design_docs": ordered_artifacts,
                 "canon_lineage_head": self._resolve_canon_lineage_head(canon_lineage_head),
                 "canon_lineage_source": "store" if self.canon_lineage_store is not None else "provided_or_none",
             },
-            memory_context={"session_continuation_notes": list(continuation_notes or [])},
+            memory_context={"session_continuation_notes": notes},
             environment_context={
                 "current_utc": utc_now(),
                 "available_tools": list(available_tools or []),
@@ -391,6 +465,8 @@ class ContextBundleBuilder:
             if self.ethereonic_layer_registry is None:
                 raise ValueError("Ethereonic attachment requires EthereonicLayerRegistry; direct injection is not allowed")
             bundle = self.attach_ethereonic_context(bundle, ethereonic_context)
+        if vector is not None:
+            bundle = self.attach_project_orientation_vector(bundle, vector)
         self.save(bundle)
         return bundle
 
