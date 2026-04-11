@@ -234,4 +234,57 @@ EXAMPLES = {
         intent="build",
         annotation="active session resumption and steward integration",
     ),
-    "e∂ªßq´^u˙+n∑Øä‹¢ù©⁄ó+"
+    "expressive_compose": ProjectOrientationVector(
+        focus="expression",
+        depth="surface",
+        intent="compose",
+        annotation="Ethereonic layer assembly, symbolic work",
+    ),
+    "integration_verify": ProjectOrientationVector(
+        focus="integration",
+        depth="structural",
+        intent="verify",
+        annotation="TOM-Lux / transceiver wiring verification",
+    ),
+}
+
+
+if __name__ == "__main__":
+    import json
+
+    print("ProjectOrientationVector v0.1 ‚Äî sea trial\n")
+
+    for name, vector in EXAMPLES.items():
+        print(f"Example: {name}")
+        print(f"  Valid: {vector.is_valid()}")
+        print(f"  Label: {vector.resume_brief_label()}")
+        print(f"  Affinity: {vector.affinity_labels()}")
+        print()
+
+    artifacts = [
+        "prisma_horizon_v5.py",
+        "runtime_spine_r1.py",
+        "continuity_steward_r1.py",
+        "psi42_transceiver_v1_6.py",
+        "canon_lineage_store_r1.py",
+        "governance_log_r1.jsonl",
+    ]
+
+    vector = EXAMPLES["architecture_audit"]
+    oriented = orient_artifacts(artifacts, vector)
+
+    print(f"Artifact ordering for '{vector.resume_brief_label()}':")
+    for artifact in oriented:
+        print(f"  {artifact}")
+    print()
+
+    supplemental: Dict[str, Any] = {
+        "anchor_language": ["toki_pona", "binary", "light_language"],
+        "harmonic_signature": [432, 528, 963],
+    }
+    attached = attach_to_supplemental_context(supplemental, vector)
+    print("Supplemental context with orientation attached:")
+    print(json.dumps(attached, indent=2))
+
+    note = orientation_resume_note(vector)
+    print(f"\nSteward resume note: {note}")
