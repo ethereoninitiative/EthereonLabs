@@ -7,29 +7,49 @@ from typing import Any, Dict, List, Optional
 import argparse
 import json
 
-from runtime_spine_r1 import ContextBundleBuilder, GovernanceLog, ModeGuard, SessionEngine
-from canon_lineage_store_r1 import CanonLineageStore
+try:
+    from .runtime_spine_r1 import ContextBundleBuilder, GovernanceLog, ModeGuard, SessionEngine
+    from .canon_lineage_store_r1 import CanonLineageStore
+except Exception:
+    from runtime_spine_r1 import ContextBundleBuilder, GovernanceLog, ModeGuard, SessionEngine
+    from canon_lineage_store_r1 import CanonLineageStore
 
 try:
-    from psi42_transceiver_v1_6 import Config as Psi42Config, ResonanceTransceiverV16
+    from .psi42_transceiver_v1_6 import Config as Psi42Config, ResonanceTransceiverV16
 except Exception:
-    Psi42Config = None
-    ResonanceTransceiverV16 = None
+    try:
+        from psi42_transceiver_v1_6 import Config as Psi42Config, ResonanceTransceiverV16
+    except Exception:
+        Psi42Config = None
+        ResonanceTransceiverV16 = None
 
 try:
-    from input_integrity_layer_r1 import InputIntegrityAssessor
+    from .input_integrity_layer_r1 import InputIntegrityAssessor
 except Exception:
-    InputIntegrityAssessor = None
+    try:
+        from input_integrity_layer_r1 import InputIntegrityAssessor
+    except Exception:
+        InputIntegrityAssessor = None
 
 try:
-    from ethereonic_layer_r1 import EthereonicLayerRegistry
+    from .ethereonic_layer_r1 import EthereonicLayerRegistry
 except Exception:
-    EthereonicLayerRegistry = None
+    try:
+        from ethereonic_layer_r1 import EthereonicLayerRegistry
+    except Exception:
+        EthereonicLayerRegistry = None
 
 
 RUNTIME_SEED_VERSION = "0.3"
-BASE_DIR = Path("/mnt/data/ethereon_runtime_runner_r1_actiontype_logging")
-REGISTRY_PATH = Path("/mnt/data/capability_registry_r1.json")
+
+def _repo_root() -> Path:
+    return Path(__file__).resolve().parents[4]
+
+RUNTIME_ROOT = _repo_root() / "LuminaOS" / "bootstrap" / "Ship_of_Ethereon_V2" / "runtime"
+STATE_ROOT = _repo_root() / ".lumina_state" / "ship_of_ethereon_v2"
+
+BASE_DIR = STATE_ROOT / "runtime_runner_r1_actiontype_logging"
+REGISTRY_PATH = RUNTIME_ROOT / "capability_registry_r1.json"
 DEFAULT_ARTIFACTS = [
     "runtime_spine_r1.py",
     "runtime_runner_r1_merged.py",
@@ -84,6 +104,8 @@ class RunnerResult:
 
 
 class CapabilityRegistry:
+    """Loads the flat project registry and exposes capabilities by mode and feature flag."""
+
     def __init__(self, registry_path: str | Path = REGISTRY_PATH):
         self.registry_path = Path(registry_path)
         if not self.registry_path.exists():
@@ -102,7 +124,7 @@ class CapabilityRegistry:
     ) -> List[Dict[str, Any]]:
         enabled = set(enabled_feature_flags or [])
         categories = set(include_categories or [])
-        out: List[Dict[str, Any]] = []
+        exposed: List[Dict[str, Any]] = []
         for capability in self.capabilities:
             if mode not in capability.get("allowed_modes", []):
                 continue
@@ -111,12 +133,19 @@ class CapabilityRegistry:
             feature_flag = capability.get("feature_flag")
             if feature_flag and feature_flag not in enabled:
                 continue
-            out.append(capability)
-        return out
+            exposed.append(capability)
+        return exposed
 
 
 class RuntimeRunner:
-    def __init__(self, *, base_dir: str | Path = BASE_DIR, registry_path: str | Path = REGISTRY_PATH):
+    """Tiny orchestration loop for Ethereon Runtime Spine sea-trials and day-one use."""
+
+    def __init__(
+        self,
+        *,
+        base_dir: str | Path = BASE_DIR,
+        registry_path: str | Path = REGISTRY_PATH,
+    ):
         self.base_dir = Path(base_dir)
         self.base_dir.mkdir(parents=True, exist_ok=True)
         self.logs_dir = self.base_dir / "logs"
@@ -129,14 +158,20 @@ class RuntimeRunner:
         self.registry = CapabilityRegistry(registry_path)
         self.governance_log = GovernanceLog(self.governance_log_path)
         self.input_integrity_assessor = InputIntegrityAssessor(self.base_dir / "input_integrity_ledger_r1.json") if InputIntegrityAssessor is not None else None
-        self.ethereonic_layer_registry = EthereonicLayerRegistry(self.base_dir / "ethereonic_layer_registry_r1.json") if EthereonicLayerRegistry is not None else None
+        self.ethereonic_layer_registry = (
+            EthereonicLayerRegistry(self.base_dir / "ethereonic_layer_registry_r1.json")
+            if EthereonicLayerRegistry is not None
+            else None
+        )
+        if self.ethereonic_layer_registry is not None and not (self.base_dir / "ethereonic_layer_registry_r1.json").exists():
+            # bootstrap from /mnt/data if needed
+            pass
         self.canon_lineage_store = CanonLineageStore(self.canon_lineage_path)
         self.context_builder = ContextBundleBuilder(
             self.base_dir / "context_bundles",
             ethereonic_layer_registry=self.ethereonic_layer_registry,
             canon_lineage_store=self.canon_lineage_store,
         )
-        self._active_session_id: Optional[str] = None
 
     def _append_governance_event(
         self,
@@ -154,7 +189,7 @@ class RuntimeRunner:
         canonical_change: Optional[bool] = None,
         metadata: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
-        meta = {"action_type": action_type, **dict(metadata or {})}
+        metadata = dict(metadata or {})
         return self.governance_log.append(
             event_type=event_type,
             session_id=session_id,
@@ -166,7 +201,7 @@ class RuntimeRunner:
             artifact_delta=artifact_delta,
             canonical_change=canonical_change,
             validation_reference=validation_reference,
-            metadata=meta,
+            metadata={"action_type": action_type, **metadata},
         )
 
     def _record_decision(
@@ -183,9 +218,9 @@ class RuntimeRunner:
         canonical_change: Optional[bool] = None,
     ) -> Dict[str, Any]:
         validation_reference = None
-        meta = dict(decision.get("audit_event") or {})
+        metadata = dict(decision.get("audit_event") or {})
         if event_type == "promotion":
-            validation_reference = meta.get("validation_artifact_id")
+            validation_reference = metadata.get("validation_artifact_id")
         return self._append_governance_event(
             event_type=event_type,
             session_id=session_id,
@@ -198,7 +233,7 @@ class RuntimeRunner:
             validation_reference=validation_reference,
             artifact_delta=artifact_delta,
             canonical_change=canonical_change,
-            metadata=meta,
+            metadata=metadata,
         )
 
     def _current_chain_status(self) -> Dict[str, Any]:
@@ -277,49 +312,6 @@ class RuntimeRunner:
             "paths": result.get("paths"),
             "frame": result.get("frame"),
         }
-
-    def _finalize_result(
-        self,
-        *,
-        session_id: str,
-        current_mode: str,
-        target_mode: str,
-        requested_action: str,
-        action_type: str,
-        context_bundle_id: str,
-        governance: Dict[str, Any],
-        exposed_capabilities: List[Dict[str, Any]],
-        checkpoint_path: str | Path,
-        probe_artifacts: Optional[Dict[str, Any]],
-        canon_lineage: Optional[Dict[str, Any]],
-    ) -> RunnerResult:
-        session_path = self.session_engine.session_path(session_id)
-        result = RunnerResult(
-            run_id=f"run-{session_id[:12]}",
-            created_at=utc_now(),
-            requested_mode=current_mode,
-            target_mode=target_mode,
-            requested_action=requested_action,
-            action_type=action_type,
-            session_id=session_id,
-            context_bundle_id=context_bundle_id,
-            governance=governance,
-            exposed_capabilities=exposed_capabilities,
-            checkpoint_path=str(checkpoint_path),
-            session_path=str(session_path),
-            log_path="",
-            governance_log_path=str(self.governance_log_path),
-            governance_chain_status=self._current_chain_status(),
-            canon_lineage=canon_lineage or self._current_canon_metadata(),
-            probe_artifacts=probe_artifacts,
-        )
-        log_path = self.logs_dir / f"{result.run_id}.json"
-        payload = result.to_dict()
-        payload["log_path"] = str(log_path)
-        with log_path.open("w", encoding="utf-8") as f:
-            json.dump(payload, f, indent=2)
-        result.log_path = str(log_path)
-        return result
 
     def _halted_result(
         self,
@@ -659,10 +651,13 @@ class RuntimeRunner:
                 previous_mode=target_mode,
                 new_mode=target_mode,
                 allowed=True,
-                reason="executed lawful Ψ-42 probe",
+                reason="executed lawful Π-42 probe",
                 requested_action=requested_action,
                 action_type=action_type,
-                metadata={"probe_run_id": probe_artifacts.get("run_id"), "pulse_id": probe_artifacts.get("pulse_id")},
+                metadata={
+                    "probe_run_id": probe_artifacts.get("run_id"),
+                    "pulse_id": probe_artifacts.get("pulse_id"),
+                },
             )
 
         if action_type == "promotion" and target_mode == "Canon":
@@ -732,6 +727,49 @@ class RuntimeRunner:
             canon_lineage=canon_lineage_result,
         )
 
+    def _finalize_result(
+        self,
+        *,
+        session_id: str,
+        current_mode: str,
+        target_mode: str,
+        requested_action: str,
+        action_type: str,
+        context_bundle_id: str,
+        governance: Dict[str, Any],
+        exposed_capabilities: List[Dict[str, Any]],
+        checkpoint_path: str | Path,
+        probe_artifacts: Optional[Dict[str, Any]],
+        canon_lineage: Optional[Dict[str, Any]],
+    ) -> RunnerResult:
+        session_path = self.session_engine.session_path(session_id)
+        result = RunnerResult(
+            run_id=f"run-{session_id[:12]}",
+            created_at=utc_now(),
+            requested_mode=current_mode,
+            target_mode=target_mode,
+            requested_action=requested_action,
+            action_type=action_type,
+            session_id=session_id,
+            context_bundle_id=context_bundle_id,
+            governance=governance,
+            exposed_capabilities=exposed_capabilities,
+            checkpoint_path=str(checkpoint_path),
+            session_path=str(session_path),
+            log_path="",
+            governance_log_path=str(self.governance_log_path),
+            governance_chain_status=self._current_chain_status(),
+            canon_lineage=canon_lineage or self._current_canon_metadata(),
+            probe_artifacts=probe_artifacts,
+        )
+        log_path = self.logs_dir / f"{result.run_id}.json"
+        payload = result.to_dict()
+        payload["log_path"] = str(log_path)
+        with log_path.open("w", encoding="utf-8") as f:
+            json.dump(payload, f, indent=2)
+        result.log_path = str(log_path)
+        return result
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run one tiny Ethereon runtime cycle.")
@@ -745,11 +783,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--artifact", action="append", dest="artifacts", default=[])
     parser.add_argument("--note", action="append", dest="notes", default=[])
     parser.add_argument("--lineage", default=None)
-    parser.add_argument("--overlay-json", default=None)
-    parser.add_argument("--runtime-config-json", default=None)
-    parser.add_argument("--promotion-json", default=None)
-    parser.add_argument("--raw-user-input", default=None)
-    parser.add_argument("--context-overrides-json", default=None)
+    parser.add_argument("--overlay-json", default=None, help="JSON object for Ethereonic overlay")
+    parser.add_argument("--runtime-config-json", default=None, help="JSON object for symbolic dependency leakage checks")
+    parser.add_argument("--promotion-json", default=None, help="JSON object for promotion validation")
+    parser.add_argument("--raw-user-input", default=None, help="Raw user phrasing to assess before load-bearing action")
+    parser.add_argument("--context-overrides-json", default=None, help="JSON object merged into context bundle before boundary checks")
     return parser.parse_args()
 
 
@@ -757,7 +795,6 @@ def _maybe_json(text: Optional[str]) -> Optional[Dict[str, Any]]:
     if not text:
         return None
     return json.loads(text)
-
 
 if __name__ == "__main__":
     args = parse_args()

@@ -5,12 +5,47 @@ from typing import Any, Dict, Iterable, List
 import json
 import shutil
 
-from runtime_runner_r1_merged import RuntimeRunner
-from context_bundle_r1 import ContextBundleBuilder
-from canon_lineage_store_r1 import CanonLineageStore
+try:
+    from .runtime_runner_r1_merged import RuntimeRunner
+    from .context_bundle_r1 import ContextBundleBuilder
+    from .canon_lineage_store_r1 import CanonLineageStore
+except Exception:
+    from runtime_runner_r1_merged import RuntimeRunner
+    from context_bundle_r1 import ContextBundleBuilder
+    from canon_lineage_store_r1 import CanonLineageStore
+
+try:
+    from .repo_paths_r1 import runtime_root as _runtime_root_helper, state_root as _state_root_helper
+except Exception:
+    try:
+        from repo_paths_r1 import runtime_root as _runtime_root_helper, state_root as _state_root_helper
+    except Exception:
+        _runtime_root_helper = None
+        _state_root_helper = None
 
 
-BASE_DIR = Path("/mnt/data/ethereon_hardening_pack/ethereon_sea_trials_r1_hardening")
+def infer_state_root() -> Path:
+    if _state_root_helper is not None:
+        try:
+            return Path(_state_root_helper())
+        except Exception:
+            pass
+    for parent in Path(__file__).resolve().parents:
+        if (parent / ".git").exists() or (parent / "LuminaOS").exists():
+            return parent / ".lumina_state" / "ship_of_ethereon_v2"
+    return Path(__file__).resolve().parents[4] / ".lumina_state" / "ship_of_ethereon_v2"
+
+
+def infer_runtime_root() -> Path:
+    if _runtime_root_helper is not None:
+        try:
+            return Path(_runtime_root_helper())
+        except Exception:
+            pass
+    return Path(__file__).resolve().parent
+
+
+BASE_DIR = infer_state_root() / "sea_trials_r1_hardening"
 if BASE_DIR.exists():
     shutil.rmtree(BASE_DIR)
 BASE_DIR.mkdir(parents=True, exist_ok=True)
@@ -182,7 +217,7 @@ def canon_lineage_summary(store: CanonLineageStore) -> Dict[str, Any]:
 
 
 def main() -> Dict[str, Any]:
-    runner = RuntimeRunner(base_dir=BASE_DIR, registry_path=Path(__file__).with_name("capability_registry_r1.json"))
+    runner = RuntimeRunner(base_dir=BASE_DIR, registry_path=infer_runtime_root() / "capability_registry_r1.json")
     results: List[Dict[str, Any]] = []
 
     trials = [
