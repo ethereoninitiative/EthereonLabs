@@ -584,6 +584,31 @@ h1, h2, h3 {
   font-size: 0.88rem;
 }
 
+.equation-surface {
+  margin-top: 0.8rem;
+  overflow: hidden;
+  background: rgba(255,255,255,0.96);
+  color: #111827;
+  border-radius: 18px;
+  padding: 1rem 0.9rem;
+}
+
+.equation-display {
+  text-align: center;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(0.95rem, 1.6vw, 1.35rem);
+  line-height: 1.55;
+}
+
+.equation-line {
+  display: block;
+  white-space: nowrap;
+}
+
+.equation-line + .equation-line {
+  margin-top: 0.28rem;
+}
+
 .footer {
   padding: 2rem 0 2.5rem;
   color: var(--muted);
@@ -641,21 +666,68 @@ h1, h2, h3 {
   }
 
   .nav-wrap {
-    padding: 0.8rem 0;
+    padding: 0.7rem 0;
     flex-direction: column;
+    align-items: stretch;
+    gap: 0.65rem;
+  }
+
+  .brand {
+    width: 100%;
+  }
+
+  .brand-text strong {
+    font-size: 0.86rem;
+  }
+
+  .brand-text span {
+    font-size: 0.74rem;
   }
 
   .nav-links,
-  .header-actions,
   .hero-actions {
     width: 100%;
   }
 
   .nav-links {
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.35rem;
+  }
+
+  .nav-links a {
+    padding: 0.5rem 0.3rem;
+    font-size: 0.82rem;
+    text-align: center;
+  }
+
+  .header-actions {
+    width: auto;
+    align-self: flex-start;
+  }
+
+  .hero-actions {
+    gap: 0.65rem;
+  }
+
+  .button {
+    width: 100%;
   }
 
   .hero h1 {
     max-width: none;
+  }
+
+  .equation-surface {
+    padding: 0.8rem 0.7rem;
+  }
+
+  .equation-display {
+    font-size: 0.84rem;
+    line-height: 1.45;
+  }
+
+  .equation-line {
+    white-space: normal;
   }
 }
