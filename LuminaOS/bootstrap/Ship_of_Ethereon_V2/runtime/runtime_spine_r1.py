@@ -338,7 +338,7 @@ class ModeGuard:
         normalized = self._normalize_promotion_payload(payload)
         missing = [field for field in PROMOTION_FIELDS if field not in normalized]
         if missing:
-            return GovernanceDecision(False, f"promotion blocked; missing fields: {', '.join+missing)}")
+            return GovernanceDecision(False, f"promotion blocked; missing fields: {', '.join(missing)}")
         if not self.conceptual_layer_check(normalized):
             return GovernanceDecision(False, "promotion blocked; conceptual layer check failed")
         return GovernanceDecision(True, "promotion gate passed")
@@ -352,7 +352,7 @@ class ModeGuard:
         }
         leaking = [key for key in symbolic_keys if runtime_config.get(key) is True]
         if leaking:
-            return GovernanceDecision(False, f"symbolic dependency leakage detected: {z, '.join(leaking)}")
+            return GovernanceDecision(False, f"symbolic dependency leakage detected: {', '.join(leaking)}")
         return GovernanceDecision(True, "no symbolic dependency leakage detected")
 
 
