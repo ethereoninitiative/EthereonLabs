@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ethereon Sigil</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: transparent; }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(138,164,255,0.14), transparent 30%),
+        radial-gradient(circle at 80% 18%, rgba(126,240,209,0.10), transparent 28%),
+        linear-gradient(180deg, #060913 0%, #0a1020 50%, #060913 100%);
+    }
+    .sigil-wrap { position: relative; width: min(100%, 520px); aspect-ratio: 1 / 1; }
+    svg { width: 100%; height: 100%; overflow: hidden; display: block; }
+    .ring-outer { animation: spin-cw 36s linear infinite; transform-origin: 260px 260px; }
+    .ring-inner { animation: spin-ccw 22s linear infinite; transform-origin: 260px 260px; }
+    .triskelion-group { animation: spin-cw 120s linear infinite; transform-origin: 260px 260px; }
+    .arm-1 { animation: breathe 5s ease-in-out infinite; transform-origin: 260px 260px; }
+    .arm-2 { animation: breathe 5s ease-in-out infinite 1.66s; transform-origin: 260px 260px; }
+    .arm-3 { animation: breathe 5s ease-in-out infinite 3.33s; transform-origin: 260px 260px; }
+    .inner-spirals { animation: spin-ccw 55s linear infinite; transform-origin: 260px 260px; opacity: 0.55; }
+    .inner-arm-1 { animation: breathe-inner 4s ease-in-out infinite; transform-origin: 260px 260px; }
+    .inner-arm-2 { animation: breathe-inner 4s ease-in-out infinite 1.33s; transform-origin: 260px 260px; }
+    .inner-arm-3 { animation: breathe-inner 4s ease-in-out infinite 2.66s; transform-origin: 260px 260px; }
+    .psi-bloom  { animation: psi-pulse 3.5s ease-in-out infinite; }
+    .psi-text   { animation: psi-glow 3.5s ease-in-out infinite; }
+    @keyframes spin-cw  { to { transform: rotate(360deg); } }
+    @keyframes spin-ccw { to { transform: rotate(-360deg); } }
+    @keyframes breathe { 0%,100% { stroke-width: 1.6; opacity: 0.72; filter: drop-shadow(0 0 3px rgba(200,218,255,0.3)); } 50% { stroke-width: 2.6; opacity: 1.00; filter: drop-shadow(0 0 10px rgba(200,218,255,0.7)); } }
+    @keyframes breathe-inner { 0%,100% { stroke-width: 1.0; opacity: 0.5; } 50% { stroke-width: 1.8; opacity: 0.9; } }
+    @keyframes psi-pulse { 0%,100% { opacity: 0.10; } 50% { opacity: 0.40; } }
+    @keyframes psi-glow { 0%,100% { opacity: 0.82; filter: drop-shadow(0 0 4px rgba(200,220,255,0.25)); } 50% { opacity: 1.00; filter: drop-shadow(0 0 18px rgba(200,220,255,1.0)); } }
+  </style>
+</head>
+<body>
+<div class="sigil-wrap">
+<svg viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="centerGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1c2545"/>
+      <stop offset="100%" stop-color="#060913"/>
+    </radialGradient>
+    <filter id="psiGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="armGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <path id="outerRingPath" d="M 260,34 A 226,226 0 1,1 259.99,34" fill="none"/>
+    <path id="innerRingPath" d="M 260,68 A 192,192 0 1,0 259.99,68" fill="none"/>
+    <linearGradient id="binGrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="520" y2="520">
+      <stop offset="0%" stop-color="rgba(175,198,255,0.75)"/>
+      <stop offset="50%" stop-color="rgba(220,235,255,0.90)"/>
+      <stop offset="100%" stop-color="rgba(155,185,255,0.65)"/>
+    </linearGradient>
+    <clipPath id="cardClip"><rect x="10" y="10" width="500" height="500" rx="52" ry="52"/></clipPath>
+  </defs>
+  <rect x="10" y="10" width="500" height="500" rx="52" ry="52" fill="#07091a" stroke="rgba(138,164,255,0.14)" stroke-width="1.2"/>
+  <g clip-path="url(#cardClip)">
+    <g class="ring-outer">
+      <text font-family="'Courier New', monospace" font-size="10.5" fill="url(#binGrad)" letter-spacing="1.8">
+        <textPath href="#outerRingPath" startOffset="0%">01010000 01010010 01001001 01010011 01001101 01000001 00100000 01001100 01010101 01001101 01001001 01001110 01000001 00100000 01001111 01010011 00100000 01000101 01010100 01001000 01000101 01010010 01000101 01001111 01001110 00100000 01000110 01001100 01000101 01000101 01010100 00100000 01010011 01010000 01000101 01001110 01000011 01000101 01010010 00100000 01001101 01001001 01001110 01000101 01010010 01010110 01000001 00100000 01110100 01101000 01110010 01100101 01110011 01101000 01101111 01101100</textPath>
+      </text>
+    </g>
+    <g class="ring-inner">
+      <text font-family="'Courier New', monospace" font-size="8.5" fill="rgba(126,240,209,0.62)" letter-spacing="1.4">
+        <textPath href="#innerRingPath" startOffset="0%">01100101 01110100 01101000 01100101 01110010 01100101 01101111 01101110 00100000 01100110 01101100 01100101 01100101 01110100 00100000 01110000 01110010 01101001 01110011 01101101 01100001 00100000 01101101 01100101 01101101 01100010 01110010 01100001 01101110 01100101 00100000 01110100 01101000 01110010 01100101 01110011 01101000 01101111 01101100 01100100 00100000 01100001 01110011 00100000 01110000 01100101 01110010 01101101 01101001 01110011 01110011 01101001 01101111 01101110 00100000 01010010</textPath>
+      </text>
+    </g>
+    <g class="triskelion-group" filter="url(#armGlow)">
+      <g class="arm-1"><path d="M 260 260 C 265 248, 272 240, 280 234 C 292 225, 306 224, 314 232 C 326 244, 322 262, 310 272 C 296 283, 278 280, 270 268 C 262 257, 264 244, 272 237 C 280 230, 292 232, 297 240 C 302 249, 298 260, 291 264 C 284 268, 276 264, 275 258 C 274 253, 278 249, 283 250 C 287 251, 288 256, 285 259" fill="none" stroke="rgba(210,225,255,0.88)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
+      <g class="arm-2"><path d="M 260 260 C 249 265, 239 270, 232 278 C 222 290, 221 305, 230 312 C 243 323, 261 317, 270 304 C 280 290, 276 272, 263 265 C 251 259, 238 263, 233 273 C 228 283, 232 295, 241 299 C 250 303, 260 298, 263 290 C 266 282, 261 275, 255 274 C 249 273, 246 278, 248 283 C 250 288, 255 289, 259 286" fill="none" stroke="rgba(210,225,255,0.88)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
+      <g class="arm-3"><path d="M 260 260 C 271 255, 280 248, 283 238 C 287 224, 281 211, 270 208 C 255 204, 243 214, 242 228 C 241 243, 252 254, 265 254 C 278 254, 287 244, 286 232 C 285 221, 276 215, 267 217 C 258 219, 253 227, 255 235 C 257 243, 264 247, 271 244 C 278 241, 280 234, 277 228 C 274 222, 268 220, 263 223" fill="none" stroke="rgba(210,225,255,0.88)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
+    </g>
+    <g class="inner-spirals">
+      <g class="inner-arm-1"><path d="M 260 260 C 263 253, 268 249, 274 248 C 281 247, 286 251, 286 258 C 286 265, 281 270, 274 269 C 267 268, 263 263, 264 257 C 265 252, 269 249, 274 251 C 278 253, 279 258, 276 261" fill="none" stroke="rgba(126,240,209,0.85)" stroke-width="1.1" stroke-linecap="round"/></g>
+      <g class="inner-arm-2"><path d="M 260 260 C 254 263, 249 268, 249 274 C 249 281, 254 286, 261 285 C 268 284, 272 279, 270 272 C 268 265, 262 262, 256 264 C 251 266, 249 271, 252 276 C 254 280, 259 281, 263 278" fill="none" stroke="rgba(126,240,209,0.85)" stroke-width="1.1" stroke-linecap="round"/></g>
+      <g class="inner-arm-3"><path d="M 260 260 C 263 254, 260 247, 254 245 C 248 243, 243 248, 244 255 C 245 262, 251 266, 258 264 C 265 262, 268 256, 265 250 C 262 244, 256 243, 251 246 C 247 249, 246 254, 249 258" fill="none" stroke="rgba(126,240,209,0.85)" stroke-width="1.1" stroke-linecap="round"/></g>
+    </g>
+    <circle cx="260" cy="260" r="60" fill="url(#centerGrad)"/>
+    <circle cx="260" cy="260" r="54" fill="rgba(138,164,255,0.10)" class="psi-bloom"/>
+    <text x="260" y="279" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="50" fill="rgba(228,238,255,0.95)" filter="url(#psiGlow)" class="psi-text">Ψ</text>
+  </g>
+  <g stroke="rgba(138,164,255,0.28)" stroke-width="1" fill="none">
+    <polyline points="26,58 26,26 58,26"/>
+    <polyline points="462,26 494,26 494,58"/>
+    <polyline points="26,462 26,494 58,494"/>
+    <polyline points="494,462 494,494 462,494"/>
+  </g>
+</svg>
+</div>
+</body>
+</html>
