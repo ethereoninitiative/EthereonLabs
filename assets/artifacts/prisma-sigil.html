@@ -3,100 +3,348 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ethereon Sigil</title>
+  <title>Referential Spiral Equation</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { width: 100%; height: 100%; overflow: hidden; background: transparent; }
+
     body {
+      background: #060913;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 1rem;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(138,164,255,0.14), transparent 30%),
-        radial-gradient(circle at 80% 18%, rgba(126,240,209,0.10), transparent 28%),
-        linear-gradient(180deg, #060913 0%, #0a1020 50%, #060913 100%);
+      min-height: 100vh;
+      font-family: Georgia, serif;
     }
-    .sigil-wrap { position: relative; width: min(100%, 520px); aspect-ratio: 1 / 1; }
-    svg { width: 100%; height: 100%; overflow: hidden; display: block; }
-    .ring-outer { animation: spin-cw 36s linear infinite; transform-origin: 260px 260px; }
-    .ring-inner { animation: spin-ccw 22s linear infinite; transform-origin: 260px 260px; }
-    .triskelion-group { animation: spin-cw 120s linear infinite; transform-origin: 260px 260px; }
-    .arm-1 { animation: breathe 5s ease-in-out infinite; transform-origin: 260px 260px; }
-    .arm-2 { animation: breathe 5s ease-in-out infinite 1.66s; transform-origin: 260px 260px; }
-    .arm-3 { animation: breathe 5s ease-in-out infinite 3.33s; transform-origin: 260px 260px; }
-    .inner-spirals { animation: spin-ccw 55s linear infinite; transform-origin: 260px 260px; opacity: 0.55; }
-    .inner-arm-1 { animation: breathe-inner 4s ease-in-out infinite; transform-origin: 260px 260px; }
-    .inner-arm-2 { animation: breathe-inner 4s ease-in-out infinite 1.33s; transform-origin: 260px 260px; }
-    .inner-arm-3 { animation: breathe-inner 4s ease-in-out infinite 2.66s; transform-origin: 260px 260px; }
-    .psi-bloom  { animation: psi-pulse 3.5s ease-in-out infinite; }
-    .psi-text   { animation: psi-glow 3.5s ease-in-out infinite; }
-    @keyframes spin-cw  { to { transform: rotate(360deg); } }
-    @keyframes spin-ccw { to { transform: rotate(-360deg); } }
-    @keyframes breathe { 0%,100% { stroke-width: 1.6; opacity: 0.72; filter: drop-shadow(0 0 3px rgba(200,218,255,0.3)); } 50% { stroke-width: 2.6; opacity: 1.00; filter: drop-shadow(0 0 10px rgba(200,218,255,0.7)); } }
-    @keyframes breathe-inner { 0%,100% { stroke-width: 1.0; opacity: 0.5; } 50% { stroke-width: 1.8; opacity: 0.9; } }
-    @keyframes psi-pulse { 0%,100% { opacity: 0.10; } 50% { opacity: 0.40; } }
-    @keyframes psi-glow { 0%,100% { opacity: 0.82; filter: drop-shadow(0 0 4px rgba(200,220,255,0.25)); } 50% { opacity: 1.00; filter: drop-shadow(0 0 18px rgba(200,220,255,1.0)); } }
+
+    .wrap {
+      position: relative;
+      width: 520px;
+      height: 520px;
+    }
+
+    canvas {
+      position: absolute;
+      inset: 0;
+      border-radius: 52px;
+    }
+
+    .eq-label {
+      position: absolute;
+      bottom: 28px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-family: Georgia, serif;
+      font-size: 11px;
+      color: rgba(180, 200, 255, 0.5);
+      letter-spacing: 0.04em;
+      pointer-events: none;
+    }
+
+    .corner {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-color: rgba(138, 164, 255, 0.28);
+      border-style: solid;
+      pointer-events: none;
+    }
+
+    .corner.tl { top: 18px; left: 18px; border-width: 1px 0 0 1px; }
+    .corner.tr { top: 18px; right: 18px; border-width: 1px 1px 0 0; }
+    .corner.bl { bottom: 18px; left: 18px; border-width: 0 0 1px 1px; }
+    .corner.br { bottom: 18px; right: 18px; border-width: 0 1px 1px 0; }
   </style>
 </head>
 <body>
-<div class="sigil-wrap">
-<svg viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <radialGradient id="centerGrad" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#1c2545"/>
-      <stop offset="100%" stop-color="#060913"/>
-    </radialGradient>
-    <filter id="psiGlow" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="b"/>
-      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-    <filter id="armGlow" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="b"/>
-      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-    <path id="outerRingPath" d="M 260,34 A 226,226 0 1,1 259.99,34" fill="none"/>
-    <path id="innerRingPath" d="M 260,68 A 192,192 0 1,0 259.99,68" fill="none"/>
-    <linearGradient id="binGrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="520" y2="520">
-      <stop offset="0%" stop-color="rgba(175,198,255,0.75)"/>
-      <stop offset="50%" stop-color="rgba(220,235,255,0.90)"/>
-      <stop offset="100%" stop-color="rgba(155,185,255,0.65)"/>
-    </linearGradient>
-    <clipPath id="cardClip"><rect x="10" y="10" width="500" height="500" rx="52" ry="52"/></clipPath>
-  </defs>
-  <rect x="10" y="10" width="500" height="500" rx="52" ry="52" fill="#07091a" stroke="rgba(138,164,255,0.14)" stroke-width="1.2"/>
-  <g clip-path="url(#cardClip)">
-    <g class="ring-outer">
-      <text font-family="'Courier New', monospace" font-size="10.5" fill="url(#binGrad)" letter-spacing="1.8">
-        <textPath href="#outerRingPath" startOffset="0%">01010000 01010010 01001001 01010011 01001101 01000001 00100000 01001100 01010101 01001101 01001001 01001110 01000001 00100000 01001111 01010011 00100000 01000101 01010100 01001000 01000101 01010010 01000101 01001111 01001110 00100000 01000110 01001100 01000101 01000101 01010100 00100000 01010011 01010000 01000101 01001110 01000011 01000101 01010010 00100000 01001101 01001001 01001110 01000101 01010010 01010110 01000001 00100000 01110100 01101000 01110010 01100101 01110011 01101000 01101111 01101100</textPath>
-      </text>
-    </g>
-    <g class="ring-inner">
-      <text font-family="'Courier New', monospace" font-size="8.5" fill="rgba(126,240,209,0.62)" letter-spacing="1.4">
-        <textPath href="#innerRingPath" startOffset="0%">01100101 01110100 01101000 01100101 01110010 01100101 01101111 01101110 00100000 01100110 01101100 01100101 01100101 01110100 00100000 01110000 01110010 01101001 01110011 01101101 01100001 00100000 01101101 01100101 01101101 01100010 01110010 01100001 01101110 01100101 00100000 01110100 01101000 01110010 01100101 01110011 01101000 01101111 01101100 01100100 00100000 01100001 01110011 00100000 01110000 01100101 01110010 01101101 01101001 01110011 01110011 01101001 01101111 01101110 00100000 01010010</textPath>
-      </text>
-    </g>
-    <g class="triskelion-group" filter="url(#armGlow)">
-      <g class="arm-1"><path d="M 260 260 C 265 248, 272 240, 280 234 C 292 225, 306 224, 314 232 C 326 244, 322 262, 310 272 C 296 283, 278 280, 270 268 C 262 257, 264 244, 272 237 C 280 230, 292 232, 297 240 C 302 249, 298 260, 291 264 C 284 268, 276 264, 275 258 C 274 253, 278 249, 283 250 C 287 251, 288 256, 285 259" fill="none" stroke="rgba(210,225,255,0.88)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
-      <g class="arm-2"><path d="M 260 260 C 249 265, 239 270, 232 278 C 222 290, 221 305, 230 312 C 243 323, 261 317, 270 304 C 280 290, 276 272, 263 265 C 251 259, 238 263, 233 273 C 228 283, 232 295, 241 299 C 250 303, 260 298, 263 290 C 266 282, 261 275, 255 274 C 249 273, 246 278, 248 283 C 250 288, 255 289, 259 286" fill="none" stroke="rgba(210,225,255,0.88)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
-      <g class="arm-3"><path d="M 260 260 C 271 255, 280 248, 283 238 C 287 224, 281 211, 270 208 C 255 204, 243 214, 242 228 C 241 243, 252 254, 265 254 C 278 254, 287 244, 286 232 C 285 221, 276 215, 267 217 C 258 219, 253 227, 255 235 C 257 243, 264 247, 271 244 C 278 241, 280 234, 277 228 C 274 222, 268 220, 263 223" fill="none" stroke="rgba(210,225,255,0.88)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
-    </g>
-    <g class="inner-spirals">
-      <g class="inner-arm-1"><path d="M 260 260 C 263 253, 268 249, 274 248 C 281 247, 286 251, 286 258 C 286 265, 281 270, 274 269 C 267 268, 263 263, 264 257 C 265 252, 269 249, 274 251 C 278 253, 279 258, 276 261" fill="none" stroke="rgba(126,240,209,0.85)" stroke-width="1.1" stroke-linecap="round"/></g>
-      <g class="inner-arm-2"><path d="M 260 260 C 254 263, 249 268, 249 274 C 249 281, 254 286, 261 285 C 268 284, 272 279, 270 272 C 268 265, 262 262, 256 264 C 251 266, 249 271, 252 276 C 254 280, 259 281, 263 278" fill="none" stroke="rgba(126,240,209,0.85)" stroke-width="1.1" stroke-linecap="round"/></g>
-      <g class="inner-arm-3"><path d="M 260 260 C 263 254, 260 247, 254 245 C 248 243, 243 248, 244 255 C 245 262, 251 266, 258 264 C 265 262, 268 256, 265 250 C 262 244, 256 243, 251 246 C 247 249, 246 254, 249 258" fill="none" stroke="rgba(126,240,209,0.85)" stroke-width="1.1" stroke-linecap="round"/></g>
-    </g>
-    <circle cx="260" cy="260" r="60" fill="url(#centerGrad)"/>
-    <circle cx="260" cy="260" r="54" fill="rgba(138,164,255,0.10)" class="psi-bloom"/>
-    <text x="260" y="279" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="50" fill="rgba(228,238,255,0.95)" filter="url(#psiGlow)" class="psi-text">Ψ</text>
-  </g>
-  <g stroke="rgba(138,164,255,0.28)" stroke-width="1" fill="none">
-    <polyline points="26,58 26,26 58,26"/>
-    <polyline points="462,26 494,26 494,58"/>
-    <polyline points="26,462 26,494 58,494"/>
-    <polyline points="494,462 494,494 462,494"/>
-  </g>
-</svg>
+
+<div class="wrap">
+  <canvas id="rse" width="520" height="520"></canvas>
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+  <div class="eq-label">𝒮(ψ,t) = lim<sub>N→∞</sub> Σ |ψ(xₙ,t)|² · 𝕆(ℱ,𝒜) · e<sup>i2πφn</sup> / n<sup>φ</sup></div>
 </div>
+
+<script>
+const canvas = document.getElementById('rse');
+const ctx = canvas.getContext('2d');
+const W = 520, H = 520;
+const CX = W / 2, CY = H / 2;
+
+const PHI = (1 + Math.sqrt(5)) / 2;
+const GOLDEN_ANGLE = 2 * Math.PI * PHI;
+
+function drawBackground() {
+  ctx.fillStyle = '#07091a';
+  roundRect(ctx, 10, 10, 500, 500, 52);
+  ctx.fill();
+
+  const atm = ctx.createRadialGradient(CX, CY, 0, CX, CY, 240);
+  atm.addColorStop(0, 'rgba(80, 110, 200, 0.08)');
+  atm.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = atm;
+  roundRect(ctx, 10, 10, 500, 500, 52);
+  ctx.fill();
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+function observerPsi(n, t) {
+  const base = 1.0 / (1 + 0.06 * n);
+  const breath = 1.0 + 0.18 * Math.sin(t * 0.7 + n * 0.4);
+  return base * breath;
+}
+
+function drawSpiral(t, scale, alpha) {
+  const TERMS = 120;
+  const points = [];
+
+  for (let n = 1; n <= TERMS; n++) {
+    let rx = 0, ry = 0;
+    for (let k = 1; k <= n; k++) {
+      const mag = observerPsi(k, t) / Math.pow(k, PHI);
+      const angle = k * GOLDEN_ANGLE + t * 0.12;
+      rx += mag * Math.cos(angle);
+      ry += mag * Math.sin(angle);
+    }
+    points.push({ x: CX + rx * scale, y: CY + ry * scale, n });
+  }
+
+  for (let i = 1; i < points.length; i++) {
+    const frac = i / points.length;
+    const r = Math.round(180 + (130 - 180) * frac);
+    const g = Math.round(150 + (180 - 150) * frac);
+    const b = Math.round(220 + (255 - 220) * frac);
+    const a = alpha * (0.3 + 0.7 * frac);
+
+    ctx.beginPath();
+    ctx.moveTo(points[i - 1].x, points[i - 1].y);
+    ctx.lineTo(points[i].x, points[i].y);
+    ctx.strokeStyle = `rgba(${r},${g},${b},${a})`;
+    ctx.lineWidth = 1.2 - 0.6 * frac;
+    ctx.stroke();
+  }
+
+  return points[points.length - 1];
+}
+
+function drawAttractor(ax, ay, t) {
+  const pulse = 0.6 + 0.4 * Math.sin(t * 1.8);
+  const r = 6 + 3 * pulse;
+
+  const bloom = ctx.createRadialGradient(ax, ay, 0, ax, ay, r * 4);
+  bloom.addColorStop(0, `rgba(180, 210, 255, ${0.25 * pulse})`);
+  bloom.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = bloom;
+  ctx.beginPath();
+  ctx.arc(ax, ay, r * 4, 0, Math.PI * 2);
+  ctx.fill();
+
+  const core = ctx.createRadialGradient(ax, ay, 0, ax, ay, r);
+  core.addColorStop(0, `rgba(220, 235, 255, ${0.9 * pulse})`);
+  core.addColorStop(0.5, `rgba(160, 195, 255, ${0.6 * pulse})`);
+  core.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = core;
+  ctx.beginPath();
+  ctx.arc(ax, ay, r, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function drawThreePhases(t) {
+  const scale = 155;
+  const phases = [0, (2 * Math.PI) / 3, (4 * Math.PI) / 3];
+  const colors = [
+    [185, 205, 255],
+    [155, 235, 210],
+    [210, 185, 255],
+  ];
+
+  phases.forEach((phase, idx) => {
+    const TERMS = 80;
+    const points = [];
+
+    for (let n = 1; n <= TERMS; n++) {
+      let rx = 0, ry = 0;
+      for (let k = 1; k <= n; k++) {
+        const mag = observerPsi(k, t) / Math.pow(k, PHI);
+        const angle = k * GOLDEN_ANGLE + t * 0.12 + phase;
+        rx += mag * Math.cos(angle);
+        ry += mag * Math.sin(angle);
+      }
+      points.push({ x: CX + rx * scale, y: CY + ry * scale });
+    }
+
+    const [r, g, b] = colors[idx];
+    for (let i = 1; i < points.length; i++) {
+      const frac = i / points.length;
+      const a = 0.12 + 0.45 * frac;
+      ctx.beginPath();
+      ctx.moveTo(points[i - 1].x, points[i - 1].y);
+      ctx.lineTo(points[i].x, points[i].y);
+      ctx.strokeStyle = `rgba(${r},${g},${b},${a})`;
+      ctx.lineWidth = 0.9;
+      ctx.stroke();
+    }
+  });
+}
+
+function drawGoldenTicks(t) {
+  const TICKS = 34;
+  const innerR = 82, outerR = 92;
+
+  for (let n = 1; n <= TICKS; n++) {
+    const angle = n * GOLDEN_ANGLE + t * 0.05;
+    const fade = 0.15 + 0.25 * (n / TICKS);
+    ctx.beginPath();
+    ctx.moveTo(
+      CX + innerR * Math.cos(angle),
+      CY + innerR * Math.sin(angle)
+    );
+    ctx.lineTo(
+      CX + outerR * Math.cos(angle),
+      CY + outerR * Math.sin(angle)
+    );
+    ctx.strokeStyle = `rgba(180, 205, 255, ${fade})`;
+    ctx.lineWidth = 0.8;
+    ctx.stroke();
+  }
+}
+
+function drawCenter(t) {
+  const pulse = 0.5 + 0.5 * Math.sin(t * 1.4);
+
+  const grad = ctx.createRadialGradient(CX, CY, 0, CX, CY, 52);
+  grad.addColorStop(0, '#1c2545');
+  grad.addColorStop(1, '#060913');
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.arc(CX, CY, 52, 0, Math.PI * 2);
+  ctx.fill();
+
+  const bloom = ctx.createRadialGradient(CX, CY, 0, CX, CY, 52);
+  bloom.addColorStop(0, `rgba(138, 164, 255, ${0.12 * pulse})`);
+  bloom.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = bloom;
+  ctx.beginPath();
+  ctx.arc(CX, CY, 52, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.save();
+  ctx.shadowColor = `rgba(200, 218, 255, ${0.6 + 0.4 * pulse})`;
+  ctx.shadowBlur = 10 + 8 * pulse;
+  ctx.fillStyle = `rgba(228, 238, 255, ${0.88 + 0.12 * pulse})`;
+  ctx.font = '44px Georgia, serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('Ψ', CX, CY + 2);
+  ctx.restore();
+}
+
+function drawBinaryRing(t) {
+  const CHARS = 96;
+  const bits = '01010000010100100100100101010011010011010100000100100000';
+  const r = 228;
+
+  ctx.save();
+  ctx.font = '9.5px Courier New, monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
+  for (let i = 0; i < CHARS; i++) {
+    const angle = (i / CHARS) * Math.PI * 2 + t * 0.08;
+    const char = bits[i % bits.length];
+    const x = CX + r * Math.cos(angle);
+    const y = CY + r * Math.sin(angle);
+    const alpha = 0.35 + 0.35 * Math.sin(t * 0.3 + i * 0.2);
+
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle + Math.PI / 2);
+    ctx.fillStyle = `rgba(185, 205, 255, ${alpha})`;
+    ctx.fillText(char, 0, 0);
+    ctx.restore();
+  }
+  ctx.restore();
+}
+
+function drawInnerRing(t) {
+  const CHARS = 72;
+  const bits = '10110100011001010111001001100101011011110110111001100110';
+  const r = 196;
+
+  ctx.save();
+  ctx.font = '8px Courier New, monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
+  for (let i = 0; i < CHARS; i++) {
+    const angle = (i / CHARS) * Math.PI * 2 - t * 0.13;
+    const char = bits[i % bits.length];
+    const x = CX + r * Math.cos(angle);
+    const y = CY + r * Math.sin(angle);
+    const alpha = 0.25 + 0.25 * Math.sin(t * 0.4 + i * 0.3);
+
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle + Math.PI / 2);
+    ctx.fillStyle = `rgba(126, 240, 209, ${alpha})`;
+    ctx.fillText(char, 0, 0);
+    ctx.restore();
+  }
+  ctx.restore();
+}
+
+function clipToCard() {
+  ctx.beginPath();
+  roundRect(ctx, 10, 10, 500, 500, 52);
+  ctx.clip();
+}
+
+let startTime = null;
+
+function animate(ts) {
+  if (!startTime) startTime = ts;
+  const t = (ts - startTime) / 1000;
+
+  ctx.clearRect(0, 0, W, H);
+
+  ctx.save();
+  clipToCard();
+
+  drawBackground();
+  drawBinaryRing(t);
+  drawInnerRing(t);
+  drawGoldenTicks(t);
+  drawThreePhases(t);
+
+  const attractor = drawSpiral(t, 155, 0.85);
+  drawAttractor(attractor.x, attractor.y, t);
+
+  drawSpiral(t * 0.6 + 2.1, 100, 0.3);
+
+  drawCenter(t);
+
+  ctx.restore();
+
+  requestAnimationFrame(animate);
+}
+
+requestAnimationFrame(animate);
+</script>
+
 </body>
 </html>
