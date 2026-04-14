@@ -3,7 +3,7 @@
 This directory is the first actual backend scaffold for auth and shared room persistence behind the public Chamber shell.
 
 ## Status
-Scaffold only, now with switchable persistence modes.
+Scaffold only, now with switchable persistence modes and a local Postgres bootstrap lane.
 
 It is intended to do four things now:
 - create a narrow backend lane for light account behavior
@@ -28,6 +28,7 @@ It is **not** yet a production backend.
 - switchable store factory
 - memory store
 - Postgres store scaffold
+- local Docker Compose Postgres path
 
 ## Persistence modes
 ### Memory
@@ -40,14 +41,33 @@ It is **not** yet a production backend.
 - persists users, sessions, room messages, role attachments, and synthesis-backed room history
 - is the first durable path for shared Chamber use
 
+## Local Postgres quick path
+From `chamber-app/`:
+
+```bash
+npm install
+npm run db:up
+cp .env.postgres.example .env
+npm run dev:postgres
+```
+
+Useful database helpers:
+- `npm run db:up`
+- `npm run db:down`
+- `npm run db:reset`
+- `npm run db:logs`
+
 ## Current durable path
 The durable route is:
 - apply `../chamber_data_model_r1.sql`
 - apply `../chamber_sessions_extension_r1.sql`
 - run the app with `CHAMBER_STORE_MODE=postgres`
 
+The Docker Compose lane does this automatically on first initialization.
+
 ## Environment
-Copy `.env.example` to `.env` and adjust if needed.
+Copy `.env.example` to `.env` for memory mode.
+Copy `.env.postgres.example` to `.env` for local Postgres mode.
 
 Important values:
 - `CHAMBER_STORE_MODE=memory|postgres`

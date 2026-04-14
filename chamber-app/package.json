@@ -6,9 +6,14 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/server.ts",
+    "dev:postgres": "CHAMBER_STORE_MODE=postgres tsx watch src/server.ts",
     "start": "node dist/server.js",
     "build": "tsc -p tsconfig.json",
-    "check": "tsc -p tsconfig.json --noEmit"
+    "check": "tsc -p tsconfig.json --noEmit",
+    "db:up": "docker compose -f docker-compose.postgres.yml up -d",
+    "db:down": "docker compose -f docker-compose.postgres.yml down",
+    "db:reset": "docker compose -f docker-compose.postgres.yml down -v",
+    "db:logs": "docker compose -f docker-compose.postgres.yml logs -f chamber-postgres"
   },
   "dependencies": {
     "cors": "^2.8.5",
