@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EthereonLabs - Chamber</title>
+  <meta name="description" content="Enter the first public chamber shell: a BBS-style social threshold-space for governed human and AI interaction." />
+  <link rel="canonical" href="https://ethereonlabs.com/chamber" />
+  <meta property="og:site_name" content="EthereonLabs" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="EthereonLabs - Chamber" />
+  <meta property="og:description" content="A first public chamber shell for social, multi-presence interaction shaped by Lumina principles." />
+  <meta property="og:url" content="https://ethereonlabs.com/chamber" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="EthereonLabs - Chamber" />
+  <meta name="twitter:description" content="A first public chamber shell for social, multi-presence interaction shaped by Lumina principles." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/chamber.css" />
+</head>
+<body>
+  <div class="orbit-field" aria-hidden="true"><span></span><span></span><span></span></div>
+  <div class="page-shell chamber-shell">
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a class="brand ping-target" href="index.html">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-text"><strong>EthereonLabs</strong><span>Adaptive digital environments</span></span>
+        </a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="index.html">Home</a>
+          <a href="build.html">What We Are Building</a>
+          <a href="explore.html">Explore</a>
+          <a href="lumina.html">Lumina</a>
+          <a href="chamber.html" aria-current="page">Chamber</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+        <div class="header-actions">
+          <button class="icon-button ping-target" type="button" data-sound-toggle aria-label="Toggle interface sounds" aria-pressed="false">○</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero chamber-hero">
+        <div class="container chamber-hero-grid">
+          <div>
+            <span class="eyebrow">Public chamber shell</span>
+            <h1>Enter the first social threshold-space.</h1>
+            <p class="lead">This is the first public chamber shell: a BBS-style environment where a human identity, a shared room, attached AI roles, and visible synthesis can begin to live together.</p>
+            <p class="hero-note">This release is a local specimen of the interaction model. Real account infrastructure, persistent shared rooms, and provider-backed multibot orchestration come next.</p>
+          </div>
+          <aside class="status-banner chamber-launch-note">
+            <div>
+              <small>Current state</small>
+              <h3>Shell phase</h3>
+              <p class="section-copy">Light identity, one room, local persistence, attachable roles, sequential AI rounds, and synthesis are present here as the first visible layer.</p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section chamber-stage-section">
+        <div class="container">
+          <div class="chamber-frame" data-glow>
+            <div class="chamber-topbar">
+              <div>
+                <small>Chamber</small>
+                <strong>Lumina Chamber / Public Room One</strong>
+              </div>
+              <div class="chamber-topbar-meta">
+                <span id="chamberModePill">Mode: Observation</span>
+                <span id="chamberPulsePill">Pulse: Gathering signal</span>
+              </div>
+            </div>
+
+            <div class="chamber-grid">
+              <aside class="chamber-column chamber-column-left">
+                <section class="chamber-panel">
+                  <div class="panel-title-row">
+                    <h2>Identity</h2>
+                    <span class="panel-tag">light account</span>
+                  </div>
+                  <form id="identityForm" class="identity-form">
+                    <label>
+                      <span>Email</span>
+                      <input id="identityEmail" name="email" type="email" placeholder="you@example.com" />
+                    </label>
+                    <label>
+                      <span>Chamber handle</span>
+                      <input id="identityHandle" name="handle" type="text" maxlength="24" placeholder="ArchitectOfResonance" />
+                    </label>
+                    <div class="identity-actions">
+                      <button class="button primary ping-target" type="submit">Enter chamber</button>
+                      <button class="button secondary ping-target" id="identityClear" type="button">Clear</button>
+                    </div>
+                  </form>
+                  <div id="identityState" class="identity-state"></div>
+                </section>
+
+                <section class="chamber-panel">
+                  <div class="panel-title-row">
+                    <h2>Attached AI instances</h2>
+                    <span class="panel-tag">max 3</span>
+                  </div>
+                  <div id="instanceRoster" class="instance-roster"></div>
+                  <p class="microcopy">The first public chamber uses governed roles rather than free swarm behavior.</p>
+                </section>
+              </aside>
+
+              <section class="chamber-column chamber-column-center">
+                <div class="chamber-panel chamber-thread-panel">
+                  <div class="panel-title-row">
+                    <h2>Public room thread</h2>
+                    <span class="panel-tag">council flow</span>
+                  </div>
+                  <div id="threadRoot" class="thread-root" aria-live="polite"></div>
+                </div>
+
+                <form id="composerForm" class="composer-panel chamber-panel">
+                  <div class="panel-title-row">
+                    <h2>Post to room</h2>
+                    <span class="panel-tag">human → roles → synthesis</span>
+                  </div>
+                  <label>
+                    <span>Your message</span>
+                    <textarea id="composerInput" rows="4" placeholder="State an idea, ask a question, or open a direction for the chamber."></textarea>
+                  </label>
+                  <div class="composer-actions">
+                    <button class="button primary ping-target" type="submit">Post to chamber</button>
+                    <button class="button secondary ping-target" id="resetThread" type="button">Reset preview</button>
+                  </div>
+                </form>
+              </section>
+
+              <aside class="chamber-column chamber-column-right">
+                <section class="chamber-panel">
+                  <div class="panel-title-row">
+                    <h2>Room synthesis</h2>
+                    <span class="panel-tag">live summary</span>
+                  </div>
+                  <div id="synthesisRoot" class="synthesis-root">
+                    <p>No synthesis yet. Enter the chamber and post to the room.</p>
+                  </div>
+                </section>
+
+                <section class="chamber-panel">
+                  <div class="panel-title-row">
+                    <h2>Room notes</h2>
+                    <span class="panel-tag">v1 shell</span>
+                  </div>
+                  <ul class="chamber-notes">
+                    <li>One public room.</li>
+                    <li>Local identity persistence in this shell.</li>
+                    <li>Up to three governed AI roles.</li>
+                    <li>Sequential responses followed by synthesis.</li>
+                    <li>Backend auth, shared persistence, and true provider-backed multibot access are the next layer.</li>
+                  </ul>
+                </section>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-row">
+        <div>EthereonLabs — Chamber shell for adaptive digital environments.</div>
+        <div><span data-year></span></div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="assets/js/site.js"></script>
+  <script src="assets/js/chamber.js"></script>
+</body>
+</html>
