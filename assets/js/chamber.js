@@ -1,10 +1,15 @@
 (() => {
   const STORAGE_KEYS = {
     identity: 'ethereonlabs-chamber-identity',
+    sessionToken: 'ethereonlabs-chamber-session-token',
+    apiBase: 'ethereonlabs-chamber-api-base',
     instances: 'ethereonlabs-chamber-instances',
     thread: 'ethereonlabs-chamber-thread',
     synthesis: 'ethereonlabs-chamber-synthesis'
   };
+
+  const PUBLIC_ROOM_SLUG = 'public-room-one';
+  const DEFAULT_INSTANCE_ORDER = ['primary', 'critic', 'synthesizer'];
 
   const instanceDefs = [
     {
@@ -79,9 +84,11 @@
   const pulsePill = document.getElementById('chamberPulsePill');
 
   let identity = loadIdentity();
+  let sessionToken = localStorage.getItem(STORAGE_KEYS.sessionToken) || '';
   let activeInstances = loadInstances();
   let thread = loadThread();
   let synthesis = loadSynthesis();
+  let backend = { available: false, base: '', mode: 'local specimen' };
 
   function loadIdentity() {
     const raw = localStorage.getItem(STORAGE_KEYS.identity);
@@ -124,7 +131,7 @@
   }
 
   function saveThread() {
-    localStorage.setItem(STORAGE_KEYS.thread, JSON.stringify(thread.slice(-30)));
+    localStorage.setItem(STORAGE_KEYS.thread, JSON.stringify(thread.slice(-50)));
   }
 
   function loadSynthesis() {
@@ -150,14 +157,21 @@
       .replaceAll("'", '&#039;');
   }
 
+  function canonicalRoleOrder(roles) {
+    return DEFAULT_INSTANCE_ORDER.filter((role) => roles.includes(role));
+  }
+
   function renderIdentity() {
     identityEmail.value = identity.email || '';
     identityHandle.value = identity.handle || '';
 
     if (identity.handle || identity.email) {
-      identityState.innerHTML = `<strong>${escapeHtml(identity.handle || 'Visitor')}</strong><br>${escapeHtml(identity.email || 'local chamber shell identity active')}`;
+      const mode = backend.available ? 'connected' : 'local';
+      identityState.innerHTML = `<strong>${escapeHtml(identity.handle || 'Visitor')}</strong><br>${escapeHtml(identity.email || 'local chamber shell identity active')}<br><small>${escapeHtml(mode)} mode</small>`;
     } else {
-      identityState.textContent = 'No chamber identity stored yet. Enter a handle to anchor your presence in this shell.';
+      identityState.textContent = backend.available
+        ? 'No session active yet. Enter a handle and email to join the shared room.'
+        : 'No chamber identity stored yet. Enter a handle to anchor your presence in this shell.';
     }
   }
 
@@ -178,19 +192,6 @@
       card.querySelector('button').addEventListener('click', () => toggleInstance(instance.id));
       rosterRoot.appendChild(card);
     });
-  }
-
-  function toggleInstance(instanceId) {
-    const active = activeInstances.includes(instanceId);
-    if (active) {
-      activeInstances = activeInstances.filter((item) => item !== instanceId);
-    } else {
-      if (activeInstances.length >= 3) return;
-      activeInstances = [...activeInstances, instanceId];
-    }
-    saveInstances();
-    renderRoster();
-    updatePulse();
   }
 
   function renderThread() {
@@ -217,7 +218,8 @@
     const count = activeInstances.length;
     const handle = identity.handle || 'Visitor';
     modePill.textContent = count > 1 ? 'Mode: Council' : count === 1 ? 'Mode: Focused dialogue' : 'Mode: Human-only';
-    pulsePill.textContent = `Pulse: ${handle} with ${count} attached ${count === 1 ? 'instance' : 'instances'}`;
+    const source = backend.available ? 'shared room' : 'local specimen';
+    pulsePill.textContent = `Pulse: ${handle} with ${count} attached ${count === 1 ? 'instance' : 'instances'} / ${source}`;
   }
 
   function inferTopic(message) {
@@ -266,73 +268,260 @@
     return `The round converges on the same core: make the chamber feel inhabited, governed, and returnable.`;
   }
 
-  function addEntry(entry) {
-    thread = [...thread, entry].slice(-30);
-    saveThread();
-    renderThread();
-  }
-
-  function postRound(message) {
+  function localPostRound(message) {
     const handle = identity.handle || 'Visitor';
-    addEntry({
+    const entries = [{
       id: crypto.randomUUID(),
       kind: 'human',
       author: handle,
       title: 'Human post',
       text: message,
       createdAt: new Date().toISOString()
+    }];
+
+    canonicalRoleOrder(activeInstances).forEach((instanceId) => {
+      const instance = instanceDefs.find((item) => item.id === instanceId);
+      entries.push({
+        id: crypto.randomUUID(),
+        kind: `ai-${instanceId}`,
+        author: instance.title,
+        title: `${instance.title} / chamber response`,
+        text: roleResponse(instanceId, message),
+        createdAt: new Date().toISOString()
+      });
     });
 
-    let delay = 220;
-    activeInstances.forEach((instanceId) => {
-      window.setTimeout(() => {
-        const instance = instanceDefs.find((item) => item.id === instanceId);
-        addEntry({
-          id: crypto.randomUUID(),
-          kind: `ai-${instanceId}`,
-          author: instance.title,
-          title: `${instance.title} / chamber response`,
-          text: roleResponse(instanceId, message),
-          createdAt: new Date().toISOString()
-        });
-      }, delay);
-      delay += 260;
-    });
-
-    window.setTimeout(() => {
-      synthesis = synthesisResponse(message, handle);
-      saveSynthesis();
-      renderSynthesis();
-    }, delay + 120);
+    thread = [...thread, ...entries].slice(-50);
+    synthesis = synthesisResponse(message, handle);
+    saveThread();
+    saveSynthesis();
+    renderThread();
+    renderSynthesis();
   }
 
-  identityForm.addEventListener('submit', (event) => {
+  function normalizeMessage(message) {
+    let kind = 'human';
+    let title = 'Human post';
+    if (message.authorType === 'ai' && message.roleName) {
+      kind = `ai-${message.roleName}`;
+      title = `${message.authorLabel} / chamber response`;
+    }
+    if (message.authorType === 'synthesis') {
+      kind = 'ai-synthesizer';
+      title = 'Synthesis / gathered signal';
+    }
+
+    return {
+      id: message.messageId,
+      kind,
+      author: message.authorLabel,
+      title,
+      text: message.body,
+      createdAt: message.createdAt
+    };
+  }
+
+  async function detectBackend() {
+    const candidateSet = new Set();
+    const saved = localStorage.getItem(STORAGE_KEYS.apiBase);
+    if (saved) candidateSet.add(saved);
+    if (window.CHAMBER_API_BASE) candidateSet.add(window.CHAMBER_API_BASE);
+    if (window.location.origin && window.location.origin.startsWith('http')) {
+      candidateSet.add(window.location.origin);
+    }
+    candidateSet.add('http://localhost:8787');
+
+    for (const candidate of candidateSet) {
+      const base = candidate.replace(/\/$/, '');
+      try {
+        const response = await fetch(`${base}/health`, { headers: { Accept: 'application/json' } });
+        if (!response.ok) continue;
+        const payload = await response.json();
+        if (payload?.service === 'chamber-app-scaffold' && payload?.ok) {
+          localStorage.setItem(STORAGE_KEYS.apiBase, base);
+          return { available: true, base, mode: 'shared room' };
+        }
+      } catch (_error) {
+      }
+    }
+
+    return { available: false, base: '', mode: 'local specimen' };
+  }
+
+  async function fetchJson(path, options = {}) {
+    if (!backend.available || !backend.base) {
+      throw new Error('Backend unavailable');
+    }
+
+    const response = await fetch(`${backend.base}${path}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        ...(options.headers || {})
+      },
+      ...options
+    });
+
+    const payload = await response.json().catch(() => ({ ok: false, error: 'Invalid JSON response' }));
+    if (!response.ok || payload?.ok === false) {
+      throw new Error(payload?.error || `Request failed with status ${response.status}`);
+    }
+    return payload;
+  }
+
+  async function hydrateSession() {
+    if (!backend.available || !sessionToken) return false;
+    try {
+      const payload = await fetchJson(`/api/auth/session/${sessionToken}`);
+      identity = {
+        email: payload.user.email,
+        handle: payload.user.chamberHandle
+      };
+      activeInstances = canonicalRoleOrder(payload.user.attachedRoles || DEFAULT_INSTANCE_ORDER);
+      saveIdentity();
+      saveInstances();
+      renderIdentity();
+      renderRoster();
+      updatePulse();
+      return true;
+    } catch (_error) {
+      sessionToken = '';
+      localStorage.removeItem(STORAGE_KEYS.sessionToken);
+      return false;
+    }
+  }
+
+  async function loadBackendMessages() {
+    if (!backend.available) return false;
+    try {
+      const payload = await fetchJson(`/api/rooms/${PUBLIC_ROOM_SLUG}/messages`);
+      thread = (payload.messages || []).map(normalizeMessage);
+      if (!thread.length) {
+        thread = seedThread;
+      }
+      const latestSynthesis = [...(payload.messages || [])].reverse().find((message) => message.authorType === 'synthesis');
+      synthesis = latestSynthesis?.body || defaultSynthesis;
+      saveThread();
+      saveSynthesis();
+      renderThread();
+      renderSynthesis();
+      return true;
+    } catch (_error) {
+      return false;
+    }
+  }
+
+  async function toggleInstance(instanceId) {
+    const active = activeInstances.includes(instanceId);
+    let nextRoles;
+    if (active) {
+      nextRoles = activeInstances.filter((item) => item !== instanceId);
+    } else {
+      if (activeInstances.length >= 3) return;
+      nextRoles = canonicalRoleOrder([...activeInstances, instanceId]);
+    }
+
+    if (backend.available && sessionToken) {
+      try {
+        const payload = await fetchJson(`/api/auth/session/${sessionToken}/roles`, {
+          method: 'PATCH',
+          body: JSON.stringify({ roles: nextRoles })
+        });
+        activeInstances = canonicalRoleOrder(payload.user.attachedRoles || nextRoles);
+      } catch (_error) {
+        return;
+      }
+    } else {
+      activeInstances = nextRoles;
+    }
+
+    saveInstances();
+    renderRoster();
+    updatePulse();
+  }
+
+  identityForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     identity = {
       email: identityEmail.value.trim(),
       handle: identityHandle.value.trim()
     };
+
+    if (!identity.email || !identity.handle) {
+      renderIdentity();
+      return;
+    }
+
+    if (backend.available) {
+      try {
+        const payload = await fetchJson('/api/auth/signup', {
+          method: 'POST',
+          body: JSON.stringify({
+            email: identity.email,
+            displayName: identity.handle,
+            chamberHandle: identity.handle
+          })
+        });
+        sessionToken = payload.session.sessionToken;
+        localStorage.setItem(STORAGE_KEYS.sessionToken, sessionToken);
+        activeInstances = canonicalRoleOrder(payload.user.attachedRoles || DEFAULT_INSTANCE_ORDER);
+        await loadBackendMessages();
+      } catch (error) {
+        identityState.textContent = error instanceof Error ? error.message : 'Unable to enter chamber';
+        return;
+      }
+    }
+
     saveIdentity();
+    saveInstances();
     renderIdentity();
+    renderRoster();
     updatePulse();
   });
 
   identityClear.addEventListener('click', () => {
     identity = { email: '', handle: '' };
+    sessionToken = '';
+    localStorage.removeItem(STORAGE_KEYS.sessionToken);
     saveIdentity();
     renderIdentity();
     updatePulse();
   });
 
-  composerForm.addEventListener('submit', (event) => {
+  composerForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     const message = composerInput.value.trim();
     if (!message) return;
-    postRound(message);
+
+    if (backend.available) {
+      if (!sessionToken) {
+        identityState.textContent = 'Enter the chamber with email and handle before posting to the shared room.';
+        return;
+      }
+
+      try {
+        await fetchJson(`/api/rooms/${PUBLIC_ROOM_SLUG}/messages`, {
+          method: 'POST',
+          body: JSON.stringify({ sessionToken, body: message })
+        });
+        await loadBackendMessages();
+      } catch (error) {
+        identityState.textContent = error instanceof Error ? error.message : 'Unable to post to chamber';
+        return;
+      }
+    } else {
+      localPostRound(message);
+    }
+
     composerInput.value = '';
   });
 
-  resetThread.addEventListener('click', () => {
+  resetThread.addEventListener('click', async () => {
+    if (backend.available) {
+      await loadBackendMessages();
+      return;
+    }
+
     thread = seedThread;
     synthesis = defaultSynthesis;
     saveThread();
@@ -341,9 +530,22 @@
     renderSynthesis();
   });
 
-  renderIdentity();
-  renderRoster();
-  renderThread();
-  renderSynthesis();
-  updatePulse();
+  async function init() {
+    backend = await detectBackend();
+    renderIdentity();
+    renderRoster();
+    renderThread();
+    renderSynthesis();
+    updatePulse();
+
+    if (backend.available) {
+      await hydrateSession();
+      await loadBackendMessages();
+      renderIdentity();
+      renderRoster();
+      updatePulse();
+    }
+  }
+
+  init();
 })();
