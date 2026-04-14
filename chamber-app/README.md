@@ -3,12 +3,13 @@
 This directory is the first actual backend scaffold for auth and shared room persistence behind the public Chamber shell.
 
 ## Status
-Scaffold only.
+Scaffold only, now with switchable persistence modes.
 
-It is intended to do three things now:
+It is intended to do four things now:
 - create a narrow backend lane for light account behavior
 - provide one shared public room
 - provide a posting surface that returns a full round payload with ordered role replies and synthesis
+- allow the backend to run in either memory mode or Postgres mode
 
 It is **not** yet a production backend.
 
@@ -24,19 +25,33 @@ It is **not** yet a production backend.
   - human post
   - role replies in order
   - synthesis
+- switchable store factory
+- memory store
+- Postgres store scaffold
 
-## Current persistence model
-This scaffold uses an in-memory store.
+## Persistence modes
+### Memory
+- no database required
+- resets on restart
+- best for quick local iteration
 
-That means:
-- data resets on server restart
-- sessions reset on server restart
-- it is useful for implementation flow, not production durability
+### Postgres
+- requires `DATABASE_URL`
+- persists users, sessions, room messages, role attachments, and synthesis-backed room history
+- is the first durable path for shared Chamber use
 
-The next layer is to replace the memory store with the SQL schema in `../chamber_data_model_r1.sql`.
+## Current durable path
+The durable route is:
+- apply `../chamber_data_model_r1.sql`
+- apply `../chamber_sessions_extension_r1.sql`
+- run the app with `CHAMBER_STORE_MODE=postgres`
 
 ## Environment
 Copy `.env.example` to `.env` and adjust if needed.
+
+Important values:
+- `CHAMBER_STORE_MODE=memory|postgres`
+- `DATABASE_URL=...` when using Postgres
 
 ## Run
 ```bash
@@ -83,3 +98,6 @@ Default server:
 ## Design note
 This scaffold is deliberately narrow.
 It exists to make the Chamber shared and account-backed before chasing multi-room sprawl or provider-diverse multibot routing.
+
+The next quality threshold after this pass is not more conceptual expansion.
+It is verifying the Postgres mode end-to-end against the live Chamber shell.
