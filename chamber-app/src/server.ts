@@ -6,14 +6,26 @@ import { ChamberMemoryStore } from './store.js';
 import type { ChamberRole } from './types.js';
 
 const port = Number(process.env.PORT || 8787);
-const origin = process.env.CHAMBER_APP_ORIGIN || `http://localhost:${port}`;
 const publicRoomSlug = process.env.CHAMBER_PUBLIC_ROOM_SLUG || 'public-room-one';
 const sessionTtlHours = Number(process.env.SESSION_TTL_HOURS || 168);
+const allowedOrigins = (process.env.CHAMBER_ALLOWED_ORIGINS || '')
+  .split(',')
+  .map((value) => value.trim())
+  .filter(Boolean);
 
 const store = new ChamberMemoryStore(publicRoomSlug);
 const app = express();
 
-app.use(cors({ origin: true, credentials: true }));
+app.use(cors({
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
+      callback(null, true);
+      return;
+    }
+    callback(new Error('Origin not allowed by Chamber scaffold CORS policy'));
+  },
+  credentials: true
+}));
 app.use(express.json());
 
 const signUpSchema = z.object({
@@ -48,12 +60,16 @@ function getActor(sessionToken: string) {
   return actor;
 }
 
+function roomPath(suffix = ''): string {
+  return `/api/rooms/${publicRoomSlug}${suffix}`;
+}
+
 app.get('/health', (_req, res) => {
   res.json({
     ok: true,
     service: 'chamber-app-scaffold',
-    origin,
     publicRoomSlug,
+    allowedOrigins,
     health: store.health()
   });
 });
@@ -108,15 +124,15 @@ app.patch('/api/auth/session/:sessionToken/roles', (req, res) => {
   return res.json({ ok: true, user });
 });
 
-app.get('/api/rooms/public-room-one', (_req, res) => {
+app.get(roomPath(), (_req, res) => {
   res.json({ ok: true, room: store.getPublicRoom() });
 });
 
-app.get('/api/rooms/public-room-one/messages', (_req, res) => {
+app.get(roomPath('/messages'), (_req, res) => {
   res.json({ ok: true, room: store.getPublicRoom(), messages: store.getMessages() });
 });
 
-app.post('/api/rooms/public-room-one/messages', (req, res) => {
+app.post(roomPath('/messages'), (req, res) => {
   const parsed = postSchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({ ok: false, error: parsed.error.flatten() });
