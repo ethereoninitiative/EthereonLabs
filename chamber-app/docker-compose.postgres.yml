@@ -1,0 +1,23 @@
+services:
+  chamber-postgres:
+    image: postgres:16
+    container_name: chamber-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: chamber
+      POSTGRES_USER: chamber
+      POSTGRES_PASSWORD: chamber
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U chamber -d chamber"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - chamber_postgres_data:/var/lib/postgresql/data
+      - ../chamber_data_model_r1.sql:/docker-entrypoint-initdb.d/001_chamber_data_model.sql:ro
+      - ../chamber_sessions_extension_r1.sql:/docker-entrypoint-initdb.d/002_chamber_sessions_extension.sql:ro
+
+volumes:
+  chamber_postgres_data:
