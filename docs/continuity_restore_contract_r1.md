@@ -29,6 +29,7 @@ A restore point carries:
 - last completed action
 - workspace state
 - continuation notes
+- optional linked host bundle path
 
 ## Why this matters
 
@@ -39,6 +40,19 @@ After this step, the runtime can answer a more Lumina-native question:
 
 That is the first believable doorway into continuity restore.
 
+## Workspace host handshake
+
+With `lumina_workspace_host_spike_r1.py` present, continuity restore may now also resolve an optional host bundle for the same project id.
+
+That does **not** turn continuity restore into full host orchestration.
+It simply means project return can now distinguish between:
+
+- `checkpoint_only`
+- `checkpoint_plus_host`
+
+The continuity layer still owns checkpoint truth.
+The host layer still owns the bounded workspace surface.
+
 ## Deliberate limits
 
 This version does **not** yet include:
@@ -48,6 +62,7 @@ This version does **not** yet include:
 - cross-application orchestration
 - adaptive layout behavior
 - inference-heavy next-step prediction
+- real UI rendering
 
 Those can come later.
 The current aim is structural clarity, lawful capture, and reproducible project return.
