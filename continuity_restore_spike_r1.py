@@ -50,6 +50,7 @@ class ProjectRestorePoint:
     workspace_state: Dict[str, Any] = field(default_factory=dict)
     continuation_notes: List[str] = field(default_factory=list)
     last_checkpoint: Optional[str] = None
+    linked_host_bundle: Optional[str] = None
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -64,6 +65,7 @@ class ContinuityRestoreStore:
         self.checkpoint_dir = self.base_dir / "checkpoints"
         self.restore_history_dir = self.base_dir / "project_restores" / "history"
         self.restore_latest_dir = self.base_dir / "project_restores" / "latest"
+        self.host_bundle_dir = self.base_dir / "host_bundles"
         self.session_dir.mkdir(parents=True, exist_ok=True)
         self.checkpoint_dir.mkdir(parents=True, exist_ok=True)
         self.restore_history_dir.mkdir(parents=True, exist_ok=True)
@@ -86,6 +88,9 @@ class ContinuityRestoreStore:
 
     def restore_history_path(self, project_id: str, restore_id: str) -> Path:
         return self.restore_history_dir / f"{self._safe_slug(project_id)}__{restore_id}.json"
+
+    def host_bundle_path(self, project_id: str) -> Path:
+        return self.host_bundle_dir / f"{self._safe_slug(project_id)}.json"
 
     def create_session(
         self,
@@ -151,6 +156,7 @@ class ContinuityRestoreStore:
 
     def capture_restore(self, *, session_id: str, checkpoint_path: str | Path) -> ProjectRestorePoint:
         state = self.load_session(session_id)
+        host_bundle = self.resolve_host_bundle(state.project_id)
         restore = ProjectRestorePoint(
             restore_id=str(uuid.uuid4()),
             project_id=state.project_id,
@@ -164,6 +170,7 @@ class ContinuityRestoreStore:
             workspace_state=dict(state.workspace_state),
             continuation_notes=list(state.continuation_notes),
             last_checkpoint=state.last_checkpoint,
+            linked_host_bundle=str(self.host_bundle_path(state.project_id)) if host_bundle is not None else None,
         )
         history_path = self.restore_history_path(state.project_id, restore.restore_id)
         latest_path = self.latest_restore_path(state.project_id)
@@ -178,7 +185,28 @@ class ContinuityRestoreStore:
         if not path.exists():
             return None
         with path.open("r", encoding="utf-8") as f:
-            return ProjectRestorePoint(**json.load(f))
+            payload = json.load(f)
+        payload.setdefault("linked_host_bundle", None)
+        return ProjectRestorePoint(**payload)
+
+    def resolve_host_bundle(self, project_id: str) -> Optional[Dict[str, Any]]:
+        path = self.host_bundle_path(project_id)
+        if not path.exists():
+            return None
+        with path.open("r", encoding="utf-8") as f:
+            return json.load(f)
+
+    def project_return_payload(self, project_id: str) -> Dict[str, Any]:
+        restore = self.resolve_latest_restore(project_id)
+        host_bundle = self.resolve_host_bundle(project_id)
+        if restore is None:
+            raise FileNotFoundError(f"No restore point found for project_id={project_id}")
+        return {
+            "project_id": project_id,
+            "return_strategy": "checkpoint_plus_host" if host_bundle is not None else "checkpoint_only",
+            "latest_restore": restore.to_dict(),
+            "host_bundle": host_bundle,
+        }
 
     def resume_from_checkpoint(self, checkpoint_path: str | Path) -> SessionState:
         with Path(checkpoint_path).open("r", encoding="utf-8") as f:
@@ -194,6 +222,20 @@ class ContinuityRestoreStore:
             raise FileNotFoundError(f"No restore point found for project_id={project_id}")
         return self.resume_from_checkpoint(restore.checkpoint_path)
 
+    def resume_project_workspace(self, project_id: str) -> Dict[str, Any]:
+        restore = self.resolve_latest_restore(project_id)
+        if restore is None:
+            raise FileNotFoundError(f"No restore point found for project_id={project_id}")
+        resumed_state = self.resume_from_checkpoint(restore.checkpoint_path)
+        host_bundle = self.resolve_host_bundle(project_id)
+        return {
+            "project_id": project_id,
+            "resumed_session": resumed_state.to_dict(),
+            "latest_restore": restore.to_dict(),
+            "host_bundle": host_bundle,
+            "return_strategy": "checkpoint_plus_host" if host_bundle is not None else "checkpoint_only",
+        }
+
 
 if __name__ == "__main__":
     store = ContinuityRestoreStore("./continuity_restore_demo")
@@ -207,5 +249,5 @@ if __name__ == "__main__":
     session.last_completed_action = "tool:context_bundle"
     store.save_session(session)
     store.write_checkpoint(session.session_id, "continuity_restore_smoke_test")
-    latest = store.resolve_latest_restore("lumina-core")
-    print(json.dumps(latest.to_dict() if latest else {}, indent=2))
+    payload = store.project_return_payload("lumina-core")
+    print(json.dumps(payload, indent=2))
