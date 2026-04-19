@@ -15,17 +15,19 @@ This folder is the GitHub bootstrap import for beginning **Lumina OS** from the 
 - Ethereonic layer registry helper
 - Psi-42 transceiver
 - sea-trials runner
+- repo-native project return proof
+- repo-native workspace host proof
 
 ## Current status
 
 The core substrate is now present on `main`.
 
-The remaining hardening priority is to make the bootstrap feel like a real repository checkout rather than a ChatGPT-container snapshot:
+The repo-native layer now includes first proofs that Lumina can:
 
-- repo-relative state and artifact paths
-- package-oriented intra-runtime imports
-- fuller Ψ-42 fidelity where possible
-- docs aligned to the live bootstrap state
+- return to the latest known state of a project without guessing
+- return with a bounded working surface around that project
+
+The remaining hardening priority is to absorb those return / host fields more deeply into the main runtime flow so active working stance becomes first-class runtime behavior rather than adjacent proof modules.
 
 ## Intent
 

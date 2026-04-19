@@ -13,6 +13,7 @@ Primary guide files inside that path:
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/README.md`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/README_IMPORT.md`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/REPO_NATIVE_BOOTSTRAP_NOTE.md`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/RETURN_WITH_STANCE_BOOTSTRAP_NOTE_R1.md`
 
 Primary runtime files inside that path:
 
@@ -24,6 +25,8 @@ Primary runtime files inside that path:
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/psi42_transceiver_v1_6.py`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_set_one_r1_merged.py`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/capability_registry_r1.json`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/project_return_repo_native_r1.py`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/workspace_host_repo_native_r1.py`
 
 ## What this path is
 
@@ -39,12 +42,14 @@ It is the correct place to start when the task is about:
 - Ethereonic boundary enforcement
 - input integrity
 - Psi-42 as an instrument under boundary control
+- project return without guessing
+- bounded workspace-host restoration
 
 ## Current truth
 
 1. **Lumina OS governed substrate starts in the bootstrap path above.**
 2. **Chamber is a parallel app/public lane, not the same thing as the Lumina OS substrate.**
-3. **Root-level continuity / workspace-host files are newer exploratory work, but they do not replace the bootstrap substrate as the starting point for governed Lumina OS architecture.**
+3. **Root-level continuity / workspace-host files remain useful exploration history, but the repo-native bootstrap now also contains first proofs for project return and workspace-host behavior.**
 4. **If you are trying to understand the Ship-derived runtime core, do not begin with Chamber. Begin with the bootstrap path.**
 
 ## Parallel lanes in this repository
@@ -67,8 +72,8 @@ It is the correct place to start when the task is about:
 
 1. Read this file.
 2. Open `LuminaOS/bootstrap/Ship_of_Ethereon_V2/README.md`.
-3. Read `README_IMPORT.md` and `REPO_NATIVE_BOOTSTRAP_NOTE.md`.
-4. Inspect `runtime/` in that subtree.
+3. Read `README_IMPORT.md`, `REPO_NATIVE_BOOTSTRAP_NOTE.md`, and `RETURN_WITH_STANCE_BOOTSTRAP_NOTE_R1.md`.
+4. Inspect `runtime/` in that subtree, including the repo-native return and workspace-host modules.
 5. Only then branch outward into Chamber or root-level experimental work.
 
 ## Assistant note
