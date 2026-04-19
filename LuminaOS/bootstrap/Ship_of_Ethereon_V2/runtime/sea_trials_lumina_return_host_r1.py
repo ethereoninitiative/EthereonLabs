@@ -6,11 +6,9 @@ import json
 import shutil
 
 try:
-    from .continuity_restore_spike_r1 import ContinuityRestoreStore
-    from .lumina_workspace_host_spike_r1 import LuminaWorkspaceHost
+    from .lumina_return_host_repo_native_bridge_r1 import ContinuityRestoreStore, LuminaWorkspaceHost
 except Exception:
-    from continuity_restore_spike_r1 import ContinuityRestoreStore
-    from lumina_workspace_host_spike_r1 import LuminaWorkspaceHost
+    from lumina_return_host_repo_native_bridge_r1 import ContinuityRestoreStore, LuminaWorkspaceHost
 
 try:
     from .repo_paths_r1 import state_root as _state_root_helper
@@ -60,11 +58,12 @@ def main() -> Dict[str, Any]:
         project_id=project_id,
         mode="Continuity",
         artifacts_in_scope=[
-            "continuity_restore_spike_r1.py",
-            "lumina_workspace_host_spike_r1.py",
+            "project_return_repo_native_r1.py",
+            "workspace_host_repo_native_r1.py",
+            "lumina_return_host_repo_native_bridge_r1.py",
         ],
         workspace_state={"open_panels": ["notes"]},
-        continuation_notes=["verify checkpoint-only return before host handshake"],
+        continuation_notes=["verify checkpoint-only return before repo-native host handshake"],
     )
     checkpoint_one = continuity.write_checkpoint(session.session_id, "checkpoint_only_probe")
     payload_one = continuity.project_return_payload(project_id)
@@ -75,8 +74,9 @@ def main() -> Dict[str, Any]:
         active_layout_id="studio-focus",
         focus_target="lumina-return-lane",
         artifacts_in_scope=[
-            "continuity_restore_spike_r1.py",
-            "lumina_workspace_host_spike_r1.py",
+            "project_return_repo_native_r1.py",
+            "workspace_host_repo_native_r1.py",
+            "lumina_return_host_repo_native_bridge_r1.py",
         ],
         linked_restore_checkpoint=str(checkpoint_one),
         continuation_notes=["host bundle should remain workspace-owned"],
@@ -92,9 +92,9 @@ def main() -> Dict[str, Any]:
     )
     host.bind_tool(
         host_session.host_session_id,
-        tool_id="restore-latest",
-        label="Restore Latest Project State",
-        launch_target="continuity_restore_spike_r1.py::resume_project",
+        tool_id="resolve-latest-project-return",
+        label="Resolve Latest Project Return Payload",
+        launch_target="project_return_repo_native_r1.py::project_return_payload",
         context_keys=["project_id"],
         pinned=True,
     )
@@ -137,7 +137,7 @@ def main() -> Dict[str, Any]:
     }
 
     summary = {
-        "suite": "Lumina Return / Host Handshake Sea Trial r1",
+        "suite": "Lumina Return / Host Handshake Sea Trial r2",
         "passed": all(checkpoint_only_checks.values()) and all(handshake_checks.values()) and all(governance_boundary_checks.values()),
         "project_id": project_id,
         "checkpoint_one": str(checkpoint_one),
