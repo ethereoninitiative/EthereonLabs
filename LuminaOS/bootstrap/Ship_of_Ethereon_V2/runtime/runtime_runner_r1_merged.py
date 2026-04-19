@@ -40,19 +40,12 @@ except Exception:
         EthereonicLayerRegistry = None
 
 try:
-    from .continuity_restore_spike_r1 import ContinuityRestoreStore
+    from .lumina_return_host_repo_native_bridge_r1 import ContinuityRestoreStore, LuminaWorkspaceHost
 except Exception:
     try:
-        from continuity_restore_spike_r1 import ContinuityRestoreStore
+        from lumina_return_host_repo_native_bridge_r1 import ContinuityRestoreStore, LuminaWorkspaceHost
     except Exception:
         ContinuityRestoreStore = None
-
-try:
-    from .lumina_workspace_host_spike_r1 import LuminaWorkspaceHost
-except Exception:
-    try:
-        from lumina_workspace_host_spike_r1 import LuminaWorkspaceHost
-    except Exception:
         LuminaWorkspaceHost = None
 
 
@@ -75,8 +68,10 @@ REGISTRY_PATH = RUNTIME_ROOT / "capability_registry_r1.json"
 DEFAULT_ARTIFACTS = [
     "runtime_spine_r1.py",
     "runtime_runner_r1_merged.py",
-    "continuity_restore_spike_r1.py",
-    "lumina_workspace_host_spike_r1.py",
+    "runtime_runner_return_host_bridge_r1.py",
+    "project_return_repo_native_r1.py",
+    "workspace_host_repo_native_r1.py",
+    "lumina_return_host_repo_native_bridge_r1.py",
     "sea_trials_set_one_r1_merged.py",
     "sea_trials_lumina_return_host_r1.py",
     "capability_registry_r1.json",
@@ -397,9 +392,9 @@ class RuntimeRunner:
         )
         host.bind_tool(
             host_session.host_session_id,
-            tool_id="restore-latest",
-            label="Restore Latest Project State",
-            launch_target="continuity_restore_spike_r1.py::resume_project",
+            tool_id="resolve-latest-project-return",
+            label="Resolve Latest Project Return Payload",
+            launch_target="project_return_repo_native_r1.py::project_return_payload",
             context_keys=["project_id"],
             pinned=True,
         )
