@@ -1,6 +1,6 @@
 {
-  "version": "0.3",
-  "description": "Minimal capability registry for the Ethereon Runtime Spine, including registered experimental transceiver support and input integrity assessment.",
+  "version": "0.4",
+  "description": "Minimal capability registry for the Ethereon Runtime Spine, now including continuity restore and workspace-host handshake support under explicit authority boundaries.",
   "capabilities": [
     {
       "capability_id": "session_state_manager",
@@ -76,6 +76,47 @@
       "authority_boundary": "May annotate ambiguity, score candidate interpretations, and recommend clarification or halt behavior. May not alter governance law, canon state, or execute mutating actions on inferred intent alone.",
       "dependencies": [],
       "feature_flag": null
+    },
+    {
+      "capability_id": "continuity_restore_store",
+      "name": "Continuity Restore Store",
+      "module_path": "continuity_restore_spike_r1.py",
+      "status": "experimental-active",
+      "category": "structural",
+      "allowed_modes": [
+        "Continuity",
+        "Sandbox",
+        "DryDock",
+        "Observation",
+        "Canon"
+      ],
+      "mutation_scope": "checkpoint",
+      "requires_validation": false,
+      "authority_boundary": "Owns project-scoped restore capture, latest-restore resolution, and checkpoint-linked return payloads only. Does not own governance law, canon lineage, or mode legality.",
+      "dependencies": [
+        "session_state_manager"
+      ],
+      "feature_flag": "ETHEREON_CONTINUITY_RESTORE"
+    },
+    {
+      "capability_id": "lumina_workspace_host",
+      "name": "Lumina Workspace Host",
+      "module_path": "lumina_workspace_host_spike_r1.py",
+      "status": "experimental-active",
+      "category": "structural",
+      "allowed_modes": [
+        "Continuity",
+        "Sandbox",
+        "DryDock",
+        "Observation"
+      ],
+      "mutation_scope": "workspace",
+      "requires_validation": false,
+      "authority_boundary": "Owns bounded workspace panels, tool bindings, references, host snapshots, and host bundles only. Does not own governance law, canon lineage, checkpoint truth, or mode legality.",
+      "dependencies": [
+        "continuity_restore_store"
+      ],
+      "feature_flag": "ETHEREON_LUMINA_HOST"
     },
     {
       "capability_id": "continuity_assessor",
