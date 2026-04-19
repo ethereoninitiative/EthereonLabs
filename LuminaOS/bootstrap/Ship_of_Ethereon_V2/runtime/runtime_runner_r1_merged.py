@@ -39,11 +39,33 @@ except Exception:
     except Exception:
         EthereonicLayerRegistry = None
 
+try:
+    from .continuity_restore_spike_r1 import ContinuityRestoreStore
+except Exception:
+    try:
+        from continuity_restore_spike_r1 import ContinuityRestoreStore
+    except Exception:
+        ContinuityRestoreStore = None
 
-RUNTIME_SEED_VERSION = "0.3"
+try:
+    from .lumina_workspace_host_spike_r1 import LuminaWorkspaceHost
+except Exception:
+    try:
+        from lumina_workspace_host_spike_r1 import LuminaWorkspaceHost
+    except Exception:
+        LuminaWorkspaceHost = None
+
+
+RUNTIME_SEED_VERSION = "0.4"
+DEFAULT_EXPERIMENTAL_FEATURE_FLAGS = [
+    "ETHEREON_CONTINUITY_RESTORE",
+    "ETHEREON_LUMINA_HOST",
+]
+
 
 def _repo_root() -> Path:
     return Path(__file__).resolve().parents[4]
+
 
 RUNTIME_ROOT = _repo_root() / "LuminaOS" / "bootstrap" / "Ship_of_Ethereon_V2" / "runtime"
 STATE_ROOT = _repo_root() / ".lumina_state" / "ship_of_ethereon_v2"
@@ -53,7 +75,10 @@ REGISTRY_PATH = RUNTIME_ROOT / "capability_registry_r1.json"
 DEFAULT_ARTIFACTS = [
     "runtime_spine_r1.py",
     "runtime_runner_r1_merged.py",
+    "continuity_restore_spike_r1.py",
+    "lumina_workspace_host_spike_r1.py",
     "sea_trials_set_one_r1_merged.py",
+    "sea_trials_lumina_return_host_r1.py",
     "capability_registry_r1.json",
     "input_integrity_layer_r1.py",
     "governance_integrity_r1.py",
@@ -98,6 +123,7 @@ class RunnerResult:
     halted: bool = False
     halt_reason: Optional[str] = None
     probe_artifacts: Optional[Dict[str, Any]] = None
+    lumina_return_host_artifacts: Optional[Dict[str, Any]] = None
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -163,15 +189,27 @@ class RuntimeRunner:
             if EthereonicLayerRegistry is not None
             else None
         )
-        if self.ethereonic_layer_registry is not None and not (self.base_dir / "ethereonic_layer_registry_r1.json").exists():
-            # bootstrap from /mnt/data if needed
-            pass
         self.canon_lineage_store = CanonLineageStore(self.canon_lineage_path)
         self.context_builder = ContextBundleBuilder(
             self.base_dir / "context_bundles",
             ethereonic_layer_registry=self.ethereonic_layer_registry,
             canon_lineage_store=self.canon_lineage_store,
         )
+        self._active_session_id: Optional[str] = None
+
+    @staticmethod
+    def _safe_slug(value: str) -> str:
+        slug = "".join(c if c.isalnum() or c in "-_" else "_" for c in value.strip())
+        return slug or "lumina-core"
+
+    def _resolve_enabled_feature_flags(self, enabled_feature_flags: Optional[List[str]]) -> List[str]:
+        if enabled_feature_flags is None:
+            return list(DEFAULT_EXPERIMENTAL_FEATURE_FLAGS)
+        merged = list(enabled_feature_flags)
+        for flag in DEFAULT_EXPERIMENTAL_FEATURE_FLAGS:
+            if flag not in merged:
+                merged.append(flag)
+        return merged
 
     def _append_governance_event(
         self,
@@ -283,6 +321,112 @@ class RuntimeRunner:
         snapshot = self.ethereonic_layer_registry.runtime_snapshot()
         return list(snapshot.get("active_artifact_ids", []))
 
+    def _resolve_lumina_project_id(self, project_id: Optional[str], requested_action: str, raw_user_input: Optional[str]) -> str:
+        if project_id:
+            return self._safe_slug(project_id)
+        if raw_user_input:
+            return self._safe_slug(raw_user_input[:80])
+        return self._safe_slug(requested_action)
+
+    def _maybe_run_lumina_return_host(
+        self,
+        *,
+        target_mode: str,
+        requested_action: str,
+        raw_user_input: Optional[str],
+        project_id: Optional[str],
+        exposed_capabilities: List[Dict[str, Any]],
+        artifacts_in_scope: List[str],
+    ) -> Optional[Dict[str, Any]]:
+        if ContinuityRestoreStore is None:
+            return None
+        capability_ids = {cap.get("capability_id") for cap in exposed_capabilities}
+        if "continuity_restore_store" not in capability_ids:
+            return None
+
+        resolved_project_id = self._resolve_lumina_project_id(project_id, requested_action, raw_user_input)
+        run_slug = self._safe_slug(f"{resolved_project_id}_{requested_action}_{target_mode}")
+        base_dir = self.base_dir / "lumina_return_host_artifacts" / (self._active_session_id or "session") / run_slug
+
+        continuity = ContinuityRestoreStore(base_dir)
+        session = continuity.create_session(
+            project_id=resolved_project_id,
+            mode=target_mode,
+            artifacts_in_scope=list(artifacts_in_scope),
+            workspace_state={"active_mode": target_mode, "requested_action": requested_action},
+            continuation_notes=[f"runtime cycle: {requested_action}"],
+        )
+        session.pending_next_action = f"continue from {requested_action}"
+        session.last_completed_action = f"runtime_cycle:{requested_action}"
+        continuity.save_session(session)
+
+        checkpoint_one = continuity.write_checkpoint(session.session_id, f"{requested_action}_{target_mode}_checkpoint_only")
+        payload_one = continuity.project_return_payload(resolved_project_id)
+
+        artifacts: Dict[str, Any] = {
+            "project_id": resolved_project_id,
+            "base_dir": str(base_dir),
+            "capability_ids": sorted(capability_ids & {"continuity_restore_store", "lumina_workspace_host"}),
+            "checkpoint_only": {
+                "checkpoint_path": str(checkpoint_one),
+                "payload": payload_one,
+            },
+        }
+
+        if "lumina_workspace_host" not in capability_ids or LuminaWorkspaceHost is None:
+            return artifacts
+
+        host = LuminaWorkspaceHost(base_dir)
+        host_session = host.create_host_session(
+            project_id=resolved_project_id,
+            mode=target_mode,
+            active_layout_id="runtime-cycle-layout",
+            focus_target=requested_action,
+            artifacts_in_scope=list(artifacts_in_scope),
+            linked_restore_checkpoint=str(checkpoint_one),
+            continuation_notes=["workspace host remains bounded and checkpoint-linked"],
+        )
+        host.upsert_panel(
+            host_session.host_session_id,
+            panel_id="runtime-summary",
+            panel_type="summary",
+            title="Runtime Summary",
+            zone="center",
+            priority=10,
+            payload={"requested_action": requested_action, "target_mode": target_mode},
+        )
+        host.bind_tool(
+            host_session.host_session_id,
+            tool_id="restore-latest",
+            label="Restore Latest Project State",
+            launch_target="continuity_restore_spike_r1.py::resume_project",
+            context_keys=["project_id"],
+            pinned=True,
+        )
+        host.attach_reference(
+            host_session.host_session_id,
+            reference_id="bootstrap-readme",
+            label="Bootstrap README",
+            source="LuminaOS/bootstrap/Ship_of_Ethereon_V2/README.md",
+            kind="runtime-reference",
+        )
+        host_snapshot = host.write_host_snapshot(
+            host_session.host_session_id,
+            last_completed_action=f"runtime_cycle:{requested_action}",
+        )
+        host_bundle = host.emit_host_bundle(resolved_project_id)
+
+        checkpoint_two = continuity.write_checkpoint(session.session_id, f"{requested_action}_{target_mode}_checkpoint_plus_host")
+        payload_two = continuity.project_return_payload(resolved_project_id)
+
+        artifacts["checkpoint_plus_host"] = {
+            "checkpoint_path": str(checkpoint_two),
+            "payload": payload_two,
+            "host_bundle": host_bundle,
+            "host_snapshot_id": host_snapshot.snapshot_id,
+        }
+        return artifacts
+
     def _maybe_run_psi42_probe(
         self,
         *,
@@ -349,6 +493,7 @@ class RuntimeRunner:
             exposed_capabilities=[],
             checkpoint_path=checkpoint,
             probe_artifacts=None,
+            lumina_return_host_artifacts=None,
             canon_lineage=None,
         )
         result.halted = True
@@ -374,6 +519,7 @@ class RuntimeRunner:
         repo_path: Optional[str | Path] = None,
         raw_user_input: Optional[str] = None,
         context_bundle_overrides: Optional[Dict[str, Any]] = None,
+        project_id: Optional[str] = None,
     ) -> RunnerResult:
         target_mode = target_mode or current_mode
         action_type = action_type.lower().strip()
@@ -383,8 +529,9 @@ class RuntimeRunner:
             raise ValueError("action_type='promotion' requires promotion_payload")
 
         artifacts = list(artifacts or DEFAULT_ARTIFACTS)
-        available_tools = list(available_tools or ["runtime_spine", "runtime_runner", "sea_trials", "capability_registry"])
+        available_tools = list(available_tools or ["runtime_spine", "runtime_runner", "sea_trials", "capability_registry", "continuity_restore", "lumina_workspace_host"])
         continuation_notes = list(continuation_notes or [])
+        enabled_feature_flags = self._resolve_enabled_feature_flags(enabled_feature_flags)
         load_bearing_action = action_type in {"transition", "mutation", "promotion"}
 
         session = self.session_engine.create_session(
@@ -415,7 +562,7 @@ class RuntimeRunner:
             reason="cycle initialized",
             requested_action=requested_action,
             action_type=action_type,
-            metadata={"context_bundle_id": context_bundle.bundle_id},
+            metadata={"context_bundle_id": context_bundle.bundle_id, "enabled_feature_flags": enabled_feature_flags},
         )
 
         if raw_user_input and self.input_integrity_assessor is not None:
@@ -624,6 +771,11 @@ class RuntimeRunner:
                 )
 
         exposed = self.registry.exposed_for_mode(target_mode, enabled_feature_flags=enabled_feature_flags)
+        governance["capability_exposure"] = {
+            "allowed": True,
+            "enabled_feature_flags": enabled_feature_flags,
+            "capability_ids": [cap.get("capability_id") for cap in exposed],
+        }
         self._append_governance_event(
             event_type="capability_exposure",
             session_id=session.session_id,
@@ -633,10 +785,18 @@ class RuntimeRunner:
             reason=f"exposed {len(exposed)} capabilities",
             requested_action=requested_action,
             action_type=action_type,
-            metadata={"capability_ids": [cap.get("capability_id") for cap in exposed]},
+            metadata={"capability_ids": [cap.get("capability_id") for cap in exposed], "enabled_feature_flags": enabled_feature_flags},
         )
 
         self._active_session_id = session.session_id
+        lumina_return_host_artifacts = self._maybe_run_lumina_return_host(
+            target_mode=target_mode,
+            requested_action=requested_action,
+            raw_user_input=raw_user_input,
+            project_id=project_id,
+            exposed_capabilities=exposed,
+            artifacts_in_scope=artifacts,
+        )
         probe_artifacts = self._maybe_run_psi42_probe(
             target_mode=target_mode,
             requested_action=requested_action,
@@ -644,6 +804,24 @@ class RuntimeRunner:
             exposed_capabilities=exposed,
         )
         self._active_session_id = None
+
+        if lumina_return_host_artifacts is not None:
+            self._append_governance_event(
+                event_type="lumina_return_host_execution",
+                session_id=session.session_id,
+                previous_mode=target_mode,
+                new_mode=target_mode,
+                allowed=True,
+                reason="executed lawful Lumina return/host handshake",
+                requested_action=requested_action,
+                action_type=action_type,
+                metadata={
+                    "project_id": lumina_return_host_artifacts.get("project_id"),
+                    "capability_ids": lumina_return_host_artifacts.get("capability_ids", []),
+                    "has_checkpoint_plus_host": "checkpoint_plus_host" in lumina_return_host_artifacts,
+                },
+            )
+
         if probe_artifacts is not None:
             self._append_governance_event(
                 event_type="probe_execution",
@@ -651,7 +829,7 @@ class RuntimeRunner:
                 previous_mode=target_mode,
                 new_mode=target_mode,
                 allowed=True,
-                reason="executed lawful Π-42 probe",
+                reason="executed lawful Ψ-42 probe",
                 requested_action=requested_action,
                 action_type=action_type,
                 metadata={
@@ -724,6 +902,7 @@ class RuntimeRunner:
             exposed_capabilities=exposed,
             checkpoint_path=checkpoint,
             probe_artifacts=probe_artifacts,
+            lumina_return_host_artifacts=lumina_return_host_artifacts,
             canon_lineage=canon_lineage_result,
         )
 
@@ -740,6 +919,7 @@ class RuntimeRunner:
         exposed_capabilities: List[Dict[str, Any]],
         checkpoint_path: str | Path,
         probe_artifacts: Optional[Dict[str, Any]],
+        lumina_return_host_artifacts: Optional[Dict[str, Any]],
         canon_lineage: Optional[Dict[str, Any]],
     ) -> RunnerResult:
         session_path = self.session_engine.session_path(session_id)
@@ -761,6 +941,7 @@ class RuntimeRunner:
             governance_chain_status=self._current_chain_status(),
             canon_lineage=canon_lineage or self._current_canon_metadata(),
             probe_artifacts=probe_artifacts,
+            lumina_return_host_artifacts=lumina_return_host_artifacts,
         )
         log_path = self.logs_dir / f"{result.run_id}.json"
         payload = result.to_dict()
@@ -779,6 +960,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--action-type", default="transition", choices=sorted(VALID_ACTION_TYPES))
     parser.add_argument("--target-is-canonical", action="store_true")
     parser.add_argument("--repo-path", default=None)
+    parser.add_argument("--project-id", default=None)
     parser.add_argument("--enable-flag", action="append", dest="feature_flags", default=[])
     parser.add_argument("--artifact", action="append", dest="artifacts", default=[])
     parser.add_argument("--note", action="append", dest="notes", default=[])
@@ -795,6 +977,7 @@ def _maybe_json(text: Optional[str]) -> Optional[Dict[str, Any]]:
     if not text:
         return None
     return json.loads(text)
+
 
 if __name__ == "__main__":
     args = parse_args()
@@ -815,5 +998,6 @@ if __name__ == "__main__":
         repo_path=args.repo_path,
         raw_user_input=args.raw_user_input,
         context_bundle_overrides=_maybe_json(args.context_overrides_json),
+        project_id=args.project_id,
     )
     print(json.dumps(result.to_dict(), indent=2))
