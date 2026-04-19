@@ -19,6 +19,7 @@ Primary runtime files inside that path:
 
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/runtime_spine_r1.py`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/runtime_runner_r1_merged.py`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/runtime_runner_return_host_bridge_r1.py`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/input_integrity_layer_r1.py`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/governance_integrity_r1.py`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/canon_lineage_store_r1.py`
@@ -27,6 +28,7 @@ Primary runtime files inside that path:
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/capability_registry_r1.json`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/project_return_repo_native_r1.py`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/workspace_host_repo_native_r1.py`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/lumina_return_host_repo_native_bridge_r1.py`
 
 ## What this path is
 
@@ -44,12 +46,13 @@ It is the correct place to start when the task is about:
 - Psi-42 as an instrument under boundary control
 - project return without guessing
 - bounded workspace-host restoration
+- bridge-based activation of repo-native return / host behavior
 
 ## Current truth
 
 1. **Lumina OS governed substrate starts in the bootstrap path above.**
 2. **Chamber is a parallel app/public lane, not the same thing as the Lumina OS substrate.**
-3. **Root-level continuity / workspace-host files remain useful exploration history, but the repo-native bootstrap now also contains first proofs for project return and workspace-host behavior.**
+3. **Root-level continuity / workspace-host files remain useful exploration history, but the repo-native bootstrap now contains both first proofs and a bridged runner path for project return and workspace-host behavior.**
 4. **If you are trying to understand the Ship-derived runtime core, do not begin with Chamber. Begin with the bootstrap path.**
 
 ## Parallel lanes in this repository
@@ -73,7 +76,7 @@ It is the correct place to start when the task is about:
 1. Read this file.
 2. Open `LuminaOS/bootstrap/Ship_of_Ethereon_V2/README.md`.
 3. Read `README_IMPORT.md`, `REPO_NATIVE_BOOTSTRAP_NOTE.md`, and `RETURN_WITH_STANCE_BOOTSTRAP_NOTE_R1.md`.
-4. Inspect `runtime/` in that subtree, including the repo-native return and workspace-host modules.
+4. Inspect `runtime/` in that subtree, including the repo-native return / workspace-host modules and the bridged runner.
 5. Only then branch outward into Chamber or root-level experimental work.
 
 ## Assistant note
