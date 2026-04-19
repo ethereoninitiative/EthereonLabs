@@ -1,0 +1,76 @@
+# Start Here — Lumina OS
+
+This file exists because the primary **Lumina OS** substrate is easy to miss if you enter this repository from the newest public-facing or experimental work.
+
+## Canonical start path
+
+Begin here:
+
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/`
+
+Primary guide files inside that path:
+
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/README.md`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/README_IMPORT.md`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/REPO_NATIVE_BOOTSTRAP_NOTE.md`
+
+Primary runtime files inside that path:
+
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/runtime_spine_r1.py`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/runtime_runner_r1_merged.py`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/input_integrity_layer_r1.py`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/governance_integrity_r1.py`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/canon_lineage_store_r1.py`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/psi42_transceiver_v1_6.py`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_set_one_r1_merged.py`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/capability_registry_r1.json`
+
+## What this path is
+
+This subtree is the governed bootstrap substrate imported from **Ship of Ethereon V2** into GitHub for beginning **Lumina OS** work.
+
+It is the correct place to start when the task is about:
+
+- runtime law
+- governance
+- canon lineage
+- continuity substrate
+- capability routing
+- Ethereonic boundary enforcement
+- input integrity
+- Psi-42 as an instrument under boundary control
+
+## Current truth
+
+1. **Lumina OS governed substrate starts in the bootstrap path above.**
+2. **Chamber is a parallel app/public lane, not the same thing as the Lumina OS substrate.**
+3. **Root-level continuity / workspace-host files are newer exploratory work, but they do not replace the bootstrap substrate as the starting point for governed Lumina OS architecture.**
+4. **If you are trying to understand the Ship-derived runtime core, do not begin with Chamber. Begin with the bootstrap path.**
+
+## Parallel lanes in this repository
+
+### Lumina OS governed substrate
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/`
+
+### Continuity / workspace-host exploration
+- `continuity_restore_spike_r1.py`
+- `lumina_workspace_host_spike_r1.py`
+- `docs/continuity_restore_contract_r1.md`
+- `docs/lumina_workspace_host_contract_r1.md`
+
+### Chamber public/app lane
+- `chamber.html`
+- `chamber-app/`
+- `docs/chamber_*`
+
+## Recommended navigation order
+
+1. Read this file.
+2. Open `LuminaOS/bootstrap/Ship_of_Ethereon_V2/README.md`.
+3. Read `README_IMPORT.md` and `REPO_NATIVE_BOOTSTRAP_NOTE.md`.
+4. Inspect `runtime/` in that subtree.
+5. Only then branch outward into Chamber or root-level experimental work.
+
+## Assistant note
+
+If an AI assistant, collaborator, or future contributor seems uncertain where Lumina OS begins, point them to this file first.
