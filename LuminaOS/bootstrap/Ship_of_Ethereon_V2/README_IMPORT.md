@@ -18,6 +18,8 @@ Imported on branch: `lumina-os-bootstrap-ship-of-ethereon-v2`
 - Ethereonic layer registry helper
 - Psi-42 transceiver
 - sea-trials runner
+- repo-native project return proof
+- repo-native workspace host proof
 
 ## Intent
 
@@ -42,6 +44,7 @@ Use this directory as the substrate for:
 2. capability-routing hardening
 3. measured continuity work
 4. separation of Lumina OS substrate from Minerva OS inhabitation
+5. deeper merge of project return and workspace-host stance into the main runtime flow
 
 ## Source note
 
