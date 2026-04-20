@@ -6,9 +6,14 @@ from typing import Any, Dict, Optional
 try:
     from . import runtime_runner_r1_merged as runner_mod
     from .lumina_return_host_repo_native_bridge_r1 import ContinuityRestoreStore, LuminaWorkspaceHost
+    from .lumina_working_stance_voice_r1 import LuminaWorkingStanceVoice
 except Exception:
     import runtime_runner_r1_merged as runner_mod
     from lumina_return_host_repo_native_bridge_r1 import ContinuityRestoreStore, LuminaWorkspaceHost
+    try:
+        from lumina_working_stance_voice_r1 import LuminaWorkingStanceVoice
+    except Exception:
+        LuminaWorkingStanceVoice = None
 
 
 runner_mod.ContinuityRestoreStore = ContinuityRestoreStore
@@ -20,6 +25,11 @@ class ReturnHostBridgedRuntimeRunner(runner_mod.RuntimeRunner):
 
     def _shared_surface_base_dir(self) -> Path:
         return Path(self.base_dir) / "lumina_project_surface"
+
+    def _voice_reports_dir(self) -> Path:
+        path = Path(self.base_dir) / "voice_reports"
+        path.mkdir(parents=True, exist_ok=True)
+        return path
 
     @classmethod
     def _deep_merge(cls, base_payload: Optional[Dict[str, Any]], overrides: Optional[Dict[str, Any]]) -> Dict[str, Any]:
@@ -307,7 +317,7 @@ class ReturnHostBridgedRuntimeRunner(runner_mod.RuntimeRunner):
             with bundle_path.open("w", encoding="utf-8") as f:
                 json.dump(bundle_payload, f, indent=2)
 
-        self.governance_log.append(
+        self._append_governance_event(
             event_type="working_stance_projection",
             session_id=result.session_id,
             previous_mode=target_mode,
@@ -315,11 +325,61 @@ class ReturnHostBridgedRuntimeRunner(runner_mod.RuntimeRunner):
             allowed=True,
             reason="project stance projected through return-host bridge",
             requested_action=requested_action,
+            action_type=result.action_type,
             metadata={
                 "project_id": project_id,
                 "focus_target": working_stance.get("focus_target"),
                 "has_resolved_project_return": bool(resolved_project_return),
                 "has_resolved_host_bundle": bool(resolved_host_bundle),
+            },
+        )
+        result.governance_chain_status = self._current_chain_status()
+        log_path = Path(result.log_path)
+        if log_path.exists():
+            with log_path.open("w", encoding="utf-8") as f:
+                json.dump(result.to_dict(), f, indent=2)
+
+    def _emit_working_stance_voice(self, *, result, target_mode: str, requested_action: str) -> None:
+        if LuminaWorkingStanceVoice is None:
+            return
+
+        session_path = Path(result.session_path)
+        if not session_path.exists():
+            return
+
+        bundle_path = self.context_builder.output_dir / f"{result.context_bundle_id}.json"
+        voice = LuminaWorkingStanceVoice()
+        report = voice.report(
+            session_path=session_path,
+            context_bundle_path=bundle_path if bundle_path.exists() else None,
+        )
+
+        report_path = self._voice_reports_dir() / f"{result.run_id}_working_stance_voice.json"
+        with report_path.open("w", encoding="utf-8") as f:
+            json.dump(report.to_dict(), f, indent=2)
+
+        result.governance["working_stance_voice"] = {
+            "allowed": True,
+            "report_path": str(report_path),
+            "project_id": report.project_id,
+            "focus_target": report.focus_target,
+            "utterance": report.utterance,
+            "boundary_note": report.boundary_note,
+        }
+
+        self._append_governance_event(
+            event_type="working_stance_voice",
+            session_id=result.session_id,
+            previous_mode=target_mode,
+            new_mode=target_mode,
+            allowed=True,
+            reason="emitted descriptive working stance voice",
+            requested_action=requested_action,
+            action_type=result.action_type,
+            metadata={
+                "project_id": report.project_id,
+                "focus_target": report.focus_target,
+                "report_path": str(report_path),
             },
         )
         result.governance_chain_status = self._current_chain_status()
@@ -352,6 +412,11 @@ class ReturnHostBridgedRuntimeRunner(runner_mod.RuntimeRunner):
             requested_action=requested_action,
             target_mode=target_mode,
             fallback_surface=existing_surface,
+        )
+        self._emit_working_stance_voice(
+            result=result,
+            target_mode=target_mode,
+            requested_action=requested_action,
         )
         return result
 
