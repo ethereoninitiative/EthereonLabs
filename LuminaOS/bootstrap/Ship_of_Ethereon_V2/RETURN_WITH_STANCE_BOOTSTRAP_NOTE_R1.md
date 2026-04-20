@@ -1,40 +1,76 @@
-# Return With Stance — Bootstrap Note R1
+# Return With Stance — Bootstrap Note
 
-This note marks the next architectural move for Lumina OS inside the governed bootstrap path.
+This note records the next architectural threshold for Lumina OS inside the governed bootstrap path.
 
 ## What landed
 
-Two repo-native runtime modules now live inside the bootstrap runtime directory:
+The repo-native return / host layer now feeds the main runtime path more directly.
+
+Core runtime files now carry:
+
+- `project_id` through session state and context bundles
+- bounded `working_stance` through session state and context bundles
+- resolved project-return summaries in the context path when a prior project surface exists
+- resolved host-bundle summaries in the context path when a bounded workspace surface exists
+
+The repo-native modules remain:
 
 - `runtime/project_return_repo_native_r1.py`
 - `runtime/workspace_host_repo_native_r1.py`
 
 ## Why this matters
 
-The bootstrap already held runtime law, governance, canon lineage, and bounded context.
-
-What it did not yet hold inside the same path was the narrower pair of behaviors that make Lumina feel more like a host substrate than a static idea:
+The earlier bridge work proved two believable Lumina-native behaviors:
 
 1. a project can be left and resumed without guessing
 2. a project can return with a bounded working surface around it
 
-These new modules are the first repo-native proofs for those behaviors.
+The next necessary move was to stop treating those behaviors as merely adjacent proofs.
 
-## What they are not
+Lumina now carries project stance inside the main session / context flow itself.
+That makes the governed runtime feel more like a host substrate and less like a shell that happens to call host-like modules on the side.
 
-This is not yet a deep merge into `runtime_spine_r1.py` or `runtime_runner_r1_merged.py`.
+## What still remains bounded
 
-That deeper merge should come later, once the project-return and workspace-host payloads have been pressure-tested enough to justify becoming direct runtime law.
+This does **not** make workspace state into governance law.
+
+The continuity layer still owns:
+- session continuity
+- checkpoints
+- resume legality
+
+The host layer still owns:
+- panels
+- tool bindings
+- reference surfaces
+- host bundles
+
+Governance still owns:
+- transitions
+- mutation legality
+- promotion legality
+- canon lineage
 
 ## Current role
 
-For now, these modules do four useful things:
+At this stage, the return / host layer does five useful things:
 
-- move continuity return into the bootstrap path
-- move workspace-host restoration into the bootstrap path
-- keep state repo-native through `repo_paths_r1.py`
-- define a cleaner bridge between continuity and host behavior
+- preserves project-scoped return without guessing
+- preserves bounded workspace-host restoration
+- keeps those artifacts repo-native
+- projects their stance into the main runtime flow
+- keeps authority boundaries explicit
 
 ## Next likely move
 
-When ready, the next hardening step is to absorb the project-return and workspace-host fields into the main session / runner flow so Lumina can restore not only legality and continuity, but active working stance as first-class runtime behavior.
+The next hardening step is not “make stance exist.”
+That threshold is crossed.
+
+The next step is to deepen:
+
+- checkpoint-triggered stance capture
+- richer stance resolution from prior project history
+- clearer orchestration behavior around the bounded workspace surface
+- future UI/runtime consumption of host bundles
+
+without letting any of that become hidden governance authority.
