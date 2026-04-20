@@ -363,6 +363,8 @@ class ReturnHostBridgedRuntimeRunner(runner_mod.RuntimeRunner):
             "report_path": str(report_path),
             "project_id": report.project_id,
             "focus_target": report.focus_target,
+            "machine_brief": report.machine_brief,
+            "human_brief": report.human_brief,
             "utterance": report.utterance,
             "boundary_note": report.boundary_note,
         }
