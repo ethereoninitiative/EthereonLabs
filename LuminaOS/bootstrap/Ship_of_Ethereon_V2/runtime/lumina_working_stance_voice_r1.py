@@ -18,6 +18,8 @@ class LuminaWorkingStanceVoiceReport:
     reference_ids: List[str]
     linked_restore_checkpoint: Optional[str]
     linked_host_bundle: Optional[str]
+    machine_brief: str
+    human_brief: str
     utterance: str
     boundary_note: str = "Descriptive voice only. Does not define governance law, canon state, or session legality."
 
@@ -26,7 +28,7 @@ class LuminaWorkingStanceVoiceReport:
 
 
 class LuminaWorkingStanceVoice:
-    """Reads bounded runtime state and emits an honest working-stance utterance.
+    """Reads bounded runtime state and emits honest working-stance speech.
 
     This layer may describe currently available project stance.
     It may not invent hidden intent or claim governance authority.
@@ -90,7 +92,22 @@ class LuminaWorkingStanceVoice:
         return merged
 
     @staticmethod
-    def _speak(state: Dict[str, Any]) -> str:
+    def _machine_brief(state: Dict[str, Any]) -> str:
+        fields = [
+            f"project={state.get('project_id') or 'none'}",
+            f"mode={state.get('current_mode') or 'unknown'}",
+            f"focus={state.get('focus_target') or 'none'}",
+            f"layout={state.get('active_layout_id') or 'none'}",
+            f"panels={','.join(state.get('open_panels') or []) or 'none'}",
+            f"tools={','.join(state.get('pinned_tools') or []) or 'none'}",
+            f"refs={','.join(state.get('reference_ids') or []) or 'none'}",
+            f"checkpoint={'yes' if state.get('linked_restore_checkpoint') else 'no'}",
+            f"host_bundle={'yes' if state.get('linked_host_bundle') else 'no'}",
+        ]
+        return ' ; '.join(fields)
+
+    @staticmethod
+    def _human_brief(state: Dict[str, Any]) -> str:
         fragments: List[str] = []
 
         project_id = state.get("project_id")
@@ -142,7 +159,8 @@ class LuminaWorkingStanceVoice:
         state = self._derive_from_session(session_payload)
         context_bundle_payload = self._read_json(context_bundle_path) if context_bundle_path else None
         merged = self._merge_context(state, context_bundle_payload)
-        utterance = self._speak(merged)
+        machine_brief = self._machine_brief(merged)
+        human_brief = self._human_brief(merged)
         return LuminaWorkingStanceVoiceReport(
             project_id=merged.get("project_id"),
             current_mode=merged.get("current_mode"),
@@ -153,7 +171,9 @@ class LuminaWorkingStanceVoice:
             reference_ids=list(merged.get("reference_ids") or []),
             linked_restore_checkpoint=merged.get("linked_restore_checkpoint"),
             linked_host_bundle=merged.get("linked_host_bundle"),
-            utterance=utterance,
+            machine_brief=machine_brief,
+            human_brief=human_brief,
+            utterance=human_brief,
         )
 
 
