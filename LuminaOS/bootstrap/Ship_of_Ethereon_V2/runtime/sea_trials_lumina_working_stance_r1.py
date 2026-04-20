@@ -62,6 +62,7 @@ def main() -> Dict[str, Any]:
     )
     first_session = _read_json(first.session_path)
     first_bundle = _read_json(runner.context_builder.output_dir / f"{first.context_bundle_id}.json")
+    first_log = _read_json(first.log_path)
 
     second = runner.run_cycle(
         current_mode="Continuity",
@@ -73,12 +74,18 @@ def main() -> Dict[str, Any]:
     )
     second_session = _read_json(second.session_path)
     second_bundle = _read_json(runner.context_builder.output_dir / f"{second.context_bundle_id}.json")
+    second_log = _read_json(second.log_path)
+
+    first_voice = dict(first_log.get("governance", {}).get("working_stance_voice") or {})
+    second_voice = dict(second_log.get("governance", {}).get("working_stance_voice") or {})
 
     first_checks = {
         "session_project_id_present": first_session.get("project_id") == "lumina-core",
         "session_working_stance_present": isinstance(first_session.get("working_stance"), dict),
         "context_active_project_id_present": first_bundle.get("artifact_context", {}).get("active_project_id") == "lumina-core",
         "context_working_stance_summary_present": isinstance(first_bundle.get("artifact_context", {}).get("working_stance_summary"), dict),
+        "voice_governance_present": bool(first_voice),
+        "voice_mentions_project": "lumina-core" in first_voice.get("utterance", ""),
     }
 
     second_checks = {
@@ -88,6 +95,9 @@ def main() -> Dict[str, Any]:
         "session_focus_updated_to_second_action": second_session.get("working_stance", {}).get("focus_target") == "trial_working_stance_second_pass",
         "session_linked_restore_checkpoint_present": bool(second_session.get("working_stance", {}).get("linked_restore_checkpoint")),
         "session_linked_host_bundle_present": bool(second_session.get("working_stance", {}).get("linked_host_bundle")),
+        "voice_governance_present": bool(second_voice),
+        "voice_mentions_second_focus": "trial_working_stance_second_pass" in second_voice.get("utterance", ""),
+        "voice_report_path_exists": bool(second_voice.get("report_path")) and Path(second_voice.get("report_path")).exists(),
     }
 
     summary = {
@@ -98,6 +108,7 @@ def main() -> Dict[str, Any]:
             "context_bundle_id": first.context_bundle_id,
             "session_path": first.session_path,
             "checks": first_checks,
+            "voice": first_voice,
         },
         "second_run": {
             "run_id": second.run_id,
@@ -107,6 +118,7 @@ def main() -> Dict[str, Any]:
             "resolved_project_return": second_bundle.get("artifact_context", {}).get("resolved_project_return"),
             "resolved_host_bundle": second_bundle.get("artifact_context", {}).get("resolved_host_bundle"),
             "working_stance": second_session.get("working_stance"),
+            "voice": second_voice,
         },
     }
 
