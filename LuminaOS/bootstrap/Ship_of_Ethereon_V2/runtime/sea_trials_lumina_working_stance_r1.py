@@ -86,6 +86,8 @@ def main() -> Dict[str, Any]:
         "context_working_stance_summary_present": isinstance(first_bundle.get("artifact_context", {}).get("working_stance_summary"), dict),
         "voice_governance_present": bool(first_voice),
         "voice_mentions_project": "lumina-core" in first_voice.get("utterance", ""),
+        "voice_machine_brief_present": bool(first_voice.get("machine_brief")),
+        "voice_human_brief_present": bool(first_voice.get("human_brief")),
     }
 
     second_checks = {
@@ -98,6 +100,8 @@ def main() -> Dict[str, Any]:
         "voice_governance_present": bool(second_voice),
         "voice_mentions_second_focus": "trial_working_stance_second_pass" in second_voice.get("utterance", ""),
         "voice_report_path_exists": bool(second_voice.get("report_path")) and Path(second_voice.get("report_path")).exists(),
+        "voice_machine_brief_mentions_mode": "mode=Observation" in second_voice.get("machine_brief", ""),
+        "voice_human_brief_mentions_second_focus": "trial_working_stance_second_pass" in second_voice.get("human_brief", ""),
     }
 
     summary = {
