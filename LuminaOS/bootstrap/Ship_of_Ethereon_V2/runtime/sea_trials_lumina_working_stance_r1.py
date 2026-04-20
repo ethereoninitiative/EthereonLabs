@@ -6,9 +6,9 @@ import json
 import shutil
 
 try:
-    from .runtime_runner_r1_merged import RuntimeRunner
+    from .runtime_runner_return_host_bridge_r1 import ReturnHostBridgedRuntimeRunner
 except Exception:
-    from runtime_runner_r1_merged import RuntimeRunner
+    from runtime_runner_return_host_bridge_r1 import ReturnHostBridgedRuntimeRunner
 
 try:
     from .repo_paths_r1 import state_root as _state_root_helper
@@ -50,7 +50,7 @@ def _read_json(path: str | Path) -> Dict[str, Any]:
 
 
 def main() -> Dict[str, Any]:
-    runner = RuntimeRunner(base_dir=BASE_DIR)
+    runner = ReturnHostBridgedRuntimeRunner(base_dir=BASE_DIR)
 
     first = runner.run_cycle(
         current_mode="Continuity",
