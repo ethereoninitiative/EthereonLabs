@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 
 FORBIDDEN_AUTHORITY_KEYS = {
@@ -46,8 +46,8 @@ class LuminaSelfGuidanceSteward:
     """
     Advisory steward for repo-native Lumina return / host surfaces.
 
-    It reads project-return memory, bounded host state, and working stance,
-    then emits a non-governing next-step recommendation.
+    It reads project-return memory, bounded host state, working stance,
+    and checkpoint-linked recommendation history, then emits a non-governing next-step recommendation.
     """
 
     @staticmethod
@@ -55,6 +55,27 @@ class LuminaSelfGuidanceSteward:
         if "latest_restore" in resolved_project_return:
             return dict(resolved_project_return.get("latest_restore") or {})
         return dict(resolved_project_return or {})
+
+    @staticmethod
+    def _history_signals(guidance_history: Optional[List[Dict[str, Any]]], candidate_recommendation: str) -> Dict[str, Any]:
+        rows = list(guidance_history or [])
+        recent = rows[-3:]
+        recent_recommendations = [
+            row.get("recommended_next_action")
+            for row in recent
+            if row.get("recommended_next_action")
+        ]
+        alignment_count = sum(
+            1 for row in rows if row.get("recommended_next_action") == candidate_recommendation
+        )
+        latest_recommendation = recent_recommendations[-1] if recent_recommendations else None
+        return {
+            "history_entry_count": len(rows),
+            "history_recent_recommendations": recent_recommendations,
+            "history_alignment_count": alignment_count,
+            "history_latest_recommendation": latest_recommendation,
+            "history_aligned": alignment_count > 0 and latest_recommendation == candidate_recommendation,
+        }
 
     def advise(
         self,
@@ -66,10 +87,12 @@ class LuminaSelfGuidanceSteward:
         resolved_project_return: Optional[Dict[str, Any]] = None,
         resolved_host_bundle: Optional[Dict[str, Any]] = None,
         working_stance: Optional[Dict[str, Any]] = None,
+        guidance_history: Optional[List[Dict[str, Any]]] = None,
     ) -> SelfGuidanceAdvisory:
         resolved_project_return = dict(resolved_project_return or {})
         resolved_host_bundle = dict(resolved_host_bundle or {})
         working_stance = dict(working_stance or {})
+        guidance_history = list(guidance_history or [])
 
         latest_restore = self._latest_restore_view(resolved_project_return)
         host_bundle = dict(resolved_host_bundle or {})
@@ -86,41 +109,81 @@ class LuminaSelfGuidanceSteward:
         reference_ids = list(working_stance.get("reference_ids") or host_bundle.get("reference_ids") or [])
 
         if pending_next_action:
-            strategy = "pending_next_action"
             recommended = str(pending_next_action)
-            confidence_label = "high"
-            confidence_score = 0.93
-            reasoning = (
-                "Project return already carries a pending next action, so the steward surfaces that "
-                "instead of guessing from weaker workspace signals."
-            )
+            history = self._history_signals(guidance_history, recommended)
+            if history["history_aligned"]:
+                strategy = "pending_next_action_history_aligned"
+                confidence_label = "very_high"
+                confidence_score = 0.97
+                reasoning = (
+                    "Project return already carries a pending next action, and accumulated checkpoint history "
+                    "reinforces the same recommendation."
+                )
+            else:
+                strategy = "pending_next_action"
+                confidence_label = "high"
+                confidence_score = 0.93
+                reasoning = (
+                    "Project return already carries a pending next action, so the steward surfaces that "
+                    "instead of guessing from weaker workspace signals."
+                )
         elif linked_host_bundle and focus_target:
-            strategy = "host_focus_resume"
             recommended = f"continue::{focus_target}"
-            confidence_label = "medium_high"
-            confidence_score = 0.81
-            reasoning = (
-                "A linked host bundle exists and exposes a bounded focus target, so the steward recommends "
-                "continuing from that scoped working surface."
-            )
+            history = self._history_signals(guidance_history, recommended)
+            if history["history_aligned"]:
+                strategy = "host_focus_history_aligned"
+                confidence_label = "medium_high"
+                confidence_score = 0.86
+                reasoning = (
+                    "A linked host bundle exposes a bounded focus target, and recent checkpoint history aligns "
+                    "with continuing that scoped surface."
+                )
+            else:
+                strategy = "host_focus_resume"
+                confidence_label = "medium_high"
+                confidence_score = 0.81
+                reasoning = (
+                    "A linked host bundle exists and exposes a bounded focus target, so the steward recommends "
+                    "continuing from that scoped working surface."
+                )
         elif focus_target:
-            strategy = "focus_target_resume"
             recommended = f"continue::{focus_target}"
-            confidence_label = "medium"
-            confidence_score = 0.72
-            reasoning = (
-                "No explicit pending action was captured, so the steward falls back to the best available "
-                "focus target from working stance / host state."
-            )
+            history = self._history_signals(guidance_history, recommended)
+            if history["history_aligned"]:
+                strategy = "focus_target_history_aligned"
+                confidence_label = "medium"
+                confidence_score = 0.78
+                reasoning = (
+                    "No explicit pending action was captured, but current focus and recent checkpoint history "
+                    "align on the same continuation target."
+                )
+            else:
+                strategy = "focus_target_resume"
+                confidence_label = "medium"
+                confidence_score = 0.72
+                reasoning = (
+                    "No explicit pending action was captured, so the steward falls back to the best available "
+                    "focus target from working stance / host state."
+                )
         else:
-            strategy = "requested_action_fallback"
             recommended = f"continue::{requested_action}"
-            confidence_label = "low_medium"
-            confidence_score = 0.58
-            reasoning = (
-                "The steward found no stronger project-return or host cues, so it falls back to the current "
-                "requested action without claiming authority."
-            )
+            history = self._history_signals(guidance_history, recommended)
+            if history["history_aligned"]:
+                strategy = "requested_action_history_aligned"
+                confidence_label = "medium"
+                confidence_score = 0.67
+                reasoning = (
+                    "The steward found no stronger live cues, but accumulated checkpoint history repeats the same "
+                    "requested-action continuation path."
+                )
+            else:
+                strategy = "requested_action_fallback"
+                confidence_label = "low_medium"
+                confidence_score = 0.58
+                reasoning = (
+                    "The steward found no stronger project-return or host cues, so it falls back to the current "
+                    "requested action without claiming authority."
+                )
 
         signals = {
             "requested_action": requested_action,
@@ -133,6 +196,7 @@ class LuminaSelfGuidanceSteward:
             "pinned_tools": pinned_tools,
             "reference_ids": reference_ids,
             "return_strategy": resolved_project_return.get("return_strategy"),
+            **history,
         }
 
         return SelfGuidanceAdvisory(
@@ -156,4 +220,7 @@ class LuminaSelfGuidanceSteward:
             "confidence_score": payload["confidence_score"],
             "reasoning_brief": payload["reasoning_brief"],
             "boundary_note": payload["boundary_note"],
+            "history_entry_count": payload.get("signals", {}).get("history_entry_count", 0),
+            "history_alignment_count": payload.get("signals", {}).get("history_alignment_count", 0),
+            "history_recent_recommendations": payload.get("signals", {}).get("history_recent_recommendations", []),
         }

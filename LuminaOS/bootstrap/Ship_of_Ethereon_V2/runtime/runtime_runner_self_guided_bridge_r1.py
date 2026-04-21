@@ -8,9 +8,11 @@ from typing import Any, Dict, Optional
 try:
     from . import runtime_runner_return_host_bridge_r1 as bridge_mod
     from .lumina_self_guidance_steward_r1 import LuminaSelfGuidanceSteward
+    from .lumina_self_guidance_history_r1 import ProjectGuidanceHistoryStore
 except Exception:
     import runtime_runner_return_host_bridge_r1 as bridge_mod
     from lumina_self_guidance_steward_r1 import LuminaSelfGuidanceSteward
+    from lumina_self_guidance_history_r1 import ProjectGuidanceHistoryStore
 
 
 class SelfGuidedReturnHostRuntimeRunner(bridge_mod.ReturnHostBridgedRuntimeRunner):
@@ -72,6 +74,9 @@ class SelfGuidedReturnHostRuntimeRunner(bridge_mod.ReturnHostBridgedRuntimeRunne
         resolved_project_return = dict(artifact_context.get("resolved_project_return") or {})
         resolved_host_bundle = dict(artifact_context.get("resolved_host_bundle") or {})
 
+        history_store = ProjectGuidanceHistoryStore(self.base_dir / "self_guidance_history")
+        prior_history = history_store.read_history(project_id)
+
         steward = LuminaSelfGuidanceSteward()
         advisory = steward.advise(
             project_id=project_id,
@@ -81,6 +86,7 @@ class SelfGuidedReturnHostRuntimeRunner(bridge_mod.ReturnHostBridgedRuntimeRunne
             resolved_project_return=resolved_project_return,
             resolved_host_bundle=resolved_host_bundle,
             working_stance=working_stance,
+            guidance_history=prior_history,
         )
         advisory_payload = advisory.to_dict()
         advisory_summary = steward.advisory_summary(advisory)
@@ -88,11 +94,26 @@ class SelfGuidedReturnHostRuntimeRunner(bridge_mod.ReturnHostBridgedRuntimeRunne
         report_path = self._self_guidance_reports_dir() / f"{result.run_id}_self_guidance.json"
         self._write_json(report_path, advisory_payload)
 
+        history_entry = history_store.append_entry(
+            project_id=project_id,
+            advisory_summary=advisory_summary,
+            checkpoint_path=result.checkpoint_path,
+            requested_action=requested_action,
+            current_mode=current_mode,
+            target_mode=target_mode,
+            working_stance=working_stance,
+            source="checkpoint_refresh",
+        )
+        refreshed_history = history_store.read_history(project_id)
+        history_summary = history_store.history_summary(refreshed_history)
+
         session_payload["self_guidance_advisory"] = advisory_summary
+        session_payload["self_guidance_history_summary"] = history_summary
         session_payload["recommended_next_action"] = advisory_summary["recommended_next_action"]
         self._write_json(session_path, session_payload)
 
         artifact_context["self_guidance_advisory_summary"] = advisory_summary
+        artifact_context["self_guidance_history_summary"] = history_summary
         memory_context["recommended_next_action"] = advisory_summary["recommended_next_action"]
         notes = list(memory_context.get("session_continuation_notes", []))
         note = (
@@ -101,6 +122,9 @@ class SelfGuidedReturnHostRuntimeRunner(bridge_mod.ReturnHostBridgedRuntimeRunne
         )
         if note not in notes:
             notes.append(note)
+        refresh_note = f"Self-guidance history entries: {history_summary['entry_count']}"
+        if refresh_note not in notes:
+            notes.append(refresh_note)
         memory_context["session_continuation_notes"] = notes
         bundle_payload["artifact_context"] = artifact_context
         bundle_payload["memory_context"] = memory_context
@@ -115,6 +139,16 @@ class SelfGuidedReturnHostRuntimeRunner(bridge_mod.ReturnHostBridgedRuntimeRunne
             "confidence_score": advisory_summary["confidence_score"],
             "reasoning_brief": advisory_summary["reasoning_brief"],
             "boundary_note": advisory_summary["boundary_note"],
+            "history_entry_count": history_summary["entry_count"],
+            "history_alignment_count": advisory_summary.get("history_alignment_count", 0),
+        }
+        result.governance["self_guidance_checkpoint_refresh"] = {
+            "allowed": True,
+            "project_id": project_id,
+            "history_entry_count": history_summary["entry_count"],
+            "latest_recommendation": history_summary.get("latest_recommendation"),
+            "latest_checkpoint_path": history_summary.get("latest_checkpoint_path"),
+            "history_entry_timestamp": history_entry.get("timestamp_utc"),
         }
 
         self._append_governance_event(
@@ -131,6 +165,22 @@ class SelfGuidedReturnHostRuntimeRunner(bridge_mod.ReturnHostBridgedRuntimeRunne
                 "recommended_next_action": advisory_summary["recommended_next_action"],
                 "confidence_label": advisory_summary["confidence_label"],
                 "report_path": str(report_path),
+            },
+        )
+        self._append_governance_event(
+            event_type="self_guidance_checkpoint_refresh",
+            session_id=result.session_id,
+            previous_mode=target_mode,
+            new_mode=target_mode,
+            allowed=True,
+            reason="refreshed bounded self-guidance history from checkpoint outcome",
+            requested_action=requested_action,
+            action_type=result.action_type,
+            metadata={
+                "project_id": project_id,
+                "history_entry_count": history_summary["entry_count"],
+                "latest_recommendation": history_summary.get("latest_recommendation"),
+                "latest_checkpoint_path": history_summary.get("latest_checkpoint_path"),
             },
         )
         result.governance_chain_status = self._current_chain_status()
@@ -157,6 +207,7 @@ class SelfGuidedReturnHostRuntimeRunner(bridge_mod.ReturnHostBridgedRuntimeRunne
         artifact_list = list(artifacts or [])
         for artifact_name in [
             "lumina_self_guidance_steward_r1.py",
+            "lumina_self_guidance_history_r1.py",
             "runtime_runner_self_guided_bridge_r1.py",
             "sea_trials_lumina_self_guidance_r1.py",
         ]:
