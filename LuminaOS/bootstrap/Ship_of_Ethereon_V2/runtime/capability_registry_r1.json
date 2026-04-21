@@ -1,6 +1,6 @@
 {
-  "version": "0.5",
-  "description": "Minimal capability registry for the Ethereon Runtime Spine, now including continuity restore, workspace-host handshake support, and bounded Lumina self-guidance under explicit authority boundaries.",
+  "version": "0.6",
+  "description": "Minimal capability registry for the Ethereon Runtime Spine, now including continuity restore, workspace-host handshake support, and checkpoint-refreshed bounded Lumina self-guidance under explicit authority boundaries.",
   "capabilities": [
     {
       "capability_id": "session_state_manager",
@@ -132,7 +132,7 @@
       ],
       "mutation_scope": "none",
       "requires_validation": false,
-      "authority_boundary": "Reads project-return summaries, working stance, and bounded host surfaces to recommend the next likely action. Advisory only; may not define governance law, canon lineage, checkpoint legality, or mode legality.",
+      "authority_boundary": "Reads project-return summaries, working stance, bounded host surfaces, and checkpoint-linked advisory history to recommend the next likely action. Advisory only; may not define governance law, canon lineage, checkpoint legality, or mode legality.",
       "dependencies": [
         "continuity_restore_store",
         "lumina_workspace_host"
