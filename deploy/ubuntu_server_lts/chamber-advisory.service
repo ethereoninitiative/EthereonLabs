@@ -1,0 +1,19 @@
+[Unit]
+Description=Chamber Advisory Consent Surface
+After=network.target postgresql.service
+Requires=postgresql.service
+
+[Service]
+Type=simple
+User=lumina
+Group=lumina
+WorkingDirectory=/opt/lumina/EthereonLabs/chamber-app
+EnvironmentFile=/etc/lumina/lumina-appliance.env
+ExecStart=/usr/bin/node /opt/lumina/EthereonLabs/chamber-app/dist/advisory_queue_server_v0_2.js
+Restart=always
+RestartSec=5
+StandardOutput=append:/var/log/lumina/chamber-advisory.log
+StandardError=append:/var/log/lumina/chamber-advisory.log
+
+[Install]
+WantedBy=multi-user.target
