@@ -10,6 +10,7 @@
     "dev:advisory": "tsx watch src/advisory_queue_server_v0_2.ts",
     "dev:advisory:postgres": "CHAMBER_STORE_MODE=postgres tsx watch src/advisory_queue_server_v0_2.ts",
     "start": "node dist/server.js",
+    "start:advisory": "node dist/advisory_queue_server_v0_2.js",
     "build": "tsc -p tsconfig.json",
     "check": "tsc -p tsconfig.json --noEmit",
     "db:up": "docker compose -f docker-compose.postgres.yml up -d",
