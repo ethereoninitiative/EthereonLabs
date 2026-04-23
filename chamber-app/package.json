@@ -7,13 +7,19 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "dev:postgres": "CHAMBER_STORE_MODE=postgres tsx watch src/server.ts",
+    "dev:advisory": "tsx watch src/advisory_queue_server_v0_2.ts",
+    "dev:advisory:postgres": "CHAMBER_STORE_MODE=postgres tsx watch src/advisory_queue_server_v0_2.ts",
     "start": "node dist/server.js",
     "build": "tsc -p tsconfig.json",
     "check": "tsc -p tsconfig.json --noEmit",
     "db:up": "docker compose -f docker-compose.postgres.yml up -d",
     "db:down": "docker compose -f docker-compose.postgres.yml down",
     "db:reset": "docker compose -f docker-compose.postgres.yml down -v",
-    "db:logs": "docker compose -f docker-compose.postgres.yml logs -f chamber-postgres"
+    "db:logs": "docker compose -f docker-compose.postgres.yml logs -f chamber-postgres",
+    "db:up:advisory": "docker compose -f docker-compose.postgres.advisory.yml up -d",
+    "db:down:advisory": "docker compose -f docker-compose.postgres.advisory.yml down",
+    "db:reset:advisory": "docker compose -f docker-compose.postgres.advisory.yml down -v",
+    "db:logs:advisory": "docker compose -f docker-compose.postgres.advisory.yml logs -f chamber-postgres"
   },
   "dependencies": {
     "cors": "^2.8.5",
