@@ -20,6 +20,7 @@ The current stack now has four distinct layers:
 3. `lumina_decision_engine_v0_1.py`
    - emits an advisory next-step recommendation from restored context
    - remains non-authoritative
+   - emits only RuntimeRunner-supported action types: `transition`, `mutation`, `promotion`, or `audit`
 
 4. `lumina_orchestrator_v0_4.py`
    - binds the runner, loader, and decision engine into one bounded orchestration loop
@@ -33,7 +34,7 @@ This lane is the first compact proof that Lumina can:
 - restore a minimal project surface
 - orient from that surface
 - recommend a likely next move
-- execute through the governed runtime rather than bypass it
+- execute through the governed runtime rather than replacing it
 
 That is not the positronic brain.
 But it is aligned with the compass that points toward durable, lawful cognition.
@@ -49,6 +50,14 @@ It does not yet provide:
 - durable external process continuity
 - independent tool arbitration beyond the governed runtime boundary
 
+It now includes a dedicated validation lane:
+
+- `sea_trials_lumina_orchestration_continuity_r1.py`
+
+That trial suite checks the first operational form of the project mantra:
+
+> continuity of pattern is recoverable coherence across change
+
 ## Boundary note
 
 The decision engine and orchestrator are still subordinate to runtime law.
@@ -57,11 +66,24 @@ They may not silently redefine legality, canon lineage, mutation authority, or u
 
 They are steering surfaces, not sovereignty surfaces.
 
-## Likely next hardening move
+## Validation lane added
 
-The next sharp threshold after this stack is a dedicated validation lane proving that:
+`sea_trials_lumina_orchestration_continuity_r1.py` validates that:
 
-- restored context actually influences recommendation selection
-- recommendations remain advisory under governance
-- checkpoint recovery and coarse continuity state agree when both are present
-- orientation changes alter recommendations without bypassing runtime law
+- restored context changes recommendation selection
+- orientation changes recommendation priority
+- progression uses RuntimeRunner-supported action types
+- stability preserves observation continuity across cycles
+- progression moves from initial observation into DryDock and then a promotion-preparation audit
+- recommendations route through governed runtime execution
+- checkpoints are written across cycles
+- governance records remain present in runner results
+
+## Next hardening move
+
+The next sharp threshold after this stack is the consent bridge:
+
+- connect Chamber's supervised action queue to governed runtime execution records
+- keep advisory acceptance / rejection human-visible
+- ensure accepted queue items pass through ModeGuard, input integrity, and symbolic-boundary checks
+- record accepted/rejected advisory actions as auditable continuity events
