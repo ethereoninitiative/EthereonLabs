@@ -30,6 +30,7 @@ Primary runtime files inside that path:
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/psi42_transceiver_v1_6.py`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/quantum_concepts_registry_r1.json`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/branch_resolution_model_r1.json`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_quantum_boundary_r1.py`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_set_one_r1_merged.py`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/capability_registry_r1.json`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/project_return_repo_native_r1.py`
@@ -100,7 +101,7 @@ It is the correct place to start when the task is about:
 1. Read this file.
 2. Open `LuminaOS/bootstrap/Ship_of_Ethereon_V2/README.md`.
 3. Read `README_IMPORT.md`, `REPO_NATIVE_BOOTSTRAP_NOTE.md`, `RETURN_WITH_STANCE_BOOTSTRAP_NOTE_R1.md`, `SELF_GUIDANCE_STEWARD_NOTE_R1.md`, `LUMINA_ORCHESTRATION_STACK_NOTE_R1.md`, and `docs/Quantum_Concepts_Boundary_r1.md`.
-4. Inspect `runtime/` in that subtree, including the repo-native return / workspace-host modules, the bridged runner, the self-guided bridge runner, the checkpoint-refreshed guidance history rail, `quantum_concepts_registry_r1.json`, and `branch_resolution_model_r1.json`.
+4. Inspect `runtime/` in that subtree, including the repo-native return / workspace-host modules, the bridged runner, the self-guided bridge runner, the checkpoint-refreshed guidance history rail, `quantum_concepts_registry_r1.json`, `branch_resolution_model_r1.json`, and `sea_trials_quantum_boundary_r1.py`.
 5. Inspect `lumina_context_loader_v0_1.py`, `lumina_decision_engine_v0_1.py`, `lumina_orchestrator_v0_4.py`, and `sea_trials_lumina_orchestration_stack_r1.py`.
 6. Only then branch outward into Chamber and its advisory / queue persistence lane.
 
