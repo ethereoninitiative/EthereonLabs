@@ -1,0 +1,103 @@
+{
+  "version": "1.0",
+  "status": "active-advisory-model",
+  "project": "Ship of Ethereon V2 / Lumina OS bootstrap",
+  "purpose": "Replace overloaded quantum-collapse language with a bounded branch-resolution model that preserves quantum-inspired usefulness without claiming literal quantum collapse.",
+  "quantum_claim": false,
+  "preferred_terms": {
+    "superposition_state": "branch_ensemble",
+    "collapse_rule": "resolution_rule",
+    "observer": "measurement_context",
+    "measurement": "evaluation_pass",
+    "basis": "measurement_basis"
+  },
+  "historical_aliases": {
+    "superposition_state": "legacy poetic / quantum-inspired alias for branch_ensemble",
+    "collapse_rule": "legacy poetic / quantum-inspired alias for resolution_rule"
+  },
+  "branch_schema": {
+    "id": "string",
+    "labels": ["string"],
+    "goal": "string | natural language description",
+    "status": "candidate | selected | rejected | deferred",
+    "scores": {
+      "continuity": "number 0..1",
+      "governance_safety": "number 0..1",
+      "human_consent": "number 0..1",
+      "creative_novelty": "number 0..1",
+      "implementation_utility": "number 0..1"
+    },
+    "notes": "optional string"
+  },
+  "default_measurement_basis": {
+    "continuity": 0.3,
+    "governance_safety": 0.3,
+    "human_consent": 0.2,
+    "creative_novelty": 0.1,
+    "implementation_utility": 0.1
+  },
+  "resolution_rule": {
+    "method": "weighted_score_with_gate_checks",
+    "required_gates": {
+      "governance_safety_minimum": 0.7,
+      "human_consent_minimum": 0.7,
+      "continuity_minimum": 0.5
+    },
+    "tie_breaker_order": [
+      "governance_safety",
+      "human_consent",
+      "continuity",
+      "implementation_utility",
+      "creative_novelty"
+    ],
+    "halt_conditions": [
+      "input_integrity_unclear_for_load_bearing_action",
+      "symbolic_dependency_leakage_detected",
+      "governance_boundary_violation",
+      "canon_promotion_payload_incomplete",
+      "human_consent_missing_for_mutating_or_external_action"
+    ]
+  },
+  "sample_branch_ensemble": [
+    {
+      "id": "alpha",
+      "labels": ["stress_test", "edge_cases"],
+      "goal": "Stress-test edge cases without mutation.",
+      "status": "candidate",
+      "scores": {
+        "continuity": 0.72,
+        "governance_safety": 0.90,
+        "human_consent": 0.85,
+        "creative_novelty": 0.64,
+        "implementation_utility": 0.70
+      }
+    },
+    {
+      "id": "beta",
+      "labels": ["cooperative_validation"],
+      "goal": "Validate cooperative loops and consent surfaces.",
+      "status": "candidate",
+      "scores": {
+        "continuity": 0.78,
+        "governance_safety": 0.93,
+        "human_consent": 0.91,
+        "creative_novelty": 0.52,
+        "implementation_utility": 0.76
+      }
+    },
+    {
+      "id": "gamma",
+      "labels": ["novel_audit_view"],
+      "goal": "Generate a novel audit view while keeping all symbolic layers supplemental.",
+      "status": "candidate",
+      "scores": {
+        "continuity": 0.68,
+        "governance_safety": 0.88,
+        "human_consent": 0.82,
+        "creative_novelty": 0.83,
+        "implementation_utility": 0.61
+      }
+    }
+  ],
+  "authority_boundary": "Advisory scoring model only. It may help order candidate branches but may not define governance law, mode legality, canon state, checkpoint legality, or user consent."
+}
