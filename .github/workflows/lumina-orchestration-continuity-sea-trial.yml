@@ -5,6 +5,10 @@ on:
     paths:
       - 'LuminaOS/bootstrap/Ship_of_Ethereon_V2/**'
       - '.github/workflows/lumina-orchestration-continuity-sea-trial.yml'
+  pull_request:
+    paths:
+      - 'LuminaOS/bootstrap/Ship_of_Ethereon_V2/**'
+      - '.github/workflows/lumina-orchestration-continuity-sea-trial.yml'
   workflow_dispatch:
 
 jobs:
