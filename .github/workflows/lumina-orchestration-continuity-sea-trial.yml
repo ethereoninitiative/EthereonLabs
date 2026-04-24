@@ -1,0 +1,30 @@
+name: Lumina Orchestration Continuity Sea Trial
+
+on:
+  push:
+    paths:
+      - 'LuminaOS/bootstrap/Ship_of_Ethereon_V2/**'
+      - '.github/workflows/lumina-orchestration-continuity-sea-trial.yml'
+  workflow_dispatch:
+
+jobs:
+  sea-trial:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run Lumina orchestration continuity sea trial
+        working-directory: LuminaOS/bootstrap/Ship_of_Ethereon_V2
+        run: |
+          python sea_trials_lumina_orchestration_continuity_r1.py
+
+      - name: Run quantum boundary sea trial
+        working-directory: LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime
+        run: |
+          python sea_trials_quantum_boundary_r1.py
