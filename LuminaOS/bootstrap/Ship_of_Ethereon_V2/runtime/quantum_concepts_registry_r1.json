@@ -1,0 +1,105 @@
+{
+  "version": "1.0",
+  "status": "active-boundary-registry",
+  "project": "Ship of Ethereon V2 / Lumina OS bootstrap",
+  "purpose": "Classify quantum-adjacent terms so the project can use quantum-inspired language without overclaiming literal physics or allowing symbolic terms to become load-bearing governance law.",
+  "default_measurement_basis": {
+    "continuity": 0.3,
+    "governance_safety": 0.3,
+    "human_consent": 0.2,
+    "creative_novelty": 0.1,
+    "implementation_utility": 0.1
+  },
+  "formal_designations": {
+    "psi42_transceiver_v16": {
+      "formal_name": "Psi-42 Transceiver v1.6",
+      "instrument_class": "quantum-inspired classical signal transceiver",
+      "public_summary": "A quantum-inspired classical signal transceiver for testing continuity under noise, drift, and recomposition.",
+      "literal_quantum_hardware_claim": false,
+      "authority_boundary": "Experimental expressive instrument only; may not own canon, governance, mode legality, checkpoint legality, or primary continuity authority."
+    }
+  },
+  "terms": [
+    {
+      "term": "superposition",
+      "preferred_runtime_term": "branch_ensemble",
+      "classification": "metaphor / decision-model analogy",
+      "scientific_meaning": "A quantum state expressed as a linear combination of basis states.",
+      "ethereon_usage": "A set of unresolved candidate branches before selection.",
+      "allowed_contexts": ["Resonance Ledger", "Sandbox planning", "Observation audits"],
+      "forbidden_claims": ["The system is physically quantum", "Candidate branches are literal quantum states"]
+    },
+    {
+      "term": "collapse",
+      "preferred_runtime_term": "resolution",
+      "classification": "historical poetic alias",
+      "scientific_meaning": "Informal label for measurement-associated transition in quantum-state descriptions depending on interpretation.",
+      "ethereon_usage": "Branch selection after evaluating candidates against a declared basis.",
+      "allowed_contexts": ["Historical notes", "Poetic interface language"],
+      "forbidden_claims": ["Runtime selection is literal quantum collapse", "Collapse authorizes governance or canon mutation"]
+    },
+    {
+      "term": "observer",
+      "preferred_runtime_term": "measurement_context",
+      "classification": "quantum-inspired formalism",
+      "scientific_meaning": "A measurement interaction or experimental frame, not necessarily a conscious mind.",
+      "ethereon_usage": "The declared evaluator, context, or observation pass used to inspect a branch or state.",
+      "allowed_contexts": ["RSE", "Observation mode", "Audit reports"],
+      "forbidden_claims": ["Human consciousness is required for physical collapse", "The observer owns runtime authority"]
+    },
+    {
+      "term": "entanglement",
+      "preferred_runtime_term": "coupling",
+      "classification": "metaphor unless literal physics is under discussion",
+      "scientific_meaning": "Non-classical correlation between quantum systems.",
+      "ethereon_usage": "Correlation, dependency, or cross-influence between artifacts, states, or decisions.",
+      "allowed_contexts": ["Conceptual essays", "Explicitly marked analogies"],
+      "forbidden_claims": ["Project artifacts are physically entangled", "Coupling bypasses governance law"]
+    },
+    {
+      "term": "wavefunction",
+      "preferred_runtime_term": "state_vector",
+      "classification": "formal/mathematical analogy unless literal physics is under discussion",
+      "scientific_meaning": "A mathematical object encoding amplitudes for quantum states.",
+      "ethereon_usage": "A state vector or interpretive state function in RSE-style modeling.",
+      "allowed_contexts": ["RSE", "Mathematical modeling", "Clearly marked analogies"],
+      "forbidden_claims": ["Lumina has a literal physical wavefunction", "A poetic wavefunction authorizes action"]
+    },
+    {
+      "term": "coherence",
+      "preferred_runtime_term": "namespaced_coherence",
+      "classification": "shared formal term requiring namespace",
+      "scientific_meaning": "Stable phase relationship or preserved quantum/signal relationship depending on domain.",
+      "ethereon_usage": "Signal, continuity, conceptual, or governance stability depending on namespace.",
+      "allowed_contexts": ["Psi-42", "continuity metrics", "governance review", "conceptual audits"],
+      "forbidden_claims": ["Coherence means the same thing in every layer", "Coherence can override consent or governance"]
+    },
+    {
+      "term": "decoherence",
+      "preferred_runtime_term": "decoherence_index",
+      "classification": "quantum-inspired / signal-and-context degradation metric",
+      "scientific_meaning": "Loss of quantum coherence through environmental interaction.",
+      "ethereon_usage": "Loss of stable continuity or recoverable pattern due to noise, drift, ambiguity, contradiction, checksum mismatch, recomposition error, or boundary leakage.",
+      "allowed_contexts": ["Psi-42", "input integrity", "checkpoint review", "DryDock audits"],
+      "forbidden_claims": ["Project decoherence is literal physical quantum decoherence", "Decoherence is a metaphysical diagnosis"]
+    },
+    {
+      "term": "measurement",
+      "preferred_runtime_term": "evaluation_pass",
+      "classification": "quantum-inspired formalism",
+      "scientific_meaning": "A measurement interaction producing an observed result relative to a basis or observable.",
+      "ethereon_usage": "A declared evaluation pass against criteria such as continuity, governance safety, consent, novelty, and utility.",
+      "allowed_contexts": ["Observation mode", "branch resolution", "probe reports"],
+      "forbidden_claims": ["Measurement bypasses runtime law", "Measurement is equivalent to canon promotion"]
+    },
+    {
+      "term": "basis",
+      "preferred_runtime_term": "measurement_basis",
+      "classification": "quantum-inspired formalism",
+      "scientific_meaning": "A set of states or observables used as a frame for representing or measuring a system.",
+      "ethereon_usage": "The weighted criteria frame used to evaluate branches, probes, or observations.",
+      "allowed_contexts": ["Observation mode", "Resonance Ledger", "Psi-42 probe output"],
+      "forbidden_claims": ["Basis weights are governance law", "Basis can replace human consent"]
+    }
+  ]
+}
