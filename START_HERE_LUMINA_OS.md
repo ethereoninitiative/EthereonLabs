@@ -46,6 +46,7 @@ Primary orchestration files inside that path:
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/lumina_decision_engine_v0_1.py`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/lumina_orchestrator_v0_4.py`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/sea_trials_lumina_orchestration_stack_r1.py`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/sea_trials_lumina_orchestration_continuity_r1.py`
 
 ## What this path is
 
@@ -70,6 +71,7 @@ It is the correct place to start when the task is about:
 - bounded self-guidance advisory over restored project stance
 - checkpoint-refreshed self-guidance history
 - bounded orchestration from restored context into runtime execution
+- continuity of pattern across restored context, orientation changes, advisory recommendation, and governed execution
 
 ## Current truth
 
@@ -78,7 +80,8 @@ It is the correct place to start when the task is about:
 3. **Chamber is a parallel app/public lane, not the same thing as the Lumina OS substrate, but it now includes a consent surface for advisory acceptance / rejection and supervised queue state.**
 4. **Root-level continuity / workspace-host files remain useful exploration history, but the repo-native bootstrap now contains the preferred bridge paths for project return, workspace-host behavior, bounded self-guidance, checkpoint-refreshed guidance history, and bounded orchestration.**
 5. **Quantum-adjacent language is now explicitly bounded: useful for modeling observation, coherence, branching, and recomposition, but not allowed to imply literal quantum hardware or runtime authority.**
-6. **If you are trying to understand the Ship-derived runtime core, do not begin with Chamber. Begin with the bootstrap path.**
+6. **Orchestration continuity now has a dedicated sea-trial verifier for restored context, orientation shifts, advisory recommendation, and governed execution.**
+7. **If you are trying to understand the Ship-derived runtime core, do not begin with Chamber. Begin with the bootstrap path.**
 
 ## Parallel lanes in this repository
 
@@ -102,7 +105,7 @@ It is the correct place to start when the task is about:
 2. Open `LuminaOS/bootstrap/Ship_of_Ethereon_V2/README.md`.
 3. Read `README_IMPORT.md`, `REPO_NATIVE_BOOTSTRAP_NOTE.md`, `RETURN_WITH_STANCE_BOOTSTRAP_NOTE_R1.md`, `SELF_GUIDANCE_STEWARD_NOTE_R1.md`, `LUMINA_ORCHESTRATION_STACK_NOTE_R1.md`, and `docs/Quantum_Concepts_Boundary_r1.md`.
 4. Inspect `runtime/` in that subtree, including the repo-native return / workspace-host modules, the bridged runner, the self-guided bridge runner, the checkpoint-refreshed guidance history rail, `quantum_concepts_registry_r1.json`, `branch_resolution_model_r1.json`, and `sea_trials_quantum_boundary_r1.py`.
-5. Inspect `lumina_context_loader_v0_1.py`, `lumina_decision_engine_v0_1.py`, `lumina_orchestrator_v0_4.py`, and `sea_trials_lumina_orchestration_stack_r1.py`.
+5. Inspect `lumina_context_loader_v0_1.py`, `lumina_decision_engine_v0_1.py`, `lumina_orchestrator_v0_4.py`, `sea_trials_lumina_orchestration_stack_r1.py`, and `sea_trials_lumina_orchestration_continuity_r1.py`.
 6. Only then branch outward into Chamber and its advisory / queue persistence lane.
 
 ## Assistant note
