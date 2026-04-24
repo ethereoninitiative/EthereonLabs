@@ -1,6 +1,6 @@
 {
-  "version": "0.6",
-  "description": "Minimal capability registry for the Ethereon Runtime Spine, now including continuity restore, workspace-host handshake support, and checkpoint-refreshed bounded Lumina self-guidance under explicit authority boundaries.",
+  "version": "0.7",
+  "description": "Minimal capability registry for the Ethereon Runtime Spine, now including continuity restore, workspace-host handshake support, checkpoint-refreshed bounded Lumina self-guidance, and quantum-concepts boundary artifacts under explicit authority boundaries.",
   "capabilities": [
     {
       "capability_id": "session_state_manager",
@@ -168,7 +168,7 @@
       ],
       "mutation_scope": "none",
       "requires_validation": false,
-      "authority_boundary": "Emits probe metrics and artifacts only; does not govern continuity, canon state, or runtime law.",
+      "authority_boundary": "Emits probe metrics and artifacts from the quantum-inspired classical signal transceiver only; does not govern continuity, canon state, or runtime law.",
       "dependencies": [
         "session_state_manager"
       ],
@@ -195,7 +195,7 @@
     },
     {
       "capability_id": "psi42_transceiver_v16",
-      "name": "Psi-42 Transceiver v1.6",
+      "name": "Psi-42 Quantum-Inspired Classical Signal Transceiver v1.6",
       "module_path": "psi42_transceiver_v1_6.py",
       "status": "experimental-active",
       "category": "expressive",
@@ -205,12 +205,48 @@
       ],
       "mutation_scope": "none",
       "requires_validation": false,
-      "authority_boundary": "Owns signal encoding, mitigation, adaptive probe steering, recovery metrics, recomposition reports, and probe artifacts only. Does not own canon state, governance, or primary continuity authority.",
+      "authority_boundary": "Owns classical signal-transceiver style probe summaries, mitigation, adaptive probe steering, namespaced coherence metrics, decoherence estimates, recomposition reports, and probe artifacts only. Does not own canon state, governance, mode legality, checkpoint legality, or primary continuity authority.",
       "dependencies": [
         "session_state_manager",
         "psi42_probe_interface"
       ],
       "feature_flag": "ETHEREON_PSI42"
+    },
+    {
+      "capability_id": "quantum_concepts_registry",
+      "name": "Quantum Concepts Registry",
+      "module_path": "quantum_concepts_registry_r1.json",
+      "status": "active-boundary-registry",
+      "category": "expressive",
+      "allowed_modes": [
+        "Observation",
+        "Sandbox",
+        "DryDock"
+      ],
+      "mutation_scope": "none",
+      "requires_validation": false,
+      "authority_boundary": "Classifies quantum-adjacent terms and preferred runtime terminology. Advisory boundary registry only; may not define governance law, mode legality, canon state, checkpoint legality, or user consent.",
+      "dependencies": [],
+      "feature_flag": "ETHEREON_RESONANCE"
+    },
+    {
+      "capability_id": "branch_resolution_model",
+      "name": "Branch Resolution Model",
+      "module_path": "branch_resolution_model_r1.json",
+      "status": "active-advisory-model",
+      "category": "expressive",
+      "allowed_modes": [
+        "Observation",
+        "Sandbox",
+        "DryDock"
+      ],
+      "mutation_scope": "none",
+      "requires_validation": false,
+      "authority_boundary": "Advisory branch ordering and selection model only. Replaces overloaded collapse language with resolution language; may not define governance law, mode legality, canon state, checkpoint legality, or user consent.",
+      "dependencies": [
+        "quantum_concepts_registry"
+      ],
+      "feature_flag": "ETHEREON_RESONANCE"
     }
   ]
 }
