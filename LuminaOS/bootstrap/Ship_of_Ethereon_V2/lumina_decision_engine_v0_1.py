@@ -7,7 +7,11 @@ class LuminaDecisionEngine:
     - Reads context + optional orientation
     - Proposes next action
     - Must always defer to ModeGuard at execution time
+    - Emits only RuntimeRunner-supported action types:
+      transition, mutation, promotion, or audit
     """
+
+    VALID_RUNTIME_ACTION_TYPES = {"transition", "mutation", "promotion", "audit"}
 
     def __init__(self, orientation_vector=None):
         self.orientation = orientation_vector or {}
@@ -34,6 +38,16 @@ class LuminaDecisionEngine:
             return self._continue_observation()
 
         return self._stabilize(mode)
+
+    def validate_next_action(self, action: dict) -> dict:
+        """Return an inspectable validation result without granting authority."""
+        action_type = action.get("action_type")
+        allowed = action_type in self.VALID_RUNTIME_ACTION_TYPES
+        return {
+            "allowed": allowed,
+            "reason": "runtime action type supported" if allowed else f"unsupported runtime action type: {action_type}",
+            "action": action,
+        }
 
     # --- Action templates ---
 
@@ -69,8 +83,8 @@ class LuminaDecisionEngine:
             }
         if mode == "DryDock":
             return {
-                "action": "prepare_promotion",
-                "action_type": "validation",
+                "action": "prepare_promotion_audit",
+                "action_type": "audit",
                 "target_mode": "DryDock"
             }
         return self._stabilize(mode)
