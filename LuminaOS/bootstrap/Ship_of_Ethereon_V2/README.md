@@ -77,6 +77,10 @@ This verifier checks whether Lumina can demonstrate the working mantra:
 
 It validates that restored context changes recommendations, orientation changes recommendation priority, recommendations use runtime-supported action types, and advisory decisions route through governed runtime execution.
 
+Current CI trigger note:
+
+- `sea-trial/lumina-orchestration-continuity-run-r1` exists only to trigger and inspect the orchestration continuity sea-trial workflow.
+
 ## Current hardening priority
 
 The remaining hardening priority is less about inventing new core law and more about tightening the whole into a cleaner beta shape:
