@@ -16,6 +16,7 @@ Primary guide files inside that path:
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/RETURN_WITH_STANCE_BOOTSTRAP_NOTE_R1.md`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/SELF_GUIDANCE_STEWARD_NOTE_R1.md`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/LUMINA_ORCHESTRATION_STACK_NOTE_R1.md`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Quantum_Concepts_Boundary_r1.md`
 
 Primary runtime files inside that path:
 
@@ -27,6 +28,8 @@ Primary runtime files inside that path:
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/governance_integrity_r1.py`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/canon_lineage_store_r1.py`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/psi42_transceiver_v1_6.py`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/quantum_concepts_registry_r1.json`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/branch_resolution_model_r1.json`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_set_one_r1_merged.py`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/capability_registry_r1.json`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/project_return_repo_native_r1.py`
@@ -56,7 +59,10 @@ It is the correct place to start when the task is about:
 - capability routing
 - Ethereonic boundary enforcement
 - input integrity
-- Psi-42 as an instrument under boundary control
+- Psi-42 as a quantum-inspired classical signal transceiver under boundary control
+- quantum-inspired terminology boundaries
+- branch resolution instead of load-bearing collapse language
+- namespaced coherence and decoherence metrics
 - project return without guessing
 - bounded workspace-host restoration
 - bridge-based activation of repo-native return / host behavior
@@ -70,7 +76,8 @@ It is the correct place to start when the task is about:
 2. **The orchestration lane now sits above that substrate and remains subordinate to runtime law.**
 3. **Chamber is a parallel app/public lane, not the same thing as the Lumina OS substrate, but it now includes a consent surface for advisory acceptance / rejection and supervised queue state.**
 4. **Root-level continuity / workspace-host files remain useful exploration history, but the repo-native bootstrap now contains the preferred bridge paths for project return, workspace-host behavior, bounded self-guidance, checkpoint-refreshed guidance history, and bounded orchestration.**
-5. **If you are trying to understand the Ship-derived runtime core, do not begin with Chamber. Begin with the bootstrap path.**
+5. **Quantum-adjacent language is now explicitly bounded: useful for modeling observation, coherence, branching, and recomposition, but not allowed to imply literal quantum hardware or runtime authority.**
+6. **If you are trying to understand the Ship-derived runtime core, do not begin with Chamber. Begin with the bootstrap path.**
 
 ## Parallel lanes in this repository
 
@@ -92,8 +99,8 @@ It is the correct place to start when the task is about:
 
 1. Read this file.
 2. Open `LuminaOS/bootstrap/Ship_of_Ethereon_V2/README.md`.
-3. Read `README_IMPORT.md`, `REPO_NATIVE_BOOTSTRAP_NOTE.md`, `RETURN_WITH_STANCE_BOOTSTRAP_NOTE_R1.md`, `SELF_GUIDANCE_STEWARD_NOTE_R1.md`, and `LUMINA_ORCHESTRATION_STACK_NOTE_R1.md`.
-4. Inspect `runtime/` in that subtree, including the repo-native return / workspace-host modules, the bridged runner, the self-guided bridge runner, and the checkpoint-refreshed guidance history rail.
+3. Read `README_IMPORT.md`, `REPO_NATIVE_BOOTSTRAP_NOTE.md`, `RETURN_WITH_STANCE_BOOTSTRAP_NOTE_R1.md`, `SELF_GUIDANCE_STEWARD_NOTE_R1.md`, `LUMINA_ORCHESTRATION_STACK_NOTE_R1.md`, and `docs/Quantum_Concepts_Boundary_r1.md`.
+4. Inspect `runtime/` in that subtree, including the repo-native return / workspace-host modules, the bridged runner, the self-guided bridge runner, the checkpoint-refreshed guidance history rail, `quantum_concepts_registry_r1.json`, and `branch_resolution_model_r1.json`.
 5. Inspect `lumina_context_loader_v0_1.py`, `lumina_decision_engine_v0_1.py`, `lumina_orchestrator_v0_4.py`, and `sea_trials_lumina_orchestration_stack_r1.py`.
 6. Only then branch outward into Chamber and its advisory / queue persistence lane.
 
