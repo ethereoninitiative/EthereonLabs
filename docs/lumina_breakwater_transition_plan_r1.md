@@ -28,6 +28,11 @@ Instead:
 - `START_HERE_LUMINA_OS.md`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/`
 
+### Ψ Class staging bay
+
+- `START_HERE_SHIP_OF_ETHEREON_PSI_CLASS.md`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_Psi_Class/`
+
 ### Deployment lane
 
 - `deploy/ubuntu_server_lts/`
@@ -121,8 +126,11 @@ Validation requirement:
 
 ### Stage 1 — Staging bay
 
-Create:
+Status: **complete as of PR #67**.
 
+Created:
+
+- `START_HERE_SHIP_OF_ETHEREON_PSI_CLASS.md`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_Psi_Class/README.md`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_Psi_Class/PSI_CLASS_REPO_IMPORT_PLAN_R1.md`
 
@@ -134,7 +142,7 @@ Purpose:
 
 ### Stage 2 — Runtime comparison packet
 
-Later PR:
+Next PR:
 
 - add r2 runtime files under the Ψ Class staging bay
 - add a comparison note against V2 runtime files
@@ -173,9 +181,9 @@ Do not:
 
 ## Immediate next action
 
-Add the staging bay and import plan.
+Stage **runtime files** into the Ψ Class bay and add a V2 comparison note before any active wiring changes.
 
-That is the sharp next move because it turns the Ψ Class project into a repo-visible vessel without pretending it has already docked as the active runtime.
+That is the sharp next move because Ψ Class is now repo-visible, but not yet validated as the active runtime substrate.
 
 ## Closing line
 

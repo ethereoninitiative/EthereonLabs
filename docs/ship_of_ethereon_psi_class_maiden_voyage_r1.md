@@ -79,14 +79,28 @@ This voyage does not:
 - make Ethereonic expression load-bearing,
 - or move Chamber into the same lane as Lumina substrate work.
 
-## Recommended first build after this doc
+## Maiden voyage result
 
-Add the repo-native Ψ Class import directory as a **staging bay**, not as the active boot path:
+Status: **complete as repo-visible staging, via PR #67**.
 
+The voyage successfully added a Ψ Class waypoint and staging bay without replacing V2 or changing active runtime wiring:
+
+- `START_HERE_SHIP_OF_ETHEREON_PSI_CLASS.md`
+- `docs/ship_of_ethereon_psi_class_maiden_voyage_r1.md`
+- `docs/lumina_breakwater_transition_plan_r1.md`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_Psi_Class/README.md`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_Psi_Class/PSI_CLASS_REPO_IMPORT_PLAN_R1.md`
 
-Then run a later PR that introduces actual r2 runtime files into that staging bay and compares them against the existing V2 bootstrap.
+## Recommended next build
+
+Introduce actual r2 runtime files into the staging bay and compare them against the existing V2 bootstrap before active wiring changes.
+
+Recommended next files:
+
+- `LuminaOS/bootstrap/Ship_of_Ethereon_Psi_Class/runtime/runtime_spine_r2.py`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_Psi_Class/runtime/runtime_runner_r2_merged.py`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_Psi_Class/runtime/sea_trials_set_one_r1_merged.py`
+- `docs/psi_class_vs_v2_bootstrap_comparison_r1.md`
 
 ## Closing line
 
