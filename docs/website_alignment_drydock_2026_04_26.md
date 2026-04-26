@@ -21,6 +21,8 @@ The old gateway also referenced a legacy Minerva image path that returned a miss
 - Added `CNAME` for `ethereonlabs.com` so GitHub Pages can serve the custom domain if Pages is the active host.
 - Added `.nojekyll` so GitHub Pages does not process the static site through Jekyll.
 - Added `revelation.html` as a noindex redirect to the current homepage for legacy gateway traffic.
+- Added `.github/workflows/deploy-pages.yml` so static site pushes can deploy through GitHub Pages when Pages is configured to use GitHub Actions.
+- Added `about/index.html` as a folder-route redirect to `/about.html` for extensionless route compatibility.
 
 ## Boundaries preserved
 
@@ -37,10 +39,11 @@ Verify the actual hosting source for `ethereonlabs.com`:
 
 1. Confirm whether the domain is served by GitHub Pages, Replit, another static host, or cached deployment.
 2. Confirm the host points at `ethereoninitiative/EthereonLabs`, branch `main`, site root.
-3. Confirm the live root serves the current `index.html` rather than an old gateway.
+3. Confirm the live root serves the current `index.html` rather than an older pre-Breakwater homepage.
 4. Confirm the legacy `/revelation` path redirects or is removed from the active host.
 5. Confirm the missing `Minerva001.gif` reference is no longer present in the active deployed site.
 6. Add `chamber` to `sitemap.xml` if the connector permits the XML patch or if edited manually.
+7. If the live site still lags after the workflow exists, open GitHub Settings → Pages and confirm the source is set to GitHub Actions or to `main` / root, matching the intended deploy path.
 
 ## Operating law
 
