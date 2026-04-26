@@ -2,8 +2,11 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Any, Dict
+import argparse
 import json
+import os
 import shutil
+import sys
 
 try:
     from .runtime_runner_orientation_adapter_r1 import OrientationAwareRuntimeRunner
@@ -42,9 +45,6 @@ def infer_runtime_root() -> Path:
 
 
 BASE_DIR = infer_state_root() / "sea_trials_orientation_r1"
-if BASE_DIR.exists():
-    shutil.rmtree(BASE_DIR)
-BASE_DIR.mkdir(parents=True, exist_ok=True)
 
 ETHEREONIC_OVERLAY = {
     "active": True,
@@ -77,9 +77,23 @@ ARTIFACTS = [
 ]
 
 
-def main() -> Dict[str, Any]:
+def prepare_base_dir(base_dir: Path, *, reset_state: bool = True) -> Path:
+    """Prepare the orientation sea-trial state directory.
+
+    This used to run at import time, which made importing the module destructive.
+    Keeping it inside the CLI/main path makes the test easier to reuse and avoids
+    surprising side effects during tooling inspection.
+    """
+    if reset_state and base_dir.exists():
+        shutil.rmtree(base_dir)
+    base_dir.mkdir(parents=True, exist_ok=True)
+    return base_dir
+
+
+def main(*, base_dir: Path = BASE_DIR, reset_state: bool = True) -> Dict[str, Any]:
+    base_dir = prepare_base_dir(base_dir, reset_state=reset_state)
     runner = OrientationAwareRuntimeRunner(
-        base_dir=BASE_DIR,
+        base_dir=base_dir,
         registry_path=infer_runtime_root() / "capability_registry_r1.json",
     )
     result = runner.run_cycle(
@@ -125,13 +139,73 @@ def main() -> Dict[str, Any]:
         "checkpoint_path": result.checkpoint_path,
     }
 
-    summary_path = BASE_DIR / "sea_trials_orientation_r1_report.json"
+    summary_path = base_dir / "sea_trials_orientation_r1_report.json"
     with summary_path.open("w", encoding="utf-8") as f:
         json.dump(summary, f, indent=2)
 
     return {"summary_path": str(summary_path), "summary": summary}
 
 
+def compact_cli_summary(output: Dict[str, Any]) -> Dict[str, Any]:
+    """Return a terminal-friendly summary without listing every artifact path.
+
+    Full path dumps are still available with --json. The compact default avoids
+    noisy terminal output and prevents tool wrappers from trying to inspect every
+    generated runtime artifact as a user-facing file.
+    """
+    summary = output.get("summary", {})
+    return {
+        "suite": summary.get("suite"),
+        "passed": summary.get("passed"),
+        "check_count": len(summary.get("checks", {})),
+        "failed_checks": [
+            name for name, passed in summary.get("checks", {}).items() if not passed
+        ],
+        "context_bundle_id": summary.get("context_bundle_id"),
+        "ordered_artifacts": summary.get("ordered_artifacts", []),
+        "summary_written": True,
+    }
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Run the ProjectOrientationVector orientation sea trial.")
+    parser.add_argument(
+        "--json",
+        action="store_true",
+        help="Print the full JSON payload, including artifact paths. Default prints a compact summary.",
+    )
+    parser.add_argument(
+        "--no-reset",
+        action="store_true",
+        help="Do not delete the previous orientation sea-trial state directory before running.",
+    )
+    parser.add_argument(
+        "--base-dir",
+        default=None,
+        help="Optional output directory for this sea-trial run.",
+    )
+    parser.add_argument(
+        "--force-exit",
+        action="store_true",
+        help="Flush output and use os._exit(exit_code) for environments with Python finalization quirks.",
+    )
+    return parser.parse_args()
+
+
+def cli() -> int:
+    args = parse_args()
+    base_dir = Path(args.base_dir) if args.base_dir else BASE_DIR
+    output = main(base_dir=base_dir, reset_state=not args.no_reset)
+    passed = bool(output.get("summary", {}).get("passed"))
+    payload = output if args.json else compact_cli_summary(output)
+    print(json.dumps(payload, indent=2))
+    sys.stdout.flush()
+    sys.stderr.flush()
+    exit_code = 0 if passed else 1
+    if args.force_exit:
+        os._exit(exit_code)
+    return exit_code
+
+
 if __name__ == "__main__":
-    output = main()
-    print(json.dumps(output, indent=2))
+    raise SystemExit(cli())
