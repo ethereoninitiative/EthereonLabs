@@ -4,13 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lumina Weather - EthereonLabs</title>
-  <meta name="description" content="A bounded, non-authoritative Lumina continuity weather panel showing harmonic stance, continuity state, advisory risk language, compact history, and trend analysis." />
+  <meta name="description" content="A bounded, non-authoritative Lumina continuity weather panel showing harmonic stance, continuity state, advisory risk language, compact history, trend analysis, and graph." />
   <link rel="stylesheet" href="assets/css/styles.css" />
   <style>
-    .weather-history, .weather-trends { margin-top: 2rem; display: grid; gap: .75rem; }
-    .history-entry, .trend-card { padding: .85rem 1rem; border: 1px solid rgba(255,255,255,.12); border-radius: 16px; background: rgba(255,255,255,.05); }
-    .history-entry small, .trend-card small { display:block; opacity:.7; margin-bottom:.25rem; }
+    .weather-history, .weather-trends, .weather-graph { margin-top: 2rem; display: grid; gap: .75rem; }
+    .history-entry, .trend-card, .graph-card { padding: .85rem 1rem; border: 1px solid rgba(255,255,255,.12); border-radius: 16px; background: rgba(255,255,255,.05); }
+    .history-entry small, .trend-card small, .graph-card small { display:block; opacity:.7; margin-bottom:.25rem; }
     .trend-score { font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1; margin: .25rem 0 .75rem; }
+    .graph-card svg { width: 100%; min-height: 140px; overflow: visible; }
   </style>
 </head>
 <body>
@@ -36,11 +37,15 @@
           <h2>Trend analysis</h2>
           <div class="trend-card" data-weather-trends>Loading trends...</div>
         </section>
+        <section class="weather-graph" aria-label="Continuity health graph">
+          <h2>Continuity health graph</h2>
+          <div class="graph-card" data-weather-graph>Loading graph...</div>
+        </section>
         <section class="weather-history" aria-label="Continuity weather history">
           <h2>Recent weather history</h2>
           <div data-weather-history>Loading history...</div>
         </section>
-        <p class="boundary-note">Display only. Auto-refresh reads generated JSON snapshots, history, and trend analysis but does not authorize action, alter governance, modify canon lineage, change mode legality, or execute tools.</p>
+        <p class="boundary-note">Display only. Auto-refresh reads generated JSON snapshots, history, trend analysis, and graph data but does not authorize action, alter governance, modify canon lineage, change mode legality, or execute tools.</p>
       </section>
     </main>
   </div>
@@ -48,6 +53,7 @@
     const WEATHER_SNAPSHOT_URL = 'data/lumina-weather-snapshot.json';
     const WEATHER_HISTORY_URL = 'data/lumina-weather-history.json';
     const REFRESH_MS = 15000;
+    const RISK_TO_HEALTH = { low: 1, moderate: 0.65, high: 0.25 };
     let weatherStates = {};
     let activeState = 'repair';
 
@@ -80,11 +86,42 @@
       `;
     }
 
+    function renderHealthGraph(entries) {
+      const target = document.querySelector('[data-weather-graph]');
+      const recent = (entries || []).slice(-24);
+      if (recent.length < 2) {
+        target.textContent = 'Need at least two history entries to graph continuity health.';
+        return;
+      }
+      const width = 600;
+      const height = 160;
+      const pad = 18;
+      const points = recent.map((entry, index) => {
+        const health = RISK_TO_HEALTH[entry.primary_risk] ?? 0.65;
+        const x = pad + (index / Math.max(1, recent.length - 1)) * (width - pad * 2);
+        const y = height - pad - health * (height - pad * 2);
+        return { x, y, health, entry };
+      });
+      const polyline = points.map(point => `${point.x},${point.y}`).join(' ');
+      const circles = points.map(point => `<circle cx="${point.x}" cy="${point.y}" r="4"><title>${point.entry.generated_at_utc || ''} · ${point.entry.primary_weather_state || ''} · ${Math.round(point.health * 100)}%</title></circle>`).join('');
+      target.innerHTML = `
+        <small>Recent continuity health from risk history</small>
+        <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Continuity health over recent weather history">
+          <line x1="${pad}" y1="${height - pad}" x2="${width - pad}" y2="${height - pad}" stroke="currentColor" opacity=".25" />
+          <line x1="${pad}" y1="${pad}" x2="${pad}" y2="${height - pad}" stroke="currentColor" opacity=".25" />
+          <polyline fill="none" stroke="currentColor" stroke-width="3" points="${polyline}" />
+          ${circles}
+        </svg>
+        <small>${recent.length} entries · higher is healthier</small>
+      `;
+    }
+
     async function loadWeatherHistory() {
       try {
         const response = await fetch(`${WEATHER_HISTORY_URL}?t=${Date.now()}`, { cache: 'no-store' });
         const data = await response.json();
         renderTrendAnalysis(data.trend_analysis);
+        renderHealthGraph(data.entries || []);
         const entries = (data.entries || []).slice(-6).reverse();
         const target = document.querySelector('[data-weather-history]');
         if (!entries.length) {
@@ -102,6 +139,7 @@
       } catch (error) {
         document.querySelector('[data-weather-history]').textContent = 'History unavailable.';
         document.querySelector('[data-weather-trends]').textContent = 'Trend analysis unavailable.';
+        document.querySelector('[data-weather-graph]').textContent = 'Graph unavailable.';
       }
     }
 
