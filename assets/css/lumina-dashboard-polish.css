@@ -1,0 +1,49 @@
+.dashboard-shell {
+  padding: clamp(3rem, 7vw, 6rem) 0;
+}
+
+.dashboard-grid {
+  align-items: stretch;
+}
+
+.dashboard-card {
+  backdrop-filter: blur(18px);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.18);
+  transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 24px 70px rgba(112, 203, 255, 0.12);
+}
+
+.dashboard-mood {
+  letter-spacing: -0.06em;
+  max-width: 12ch;
+}
+
+.dashboard-card.wide:first-of-type {
+  min-height: 220px;
+  display: grid;
+  align-content: center;
+}
+
+.dashboard-card strong {
+  font-size: 1.12rem;
+}
+
+.weather-panel .boundary-note {
+  margin-top: 1.5rem;
+  opacity: 0.72;
+}
+
+@media (max-width: 720px) {
+  .dashboard-card.wide:first-of-type {
+    min-height: auto;
+  }
+
+  .dashboard-mood {
+    max-width: none;
+  }
+}
