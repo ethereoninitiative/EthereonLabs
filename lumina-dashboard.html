@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lumina Dashboard - EthereonLabs</title>
+  <meta name="description" content="A bounded Lumina dashboard showing system mood, continuity weather, trend, graph, history, and optional harmonic audio." />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/lumina-weather-animation.css" />
+  <link rel="stylesheet" href="assets/css/lumina-graph-motion.css" />
+  <style>
+    .dashboard-shell { padding: 3rem 0; }
+    .dashboard-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:1rem; }
+    .dashboard-card { padding:1.25rem; border:1px solid rgba(255,255,255,.12); border-radius:22px; background:rgba(255,255,255,.055); }
+    .dashboard-card.wide { grid-column: 1 / -1; }
+    .dashboard-mood { font-size: clamp(2.25rem, 6vw, 5rem); line-height: .95; margin:.5rem 0; }
+    .dashboard-card small { opacity:.72; display:block; margin-bottom:.35rem; }
+    .weather-controls { display:flex; flex-wrap:wrap; gap:.75rem; margin:1rem 0; }
+    .weather-controls button { border:1px solid rgba(255,255,255,.18); border-radius:999px; padding:.7rem 1rem; background:rgba(255,255,255,.08); color:inherit; cursor:pointer; }
+    .risk-low { color:#83ffc5; }
+    .risk-moderate { color:#ffe08a; }
+    .risk-high { color:#ff8f8f; }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <main class="container dashboard-shell">
+      <section class="weather-panel" data-weather-panel data-risk="moderate" data-harmonic="blend">
+        <span class="eyebrow">Lumina system dashboard</span>
+        <h1>System organism surface</h1>
+        <p data-weather-updated>Loading Lumina state...</p>
+        <div class="weather-controls">
+          <button data-weather-state="stability">Stability</button>
+          <button data-weather-state="repair">Transformation</button>
+          <button data-weather-state="expansion">Expansion</button>
+          <button data-weather-state="blend">Blend</button>
+        </div>
+        <div class="dashboard-grid">
+          <article class="dashboard-card wide">
+            <small>System mood</small>
+            <div class="dashboard-mood" data-system-mood>Loading...</div>
+            <p data-system-guidance></p>
+          </article>
+          <article class="dashboard-card">
+            <small>Weather</small>
+            <strong class="weather-reading" data-weather-reading></strong>
+            <p data-weather-summary></p>
+          </article>
+          <article class="dashboard-card">
+            <small>Harmonic</small>
+            <strong data-weather-harmonic></strong>
+            <p>Animation and optional audio follow this advisory harmonic state.</p>
+          </article>
+          <article class="dashboard-card">
+            <small>Risk</small>
+            <strong data-weather-risk></strong>
+            <p data-weather-stance></p>
+          </article>
+          <article class="dashboard-card wide graph-card" data-weather-graph>
+            Loading graph...
+          </article>
+          <article class="dashboard-card wide" data-weather-trends>Loading trends...</article>
+          <article class="dashboard-card wide" data-weather-history>Loading history...</article>
+        </div>
+        <p class="boundary-note">Display only. Dashboard expresses generated Lumina state but does not authorize action, alter governance, modify canon lineage, change mode legality, or execute tools.</p>
+      </section>
+    </main>
+  </div>
+  <script src="assets/js/lumina-harmonic-audio.js"></script>
+  <script>
+    const WEATHER_SNAPSHOT_URL = 'data/lumina-weather-snapshot.json';
+    const WEATHER_HISTORY_URL = 'data/lumina-weather-history.json';
+    const RISK_CLASS = { low: 'risk-low', moderate: 'risk-moderate', high: 'risk-high' };
+    const RISK_TO_HEALTH = { low: 1, moderate: 0.65, high: 0.25 };
+    const RISK_STROKE = { low: '#83ffc5', moderate: '#ffe08a', high: '#ff8f8f' };
+    let weatherStates = {}; let activeState = 'repair';
+    function harmonicKey(label){ if((label||'').includes('432')) return '432'; if((label||'').includes('528')) return '528'; if((label||'').includes('963')) return '963'; return 'blend'; }
+    function renderGraph(entries){ const target=document.querySelector('[data-weather-graph]'); const recent=(entries||[]).slice(-24); if(recent.length<2){target.textContent='Need at least two history entries to graph.';return;} const w=600,h=160,p=18; const pts=recent.map((e,i)=>{const health=RISK_TO_HEALTH[e.primary_risk]??.65; return {x:p+(i/Math.max(1,recent.length-1))*(w-p*2), y:h-p-health*(h-p*2), health, e};}); const seg=pts.slice(1).map((pt,i)=>`<line x1="${pts[i].x}" y1="${pts[i].y}" x2="${pt.x}" y2="${pt.y}" stroke="${RISK_STROKE[pt.e.primary_risk]||RISK_STROKE.moderate}" stroke-width="3" />`).join(''); const dots=pts.map(pt=>`<circle cx="${pt.x}" cy="${pt.y}" r="4" fill="${RISK_STROKE[pt.e.primary_risk]||RISK_STROKE.moderate}"><title>${pt.e.generated_at_utc||''} · ${Math.round(pt.health*100)}%</title></circle>`).join(''); target.innerHTML=`<small>Continuity health graph</small><svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Continuity health graph">${seg}${dots}</svg>`; }
+    function applyWeatherState(key){ activeState=key; const s=weatherStates[key]; if(!s)return; const panel=document.querySelector('[data-weather-panel]'); panel.dataset.risk=s.risk||'moderate'; panel.dataset.harmonic=harmonicKey(s.harmonic); document.querySelector('[data-weather-reading]').textContent=s.reading; document.querySelector('[data-weather-summary]').textContent=s.summary; document.querySelector('[data-weather-harmonic]').textContent=s.harmonic; document.querySelector('[data-weather-risk]').textContent=s.risk; document.querySelector('[data-weather-risk]').className=RISK_CLASS[s.risk]||'risk-moderate'; document.querySelector('[data-weather-stance]').textContent=`Recommended stance: ${s.stance||'observe'}`; }
+    async function load(){ const snap=await fetch(`${WEATHER_SNAPSHOT_URL}?t=${Date.now()}`,{cache:'no-store'}).then(r=>r.json()); weatherStates=snap.states||{}; document.querySelector('[data-weather-updated]').textContent=`Snapshot: ${snap.generated_at_utc||'static'}`; const mood=snap.system_mood||{}; document.querySelector('[data-system-mood]').textContent=mood.mood||'held transformation'; document.querySelector('[data-system-guidance]').textContent=mood.guidance||'Keep outputs advisory.'; applyWeatherState(activeState); const hist=await fetch(`${WEATHER_HISTORY_URL}?t=${Date.now()}`,{cache:'no-store'}).then(r=>r.json()); const a=hist.trend_analysis||{}; document.querySelector('[data-weather-trends]').innerHTML=`<small>Trend analysis</small><strong>${a.trend||'insufficient_data'}</strong><p>${a.summary||''}</p><small>Health: ${a.continuity_health_score?Math.round(a.continuity_health_score*100)+'%':'—'} · ${a.state_change_count||0} state changes</small>`; renderGraph(hist.entries||[]); document.querySelector('[data-weather-history]').innerHTML=`<small>Recent history</small>`+(hist.entries||[]).slice(-5).reverse().map(e=>`<p><strong>${e.primary_weather_state||'unknown'}</strong> · ${e.primary_harmonic||'unknown'} · ${e.primary_risk||'unknown'}</p>`).join(''); }
+    document.querySelectorAll('[data-weather-state]').forEach(b=>b.onclick=()=>applyWeatherState(b.dataset.weatherState));
+    load(); setInterval(load,15000);
+  </script>
+</body>
+</html>
