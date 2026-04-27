@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 import argparse
 import json
 
@@ -76,7 +76,47 @@ def build_snapshot(metric_sets: Optional[Dict[str, Dict[str, Any]]] = None, *, s
     }
 
 
-def write_snapshot(output_path: str | Path, *, metrics_input: Optional[str | Path] = None) -> Path:
+def _compact_history_entry(snapshot: Dict[str, Any]) -> Dict[str, Any]:
+    states = snapshot.get("states", {})
+    repair = states.get("repair") or next(iter(states.values()), {}) if states else {}
+    return {
+        "generated_at_utc": snapshot.get("generated_at_utc"),
+        "source": snapshot.get("source"),
+        "primary_weather_state": repair.get("weather_state"),
+        "primary_harmonic": repair.get("harmonic"),
+        "primary_stance": repair.get("stance"),
+        "primary_risk": repair.get("risk"),
+        "primary_summary": repair.get("summary"),
+    }
+
+
+def update_history(history_path: str | Path, snapshot: Dict[str, Any], *, max_entries: int = 96) -> Path:
+    path = Path(history_path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    entries: List[Dict[str, Any]] = []
+    if path.exists():
+        try:
+            with path.open("r", encoding="utf-8") as f:
+                existing = json.load(f)
+            if isinstance(existing, dict) and isinstance(existing.get("entries"), list):
+                entries = list(existing["entries"])
+        except Exception:
+            entries = []
+    entries.append(_compact_history_entry(snapshot))
+    entries = entries[-max_entries:]
+    payload = {
+        "schema_version": "lumina_weather_history_r1",
+        "authority_boundary": AUTHORITY_BOUNDARY,
+        "entry_count": len(entries),
+        "entries": entries,
+    }
+    with path.open("w", encoding="utf-8") as f:
+        json.dump(payload, f, indent=2)
+        f.write("\n")
+    return path
+
+
+def write_snapshot(output_path: str | Path, *, metrics_input: Optional[str | Path] = None, history_output: Optional[str | Path] = None) -> Path:
     path = Path(output_path)
     path.parent.mkdir(parents=True, exist_ok=True)
     metric_sets = _load_runtime_metric_sets(metrics_input)
@@ -85,6 +125,8 @@ def write_snapshot(output_path: str | Path, *, metrics_input: Optional[str | Pat
     with path.open("w", encoding="utf-8") as f:
         json.dump(payload, f, indent=2)
         f.write("\n")
+    if history_output:
+        update_history(history_output, payload)
     return path
 
 
@@ -92,6 +134,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Generate Lumina weather snapshot JSON.")
     parser.add_argument("--metrics-input", default=None, help="Optional JSON metrics file from runtime/Psi-42 output")
     parser.add_argument("--output", default=None, help="Optional output path for lumina-weather-snapshot.json")
+    parser.add_argument("--history-output", default=None, help="Optional output path for lumina-weather-history.json")
     return parser.parse_args()
 
 
@@ -100,4 +143,5 @@ if __name__ == "__main__":
     runtime_dir = Path(__file__).resolve().parent
     repo_root = runtime_dir.parents[3]
     out = Path(args.output) if args.output else repo_root / "data" / "lumina-weather-snapshot.json"
-    print(write_snapshot(out, metrics_input=args.metrics_input))
+    history = Path(args.history_output) if args.history_output else repo_root / "data" / "lumina-weather-history.json"
+    print(write_snapshot(out, metrics_input=args.metrics_input, history_output=history))
