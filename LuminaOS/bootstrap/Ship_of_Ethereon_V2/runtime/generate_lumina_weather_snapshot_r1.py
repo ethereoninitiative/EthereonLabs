@@ -13,11 +13,7 @@ except Exception:
     from .psi42_harmonic_annotation_bridge_r1 import resolve_harmonic_annotation
     from .continuity_weather_layer_r1 import build_continuity_weather
 
-
-AUTHORITY_BOUNDARY = (
-    "generated display data only; does not authorize action, alter governance, alter canon lineage, "
-    "change mode legality, expose capabilities, or execute tools"
-)
+AUTHORITY_BOUNDARY = "generated display data only; does not authorize action, alter governance, alter canon lineage, change mode legality, expose capabilities, or execute tools"
 
 SAMPLE_METRIC_SETS: Dict[str, Dict[str, Any]] = {
     "stability": {"lock": 0.72, "presence": 0.56, "coherence": 0.66, "CRS": 0.62, "AGR": 0.03, "RF": 0.93, "drift_index": 0.18},
@@ -25,6 +21,8 @@ SAMPLE_METRIC_SETS: Dict[str, Dict[str, Any]] = {
     "expansion": {"lock": 0.42, "presence": 0.36, "coherence": 0.41, "CRS": 0.38, "AGR": 0.04, "RF": 0.82, "drift_index": 0.58},
     "blend": {"lock": 0.55, "presence": 0.44, "coherence": 0.53, "CRS": 0.47, "AGR": 0.06, "RF": 0.86, "drift_index": 0.37},
 }
+
+RISK_SCORES = {"low": 1.0, "moderate": 0.65, "high": 0.25}
 
 
 def _display_harmonic(annotation: Dict[str, Any]) -> str:
@@ -67,27 +65,38 @@ def build_snapshot(metric_sets: Optional[Dict[str, Dict[str, Any]]] = None, *, s
             "harmonic_annotation": annotation,
             "continuity_weather": weather,
         }
-    return {
-        "schema_version": "lumina_weather_snapshot_r1",
-        "generated_at_utc": datetime.now(timezone.utc).isoformat(),
-        "source": source_label or "generated from sample Psi-42-style metric sets through harmonic annotation and continuity weather layers",
-        "authority_boundary": AUTHORITY_BOUNDARY,
-        "states": states,
-    }
+    return {"schema_version": "lumina_weather_snapshot_r1", "generated_at_utc": datetime.now(timezone.utc).isoformat(), "source": source_label or "generated from sample Psi-42-style metric sets through harmonic annotation and continuity weather layers", "authority_boundary": AUTHORITY_BOUNDARY, "states": states}
 
 
 def _compact_history_entry(snapshot: Dict[str, Any]) -> Dict[str, Any]:
     states = snapshot.get("states", {})
-    repair = states.get("repair") or next(iter(states.values()), {}) if states else {}
-    return {
-        "generated_at_utc": snapshot.get("generated_at_utc"),
-        "source": snapshot.get("source"),
-        "primary_weather_state": repair.get("weather_state"),
-        "primary_harmonic": repair.get("harmonic"),
-        "primary_stance": repair.get("stance"),
-        "primary_risk": repair.get("risk"),
-        "primary_summary": repair.get("summary"),
-    }
+    primary = states.get("repair") or (next(iter(states.values()), {}) if states else {})
+    return {"generated_at_utc": snapshot.get("generated_at_utc"), "source": snapshot.get("source"), "primary_weather_state": primary.get("weather_state"), "primary_harmonic": primary.get("harmonic"), "primary_stance": primary.get("stance"), "primary_risk": primary.get("risk"), "primary_summary": primary.get("summary")}
+
+
+def analyze_history(entries: List[Dict[str, Any]]) -> Dict[str, Any]:
+    recent = entries[-12:]
+    if not recent:
+        return {"schema_version": "lumina_weather_trend_analysis_r1", "continuity_health_score": None, "trend": "insufficient_data", "summary": "No history entries available yet.", "authority_boundary": AUTHORITY_BOUNDARY}
+    risks = [RISK_SCORES.get(str(e.get("primary_risk", "moderate")), 0.65) for e in recent]
+    health = round(sum(risks) / len(risks), 3)
+    high_count = sum(1 for e in recent if e.get("primary_risk") == "high")
+    low_count = sum(1 for e in recent if e.get("primary_risk") == "low")
+    states = [e.get("primary_weather_state") for e in recent]
+    state_changes = sum(1 for a, b in zip(states, states[1:]) if a != b)
+    if high_count >= max(2, len(recent) // 3):
+        trend = "drift_pressure"
+        summary = "Risk pressure is elevated across recent weather entries."
+    elif low_count >= max(2, len(recent) // 2):
+        trend = "stabilizing"
+        summary = "Recent weather favors low-risk continuity."
+    elif state_changes >= max(2, len(recent) // 3):
+        trend = "oscillating"
+        summary = "Weather states are changing frequently; watch continuity coherence."
+    else:
+        trend = "steady_mixed"
+        summary = "Recent weather is mixed but not showing acute instability."
+    return {"schema_version": "lumina_weather_trend_analysis_r1", "continuity_health_score": health, "trend": trend, "recent_entry_count": len(recent), "state_change_count": state_changes, "summary": summary, "authority_boundary": AUTHORITY_BOUNDARY}
 
 
 def update_history(history_path: str | Path, snapshot: Dict[str, Any], *, max_entries: int = 96) -> Path:
@@ -104,12 +113,7 @@ def update_history(history_path: str | Path, snapshot: Dict[str, Any], *, max_en
             entries = []
     entries.append(_compact_history_entry(snapshot))
     entries = entries[-max_entries:]
-    payload = {
-        "schema_version": "lumina_weather_history_r1",
-        "authority_boundary": AUTHORITY_BOUNDARY,
-        "entry_count": len(entries),
-        "entries": entries,
-    }
+    payload = {"schema_version": "lumina_weather_history_r1", "authority_boundary": AUTHORITY_BOUNDARY, "entry_count": len(entries), "trend_analysis": analyze_history(entries), "entries": entries}
     with path.open("w", encoding="utf-8") as f:
         json.dump(payload, f, indent=2)
         f.write("\n")
