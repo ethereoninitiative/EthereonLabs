@@ -6,112 +6,56 @@
   <title>Lumina Weather - EthereonLabs</title>
   <meta name="description" content="A bounded, non-authoritative Lumina continuity weather panel showing harmonic stance, continuity state, and advisory risk language." />
   <link rel="stylesheet" href="assets/css/styles.css" />
-  <style>
-    .weather-panel { max-width: 980px; margin: 4rem auto; padding: 2rem; border: 1px solid rgba(255,255,255,.18); border-radius: 28px; background: rgba(8, 13, 28, .78); box-shadow: 0 0 60px rgba(112, 203, 255, .16); }
-    .weather-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
-    .weather-tile { padding: 1rem; border-radius: 18px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); }
-    .weather-tile small { display:block; opacity:.7; margin-bottom:.35rem; }
-    .weather-reading { font-size: clamp(2rem, 5vw, 4rem); line-height: 1; margin: 1rem 0; }
-    .weather-controls { display:flex; flex-wrap:wrap; gap:.75rem; margin:1.5rem 0; }
-    .weather-controls button { cursor:pointer; border:1px solid rgba(255,255,255,.18); border-radius:999px; padding:.75rem 1rem; background:rgba(255,255,255,.08); color:inherit; font:inherit; }
-    .weather-controls button[aria-pressed="true"] { background:rgba(112,203,255,.20); box-shadow:0 0 28px rgba(112,203,255,.20); }
-    .boundary-note { margin-top: 1.5rem; opacity: .75; font-size: .95rem; }
-  </style>
 </head>
 <body>
-  <div class="orbit-field" aria-hidden="true"><span></span><span></span><span></span></div>
   <div class="page-shell">
-    <header class="site-header">
-      <div class="container nav-wrap">
-        <a class="brand ping-target" href="index.html">
-          <span class="brand-mark" aria-hidden="true"></span>
-          <span class="brand-text"><strong>EthereonLabs</strong><span>Adaptive digital environments</span></span>
-        </a>
-        <nav class="nav-links" aria-label="Primary">
-          <a href="index.html">Home</a>
-          <a href="build.html">What We Are Building</a>
-          <a href="lumina.html">Lumina</a>
-          <a href="updates.html">Updates</a>
-          <a href="chamber.html">Chamber</a>
-        </nav>
-      </div>
-    </header>
     <main class="container">
-      <section class="weather-panel" data-glow>
-        <span class="eyebrow">Lumina continuity weather</span>
+      <section class="weather-panel">
         <h1>Weather surface</h1>
-        <p class="lead">A first public-facing panel for Lumina's interpretive state: measured by Ψ-42, translated through harmonic annotation, and summarized as continuity weather.</p>
-        <div class="weather-controls" aria-label="Weather state examples">
-          <button type="button" data-weather-state="stability">Stability</button>
-          <button type="button" data-weather-state="repair">Transformation</button>
-          <button type="button" data-weather-state="expansion">Expansion</button>
-          <button type="button" data-weather-state="blend">Blend</button>
+        <div class="weather-controls">
+          <button data-weather-state="stability">Stability</button>
+          <button data-weather-state="repair">Transformation</button>
+          <button data-weather-state="expansion">Expansion</button>
+          <button data-weather-state="blend">Blend</button>
         </div>
-        <div class="weather-reading" data-weather-reading>coherent repair</div>
+        <div class="weather-reading" data-weather-reading></div>
         <div class="weather-grid">
-          <div class="weather-tile"><small>Dominant harmonic</small><strong data-weather-harmonic>528 - adaptive transformation</strong></div>
-          <div class="weather-tile"><small>Recommended stance</small><strong data-weather-stance>restructure</strong></div>
-          <div class="weather-tile"><small>Risk</small><strong data-weather-risk>moderate</strong></div>
-          <div class="weather-tile"><small>Summary</small><strong data-weather-summary>repair path active; coherence stabilizing</strong></div>
+          <div><strong data-weather-harmonic></strong></div>
+          <div><strong data-weather-stance></strong></div>
+          <div><strong data-weather-risk></strong></div>
+          <div><strong data-weather-summary></strong></div>
         </div>
-        <p class="boundary-note">Display only. This panel does not authorize action, alter governance, modify canon lineage, change mode legality, or execute tools.</p>
       </section>
     </main>
   </div>
   <script>
-    const weatherStates = {
-      stability: {
-        reading: 'clear continuity',
-        harmonic: '432 - presence stability',
-        stance: 'consolidate',
-        risk: 'low',
-        summary: 'continuity surface held'
-      },
-      repair: {
-        reading: 'coherent repair',
-        harmonic: '528 - adaptive transformation',
-        stance: 'restructure',
-        risk: 'moderate',
-        summary: 'repair path active; coherence stabilizing'
-      },
-      expansion: {
-        reading: 'branching front',
-        harmonic: '963 - conceptual expansion',
-        stance: 'explore',
-        risk: 'moderate',
-        summary: 'branching paths detected; keep resolution advisory'
-      },
-      blend: {
-        reading: 'mixed weather',
-        harmonic: '432 + 528 + 963 - held transformation',
-        stance: 'blend',
-        risk: 'moderate',
-        summary: 'coherence held through transformation'
-      }
-    };
+    let weatherStates = {};
+
+    fetch('data/lumina-weather-snapshot.json')
+      .then(res => res.json())
+      .then(data => {
+        weatherStates = data.states;
+        init();
+      });
 
     function applyWeatherState(key) {
-      const state = weatherStates[key] || weatherStates.repair;
+      const state = weatherStates[key];
+      if (!state) return;
       document.querySelector('[data-weather-reading]').textContent = state.reading;
       document.querySelector('[data-weather-harmonic]').textContent = state.harmonic;
       document.querySelector('[data-weather-stance]').textContent = state.stance;
       document.querySelector('[data-weather-risk]').textContent = state.risk;
       document.querySelector('[data-weather-summary]').textContent = state.summary;
-      document.querySelectorAll('[data-weather-state]').forEach((button) => {
-        button.setAttribute('aria-pressed', button.dataset.weatherState === key ? 'true' : 'false');
-      });
-      const url = new URL(window.location.href);
-      url.searchParams.set('state', key);
-      window.history.replaceState({}, '', url);
     }
 
-    const params = new URLSearchParams(window.location.search);
-    const initialState = params.get('state') || 'repair';
-    document.querySelectorAll('[data-weather-state]').forEach((button) => {
-      button.addEventListener('click', () => applyWeatherState(button.dataset.weatherState));
-    });
-    applyWeatherState(initialState);
+    function init() {
+      const params = new URLSearchParams(window.location.search);
+      const initial = params.get('state') || 'repair';
+      document.querySelectorAll('[data-weather-state]').forEach(btn => {
+        btn.onclick = () => applyWeatherState(btn.dataset.weatherState);
+      });
+      applyWeatherState(initial);
+    }
   </script>
-  <script src="assets/js/site.js"></script>
 </body>
 </html>

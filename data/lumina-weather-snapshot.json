@@ -1,0 +1,79 @@
+{
+  "schema_version": "lumina_weather_snapshot_r1",
+  "source": "truth-shaped sample derived from Psi-42 harmonic annotation and continuity weather layer structure",
+  "generated_from": [
+    "psi42_harmonic_annotation_bridge_r1.py",
+    "continuity_weather_layer_r1.py"
+  ],
+  "authority_boundary": "display data only; does not authorize action, alter governance, alter canon lineage, change mode legality, or execute tools",
+  "states": {
+    "stability": {
+      "reading": "clear continuity",
+      "weather_state": "clear_continuity",
+      "harmonic": "432 - presence stability",
+      "stance": "consolidate",
+      "risk": "low",
+      "summary": "continuity surface held",
+      "metrics": {
+        "lock": 0.72,
+        "presence": 0.56,
+        "coherence": 0.66,
+        "CRS": 0.62,
+        "AGR": 0.03,
+        "RF": 0.93,
+        "drift_index": 0.18
+      }
+    },
+    "repair": {
+      "reading": "coherent repair",
+      "weather_state": "coherent_repair",
+      "harmonic": "528 - adaptive transformation",
+      "stance": "restructure",
+      "risk": "moderate",
+      "summary": "repair path active; coherence stabilizing",
+      "metrics": {
+        "lock": 0.63,
+        "presence": 0.48,
+        "coherence": 0.59,
+        "CRS": 0.52,
+        "AGR": 0.08,
+        "RF": 0.88,
+        "drift_index": 0.29
+      }
+    },
+    "expansion": {
+      "reading": "branching front",
+      "weather_state": "branching_front",
+      "harmonic": "963 - conceptual expansion",
+      "stance": "explore",
+      "risk": "moderate",
+      "summary": "branching paths detected; keep resolution advisory",
+      "metrics": {
+        "lock": 0.42,
+        "presence": 0.36,
+        "coherence": 0.41,
+        "CRS": 0.38,
+        "AGR": 0.04,
+        "RF": 0.82,
+        "drift_index": 0.58
+      }
+    },
+    "blend": {
+      "reading": "mixed weather",
+      "weather_state": "mixed_weather",
+      "harmonic": "432 + 528 + 963 - held transformation",
+      "stance": "blend",
+      "risk": "moderate",
+      "summary": "coherence held through transformation",
+      "metrics": {
+        "lock": 0.55,
+        "presence": 0.44,
+        "coherence": 0.53,
+        "CRS": 0.47,
+        "AGR": 0.06,
+        "RF": 0.86,
+        "drift_index": 0.37
+      }
+    }
+  }
+}
