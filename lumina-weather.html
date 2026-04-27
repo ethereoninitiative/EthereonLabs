@@ -4,8 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lumina Weather - EthereonLabs</title>
-  <meta name="description" content="A bounded, non-authoritative Lumina continuity weather panel showing harmonic stance, continuity state, and advisory risk language." />
+  <meta name="description" content="A bounded, non-authoritative Lumina continuity weather panel showing harmonic stance, continuity state, advisory risk language, and compact history." />
   <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    .weather-history { margin-top: 2rem; display: grid; gap: .75rem; }
+    .history-entry { padding: .85rem 1rem; border: 1px solid rgba(255,255,255,.12); border-radius: 16px; background: rgba(255,255,255,.05); }
+    .history-entry small { display:block; opacity:.7; margin-bottom:.25rem; }
+  </style>
 </head>
 <body>
   <div class="page-shell">
@@ -26,12 +31,17 @@
           <div><strong data-weather-risk></strong></div>
           <div><strong data-weather-summary></strong></div>
         </div>
-        <p class="boundary-note">Display only. Auto-refresh reads generated JSON snapshots but does not authorize action, alter governance, modify canon lineage, change mode legality, or execute tools.</p>
+        <section class="weather-history" aria-label="Continuity weather history">
+          <h2>Recent weather history</h2>
+          <div data-weather-history>Loading history...</div>
+        </section>
+        <p class="boundary-note">Display only. Auto-refresh reads generated JSON snapshots and history but does not authorize action, alter governance, modify canon lineage, change mode legality, or execute tools.</p>
       </section>
     </main>
   </div>
   <script>
     const WEATHER_SNAPSHOT_URL = 'data/lumina-weather-snapshot.json';
+    const WEATHER_HISTORY_URL = 'data/lumina-weather-history.json';
     const REFRESH_MS = 15000;
     let weatherStates = {};
     let activeState = 'repair';
@@ -45,6 +55,29 @@
         applyWeatherState(activeState);
       } catch (error) {
         document.querySelector('[data-weather-updated]').textContent = 'Snapshot unavailable; last known state preserved.';
+      }
+    }
+
+    async function loadWeatherHistory() {
+      try {
+        const response = await fetch(`${WEATHER_HISTORY_URL}?t=${Date.now()}`, { cache: 'no-store' });
+        const data = await response.json();
+        const entries = (data.entries || []).slice(-6).reverse();
+        const target = document.querySelector('[data-weather-history]');
+        if (!entries.length) {
+          target.textContent = 'No history entries yet.';
+          return;
+        }
+        target.innerHTML = entries.map(entry => `
+          <article class="history-entry">
+            <small>${entry.generated_at_utc || 'unknown time'}</small>
+            <strong>${entry.primary_weather_state || 'unknown weather'}</strong>
+            <div>${entry.primary_harmonic || 'unknown harmonic'} · ${entry.primary_stance || 'observe'} · ${entry.primary_risk || 'unknown risk'}</div>
+            <p>${entry.primary_summary || ''}</p>
+          </article>
+        `).join('');
+      } catch (error) {
+        document.querySelector('[data-weather-history]').textContent = 'History unavailable.';
       }
     }
 
@@ -65,14 +98,19 @@
       window.history.replaceState({}, '', url);
     }
 
+    function refreshWeatherSurface() {
+      loadWeatherSnapshot();
+      loadWeatherHistory();
+    }
+
     function init() {
       const params = new URLSearchParams(window.location.search);
       activeState = params.get('state') || 'repair';
       document.querySelectorAll('[data-weather-state]').forEach(btn => {
         btn.onclick = () => applyWeatherState(btn.dataset.weatherState);
       });
-      loadWeatherSnapshot();
-      setInterval(loadWeatherSnapshot, REFRESH_MS);
+      refreshWeatherSurface();
+      setInterval(refreshWeatherSurface, REFRESH_MS);
     }
 
     init();
