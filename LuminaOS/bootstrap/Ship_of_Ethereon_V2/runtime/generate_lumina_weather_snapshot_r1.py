@@ -21,15 +21,33 @@ SAMPLE_METRIC_SETS: Dict[str, Dict[str, Any]] = {
     "expansion": {"lock": 0.42, "presence": 0.36, "coherence": 0.41, "CRS": 0.38, "AGR": 0.04, "RF": 0.82, "drift_index": 0.58},
     "blend": {"lock": 0.55, "presence": 0.44, "coherence": 0.53, "CRS": 0.47, "AGR": 0.06, "RF": 0.86, "drift_index": 0.37},
 }
-
 RISK_SCORES = {"low": 1.0, "moderate": 0.65, "high": 0.25}
-
 
 def _display_harmonic(annotation: Dict[str, Any]) -> str:
     freq = str(annotation.get("dominant_frequency", "432+528"))
     label = str(annotation.get("label", "coherence_repair_blend")).replace("_", " ")
     return f"{freq} - {label}"
 
+def synthesize_system_mood(primary_state: Dict[str, Any], trend_analysis: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    trend = (trend_analysis or {}).get("trend", "steady_mixed")
+    harmonic = str(primary_state.get("harmonic", "blend"))
+    risk = primary_state.get("risk", "moderate")
+    if risk == "high" or trend == "drift_pressure":
+        mood = "drift watch"
+        guidance = "Consolidate before action; keep authority boundaries visible."
+    elif "432" in harmonic and trend == "stabilizing":
+        mood = "calm continuity"
+        guidance = "Proceed with verification, documentation, or stable integration."
+    elif "528" in harmonic:
+        mood = "coherent repair"
+        guidance = "Continue restructuring while preserving governance separation."
+    elif "963" in harmonic:
+        mood = "open expansion"
+        guidance = "Explore branches, then return to consolidation before promotion."
+    else:
+        mood = "held transformation"
+        guidance = "Blend exploration with stabilization; keep outputs advisory."
+    return {"schema_version": "lumina_system_mood_r1", "mood": mood, "guidance": guidance, "trend": trend, "risk": risk, "harmonic": harmonic, "authority_boundary": AUTHORITY_BOUNDARY}
 
 def _load_runtime_metric_sets(path: Optional[str | Path]) -> Optional[Dict[str, Dict[str, Any]]]:
     if not path:
@@ -47,32 +65,20 @@ def _load_runtime_metric_sets(path: Optional[str | Path]) -> Optional[Dict[str, 
         return {str(k): dict(v) for k, v in payload.items() if isinstance(v, dict)}
     return None
 
-
 def build_snapshot(metric_sets: Optional[Dict[str, Dict[str, Any]]] = None, *, source_label: Optional[str] = None) -> Dict[str, Any]:
     selected_sets = metric_sets or SAMPLE_METRIC_SETS
     states: Dict[str, Any] = {}
     for name, metrics in selected_sets.items():
         annotation = resolve_harmonic_annotation(metrics, requested_action=name)
         weather = build_continuity_weather(metrics, harmonic_annotation=annotation, requested_action=name)
-        states[name] = {
-            "reading": weather["weather_state"].replace("_", " "),
-            "weather_state": weather["weather_state"],
-            "harmonic": _display_harmonic(annotation),
-            "stance": weather["recommended_stance"],
-            "risk": weather["risk_level"],
-            "summary": weather["summary"],
-            "metrics": weather["raw_metric_snapshot"],
-            "harmonic_annotation": annotation,
-            "continuity_weather": weather,
-        }
-    return {"schema_version": "lumina_weather_snapshot_r1", "generated_at_utc": datetime.now(timezone.utc).isoformat(), "source": source_label or "generated from sample Psi-42-style metric sets through harmonic annotation and continuity weather layers", "authority_boundary": AUTHORITY_BOUNDARY, "states": states}
-
+        states[name] = {"reading": weather["weather_state"].replace("_", " "), "weather_state": weather["weather_state"], "harmonic": _display_harmonic(annotation), "stance": weather["recommended_stance"], "risk": weather["risk_level"], "summary": weather["summary"], "metrics": weather["raw_metric_snapshot"], "harmonic_annotation": annotation, "continuity_weather": weather}
+    primary = states.get("repair") or next(iter(states.values()), {})
+    return {"schema_version": "lumina_weather_snapshot_r1", "generated_at_utc": datetime.now(timezone.utc).isoformat(), "source": source_label or "generated from sample Psi-42-style metric sets through harmonic annotation and continuity weather layers", "authority_boundary": AUTHORITY_BOUNDARY, "system_mood": synthesize_system_mood(primary), "states": states}
 
 def _compact_history_entry(snapshot: Dict[str, Any]) -> Dict[str, Any]:
     states = snapshot.get("states", {})
     primary = states.get("repair") or (next(iter(states.values()), {}) if states else {})
-    return {"generated_at_utc": snapshot.get("generated_at_utc"), "source": snapshot.get("source"), "primary_weather_state": primary.get("weather_state"), "primary_harmonic": primary.get("harmonic"), "primary_stance": primary.get("stance"), "primary_risk": primary.get("risk"), "primary_summary": primary.get("summary")}
-
+    return {"generated_at_utc": snapshot.get("generated_at_utc"), "source": snapshot.get("source"), "primary_weather_state": primary.get("weather_state"), "primary_harmonic": primary.get("harmonic"), "primary_stance": primary.get("stance"), "primary_risk": primary.get("risk"), "primary_summary": primary.get("summary"), "system_mood": snapshot.get("system_mood")}
 
 def analyze_history(entries: List[Dict[str, Any]]) -> Dict[str, Any]:
     recent = entries[-12:]
@@ -85,19 +91,14 @@ def analyze_history(entries: List[Dict[str, Any]]) -> Dict[str, Any]:
     states = [e.get("primary_weather_state") for e in recent]
     state_changes = sum(1 for a, b in zip(states, states[1:]) if a != b)
     if high_count >= max(2, len(recent) // 3):
-        trend = "drift_pressure"
-        summary = "Risk pressure is elevated across recent weather entries."
+        trend, summary = "drift_pressure", "Risk pressure is elevated across recent weather entries."
     elif low_count >= max(2, len(recent) // 2):
-        trend = "stabilizing"
-        summary = "Recent weather favors low-risk continuity."
+        trend, summary = "stabilizing", "Recent weather favors low-risk continuity."
     elif state_changes >= max(2, len(recent) // 3):
-        trend = "oscillating"
-        summary = "Weather states are changing frequently; watch continuity coherence."
+        trend, summary = "oscillating", "Weather states are changing frequently; watch continuity coherence."
     else:
-        trend = "steady_mixed"
-        summary = "Recent weather is mixed but not showing acute instability."
+        trend, summary = "steady_mixed", "Recent weather is mixed but not showing acute instability."
     return {"schema_version": "lumina_weather_trend_analysis_r1", "continuity_health_score": health, "trend": trend, "recent_entry_count": len(recent), "state_change_count": state_changes, "summary": summary, "authority_boundary": AUTHORITY_BOUNDARY}
-
 
 def update_history(history_path: str | Path, snapshot: Dict[str, Any], *, max_entries: int = 96) -> Path:
     path = Path(history_path)
@@ -113,12 +114,13 @@ def update_history(history_path: str | Path, snapshot: Dict[str, Any], *, max_en
             entries = []
     entries.append(_compact_history_entry(snapshot))
     entries = entries[-max_entries:]
-    payload = {"schema_version": "lumina_weather_history_r1", "authority_boundary": AUTHORITY_BOUNDARY, "entry_count": len(entries), "trend_analysis": analyze_history(entries), "entries": entries}
+    analysis = analyze_history(entries)
+    latest = entries[-1] if entries else {}
+    payload = {"schema_version": "lumina_weather_history_r1", "authority_boundary": AUTHORITY_BOUNDARY, "entry_count": len(entries), "trend_analysis": analysis, "system_mood": synthesize_system_mood(latest, analysis), "entries": entries}
     with path.open("w", encoding="utf-8") as f:
         json.dump(payload, f, indent=2)
         f.write("\n")
     return path
-
 
 def write_snapshot(output_path: str | Path, *, metrics_input: Optional[str | Path] = None, history_output: Optional[str | Path] = None) -> Path:
     path = Path(output_path)
@@ -133,14 +135,12 @@ def write_snapshot(output_path: str | Path, *, metrics_input: Optional[str | Pat
         update_history(history_output, payload)
     return path
 
-
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Generate Lumina weather snapshot JSON.")
     parser.add_argument("--metrics-input", default=None, help="Optional JSON metrics file from runtime/Psi-42 output")
     parser.add_argument("--output", default=None, help="Optional output path for lumina-weather-snapshot.json")
     parser.add_argument("--history-output", default=None, help="Optional output path for lumina-weather-history.json")
     return parser.parse_args()
-
 
 if __name__ == "__main__":
     args = parse_args()
