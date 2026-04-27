@@ -12,6 +12,7 @@
     <main class="container">
       <section class="weather-panel">
         <h1>Weather surface</h1>
+        <p data-weather-updated>Loading weather snapshot...</p>
         <div class="weather-controls">
           <button data-weather-state="stability">Stability</button>
           <button data-weather-state="repair">Transformation</button>
@@ -25,20 +26,30 @@
           <div><strong data-weather-risk></strong></div>
           <div><strong data-weather-summary></strong></div>
         </div>
+        <p class="boundary-note">Display only. Auto-refresh reads generated JSON snapshots but does not authorize action, alter governance, modify canon lineage, change mode legality, or execute tools.</p>
       </section>
     </main>
   </div>
   <script>
+    const WEATHER_SNAPSHOT_URL = 'data/lumina-weather-snapshot.json';
+    const REFRESH_MS = 15000;
     let weatherStates = {};
+    let activeState = 'repair';
 
-    fetch('data/lumina-weather-snapshot.json')
-      .then(res => res.json())
-      .then(data => {
-        weatherStates = data.states;
-        init();
-      });
+    async function loadWeatherSnapshot() {
+      try {
+        const response = await fetch(`${WEATHER_SNAPSHOT_URL}?t=${Date.now()}`, { cache: 'no-store' });
+        const data = await response.json();
+        weatherStates = data.states || weatherStates;
+        document.querySelector('[data-weather-updated]').textContent = `Snapshot: ${data.generated_at_utc || 'static snapshot'}`;
+        applyWeatherState(activeState);
+      } catch (error) {
+        document.querySelector('[data-weather-updated]').textContent = 'Snapshot unavailable; last known state preserved.';
+      }
+    }
 
     function applyWeatherState(key) {
+      activeState = key;
       const state = weatherStates[key];
       if (!state) return;
       document.querySelector('[data-weather-reading]').textContent = state.reading;
@@ -46,16 +57,25 @@
       document.querySelector('[data-weather-stance]').textContent = state.stance;
       document.querySelector('[data-weather-risk]').textContent = state.risk;
       document.querySelector('[data-weather-summary]').textContent = state.summary;
+      document.querySelectorAll('[data-weather-state]').forEach(btn => {
+        btn.setAttribute('aria-pressed', btn.dataset.weatherState === key ? 'true' : 'false');
+      });
+      const url = new URL(window.location.href);
+      url.searchParams.set('state', key);
+      window.history.replaceState({}, '', url);
     }
 
     function init() {
       const params = new URLSearchParams(window.location.search);
-      const initial = params.get('state') || 'repair';
+      activeState = params.get('state') || 'repair';
       document.querySelectorAll('[data-weather-state]').forEach(btn => {
         btn.onclick = () => applyWeatherState(btn.dataset.weatherState);
       });
-      applyWeatherState(initial);
+      loadWeatherSnapshot();
+      setInterval(loadWeatherSnapshot, REFRESH_MS);
     }
+
+    init();
   </script>
 </body>
 </html>
