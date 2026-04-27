@@ -4,12 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lumina Weather - EthereonLabs</title>
-  <meta name="description" content="A bounded, non-authoritative Lumina continuity weather panel showing harmonic stance, continuity state, advisory risk language, and compact history." />
+  <meta name="description" content="A bounded, non-authoritative Lumina continuity weather panel showing harmonic stance, continuity state, advisory risk language, compact history, and trend analysis." />
   <link rel="stylesheet" href="assets/css/styles.css" />
   <style>
-    .weather-history { margin-top: 2rem; display: grid; gap: .75rem; }
-    .history-entry { padding: .85rem 1rem; border: 1px solid rgba(255,255,255,.12); border-radius: 16px; background: rgba(255,255,255,.05); }
-    .history-entry small { display:block; opacity:.7; margin-bottom:.25rem; }
+    .weather-history, .weather-trends { margin-top: 2rem; display: grid; gap: .75rem; }
+    .history-entry, .trend-card { padding: .85rem 1rem; border: 1px solid rgba(255,255,255,.12); border-radius: 16px; background: rgba(255,255,255,.05); }
+    .history-entry small, .trend-card small { display:block; opacity:.7; margin-bottom:.25rem; }
+    .trend-score { font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1; margin: .25rem 0 .75rem; }
   </style>
 </head>
 <body>
@@ -31,11 +32,15 @@
           <div><strong data-weather-risk></strong></div>
           <div><strong data-weather-summary></strong></div>
         </div>
+        <section class="weather-trends" aria-label="Continuity weather trend analysis">
+          <h2>Trend analysis</h2>
+          <div class="trend-card" data-weather-trends>Loading trends...</div>
+        </section>
         <section class="weather-history" aria-label="Continuity weather history">
           <h2>Recent weather history</h2>
           <div data-weather-history>Loading history...</div>
         </section>
-        <p class="boundary-note">Display only. Auto-refresh reads generated JSON snapshots and history but does not authorize action, alter governance, modify canon lineage, change mode legality, or execute tools.</p>
+        <p class="boundary-note">Display only. Auto-refresh reads generated JSON snapshots, history, and trend analysis but does not authorize action, alter governance, modify canon lineage, change mode legality, or execute tools.</p>
       </section>
     </main>
   </div>
@@ -58,10 +63,28 @@
       }
     }
 
+    function renderTrendAnalysis(analysis) {
+      const target = document.querySelector('[data-weather-trends]');
+      if (!analysis) {
+        target.textContent = 'Trend analysis unavailable.';
+        return;
+      }
+      const score = analysis.continuity_health_score;
+      const displayScore = score === null || score === undefined ? '—' : Math.round(score * 100);
+      target.innerHTML = `
+        <small>Continuity health</small>
+        <div class="trend-score">${displayScore}${displayScore === '—' ? '' : '%'}</div>
+        <strong>${analysis.trend || 'insufficient_data'}</strong>
+        <p>${analysis.summary || 'No trend summary available.'}</p>
+        <small>${analysis.recent_entry_count || 0} recent entries · ${analysis.state_change_count || 0} state changes</small>
+      `;
+    }
+
     async function loadWeatherHistory() {
       try {
         const response = await fetch(`${WEATHER_HISTORY_URL}?t=${Date.now()}`, { cache: 'no-store' });
         const data = await response.json();
+        renderTrendAnalysis(data.trend_analysis);
         const entries = (data.entries || []).slice(-6).reverse();
         const target = document.querySelector('[data-weather-history]');
         if (!entries.length) {
@@ -78,6 +101,7 @@
         `).join('');
       } catch (error) {
         document.querySelector('[data-weather-history]').textContent = 'History unavailable.';
+        document.querySelector('[data-weather-trends]').textContent = 'Trend analysis unavailable.';
       }
     }
 
