@@ -1,0 +1,58 @@
+.weather-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.weather-panel::before {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background: radial-gradient(circle, rgba(131, 255, 197, 0.12), transparent 45%);
+  opacity: 0.45;
+  animation: lumina-breathe 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.weather-reading {
+  transition: opacity 0.35s ease, transform 0.35s ease, text-shadow 0.6s ease;
+  animation: lumina-pulse 5s ease-in-out infinite;
+}
+
+.weather-panel[data-risk="low"] .weather-reading {
+  text-shadow: 0 0 24px rgba(131, 255, 197, 0.35);
+}
+
+.weather-panel[data-risk="moderate"] .weather-reading {
+  text-shadow: 0 0 24px rgba(255, 224, 138, 0.32);
+}
+
+.weather-panel[data-risk="high"] .weather-reading {
+  text-shadow: 0 0 28px rgba(255, 143, 143, 0.42);
+  animation-duration: 2.8s;
+}
+
+.weather-transition {
+  opacity: 0.35;
+  transform: translateY(6px);
+}
+
+@keyframes lumina-breathe {
+  0%, 100% { transform: scale(1); opacity: 0.24; }
+  50% { transform: scale(1.08); opacity: 0.52; }
+}
+
+@keyframes lumina-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.012); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .weather-panel::before,
+  .weather-reading {
+    animation: none;
+  }
+
+  .weather-reading {
+    transition: none;
+  }
+}

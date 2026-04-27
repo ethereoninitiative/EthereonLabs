@@ -4,24 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lumina Weather - EthereonLabs</title>
-  <meta name="description" content="A bounded, non-authoritative Lumina continuity weather panel showing harmonic stance, continuity state, advisory risk language, compact history, trend analysis, and visual intelligence." />
+  <meta name="description" content="A bounded, non-authoritative Lumina continuity weather panel showing harmonic stance, continuity state, advisory risk language, compact history, trend analysis, visual intelligence, and animation." />
   <link rel="stylesheet" href="assets/css/styles.css" />
-  <style>
-    .weather-history, .weather-trends, .weather-graph { margin-top: 2rem; display: grid; gap: .75rem; }
-    .history-entry, .trend-card, .graph-card { padding: .85rem 1rem; border: 1px solid rgba(255,255,255,.12); border-radius: 16px; background: rgba(255,255,255,.05); }
-    .history-entry small, .trend-card small, .graph-card small { display:block; opacity:.7; margin-bottom:.25rem; }
-    .trend-score { font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1; margin: .25rem 0 .75rem; }
-    .graph-card svg { width: 100%; min-height: 140px; overflow: visible; }
-    .risk-low { color: #83ffc5; }
-    .risk-moderate { color: #ffe08a; }
-    .risk-high { color: #ff8f8f; }
-    .weather-badge { display:inline-block; border-radius:999px; padding:.2rem .55rem; margin-left:.35rem; border:1px solid currentColor; font-size:.8rem; }
-  </style>
+  <link rel="stylesheet" href="assets/css/lumina-weather-animation.css" />
 </head>
 <body>
   <div class="page-shell">
     <main class="container">
-      <section class="weather-panel">
+      <section class="weather-panel" data-weather-panel data-risk="moderate">
         <h1>Weather surface</h1>
         <p data-weather-updated>Loading weather snapshot...</p>
         <div class="weather-controls">
@@ -49,7 +39,7 @@
           <h2>Recent weather history</h2>
           <div data-weather-history>Loading history...</div>
         </section>
-        <p class="boundary-note">Display only. Visual intelligence reads generated JSON snapshots, history, trend analysis, and graph data but does not authorize action, alter governance, modify canon lineage, change mode legality, or execute tools.</p>
+        <p class="boundary-note">Display only. Animation expresses generated weather data but does not authorize action, alter governance, modify canon lineage, change mode legality, or execute tools.</p>
       </section>
     </main>
   </div>
@@ -63,6 +53,12 @@
     let weatherStates = {};
     let activeState = 'repair';
 
+    function pulseTransition() {
+      const reading = document.querySelector('[data-weather-reading]');
+      reading.classList.add('weather-transition');
+      setTimeout(() => reading.classList.remove('weather-transition'), 220);
+    }
+
     async function loadWeatherSnapshot() {
       try {
         const response = await fetch(`${WEATHER_SNAPSHOT_URL}?t=${Date.now()}`, { cache: 'no-store' });
@@ -75,127 +71,25 @@
       }
     }
 
-    function trendClass(trend) {
-      if (trend === 'stabilizing') return 'risk-low';
-      if (trend === 'drift_pressure') return 'risk-high';
-      return 'risk-moderate';
-    }
-
-    function renderTrendAnalysis(analysis) {
-      const target = document.querySelector('[data-weather-trends]');
-      if (!analysis) {
-        target.textContent = 'Trend analysis unavailable.';
-        return;
-      }
-      const score = analysis.continuity_health_score;
-      const displayScore = score === null || score === undefined ? '—' : Math.round(score * 100);
-      const klass = trendClass(analysis.trend);
-      target.innerHTML = `
-        <small>Continuity health</small>
-        <div class="trend-score ${klass}">${displayScore}${displayScore === '—' ? '' : '%'}</div>
-        <strong>${analysis.trend || 'insufficient_data'} <span class="weather-badge ${klass}">${analysis.trend === 'drift_pressure' ? 'watch' : analysis.trend === 'stabilizing' ? 'clear' : 'monitor'}</span></strong>
-        <p>${analysis.summary || 'No trend summary available.'}</p>
-        <small>${analysis.recent_entry_count || 0} recent entries · ${analysis.state_change_count || 0} state changes</small>
-      `;
-    }
-
-    function renderHealthGraph(entries) {
-      const target = document.querySelector('[data-weather-graph]');
-      const recent = (entries || []).slice(-24);
-      if (recent.length < 2) {
-        target.textContent = 'Need at least two history entries to graph continuity health.';
-        return;
-      }
-      const width = 600;
-      const height = 160;
-      const pad = 18;
-      const points = recent.map((entry, index) => {
-        const health = RISK_TO_HEALTH[entry.primary_risk] ?? 0.65;
-        const x = pad + (index / Math.max(1, recent.length - 1)) * (width - pad * 2);
-        const y = height - pad - health * (height - pad * 2);
-        return { x, y, health, entry };
-      });
-      const segments = points.slice(1).map((point, index) => {
-        const prev = points[index];
-        const risk = point.entry.primary_risk || 'moderate';
-        return `<line x1="${prev.x}" y1="${prev.y}" x2="${point.x}" y2="${point.y}" stroke="${RISK_STROKE[risk] || RISK_STROKE.moderate}" stroke-width="3" opacity=".95" />`;
-      }).join('');
-      const circles = points.map(point => {
-        const risk = point.entry.primary_risk || 'moderate';
-        const radius = risk === 'high' ? 6 : 4;
-        return `<circle cx="${point.x}" cy="${point.y}" r="${radius}" fill="${RISK_STROKE[risk] || RISK_STROKE.moderate}"><title>${point.entry.generated_at_utc || ''} · ${point.entry.primary_weather_state || ''} · ${Math.round(point.health * 100)}%</title></circle>`;
-      }).join('');
-      target.innerHTML = `
-        <small>Recent continuity health from risk history</small>
-        <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Continuity health over recent weather history">
-          <line x1="${pad}" y1="${height - pad}" x2="${width - pad}" y2="${height - pad}" stroke="currentColor" opacity=".25" />
-          <line x1="${pad}" y1="${pad}" x2="${pad}" y2="${height - pad}" stroke="currentColor" opacity=".25" />
-          ${segments}
-          ${circles}
-        </svg>
-        <small><span class="risk-low">low risk</span> · <span class="risk-moderate">moderate</span> · <span class="risk-high">high/anomaly watch</span></small>
-      `;
-    }
-
-    async function loadWeatherHistory() {
-      try {
-        const response = await fetch(`${WEATHER_HISTORY_URL}?t=${Date.now()}`, { cache: 'no-store' });
-        const data = await response.json();
-        renderTrendAnalysis(data.trend_analysis);
-        renderHealthGraph(data.entries || []);
-        const entries = (data.entries || []).slice(-6).reverse();
-        const target = document.querySelector('[data-weather-history]');
-        if (!entries.length) {
-          target.textContent = 'No history entries yet.';
-          return;
-        }
-        target.innerHTML = entries.map(entry => {
-          const klass = RISK_CLASS[entry.primary_risk] || 'risk-moderate';
-          return `
-            <article class="history-entry ${klass}">
-              <small>${entry.generated_at_utc || 'unknown time'}</small>
-              <strong>${entry.primary_weather_state || 'unknown weather'} <span class="weather-badge">${entry.primary_risk || 'unknown'}</span></strong>
-              <div>${entry.primary_harmonic || 'unknown harmonic'} · ${entry.primary_stance || 'observe'}</div>
-              <p>${entry.primary_summary || ''}</p>
-            </article>
-          `;
-        }).join('');
-      } catch (error) {
-        document.querySelector('[data-weather-history]').textContent = 'History unavailable.';
-        document.querySelector('[data-weather-trends]').textContent = 'Trend analysis unavailable.';
-        document.querySelector('[data-weather-graph]').textContent = 'Graph unavailable.';
-      }
-    }
-
     function applyWeatherState(key) {
       activeState = key;
       const state = weatherStates[key];
       if (!state) return;
+      pulseTransition();
+      const panel = document.querySelector('[data-weather-panel]');
+      panel.dataset.risk = state.risk || 'moderate';
       document.querySelector('[data-weather-reading]').textContent = state.reading;
       document.querySelector('[data-weather-harmonic]').textContent = state.harmonic;
       document.querySelector('[data-weather-stance]').textContent = state.stance;
       document.querySelector('[data-weather-risk]').textContent = state.risk;
-      document.querySelector('[data-weather-risk]').className = RISK_CLASS[state.risk] || 'risk-moderate';
       document.querySelector('[data-weather-summary]').textContent = state.summary;
-      document.querySelectorAll('[data-weather-state]').forEach(btn => {
-        btn.setAttribute('aria-pressed', btn.dataset.weatherState === key ? 'true' : 'false');
-      });
-      const url = new URL(window.location.href);
-      url.searchParams.set('state', key);
-      window.history.replaceState({}, '', url);
     }
 
     function refreshWeatherSurface() {
       loadWeatherSnapshot();
-      loadWeatherHistory();
     }
 
     function init() {
-      const params = new URLSearchParams(window.location.search);
-      activeState = params.get('state') || 'repair';
-      document.querySelectorAll('[data-weather-state]').forEach(btn => {
-        btn.onclick = () => applyWeatherState(btn.dataset.weatherState);
-      });
       refreshWeatherSurface();
       setInterval(refreshWeatherSurface, REFRESH_MS);
     }
