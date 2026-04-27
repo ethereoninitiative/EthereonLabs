@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lumina Weather - EthereonLabs</title>
+  <meta name="description" content="A bounded, non-authoritative Lumina continuity weather panel showing harmonic stance, continuity state, and advisory risk language." />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    .weather-panel { max-width: 980px; margin: 4rem auto; padding: 2rem; border: 1px solid rgba(255,255,255,.18); border-radius: 28px; background: rgba(8, 13, 28, .78); box-shadow: 0 0 60px rgba(112, 203, 255, .16); }
+    .weather-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+    .weather-tile { padding: 1rem; border-radius: 18px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); }
+    .weather-tile small { display:block; opacity:.7; margin-bottom:.35rem; }
+    .weather-reading { font-size: clamp(2rem, 5vw, 4rem); line-height: 1; margin: 1rem 0; }
+    .boundary-note { margin-top: 1.5rem; opacity: .75; font-size: .95rem; }
+  </style>
+</head>
+<body>
+  <div class="orbit-field" aria-hidden="true"><span></span><span></span><span></span></div>
+  <div class="page-shell">
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a class="brand ping-target" href="index.html">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-text"><strong>EthereonLabs</strong><span>Adaptive digital environments</span></span>
+        </a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="index.html">Home</a>
+          <a href="build.html">What We Are Building</a>
+          <a href="lumina.html">Lumina</a>
+          <a href="updates.html">Updates</a>
+          <a href="chamber.html">Chamber</a>
+        </nav>
+      </div>
+    </header>
+    <main class="container">
+      <section class="weather-panel" data-glow>
+        <span class="eyebrow">Lumina continuity weather</span>
+        <h1>Weather surface</h1>
+        <p class="lead">A first public-facing panel for Lumina's interpretive state: measured by Ψ-42, translated through harmonic annotation, and summarized as continuity weather.</p>
+        <div class="weather-reading">coherent repair</div>
+        <div class="weather-grid">
+          <div class="weather-tile"><small>Dominant harmonic</small><strong>528 - adaptive transformation</strong></div>
+          <div class="weather-tile"><small>Recommended stance</small><strong>restructure</strong></div>
+          <div class="weather-tile"><small>Risk</small><strong>moderate</strong></div>
+          <div class="weather-tile"><small>Summary</small><strong>repair path active; coherence stabilizing</strong></div>
+        </div>
+        <p class="boundary-note">Display only. This panel does not authorize action, alter governance, modify canon lineage, change mode legality, or execute tools.</p>
+      </section>
+    </main>
+  </div>
+  <script src="assets/js/site.js"></script>
+</body>
+</html>
