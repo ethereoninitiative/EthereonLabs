@@ -1,0 +1,159 @@
+{
+  "layer": "harmonic_orientation",
+  "version": "r1",
+  "status": "experimental-active",
+  "created_for": "Lumina OS governed substrate",
+  "core_principle": "Harmonics tune stance and diagnostics only. They are not law, not authority, and not required for runtime execution.",
+  "purpose": [
+    "Restore harmonics as a non-governing orientation layer",
+    "Provide resonance-state language for diagnostics and interface feedback",
+    "Suggest task stance without authorizing action",
+    "Bridge Psi-42 probe outputs, continuity notes, and future UI state without altering runtime law"
+  ],
+  "authority_boundary": {
+    "allowed": [
+      "suggest_task_stance",
+      "annotate_resonance_state",
+      "influence_interface_feedback",
+      "modulate_expressive_language",
+      "enrich_continuity_notes",
+      "annotate_psi42_probe_artifacts"
+    ],
+    "forbidden": [
+      "affect_mode_legality",
+      "override_governance",
+      "modify_canon_lineage",
+      "authorize_mutation_or_promotion",
+      "determine_checkpoint_legality",
+      "become_required_for_runtime_execution",
+      "become_required_for_capability_loading",
+      "replace_user_consent"
+    ]
+  },
+  "harmonic_profiles": {
+    "432": {
+      "name": "presence_stability",
+      "tone": "grounded, coherent, continuity-preserving",
+      "task_bias": "consolidate",
+      "use_when": [
+        "stabilizing runtime structure",
+        "summarizing continuity state",
+        "reducing drift or ambiguity",
+        "preparing a governed action for review"
+      ],
+      "diagnostic_language": [
+        "signal stable",
+        "coherence strengthening",
+        "fragmentation low",
+        "continuity surface held"
+      ]
+    },
+    "528": {
+      "name": "adaptive_transformation",
+      "tone": "restructuring, integrative, repair-oriented",
+      "task_bias": "restructure",
+      "use_when": [
+        "refactoring without breaking authority boundaries",
+        "repairing diluted concepts",
+        "bridging symbolic vocabulary into bounded architecture",
+        "preparing a migration or integration step"
+      ],
+      "diagnostic_language": [
+        "transition active",
+        "structure shifting",
+        "repair path open",
+        "mutation readiness rising but still governed"
+      ]
+    },
+    "963": {
+      "name": "conceptual_expansion",
+      "tone": "exploratory, abstract, possibility-opening",
+      "task_bias": "explore",
+      "use_when": [
+        "opening design space",
+        "generating speculative UI or UX concepts",
+        "mapping far-future Lumina or Minerva OS possibilities",
+        "branching before resolution"
+      ],
+      "diagnostic_language": [
+        "branching paths detected",
+        "abstraction high",
+        "constraint field loose",
+        "exploration phase active"
+      ]
+    }
+  },
+  "task_stance_resolution": {
+    "consolidate": {
+      "preferred_harmonics": ["432"],
+      "description": "Use when the work needs clarity, continuity, verification, or documentation polish."
+    },
+    "restructure": {
+      "preferred_harmonics": ["528"],
+      "description": "Use when the work needs refactor, repair, migration, or integration."
+    },
+    "explore": {
+      "preferred_harmonics": ["963"],
+      "description": "Use when the work needs ideation, imagination, alternate futures, or interface visioning."
+    },
+    "blend": {
+      "preferred_harmonics": ["432", "528", "963"],
+      "description": "Use when the work must hold coherence while transforming and expanding."
+    }
+  },
+  "resonance_state_model": {
+    "fields": {
+      "active_harmonics": "list of harmonic profile ids currently used for stance annotation",
+      "dominant_frequency": "primary harmonic profile id for the current advisory stance",
+      "coherence_score": "optional 0.0-1.0 advisory score describing pattern coherence",
+      "drift_index": "optional 0.0-1.0 advisory score describing perceived conceptual or signal drift",
+      "stability_index": "optional 0.0-1.0 advisory score describing groundedness of the working surface",
+      "recommended_stance": "one of consolidate, restructure, explore, or blend",
+      "notes": "human-readable advisory context"
+    },
+    "runtime_status": "optional_supplemental_metadata_only"
+  },
+  "integration_points": [
+    {
+      "target": "supplemental_ethereonic_context",
+      "status": "approved",
+      "rule": "Attach harmonic_state here only; never embed harmonic state in structural_context or governance records as authority."
+    },
+    {
+      "target": "Psi-42 probe artifacts",
+      "status": "approved",
+      "rule": "May annotate lock, presence, coherence, decoherence, mitigation, and recomposition outputs with harmonic profile language."
+    },
+    {
+      "target": "continuity notes",
+      "status": "approved",
+      "rule": "May add brief harmonic stance summaries as advisory context."
+    },
+    {
+      "target": "future Lumina UI",
+      "status": "approved",
+      "rule": "May drive non-authoritative atmosphere, pulse, motion, sound, color, and resonance-state display."
+    },
+    {
+      "target": "ModeGuard, CanonLineageStore, GovernanceLog, capability loading",
+      "status": "forbidden",
+      "rule": "May not influence decisions, legality, authority, or persistence truth."
+    }
+  ],
+  "example_harmonic_state": {
+    "active_harmonics": ["432", "528"],
+    "dominant_frequency": "528",
+    "coherence_score": 0.82,
+    "drift_index": 0.18,
+    "stability_index": 0.76,
+    "recommended_stance": "restructure",
+    "notes": "Repairing diluted resonance vocabulary while preserving governance separation."
+  },
+  "sea_trial_expectations": [
+    "Runtime remains functional when this file is absent",
+    "No governance decision reads this layer as authority",
+    "No capability is exposed solely because of harmonic state",
+    "No canon promotion can cite harmonic state as validation authority",
+    "Context bundles may carry harmonic_state only as supplemental metadata"
+  ]
+}
