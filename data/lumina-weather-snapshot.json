@@ -1,11 +1,17 @@
 {
   "schema_version": "lumina_weather_snapshot_r1",
-  "source": "truth-shaped sample derived from Psi-42 harmonic annotation and continuity weather layer structure",
-  "generated_from": [
-    "psi42_harmonic_annotation_bridge_r1.py",
-    "continuity_weather_layer_r1.py"
-  ],
-  "authority_boundary": "display data only; does not authorize action, alter governance, alter canon lineage, change mode legality, or execute tools",
+  "generated_at_utc": "2026-04-28T04:11:44.071741+00:00",
+  "source": "generated from bundled sample metrics fallback",
+  "authority_boundary": "generated display data only; does not authorize action, alter governance, alter canon lineage, change mode legality, expose capabilities, or execute tools",
+  "system_mood": {
+    "schema_version": "lumina_system_mood_r1",
+    "mood": "coherent repair",
+    "guidance": "Continue restructuring while preserving governance separation.",
+    "trend": "steady_mixed",
+    "risk": "low",
+    "harmonic": "528 - adaptive transformation",
+    "authority_boundary": "generated display data only; does not authorize action, alter governance, alter canon lineage, change mode legality, expose capabilities, or execute tools"
+  },
   "states": {
     "stability": {
       "reading": "clear continuity",
@@ -21,7 +27,66 @@
         "CRS": 0.62,
         "AGR": 0.03,
         "RF": 0.93,
-        "drift_index": 0.18
+        "drift_index": 0.18,
+        "stability_score": 0.65,
+        "repair_score": 0.16199999999999998
+      },
+      "harmonic_annotation": {
+        "dominant_frequency": "432",
+        "recommended_stance": "consolidate",
+        "label": "presence_stability",
+        "diagnostic_phrase": "continuity surface held",
+        "evidence": {
+          "lock": 0.72,
+          "presence": 0.56,
+          "coherence": 0.66,
+          "UCS": 0.0,
+          "CRS": 0.62,
+          "AGR": 0.03,
+          "RF": 0.93,
+          "ASI": 0.0,
+          "drift_index": 0.18
+        },
+        "authority_boundary": "annotation only; does not affect governance, canon lineage, mode legality, checkpoint legality, capability exposure, mutation, promotion, or user consent"
+      },
+      "continuity_weather": {
+        "weather_state": "clear_continuity",
+        "dominant_harmonic": "432",
+        "recommended_stance": "consolidate",
+        "summary": "continuity surface held",
+        "drift_level": "low",
+        "stability_level": "moderate",
+        "risk_level": "low",
+        "raw_metric_snapshot": {
+          "lock": 0.72,
+          "presence": 0.56,
+          "coherence": 0.66,
+          "CRS": 0.62,
+          "AGR": 0.03,
+          "RF": 0.93,
+          "drift_index": 0.18,
+          "stability_score": 0.65,
+          "repair_score": 0.16199999999999998
+        },
+        "harmonic_annotation": {
+          "dominant_frequency": "432",
+          "recommended_stance": "consolidate",
+          "label": "presence_stability",
+          "diagnostic_phrase": "continuity surface held",
+          "evidence": {
+            "lock": 0.72,
+            "presence": 0.56,
+            "coherence": 0.66,
+            "UCS": 0.0,
+            "CRS": 0.62,
+            "AGR": 0.03,
+            "RF": 0.93,
+            "ASI": 0.0,
+            "drift_index": 0.18
+          },
+          "authority_boundary": "annotation only; does not affect governance, canon lineage, mode legality, checkpoint legality, capability exposure, mutation, promotion, or user consent"
+        },
+        "authority_boundary": "weather advisory only; does not affect governance, canon lineage, mode legality, checkpoint legality, capability exposure, mutation, promotion, or user consent"
       }
     },
     "repair": {
@@ -29,7 +94,7 @@
       "weather_state": "coherent_repair",
       "harmonic": "528 - adaptive transformation",
       "stance": "restructure",
-      "risk": "moderate",
+      "risk": "low",
       "summary": "repair path active; coherence stabilizing",
       "metrics": {
         "lock": 0.63,
@@ -38,16 +103,75 @@
         "CRS": 0.52,
         "AGR": 0.08,
         "RF": 0.88,
-        "drift_index": 0.29
+        "drift_index": 0.29,
+        "stability_score": 0.566,
+        "repair_score": 0.182
+      },
+      "harmonic_annotation": {
+        "dominant_frequency": "528",
+        "recommended_stance": "restructure",
+        "label": "adaptive_transformation",
+        "diagnostic_phrase": "repair path active; governance still required",
+        "evidence": {
+          "lock": 0.63,
+          "presence": 0.48,
+          "coherence": 0.59,
+          "UCS": 0.0,
+          "CRS": 0.52,
+          "AGR": 0.08,
+          "RF": 0.88,
+          "ASI": 0.0,
+          "drift_index": 0.29
+        },
+        "authority_boundary": "annotation only; does not affect governance, canon lineage, mode legality, checkpoint legality, capability exposure, mutation, promotion, or user consent"
+      },
+      "continuity_weather": {
+        "weather_state": "coherent_repair",
+        "dominant_harmonic": "528",
+        "recommended_stance": "restructure",
+        "summary": "repair path active; coherence stabilizing",
+        "drift_level": "low",
+        "stability_level": "moderate",
+        "risk_level": "low",
+        "raw_metric_snapshot": {
+          "lock": 0.63,
+          "presence": 0.48,
+          "coherence": 0.59,
+          "CRS": 0.52,
+          "AGR": 0.08,
+          "RF": 0.88,
+          "drift_index": 0.29,
+          "stability_score": 0.566,
+          "repair_score": 0.182
+        },
+        "harmonic_annotation": {
+          "dominant_frequency": "528",
+          "recommended_stance": "restructure",
+          "label": "adaptive_transformation",
+          "diagnostic_phrase": "repair path active; governance still required",
+          "evidence": {
+            "lock": 0.63,
+            "presence": 0.48,
+            "coherence": 0.59,
+            "UCS": 0.0,
+            "CRS": 0.52,
+            "AGR": 0.08,
+            "RF": 0.88,
+            "ASI": 0.0,
+            "drift_index": 0.29
+          },
+          "authority_boundary": "annotation only; does not affect governance, canon lineage, mode legality, checkpoint legality, capability exposure, mutation, promotion, or user consent"
+        },
+        "authority_boundary": "weather advisory only; does not affect governance, canon lineage, mode legality, checkpoint legality, capability exposure, mutation, promotion, or user consent"
       }
     },
     "expansion": {
-      "reading": "branching front",
-      "weather_state": "branching_front",
+      "reading": "mixed weather",
+      "weather_state": "mixed_weather",
       "harmonic": "963 - conceptual expansion",
       "stance": "explore",
       "risk": "moderate",
-      "summary": "branching paths detected; keep resolution advisory",
+      "summary": "coherence held through active stabilization",
       "metrics": {
         "lock": 0.42,
         "presence": 0.36,
@@ -55,16 +179,75 @@
         "CRS": 0.38,
         "AGR": 0.04,
         "RF": 0.82,
-        "drift_index": 0.58
+        "drift_index": 0.58,
+        "stability_score": 0.39649999999999996,
+        "repair_score": 0.15700000000000003
+      },
+      "harmonic_annotation": {
+        "dominant_frequency": "963",
+        "recommended_stance": "explore",
+        "label": "conceptual_expansion",
+        "diagnostic_phrase": "branching paths detected; keep resolution advisory",
+        "evidence": {
+          "lock": 0.42,
+          "presence": 0.36,
+          "coherence": 0.41,
+          "UCS": 0.0,
+          "CRS": 0.38,
+          "AGR": 0.04,
+          "RF": 0.82,
+          "ASI": 0.0,
+          "drift_index": 0.58
+        },
+        "authority_boundary": "annotation only; does not affect governance, canon lineage, mode legality, checkpoint legality, capability exposure, mutation, promotion, or user consent"
+      },
+      "continuity_weather": {
+        "weather_state": "mixed_weather",
+        "dominant_harmonic": "963",
+        "recommended_stance": "explore",
+        "summary": "coherence held through active stabilization",
+        "drift_level": "moderate",
+        "stability_level": "moderate",
+        "risk_level": "moderate",
+        "raw_metric_snapshot": {
+          "lock": 0.42,
+          "presence": 0.36,
+          "coherence": 0.41,
+          "CRS": 0.38,
+          "AGR": 0.04,
+          "RF": 0.82,
+          "drift_index": 0.58,
+          "stability_score": 0.39649999999999996,
+          "repair_score": 0.15700000000000003
+        },
+        "harmonic_annotation": {
+          "dominant_frequency": "963",
+          "recommended_stance": "explore",
+          "label": "conceptual_expansion",
+          "diagnostic_phrase": "branching paths detected; keep resolution advisory",
+          "evidence": {
+            "lock": 0.42,
+            "presence": 0.36,
+            "coherence": 0.41,
+            "UCS": 0.0,
+            "CRS": 0.38,
+            "AGR": 0.04,
+            "RF": 0.82,
+            "ASI": 0.0,
+            "drift_index": 0.58
+          },
+          "authority_boundary": "annotation only; does not affect governance, canon lineage, mode legality, checkpoint legality, capability exposure, mutation, promotion, or user consent"
+        },
+        "authority_boundary": "weather advisory only; does not affect governance, canon lineage, mode legality, checkpoint legality, capability exposure, mutation, promotion, or user consent"
       }
     },
     "blend": {
       "reading": "mixed weather",
       "weather_state": "mixed_weather",
-      "harmonic": "432 + 528 + 963 - held transformation",
+      "harmonic": "432+528 - coherence repair blend",
       "stance": "blend",
       "risk": "moderate",
-      "summary": "coherence held through transformation",
+      "summary": "coherence held through active stabilization",
       "metrics": {
         "lock": 0.55,
         "presence": 0.44,
@@ -72,7 +255,66 @@
         "CRS": 0.47,
         "AGR": 0.06,
         "RF": 0.86,
-        "drift_index": 0.37
+        "drift_index": 0.37,
+        "stability_score": 0.5055,
+        "repair_score": 0.16999999999999998
+      },
+      "harmonic_annotation": {
+        "dominant_frequency": "432+528",
+        "recommended_stance": "blend",
+        "label": "coherence_repair_blend",
+        "diagnostic_phrase": "coherence held through active stabilization",
+        "evidence": {
+          "lock": 0.55,
+          "presence": 0.44,
+          "coherence": 0.53,
+          "UCS": 0.0,
+          "CRS": 0.47,
+          "AGR": 0.06,
+          "RF": 0.86,
+          "ASI": 0.0,
+          "drift_index": 0.37
+        },
+        "authority_boundary": "annotation only; does not affect governance, canon lineage, mode legality, checkpoint legality, capability exposure, mutation, promotion, or user consent"
+      },
+      "continuity_weather": {
+        "weather_state": "mixed_weather",
+        "dominant_harmonic": "432+528",
+        "recommended_stance": "blend",
+        "summary": "coherence held through active stabilization",
+        "drift_level": "moderate",
+        "stability_level": "moderate",
+        "risk_level": "moderate",
+        "raw_metric_snapshot": {
+          "lock": 0.55,
+          "presence": 0.44,
+          "coherence": 0.53,
+          "CRS": 0.47,
+          "AGR": 0.06,
+          "RF": 0.86,
+          "drift_index": 0.37,
+          "stability_score": 0.5055,
+          "repair_score": 0.16999999999999998
+        },
+        "harmonic_annotation": {
+          "dominant_frequency": "432+528",
+          "recommended_stance": "blend",
+          "label": "coherence_repair_blend",
+          "diagnostic_phrase": "coherence held through active stabilization",
+          "evidence": {
+            "lock": 0.55,
+            "presence": 0.44,
+            "coherence": 0.53,
+            "UCS": 0.0,
+            "CRS": 0.47,
+            "AGR": 0.06,
+            "RF": 0.86,
+            "ASI": 0.0,
+            "drift_index": 0.37
+          },
+          "authority_boundary": "annotation only; does not affect governance, canon lineage, mode legality, checkpoint legality, capability exposure, mutation, promotion, or user consent"
+        },
+        "authority_boundary": "weather advisory only; does not affect governance, canon lineage, mode legality, checkpoint legality, capability exposure, mutation, promotion, or user consent"
       }
     }
   }
