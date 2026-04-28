@@ -1,0 +1,52 @@
+{
+  "schema_version": "lumina_weather_history_r1",
+  "authority_boundary": "display data only; does not authorize action, alter governance, alter canon lineage, change mode legality, or execute tools",
+  "entry_count": 4,
+  "trend_analysis": {
+    "schema_version": "lumina_weather_trend_analysis_r1",
+    "continuity_health_score": 0.738,
+    "trend": "steady_mixed",
+    "recent_entry_count": 4,
+    "state_change_count": 3,
+    "summary": "Recent weather is mixed but not showing acute instability.",
+    "authority_boundary": "display data only; does not authorize action, alter governance, alter canon lineage, change mode legality, or execute tools"
+  },
+  "entries": [
+    {
+      "generated_at_utc": "2026-04-27T23:58:00Z",
+      "source": "seeded from current Lumina weather snapshot",
+      "primary_weather_state": "clear_continuity",
+      "primary_harmonic": "432 - presence stability",
+      "primary_stance": "consolidate",
+      "primary_risk": "low",
+      "primary_summary": "continuity surface held"
+    },
+    {
+      "generated_at_utc": "2026-04-27T23:58:30Z",
+      "source": "seeded from current Lumina weather snapshot",
+      "primary_weather_state": "coherent_repair",
+      "primary_harmonic": "528 - adaptive transformation",
+      "primary_stance": "restructure",
+      "primary_risk": "moderate",
+      "primary_summary": "repair path active; coherence stabilizing"
+    },
+    {
+      "generated_at_utc": "2026-04-27T23:59:00Z",
+      "source": "seeded from current Lumina weather snapshot",
+      "primary_weather_state": "branching_front",
+      "primary_harmonic": "963 - conceptual expansion",
+      "primary_stance": "explore",
+      "primary_risk": "moderate",
+      "primary_summary": "branching paths detected; keep resolution advisory"
+    },
+    {
+      "generated_at_utc": "2026-04-27T23:59:30Z",
+      "source": "seeded from current Lumina weather snapshot",
+      "primary_weather_state": "mixed_weather",
+      "primary_harmonic": "432 + 528 + 963 - held transformation",
+      "primary_stance": "blend",
+      "primary_risk": "moderate",
+      "primary_summary": "coherence held through transformation"
+    }
+  ]
+}
