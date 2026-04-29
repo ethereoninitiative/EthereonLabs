@@ -27,25 +27,27 @@ body::before { content: ""; position: fixed; inset: 0; background-image: linear-
 .orbit-field span:nth-child(3) { width: 540px; height: 240px; left: 48%; bottom: -40px; animation-duration: 28s; }
 .page-shell { position: relative; z-index: 1; }
 .container { width: min(var(--max-width), calc(100% - 2rem)); margin: 0 auto; }
-.site-header { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(18px); background: rgba(5, 9, 18, 0.62); border-bottom: 1px solid rgba(255,255,255,0.05); }
-.nav-wrap { min-height: 80px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-.brand { display: inline-flex; align-items: center; gap: 0.9rem; text-decoration: none; color: var(--text); }
-.brand-mark { width: 42px; height: 42px; border-radius: 14px; border: 1px solid var(--line-strong); background: radial-gradient(circle at 30% 30%, rgba(138,164,255,0.48), transparent 55%), linear-gradient(135deg, rgba(126,240,209,0.16), rgba(138,164,255,0.08)); box-shadow: inset 0 0 20px rgba(138, 164, 255, 0.16), 0 0 18px rgba(138, 164, 255, 0.12); position: relative; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; }
-.brand-mark::before { content: "Ψ"; position: absolute; left: 50%; top: 50%; transform: translate(calc(-50% - 1px), calc(-50% + 7px)); font-family: Georgia, "Times New Roman", serif; font-size: 1.7rem; line-height: 1; color: rgba(243, 248, 255, 0.92); text-shadow: 0 0 4px rgba(215, 230, 255, 0.22), 0 0 10px rgba(215, 230, 255, 0.08); z-index: 1; pointer-events: none; }
-.brand-mark::after { content: ""; position: absolute; inset: 8px; border: 1px solid rgba(234,240,255,0.36); border-radius: 10px; z-index: 0; }
-.brand-text strong { display: block; font-size: 0.96rem; letter-spacing: 0.1em; text-transform: uppercase; }
-.brand-text span { display: block; font-size: 0.8rem; color: var(--muted); }
-.nav-links { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.site-header { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(18px); background: rgba(5, 9, 18, 0.68); border-bottom: 1px solid rgba(255,255,255,0.05); }
+.nav-wrap { min-height: 66px; display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; }
+.brand { display: inline-flex; align-items: center; gap: 0.75rem; text-decoration: none; color: var(--text); flex: 0 0 auto; }
+.brand-mark { width: 36px; height: 36px; border-radius: 12px; border: 1px solid var(--line-strong); background: radial-gradient(circle at 30% 30%, rgba(138,164,255,0.48), transparent 55%), linear-gradient(135deg, rgba(126,240,209,0.16), rgba(138,164,255,0.08)); box-shadow: inset 0 0 20px rgba(138, 164, 255, 0.16), 0 0 18px rgba(138, 164, 255, 0.12); position: relative; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; }
+.brand-mark::before { content: "Ψ"; position: absolute; left: 50%; top: 50%; transform: translate(calc(-50% - 1px), calc(-50% + 6px)); font-family: Georgia, "Times New Roman", serif; font-size: 1.5rem; line-height: 1; color: rgba(243, 248, 255, 0.92); text-shadow: 0 0 4px rgba(215, 230, 255, 0.22), 0 0 10px rgba(215, 230, 255, 0.08); z-index: 1; pointer-events: none; }
+.brand-mark::after { content: ""; position: absolute; inset: 7px; border: 1px solid rgba(234,240,255,0.36); border-radius: 9px; z-index: 0; }
+.brand-text strong { display: block; font-size: 0.86rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.brand-text span { display: block; font-size: 0.72rem; color: var(--muted); }
+.nav-links { display: flex; align-items: center; justify-content: flex-end; gap: 0.36rem; flex-wrap: wrap; }
 .nav-links a, .icon-button, .button, .card-link, .ping-target { transition: transform 160ms ease, box-shadow 180ms ease, border-color 180ms ease, background 180ms ease; }
-.nav-links a { color: var(--muted); text-decoration: none; font-size: 0.95rem; padding: 0.65rem 0.9rem; border-radius: 999px; }
+.nav-links a { color: var(--muted); text-decoration: none; font-size: 0.82rem; padding: 0.46rem 0.64rem; border-radius: 999px; }
 .nav-links a:hover, .nav-links a[aria-current="page"] { color: var(--text); background: rgba(138, 164, 255, 0.1); }
-.header-actions { display: flex; align-items: center; gap: 0.8rem; }
-.icon-button { appearance: none; border: 1px solid var(--line); background: rgba(255,255,255,0.03); color: var(--text); min-height: 42px; min-width: 42px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+.header-actions { display: flex; align-items: center; gap: 0.65rem; }
+.icon-button { appearance: none; border: 1px solid var(--line); background: rgba(255,255,255,0.03); color: var(--text); min-height: 38px; min-width: 38px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
 .icon-button:hover, .button:hover, .card-link:hover { transform: translateY(-1px); border-color: var(--line-strong); box-shadow: 0 10px 24px rgba(0,0,0,0.22); }
 .button { display: inline-flex; align-items: center; justify-content: center; gap: 0.65rem; text-decoration: none; border-radius: 999px; padding: 0.95rem 1.35rem; border: 1px solid var(--line); color: var(--text); background: rgba(255,255,255,0.03); font-weight: 600; cursor: pointer; }
 .button.primary { background: linear-gradient(135deg, rgba(138,164,255,0.2), rgba(126,240,209,0.16)); border-color: rgba(138,164,255,0.42); }
 .button.secondary { background: rgba(255,255,255,0.03); }
-.hero { padding: 5.25rem 0 3rem; }
+main > .section:first-child:has(.button.secondary:first-child) { padding: 1rem 0 0; }
+main > .section:first-child .button.secondary:first-child { width: auto; padding: 0.62rem 0.95rem; font-size: 0.86rem; color: var(--muted); border-color: rgba(255,255,255,0.08); background: rgba(255,255,255,0.025); }
+.hero { padding: 4.35rem 0 2.7rem; }
 .hero-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr); gap: 2rem; align-items: center; }
 .eyebrow { display: inline-flex; align-items: center; gap: 0.6rem; color: var(--accent-2); border: 1px solid rgba(126,240,209,0.2); background: rgba(126,240,209,0.06); padding: 0.45rem 0.8rem; border-radius: 999px; font-size: 0.84rem; letter-spacing: 0.06em; text-transform: uppercase; }
 h1, h2, h3 { margin: 0; line-height: 1.04; }
@@ -121,6 +123,7 @@ h1, h2, h3 { margin: 0; line-height: 1.04; }
   .header-actions { display: none; }
   .hero-actions { gap: 0.65rem; }
   .button { width: 100%; }
+  main > .section:first-child .button.secondary:first-child { width: 100%; }
   .hero h1 { max-width: none; }
   .equation-surface { padding: 0.8rem 0.7rem; }
   .equation-display { font-size: 0.84rem; line-height: 1.45; }
