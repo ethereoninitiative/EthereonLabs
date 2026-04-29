@@ -9,40 +9,48 @@
   <link rel="stylesheet" href="assets/css/lumina-weather-animation.css" />
 </head>
 <body>
+  <div class="orbit-field" aria-hidden="true"><span></span><span></span><span></span></div>
   <div class="page-shell">
-    <main class="container">
-      <section class="weather-panel" data-weather-panel data-risk="moderate">
-        <h1>Weather surface</h1>
-        <p data-weather-updated>Loading weather snapshot...</p>
-        <div class="weather-controls">
-          <button data-weather-state="stability">Stability</button>
-          <button data-weather-state="repair">Transformation</button>
-          <button data-weather-state="expansion">Expansion</button>
-          <button data-weather-state="blend">Blend</button>
-        </div>
-        <div class="weather-reading" data-weather-reading></div>
-        <div class="weather-grid">
-          <div><strong data-weather-harmonic></strong></div>
-          <div><strong data-weather-stance></strong></div>
-          <div><strong data-weather-risk></strong></div>
-          <div><strong data-weather-summary></strong></div>
-        </div>
-        <section class="weather-trends" aria-label="Continuity weather trend analysis">
-          <h2>Trend analysis</h2>
-          <div class="trend-card" data-weather-trends>Loading trends...</div>
+    <header class="site-header"><div class="container nav-wrap"><a class="brand ping-target" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span class="brand-text"><strong>EthereonLabs</strong><span>Adaptive digital environments</span></span></a><nav class="nav-links" aria-label="Primary"><a href="index.html">Home</a><a href="principles.html">Principles</a><a href="realm.html">Realm</a><a href="lumina-dashboard.html">Dashboard</a><a href="explore.html">Explore</a></nav><div class="header-actions"><button class="icon-button ping-target" type="button" data-sound-toggle aria-label="Toggle interface sounds" aria-pressed="false">○</button></div></div></header>
+    <main>
+      <section class="section"><div class="container"><a href="lumina.html" class="button secondary ping-target">← Back to Lumina</a></div></section>
+      <section class="section"><div class="container">
+        <section class="weather-panel feature-callout" data-weather-panel data-risk="moderate">
+          <span class="eyebrow">Lumina continuity weather</span>
+          <h1>Weather surface</h1>
+          <p class="weather-updated" data-weather-updated>Loading weather snapshot...</p>
+          <div class="weather-controls" role="group" aria-label="Weather state controls">
+            <button type="button" data-weather-state="stability">Stability</button>
+            <button type="button" data-weather-state="repair">Transformation</button>
+            <button type="button" data-weather-state="expansion">Expansion</button>
+            <button type="button" data-weather-state="blend">Blend</button>
+          </div>
+          <div class="weather-reading" data-weather-reading></div>
+          <div class="weather-grid">
+            <article><small>Harmonic</small><strong data-weather-harmonic></strong></article>
+            <article><small>Stance</small><strong data-weather-stance></strong></article>
+            <article><small>Risk</small><strong data-weather-risk></strong></article>
+            <article><small>Summary</small><strong data-weather-summary></strong></article>
+          </div>
+          <section class="weather-trends" aria-label="Continuity weather trend analysis">
+            <h2>Trend analysis</h2>
+            <div class="trend-card" data-weather-trends>Loading trends...</div>
+          </section>
+          <section class="weather-graph" aria-label="Continuity health graph">
+            <h2>Continuity health graph</h2>
+            <div class="graph-card" data-weather-graph>Loading graph...</div>
+          </section>
+          <section class="weather-history" aria-label="Continuity weather history">
+            <h2>Recent weather history</h2>
+            <div data-weather-history>Loading history...</div>
+          </section>
+          <p class="boundary-note">Display only. Animation expresses generated weather data but does not authorize action, alter governance, modify canon lineage, change mode legality, or execute tools.</p>
         </section>
-        <section class="weather-graph" aria-label="Continuity health graph">
-          <h2>Continuity health graph</h2>
-          <div class="graph-card" data-weather-graph>Loading graph...</div>
-        </section>
-        <section class="weather-history" aria-label="Continuity weather history">
-          <h2>Recent weather history</h2>
-          <div data-weather-history>Loading history...</div>
-        </section>
-        <p class="boundary-note">Display only. Animation expresses generated weather data but does not authorize action, alter governance, modify canon lineage, change mode legality, or execute tools.</p>
-      </section>
+      </div></section>
     </main>
+    <footer class="footer"><div class="container footer-row"><div><a href="index.html">EthereonLabs</a> · <a href="explore.html">Explore the system</a></div><div><span data-year></span></div></div></footer>
   </div>
+  <script src="assets/js/site.js"></script>
   <script>
     const WEATHER_SNAPSHOT_URL = 'data/lumina-weather-snapshot.json';
     const WEATHER_HISTORY_URL = 'data/lumina-weather-history.json';
@@ -55,6 +63,7 @@
 
     function pulseTransition() {
       const reading = document.querySelector('[data-weather-reading]');
+      if (!reading) return;
       reading.classList.add('weather-transition');
       setTimeout(() => reading.classList.remove('weather-transition'), 220);
     }
@@ -78,22 +87,25 @@
       pulseTransition();
       const panel = document.querySelector('[data-weather-panel]');
       panel.dataset.risk = state.risk || 'moderate';
+      panel.dataset.harmonic = key === 'stability' ? '432' : key === 'repair' ? '528' : key === 'expansion' ? '963' : 'blend';
       document.querySelector('[data-weather-reading]').textContent = state.reading;
       document.querySelector('[data-weather-harmonic]').textContent = state.harmonic;
       document.querySelector('[data-weather-stance]').textContent = state.stance;
       document.querySelector('[data-weather-risk]').textContent = state.risk;
       document.querySelector('[data-weather-summary]').textContent = state.summary;
+      document.querySelectorAll('[data-weather-state]').forEach((button) => {
+        button.setAttribute('aria-pressed', String(button.dataset.weatherState === key));
+      });
     }
 
-    function refreshWeatherSurface() {
-      loadWeatherSnapshot();
-    }
-
+    function refreshWeatherSurface() { loadWeatherSnapshot(); }
     function init() {
+      document.querySelectorAll('[data-weather-state]').forEach((button) => {
+        button.addEventListener('click', () => applyWeatherState(button.dataset.weatherState));
+      });
       refreshWeatherSurface();
       setInterval(refreshWeatherSurface, REFRESH_MS);
     }
-
     init();
   </script>
 </body>
