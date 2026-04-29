@@ -31,7 +31,7 @@ body::before { content: ""; position: fixed; inset: 0; background-image: linear-
 .nav-wrap { min-height: 66px; display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; }
 .brand { display: inline-flex; align-items: center; gap: 0.75rem; text-decoration: none; color: var(--text); flex: 0 0 auto; }
 .brand-mark { width: 36px; height: 36px; border-radius: 12px; border: 1px solid var(--line-strong); background: radial-gradient(circle at 30% 30%, rgba(138,164,255,0.48), transparent 55%), linear-gradient(135deg, rgba(126,240,209,0.16), rgba(138,164,255,0.08)); box-shadow: inset 0 0 20px rgba(138, 164, 255, 0.16), 0 0 18px rgba(138, 164, 255, 0.12); position: relative; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; }
-.brand-mark::before { content: "Ψ"; position: absolute; left: 50%; top: 50%; transform: translate(calc(-50% - 1px), calc(-50% + 6px)); font-family: Georgia, "Times New Roman", serif; font-size: 1.5rem; line-height: 1; color: rgba(243, 248, 255, 0.92); text-shadow: 0 0 4px rgba(215, 230, 255, 0.22), 0 0 10px rgba(215, 230, 255, 0.08); z-index: 1; pointer-events: none; }
+.brand-mark::before { content: "Ψ"; position: absolute; left: 50%; top: 50%; transform: translate(calc(-50% - 1px), calc(-50% + 5px)); font-family: Georgia, "Times New Roman", serif; font-size: 1.82rem; line-height: 1; color: rgba(243, 248, 255, 0.96); text-shadow: 0 0 5px rgba(215, 230, 255, 0.28), 0 0 12px rgba(215, 230, 255, 0.1); z-index: 1; pointer-events: none; }
 .brand-mark::after { content: ""; position: absolute; inset: 7px; border: 1px solid rgba(234,240,255,0.36); border-radius: 9px; z-index: 0; }
 .brand-text strong { display: block; font-size: 0.86rem; letter-spacing: 0.1em; text-transform: uppercase; }
 .brand-text span { display: block; font-size: 0.72rem; color: var(--muted); }
@@ -119,7 +119,7 @@ h1, h2, h3 { margin: 0; line-height: 1.04; }
   .nav-wrap { min-height: auto; padding: 0.42rem 0; flex-direction: column; align-items: stretch; gap: 0.38rem; }
   .brand { width: 100%; gap: 0.65rem; }
   .brand-mark { width: 34px; height: 34px; border-radius: 11px; }
-  .brand-mark::before { font-size: 1.35rem; transform: translate(calc(-50% - 1px), calc(-50% + 5px)); }
+  .brand-mark::before { font-size: 1.62rem; transform: translate(calc(-50% - 1px), calc(-50% + 4px)); }
   .brand-mark::after { inset: 6px; border-radius: 8px; }
   .brand-text strong { font-size: 0.76rem; letter-spacing: 0.09em; }
   .brand-text span { font-size: 0.66rem; }
