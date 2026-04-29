@@ -45,6 +45,63 @@ height: 42px;
 border-radius: 13px;
 }
 }
+.ethereon-guide {
+position: fixed;
+right: 1rem;
+bottom: 1rem;
+z-index: 20;
+max-width: min(360px, calc(100% - 2rem));
+padding: 1rem;
+border: 1px solid rgba(160,188,255,0.22);
+border-radius: 22px;
+background: linear-gradient(180deg, rgba(14, 22, 42, 0.92), rgba(7, 11, 22, 0.94));
+box-shadow: 0 18px 60px rgba(0,0,0,0.42);
+backdrop-filter: blur(16px);
+color: var(--text, #eaf0ff);
+}
+.ethereon-guide small {
+display: block;
+color: var(--accent-2, #7ef0d1);
+text-transform: uppercase;
+letter-spacing: 0.08em;
+font-size: 0.72rem;
+margin-bottom: 0.45rem;
+}
+.ethereon-guide p {
+margin: 0 0 0.8rem;
+color: var(--muted, #a9b7da);
+line-height: 1.55;
+font-size: 0.92rem;
+}
+.ethereon-guide a {
+display: inline-flex;
+text-decoration: none;
+color: var(--text, #eaf0ff);
+border: 1px solid rgba(126,240,209,0.2);
+border-radius: 999px;
+padding: 0.55rem 0.8rem;
+background: rgba(126,240,209,0.055);
+font-size: 0.86rem;
+font-weight: 700;
+}
+.ethereon-guide button {
+position: absolute;
+top: 0.45rem;
+right: 0.55rem;
+border: 0;
+background: transparent;
+color: var(--muted, #a9b7da);
+font-size: 1rem;
+cursor: pointer;
+}
+@media (max-width: 760px) {
+.ethereon-guide {
+left: 0.7rem;
+right: 0.7rem;
+bottom: 0.7rem;
+max-width: none;
+}
+}
 `;
 document.head.appendChild(style);
 };
@@ -96,16 +153,6 @@ const sigilMarkup = `
 <g class="sigil-orbit-b"><ellipse cx="26" cy="26" rx="12" ry="22" fill="none" stroke="rgba(126,240,209,0.18)" stroke-width="0.6" /></g>
 <g class="sigil-ring-outer"><circle cx="26" cy="26" r="21.5" fill="none" stroke="rgba(205,220,255,0.45)" stroke-width="0.75" stroke-dasharray="1.4 2.2" stroke-linecap="round" /></g>
 <g class="sigil-ring-inner"><circle cx="26" cy="26" r="18.2" fill="none" stroke="rgba(126,240,209,0.54)" stroke-width="0.7" stroke-dasharray="1 1.8" stroke-linecap="round" /></g>
-<g class="sigil-triskelion" filter="url(#brandSigilArmGlow)" transform="scale(0.1)">
-<g class="sigil-arm-1"><path d="M 260 260 C 265 248, 272 240, 280 234 C 292 225, 306 224, 314 232 C 326 244, 322 262, 310 272 C 296 283, 278 280, 270 268 C 262 257, 264 244, 272 237 C 280 230, 292 232, 297 240 C 302 249, 298 260, 291 264 C 284 268, 276 264, 275 258 C 274 253, 278 249, 283 250 C 287 251, 288 256, 285 259" fill="none" stroke="rgba(210,225,255,0.9)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" /></g>
-<g class="sigil-arm-2"><path d="M 260 260 C 249 265, 239 270, 232 278 C 222 290, 221 305, 230 312 C 243 323, 261 317, 270 304 C 280 290, 276 272, 263 265 C 251 259, 238 263, 233 273 C 228 283, 232 295, 241 299 C 250 303, 260 298, 263 290 C 266 282, 261 275, 255 274 C 249 273, 246 278, 248 283 C 250 288, 255 289, 259 286" fill="none" stroke="rgba(210,225,255,0.9)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" /></g>
-<g class="sigil-arm-3"><path d="M 260 260 C 271 255, 280 248, 283 238 C 287 224, 281 211, 270 208 C 255 204, 243 214, 242 228 C 241 243, 252 254, 265 254 C 278 254, 287 244, 286 232 C 285 221, 276 215, 267 217 C 258 219, 253 227, 255 235 C 257 243, 264 247, 271 244 C 278 241, 280 234, 277 228 C 274 222, 268 220, 263 223" fill="none" stroke="rgba(210,225,255,0.9)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" /></g>
-</g>
-<g class="sigil-inner" transform="scale(0.1)">
-<g class="sigil-inner-1"><path d="M 260 260 C 263 253, 268 249, 274 248 C 281 247, 286 251, 286 258 C 286 265, 281 270, 274 269 C 267 268, 263 263, 264 257 C 265 252, 269 249, 274 251 C 278 253, 279 258, 276 261" fill="none" stroke="rgba(126,240,209,0.86)" stroke-width="6" stroke-linecap="round" /></g>
-<g class="sigil-inner-2"><path d="M 260 260 C 254 263, 249 268, 249 274 C 249 281, 254 286, 261 285 C 268 284, 272 279, 270 272 C 268 265, 262 262, 256 264 C 251 266, 249 271, 252 276 C 254 280, 259 281, 263 278" fill="none" stroke="rgba(126,240,209,0.86)" stroke-width="6" stroke-linecap="round" /></g>
-<g class="sigil-inner-3"><path d="M 260 260 C 263 254, 260 247, 254 245 C 248 243, 243 248, 244 255 C 245 262, 251 266, 258 264 C 265 262, 268 256, 265 250 C 262 244, 256 243, 251 246 C 247 249, 246 254, 249 258" fill="none" stroke="rgba(126,240,209,0.86)" stroke-width="6" stroke-linecap="round" /></g>
-</g>
 <circle cx="26" cy="26" r="6.2" fill="url(#brandSigilCenter)" />
 <circle cx="26" cy="26" r="5.5" fill="rgba(138,164,255,0.12)" class="sigil-bloom" />
 <text x="26" y="31" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="10.5" fill="rgba(228,238,255,0.95)" filter="url(#brandSigilGlow)" class="sigil-psi">Ψ</text>
@@ -118,11 +165,7 @@ node.innerHTML = sigilMarkup;
 node.dataset.sigilInjected = 'true';
 });
 };
-const FREQ = {
-presence: 432,
-transformation: 528,
-higher_awareness: 963,
-};
+const FREQ = { presence: 432, transformation: 528, higher_awareness: 963 };
 const syncSoundLabel = () => {
 if (!soundButton) return;
 soundButton.setAttribute('aria-pressed', String(soundEnabled));
@@ -136,11 +179,7 @@ if (!AudioCtor) return null;
 audioContext = new AudioCtor();
 }
 if (audioContext.state === 'suspended') {
-try {
-await audioContext.resume();
-} catch (error) {
-return null;
-}
+try { await audioContext.resume(); } catch (error) { return null; }
 }
 return audioContext;
 };
@@ -162,8 +201,50 @@ gain.connect(ctx.destination);
 oscillator.start(now);
 oscillator.stop(now + duration + 0.02);
 };
+const pageGuide = {
+'index.html': ['Start with the build direction.', 'build.html'],
+'': ['Start with the build direction.', 'build.html'],
+'build.html': ['Next: read the truth boundary.', 'principles.html'],
+'principles.html': ['Next: see the prototype surface.', 'lumina-dashboard.html'],
+'lumina-dashboard.html': ['Next: open the Realm map.', 'realm.html'],
+'realm.html': ['Next: inspect the Lumina substrate.', 'lumina.html'],
+'lumina.html': ['Next: read continuity.', 'continuity.html'],
+'continuity.html': ['Next: follow the staged roadmap.', 'roadmap.html'],
+'roadmap.html': ['Next: view the interface specimen.', 'specimen.html'],
+'specimen.html': ['Next: return to the full site map.', 'explore.html'],
+'explore.html': ['Recommended path: Build → Principles → Dashboard → Realm.', 'build.html'],
+'rse.html': ['Next: read the whitepaper version.', 'rse-whitepaper.html'],
+'rse-whitepaper.html': ['Next: return to the conceptual frame.', 'rse.html'],
+'lexicon.html': ['Next: connect terms back to continuity.', 'continuity.html'],
+'faq.html': ['Next: open the site guide.', 'explore.html'],
+'about.html': ['Next: see what is being built.', 'build.html'],
+'updates.html': ['Next: open the roadmap.', 'roadmap.html'],
+'contact.html': ['Next: return to the site guide.', 'explore.html'],
+'chamber.html': ['Next: open the Realm map.', 'realm.html'],
+};
+const normalizePath = () => {
+const last = window.location.pathname.split('/').filter(Boolean).pop() || '';
+if (!last) return '';
+return last.endsWith('.html') ? last : `${last}.html`;
+};
+const injectGuide = () => {
+if (sessionStorage.getItem('ethereonlabs-guide-dismissed') === 'true') return;
+const key = normalizePath();
+const guide = pageGuide[key];
+if (!guide) return;
+const box = document.createElement('aside');
+box.className = 'ethereon-guide';
+box.setAttribute('aria-label', 'Suggested next step');
+box.innerHTML = `<button type="button" aria-label="Dismiss guide">×</button><small>Suggested next step</small><p>${guide[0]}</p><a class="ping-target" href="${guide[1]}">Continue path</a>`;
+document.body.appendChild(box);
+box.querySelector('button')?.addEventListener('click', () => {
+sessionStorage.setItem('ethereonlabs-guide-dismissed', 'true');
+box.remove();
+});
+};
 injectBrandSigilStyles();
 injectBrandSigil();
+injectGuide();
 syncSoundLabel();
 if (soundButton) {
 soundButton.addEventListener('click', async () => {
@@ -174,12 +255,8 @@ await ping(soundEnabled ? FREQ.higher_awareness : FREQ.presence, 0.08, 'triangle
 });
 }
 pingTargets.forEach((node) => {
-node.addEventListener('mouseenter', () => {
-ping(FREQ.presence, 0.045, 'sine');
-});
-node.addEventListener('click', () => {
-ping(FREQ.transformation, 0.075, 'triangle');
-});
+node.addEventListener('mouseenter', () => { ping(FREQ.presence, 0.045, 'sine'); });
+node.addEventListener('click', () => { ping(FREQ.transformation, 0.075, 'triangle'); });
 });
 document.querySelectorAll('[data-glow]').forEach((node) => {
 node.addEventListener('mousemove', (event) => {
@@ -188,8 +265,6 @@ const x = ((event.clientX - rect.left) / rect.width) * 100;
 const y = ((event.clientY - rect.top) / rect.height) * 100;
 node.style.backgroundImage = `radial-gradient(circle at ${x}% ${y}%, rgba(138,164,255,0.16), transparent 45%)`;
 });
-node.addEventListener('mouseleave', () => {
-node.style.backgroundImage = '';
-});
+node.addEventListener('mouseleave', () => { node.style.backgroundImage = ''; });
 });
 })();
