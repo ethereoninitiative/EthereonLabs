@@ -1,0 +1,14 @@
+(session
+  (date 2026-04-30)
+  (topic website-mobile-header)
+  (changes
+    (change restore-sliding-nav)
+    (change restore-sound-toggle)
+    (change add-spiral-nav))
+  (result stable)
+  (state
+    (navigation sliding)
+    (sound active)
+    (symbol psi-stable))
+  (next "observe before further change")
+)

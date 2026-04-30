@@ -1,0 +1,9 @@
+(inspection
+  (target github-repository)
+  (lens lisp-opportunities)
+  (finding "lisp is best used as symbolic layer")
+  (finding "fits sessions inspections governance")
+  (finding "should not be integrated into runtime yet")
+  (recommendation "define practice via README")
+  (status "initialized")
+)
