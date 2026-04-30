@@ -31,7 +31,20 @@ lumina/lisp/
   inspections/
   governance/
   flows/
+  notes/
 ```
+
+## Important Note (Interop + Future Direction)
+
+See:
+
+```
+lumina/lisp/notes/lisp_interop_future_note_001.md
+```
+
+This note captures why Lisp is being used as a symbolic layer first, and outlines potential future integration paths (Hy, Clojure, etc.).
+
+Do not introduce executable Lisp without revisiting that document.
 
 ## Naming pattern
 
