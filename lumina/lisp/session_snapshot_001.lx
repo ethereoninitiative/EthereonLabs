@@ -1,0 +1,8 @@
+(session
+  (mode sea-trial)
+  (target mobile-header)
+  (change restore-sliding-nav)
+  (change restore-sound-toggle)
+  (result stable)
+  (notes "psi stable, nav fluid, sound restored, header calm")
+)
