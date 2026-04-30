@@ -1,0 +1,12 @@
+(flow
+  (entry homepage)
+  (primary-path
+    (step build)
+    (step principles)
+    (step dashboard)
+    (step realm))
+  (alt-path
+    (step spiral)
+    (step whitepaper))
+  (intent "guide without forcing")
+)

@@ -1,0 +1,8 @@
+(governance
+  (layer structural-law)
+  (rule nav-not-overloaded)
+  (rule symbol-not-decorative)
+  (rule guide-not-intrusive)
+  (rule mobile-first-clarity)
+  (authority human-directed)
+)
