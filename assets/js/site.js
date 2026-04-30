@@ -8,6 +8,25 @@ node.textContent = new Date().getFullYear();
 const SOUND_KEY = 'ethereonlabs-sound-enabled';
 let soundEnabled = localStorage.getItem(SOUND_KEY) === 'true';
 let audioContext = null;
+const injectSpiralNavLink = () => {
+const navs = document.querySelectorAll('.nav-links');
+navs.forEach((nav) => {
+if (nav.querySelector('a[href="rse-whitepaper.html"]')) return;
+const link = document.createElement('a');
+link.href = 'rse-whitepaper.html';
+link.textContent = 'The Spiral';
+const currentPath = window.location.pathname.split('/').filter(Boolean).pop() || 'index.html';
+if (currentPath === 'rse-whitepaper.html' || currentPath === 'rse-whitepaper') {
+link.setAttribute('aria-current', 'page');
+nav.querySelectorAll('[aria-current="page"]').forEach((node) => {
+if (node !== link) node.removeAttribute('aria-current');
+});
+}
+const dashboard = nav.querySelector('a[href="lumina-dashboard.html"]');
+if (dashboard) dashboard.insertAdjacentElement('afterend', link);
+else nav.appendChild(link);
+});
+};
 const injectBrandSigilStyles = () => {
 if (document.getElementById('ethereonlabs-brand-sigil-style')) return;
 const style = document.createElement('style');
@@ -298,6 +317,7 @@ sessionStorage.setItem('ethereonlabs-guide-dismissed', 'true');
 box.remove();
 });
 };
+injectSpiralNavLink();
 injectBrandSigilStyles();
 injectBrandSigil();
 injectGuide();
