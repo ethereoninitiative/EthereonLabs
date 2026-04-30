@@ -14,12 +14,12 @@ const style = document.createElement('style');
 style.id = 'ethereonlabs-brand-sigil-style';
 style.textContent = `
 .brand-mark {
-width: 46px;
-height: 46px;
-border-radius: 14px;
-border: 1px solid rgba(160, 188, 255, 0.28);
+width: 58px;
+height: 58px;
+border-radius: 17px;
+border: 1px solid rgba(160, 188, 255, 0.30);
 background: linear-gradient(135deg, rgba(7, 10, 22, 0.98), rgba(18, 26, 48, 0.9));
-box-shadow: inset 0 0 20px rgba(138, 164, 255, 0.16), 0 0 18px rgba(138, 164, 255, 0.10);
+box-shadow: inset 0 0 24px rgba(138, 164, 255, 0.18), 0 0 22px rgba(138, 164, 255, 0.12);
 position: relative;
 display: inline-flex;
 align-items: center;
@@ -38,11 +38,84 @@ display: block;
 width: 100%;
 height: 100%;
 }
+.ethereon-menu-toggle {
+display: none;
+appearance: none;
+border: 1px solid rgba(160,188,255,0.24);
+background: rgba(255,255,255,0.035);
+color: var(--text, #eaf0ff);
+border-radius: 999px;
+min-width: 42px;
+min-height: 42px;
+font-size: 1.15rem;
+line-height: 1;
+cursor: pointer;
+}
 @media (max-width: 760px) {
+.nav-wrap {
+position: relative;
+flex-direction: row !important;
+align-items: center !important;
+justify-content: space-between !important;
+padding: 0.62rem 0 !important;
+gap: 0.75rem !important;
+}
+.brand {
+width: auto !important;
+min-width: 0;
+gap: 0.72rem !important;
+}
 .brand-mark {
-width: 42px;
-height: 42px;
-border-radius: 13px;
+width: 54px;
+height: 54px;
+border-radius: 16px;
+}
+.brand-text strong {
+font-size: 0.9rem !important;
+letter-spacing: 0.12em !important;
+}
+.brand-text span {
+font-size: 0.68rem !important;
+}
+.ethereon-menu-toggle {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+flex: 0 0 auto;
+}
+.header-actions {
+display: flex !important;
+}
+.header-actions .icon-button {
+display: none;
+}
+.nav-links {
+display: none !important;
+position: absolute;
+left: 0;
+right: 0;
+top: calc(100% + 0.45rem);
+z-index: 40;
+width: 100% !important;
+max-height: calc(100vh - 7rem);
+overflow: auto;
+padding: 0.8rem !important;
+border: 1px solid rgba(160,188,255,0.22);
+border-radius: 20px;
+background: linear-gradient(180deg, rgba(14,22,42,0.98), rgba(7,11,22,0.98));
+box-shadow: 0 18px 60px rgba(0,0,0,0.42);
+backdrop-filter: blur(18px);
+}
+.nav-links.is-open {
+display: grid !important;
+grid-template-columns: 1fr;
+gap: 0.35rem;
+}
+.nav-links a {
+width: 100%;
+text-align: left !important;
+padding: 0.72rem 0.85rem !important;
+font-size: 0.95rem !important;
 }
 }
 .ethereon-guide {
@@ -96,10 +169,14 @@ cursor: pointer;
 }
 @media (max-width: 760px) {
 .ethereon-guide {
-left: 0.7rem;
-right: 0.7rem;
-bottom: 0.7rem;
+position: relative;
+left: auto;
+right: auto;
+bottom: auto;
 max-width: none;
+width: min(var(--max-width, 1180px), calc(100% - 1.1rem));
+margin: 0 auto 2.25rem;
+box-shadow: 0 14px 40px rgba(0,0,0,0.30);
 }
 }
 `;
@@ -127,24 +204,14 @@ const sigilMarkup = `
 <style>
 .brand-sigil .sigil-ring-outer { animation: brandSpinCw 36s linear infinite; transform-origin: 26px 26px; }
 .brand-sigil .sigil-ring-inner { animation: brandSpinCcw 22s linear infinite; transform-origin: 26px 26px; opacity: 0.85; }
-.brand-sigil .sigil-triskelion { animation: brandSpinCw 120s linear infinite; transform-origin: 26px 26px; }
-.brand-sigil .sigil-arm-1 { animation: brandBreathe 5s ease-in-out infinite; transform-origin: 26px 26px; }
-.brand-sigil .sigil-arm-2 { animation: brandBreathe 5s ease-in-out infinite 1.66s; transform-origin: 26px 26px; }
-.brand-sigil .sigil-arm-3 { animation: brandBreathe 5s ease-in-out infinite 3.33s; transform-origin: 26px 26px; }
-.brand-sigil .sigil-inner { animation: brandSpinCcw 55s linear infinite; transform-origin: 26px 26px; opacity: 0.58; }
-.brand-sigil .sigil-inner-1 { animation: brandBreatheInner 4s ease-in-out infinite; transform-origin: 26px 26px; }
-.brand-sigil .sigil-inner-2 { animation: brandBreatheInner 4s ease-in-out infinite 1.33s; transform-origin: 26px 26px; }
-.brand-sigil .sigil-inner-3 { animation: brandBreatheInner 4s ease-in-out infinite 2.66s; transform-origin: 26px 26px; }
 .brand-sigil .sigil-orbit-a { animation: brandSpinCw 70s linear infinite; transform-origin: 26px 26px; opacity: 0.15; }
 .brand-sigil .sigil-orbit-b { animation: brandSpinCcw 90s linear infinite; transform-origin: 26px 26px; opacity: 0.10; }
 .brand-sigil .sigil-bloom { animation: brandPsiPulse 3.5s ease-in-out infinite; }
 .brand-sigil .sigil-psi { animation: brandPsiGlow 3.5s ease-in-out infinite; }
 @keyframes brandSpinCw { to { transform: rotate(360deg); } }
 @keyframes brandSpinCcw { to { transform: rotate(-360deg); } }
-@keyframes brandBreathe { 0%, 100% { opacity: 0.72; filter: drop-shadow(0 0 1px rgba(200, 218, 255, 0.18)); } 50% { opacity: 1; filter: drop-shadow(0 0 4px rgba(200, 218, 255, 0.48)); } }
-@keyframes brandBreatheInner { 0%, 100% { opacity: 0.48; } 50% { opacity: 0.9; } }
-@keyframes brandPsiPulse { 0%, 100% { opacity: 0.10; } 50% { opacity: 0.38; } }
-@keyframes brandPsiGlow { 0%, 100% { opacity: 0.86; filter: drop-shadow(0 0 1px rgba(220, 235, 255, 0.25)); } 50% { opacity: 1; filter: drop-shadow(0 0 6px rgba(220, 235, 255, 0.95)); } }
+@keyframes brandPsiPulse { 0%, 100% { opacity: 0.12; } 50% { opacity: 0.42; } }
+@keyframes brandPsiGlow { 0%, 100% { opacity: 0.9; filter: drop-shadow(0 0 1px rgba(220, 235, 255, 0.25)); } 50% { opacity: 1; filter: drop-shadow(0 0 6px rgba(220, 235, 255, 0.95)); } }
 </style>
 </defs>
 <rect x="1" y="1" width="50" height="50" rx="14" ry="14" fill="#07091a" stroke="rgba(138,164,255,0.14)" stroke-width="1.1" />
@@ -153,9 +220,9 @@ const sigilMarkup = `
 <g class="sigil-orbit-b"><ellipse cx="26" cy="26" rx="12" ry="22" fill="none" stroke="rgba(126,240,209,0.18)" stroke-width="0.6" /></g>
 <g class="sigil-ring-outer"><circle cx="26" cy="26" r="21.5" fill="none" stroke="rgba(205,220,255,0.45)" stroke-width="0.75" stroke-dasharray="1.4 2.2" stroke-linecap="round" /></g>
 <g class="sigil-ring-inner"><circle cx="26" cy="26" r="18.2" fill="none" stroke="rgba(126,240,209,0.54)" stroke-width="0.7" stroke-dasharray="1 1.8" stroke-linecap="round" /></g>
-<circle cx="26" cy="26" r="6.2" fill="url(#brandSigilCenter)" />
-<circle cx="26" cy="26" r="5.5" fill="rgba(138,164,255,0.12)" class="sigil-bloom" />
-<text x="26" y="31" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="10.5" fill="rgba(228,238,255,0.95)" filter="url(#brandSigilGlow)" class="sigil-psi">Ψ</text>
+<circle cx="26" cy="26" r="8" fill="url(#brandSigilCenter)" />
+<circle cx="26" cy="26" r="7.4" fill="rgba(138,164,255,0.12)" class="sigil-bloom" />
+<text x="26" y="32.8" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="15" fill="rgba(228,238,255,0.98)" filter="url(#brandSigilGlow)" class="sigil-psi">Ψ</text>
 </g>
 </svg>
 `;
@@ -163,6 +230,33 @@ brandMarks.forEach((node) => {
 if (node.dataset.sigilInjected === 'true') return;
 node.innerHTML = sigilMarkup;
 node.dataset.sigilInjected = 'true';
+});
+};
+const injectMobileNavToggle = () => {
+const navWrap = document.querySelector('.nav-wrap');
+const nav = document.querySelector('.nav-links');
+const actions = document.querySelector('.header-actions');
+if (!navWrap || !nav || !actions || document.querySelector('.ethereon-menu-toggle')) return;
+const toggle = document.createElement('button');
+toggle.className = 'ethereon-menu-toggle ping-target';
+toggle.type = 'button';
+toggle.setAttribute('aria-label', 'Open navigation menu');
+toggle.setAttribute('aria-expanded', 'false');
+toggle.innerHTML = '☰';
+actions.prepend(toggle);
+toggle.addEventListener('click', () => {
+const open = nav.classList.toggle('is-open');
+toggle.setAttribute('aria-expanded', String(open));
+toggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+toggle.innerHTML = open ? '×' : '☰';
+});
+nav.querySelectorAll('a').forEach((link) => {
+link.addEventListener('click', () => {
+nav.classList.remove('is-open');
+toggle.setAttribute('aria-expanded', 'false');
+toggle.setAttribute('aria-label', 'Open navigation menu');
+toggle.innerHTML = '☰';
+});
 });
 };
 const FREQ = { presence: 432, transformation: 528, higher_awareness: 963 };
@@ -236,7 +330,12 @@ const box = document.createElement('aside');
 box.className = 'ethereon-guide';
 box.setAttribute('aria-label', 'Suggested next step');
 box.innerHTML = `<button type="button" aria-label="Dismiss guide">×</button><small>Suggested next step</small><p>${guide[0]}</p><a class="ping-target" href="${guide[1]}">Continue path</a>`;
+if (window.matchMedia('(max-width: 760px)').matches) {
+const hero = document.querySelector('.hero');
+hero?.insertAdjacentElement('afterend', box) || document.body.appendChild(box);
+} else {
 document.body.appendChild(box);
+}
 box.querySelector('button')?.addEventListener('click', () => {
 sessionStorage.setItem('ethereonlabs-guide-dismissed', 'true');
 box.remove();
@@ -244,6 +343,7 @@ box.remove();
 };
 injectBrandSigilStyles();
 injectBrandSigil();
+injectMobileNavToggle();
 injectGuide();
 syncSoundLabel();
 if (soundButton) {
