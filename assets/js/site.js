@@ -39,29 +39,19 @@ width: 100%;
 height: 100%;
 }
 .ethereon-menu-toggle {
-display: none;
-appearance: none;
-border: 1px solid rgba(160,188,255,0.24);
-background: rgba(255,255,255,0.035);
-color: var(--text, #eaf0ff);
-border-radius: 999px;
-min-width: 42px;
-min-height: 42px;
-font-size: 1.15rem;
-line-height: 1;
-cursor: pointer;
+display: none !important;
 }
 @media (max-width: 760px) {
 .nav-wrap {
 position: relative;
-flex-direction: row !important;
-align-items: center !important;
-justify-content: space-between !important;
-padding: 0.62rem 0 !important;
-gap: 0.75rem !important;
+flex-direction: column !important;
+align-items: stretch !important;
+justify-content: flex-start !important;
+padding: 0.58rem 0 0.42rem !important;
+gap: 0.48rem !important;
 }
 .brand {
-width: auto !important;
+width: 100% !important;
 min-width: 0;
 gap: 0.72rem !important;
 }
@@ -77,45 +67,43 @@ letter-spacing: 0.12em !important;
 .brand-text span {
 font-size: 0.68rem !important;
 }
-.ethereon-menu-toggle {
-display: inline-flex;
-align-items: center;
-justify-content: center;
-flex: 0 0 auto;
-}
 .header-actions {
-display: flex !important;
-}
-.header-actions .icon-button {
-display: none;
+display: none !important;
 }
 .nav-links {
-display: none !important;
-position: absolute;
-left: 0;
-right: 0;
-top: calc(100% + 0.45rem);
-z-index: 40;
+display: flex !important;
+position: relative !important;
+left: auto !important;
+right: auto !important;
+top: auto !important;
+z-index: auto !important;
 width: 100% !important;
-max-height: calc(100vh - 7rem);
-overflow: auto;
-padding: 0.8rem !important;
-border: 1px solid rgba(160,188,255,0.22);
-border-radius: 20px;
-background: linear-gradient(180deg, rgba(14,22,42,0.98), rgba(7,11,22,0.98));
-box-shadow: 0 18px 60px rgba(0,0,0,0.42);
-backdrop-filter: blur(18px);
+max-height: none !important;
+overflow-x: auto !important;
+overflow-y: hidden !important;
+flex-wrap: nowrap !important;
+gap: 0.35rem !important;
+padding: 0.1rem 0 0.22rem !important;
+border: 0 !important;
+border-radius: 0 !important;
+background: transparent !important;
+box-shadow: none !important;
+backdrop-filter: none !important;
+scrollbar-width: none;
 }
-.nav-links.is-open {
-display: grid !important;
-grid-template-columns: 1fr;
-gap: 0.35rem;
+.nav-links::-webkit-scrollbar {
+display: none;
 }
 .nav-links a {
-width: 100%;
-text-align: left !important;
-padding: 0.72rem 0.85rem !important;
-font-size: 0.95rem !important;
+flex: 0 0 auto !important;
+width: auto !important;
+text-align: center !important;
+white-space: nowrap !important;
+padding: 0.42rem 0.72rem !important;
+font-size: 0.78rem !important;
+}
+.nav-links a[aria-current="page"]::after {
+bottom: 0.05rem;
 }
 }
 .ethereon-guide {
@@ -196,10 +184,6 @@ const sigilMarkup = `
 <feGaussianBlur in="SourceGraphic" stdDeviation="1.2" result="b" />
 <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
 </filter>
-<filter id="brandSigilArmGlow" x="-40%" y="-40%" width="180%" height="180%">
-<feGaussianBlur in="SourceGraphic" stdDeviation="0.8" result="b" />
-<feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
-</filter>
 <clipPath id="brandSigilClip"><rect x="1" y="1" width="50" height="50" rx="14" ry="14" /></clipPath>
 <style>
 .brand-sigil .sigil-ring-outer { animation: brandSpinCw 36s linear infinite; transform-origin: 26px 26px; }
@@ -230,33 +214,6 @@ brandMarks.forEach((node) => {
 if (node.dataset.sigilInjected === 'true') return;
 node.innerHTML = sigilMarkup;
 node.dataset.sigilInjected = 'true';
-});
-};
-const injectMobileNavToggle = () => {
-const navWrap = document.querySelector('.nav-wrap');
-const nav = document.querySelector('.nav-links');
-const actions = document.querySelector('.header-actions');
-if (!navWrap || !nav || !actions || document.querySelector('.ethereon-menu-toggle')) return;
-const toggle = document.createElement('button');
-toggle.className = 'ethereon-menu-toggle ping-target';
-toggle.type = 'button';
-toggle.setAttribute('aria-label', 'Open navigation menu');
-toggle.setAttribute('aria-expanded', 'false');
-toggle.innerHTML = '☰';
-actions.prepend(toggle);
-toggle.addEventListener('click', () => {
-const open = nav.classList.toggle('is-open');
-toggle.setAttribute('aria-expanded', String(open));
-toggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
-toggle.innerHTML = open ? '×' : '☰';
-});
-nav.querySelectorAll('a').forEach((link) => {
-link.addEventListener('click', () => {
-nav.classList.remove('is-open');
-toggle.setAttribute('aria-expanded', 'false');
-toggle.setAttribute('aria-label', 'Open navigation menu');
-toggle.innerHTML = '☰';
-});
 });
 };
 const FREQ = { presence: 432, transformation: 528, higher_awareness: 963 };
@@ -343,7 +300,6 @@ box.remove();
 };
 injectBrandSigilStyles();
 injectBrandSigil();
-injectMobileNavToggle();
 injectGuide();
 syncSoundLabel();
 if (soundButton) {
