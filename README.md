@@ -4,6 +4,22 @@ EthereonLabs is an experimental repository for continuity-oriented AI interface 
 
 This repository contains multiple active work lanes. The key distinction is that not every lane has the same authority: runtime files, public interface files, staging documents, and research experiments should not be treated as interchangeable.
 
+## Lumina Lisp Layer
+
+Structured symbolic snapshots of system state, intent, and reflection.
+
+Location:
+`/lumina/lisp/`
+
+Purpose:
+- capture session truth
+- map navigation intent
+- declare system state
+- encode governance rules
+- preserve reflection
+
+Non-executable. Human-readable. System-aligned.
+
 ## Quick Start
 
 - New human reader: start with `START_HERE_HUMANS.md`.
