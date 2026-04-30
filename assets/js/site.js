@@ -87,7 +87,17 @@ letter-spacing: 0.12em !important;
 font-size: 0.68rem !important;
 }
 .header-actions {
-display: none !important;
+display: flex !important;
+justify-content: flex-end;
+width: 100%;
+gap: 0.4rem;
+}
+.header-actions .icon-button {
+display: inline-flex !important;
+min-width: 34px;
+min-height: 34px;
+font-size: 0.9rem;
+opacity: 0.85;
 }
 .nav-links {
 display: flex !important;
