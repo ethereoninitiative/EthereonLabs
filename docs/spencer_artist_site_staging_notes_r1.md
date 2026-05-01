@@ -1,13 +1,23 @@
-# Spencer Artist Site — Hidden Staging Draft r1
+# Spencer Artist Site — Temporary Independent Website r2
 
-## Recommended temporary home
+## Current decision
 
-Use the EthereonLabs repository as a private-ish staging page:
+This page should feel like Spencer Tracy Brown's artist website, not like an EthereonLabs subpage.
+
+EthereonLabs is only the temporary host.
+
+## Temporary URL after merge
+
+`https://ethereonlabs.com/artist-spencer.html`
+
+## Current files
 
 - `artist-spencer.html`
 - `assets/css/artist-spencer.css`
 
-Do not add it to the main navigation yet.
+The page no longer imports the shared EthereonLabs stylesheet or site JavaScript. It uses a standalone visual system so the artist site can later be lifted into its own domain with minimal cleanup.
+
+## Indexing / privacy note
 
 The page includes:
 
@@ -15,35 +25,42 @@ The page includes:
 <meta name="robots" content="noindex, nofollow" />
 ```
 
-That discourages indexing, but it is not true password protection. Anyone with the URL could still view it once deployed.
+This discourages search indexing, but it is not real privacy or password protection. Anyone with the URL can view it after deployment.
 
-## Suggested URL while staged
+## Visual direction
 
-`https://ethereonlabs.com/artist-spencer.html`
+Direction: Desert Modern / contemporary artist monograph.
 
-Later, once the final domain exists, this page can be cloned into the new site and redirected from EthereonLabs if desired.
+Key qualities:
+
+- warm paper ground
+- charcoal text
+- clay and sand accents
+- quiet serif headline typography
+- minimal navigation
+- image-first portfolio structure
+- no glow, orbit, dashboard, or interface-system language
 
 ## Placeholder inventory
 
-Current placeholders:
+Current image placeholders:
 
-1. hero artwork
-2. Boundaries series image
-3. Sanctuaries series image
-4. sculpture / objects image
-5. teaching / public work image
-6. drawings / studies image
-7. archive / experiments image
-8. artist portrait
-9. studio table
-10. Twee-Twee cameo
-11. classroom / public art
+1. primary artwork / hero image
+2. Boundaries
+3. Sanctuaries
+4. Sculpture & Objects
+5. Drawings & Studies
+6. Public & Educational Work
+7. artist portrait
+8. studio table
+9. Twee-Twee
+10. classroom / teaching
 
 ## Next refinements
 
-- Replace placeholder images with real image paths.
-- Add titles, years, media, and dimensions.
-- Decide whether the final visual system should remain dark/desert/gold or move toward a cleaner white gallery style.
-- Add CV page.
-- Add contact email.
-- Add optional statement page if the homepage becomes too long.
+- Replace placeholders with final image paths.
+- Add artwork titles, years, media, and dimensions.
+- Add a CV page or downloadable CV.
+- Replace placeholder contact email.
+- Decide whether the final domain is `spencertracybrown.com`, `spencerbrown.art`, or another dedicated artist URL.
+- Later, remove `noindex` only when the dedicated artist site is ready for public discovery.
