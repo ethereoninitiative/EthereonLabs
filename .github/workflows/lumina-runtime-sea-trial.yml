@@ -56,6 +56,11 @@ jobs:
           set -o pipefail
           python assert_runtime_behavior_r1.py 2>&1 | tee "$GITHUB_WORKSPACE/runtime-sea-trial-evidence/behavioral-assertions-output.txt"
 
+      - name: Run drift detection
+        run: |
+          set -o pipefail
+          python runtime_drift_detection_r1.py 2>&1 | tee "$GITHUB_WORKSPACE/runtime-sea-trial-evidence/drift-detection-output.txt"
+
       - name: Write validation summary
         if: always()
         run: |
@@ -77,6 +82,7 @@ jobs:
             echo "- baseline-runtime-output.txt"
             echo "- sea-trial-output.txt"
             echo "- behavioral-assertions-output.txt"
+            echo "- drift-detection-output.txt"
           } | tee "$GITHUB_WORKSPACE/runtime-sea-trial-evidence/validation-summary.md"
           cat "$GITHUB_WORKSPACE/runtime-sea-trial-evidence/validation-summary.md" >> "$GITHUB_STEP_SUMMARY"
 
