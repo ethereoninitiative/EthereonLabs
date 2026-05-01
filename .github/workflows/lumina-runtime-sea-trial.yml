@@ -33,13 +33,51 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Prepare evidence directory
+        run: mkdir -p ../../../runtime-sea-trial-evidence
+
       - name: Show runtime directory
         run: |
-          pwd
-          ls -la
+          pwd | tee ../../../runtime-sea-trial-evidence/runtime-directory.txt
+          ls -la | tee ../../../runtime-sea-trial-evidence/runtime-directory-listing.txt
 
       - name: Run baseline runtime
-        run: python runtime_runner_r1_merged.py
+        run: |
+          set -o pipefail
+          python runtime_runner_r1_merged.py 2>&1 | tee ../../../runtime-sea-trial-evidence/baseline-runtime-output.txt
 
       - name: Run sea trial validation
-        run: python sea_trials_set_one_r1_merged.py
+        run: |
+          set -o pipefail
+          python sea_trials_set_one_r1_merged.py 2>&1 | tee ../../../runtime-sea-trial-evidence/sea-trial-output.txt
+
+      - name: Write validation summary
+        if: always()
+        run: |
+          {
+            echo "# Lumina Runtime Sea Trial Summary"
+            echo ""
+            echo "- Workflow: $GITHUB_WORKFLOW"
+            echo "- Run ID: $GITHUB_RUN_ID"
+            echo "- Run number: $GITHUB_RUN_NUMBER"
+            echo "- Commit: $GITHUB_SHA"
+            echo "- Ref: $GITHUB_REF"
+            echo "- Python: $(python --version)"
+            echo "- Runtime path: LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime"
+            echo ""
+            echo "## Evidence files"
+            echo ""
+            echo "- runtime-directory.txt"
+            echo "- runtime-directory-listing.txt"
+            echo "- baseline-runtime-output.txt"
+            echo "- sea-trial-output.txt"
+          } | tee ../../../runtime-sea-trial-evidence/validation-summary.md
+          cat ../../../runtime-sea-trial-evidence/validation-summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload runtime sea trial evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lumina-runtime-sea-trial-evidence
+          path: runtime-sea-trial-evidence/
+          if-no-files-found: error
