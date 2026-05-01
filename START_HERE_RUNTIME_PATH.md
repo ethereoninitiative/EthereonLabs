@@ -87,6 +87,8 @@ This runtime path is also checked by the `Lumina Runtime Sea Trial` workflow.
 
 The workflow runs the baseline runtime and sea-trial validation so GitHub can report whether the executable path still holds.
 
+Artifact preservation is part of that check: each successful run should keep runtime and sea-trial evidence for later review.
+
 ---
 
 ## What this file is NOT
