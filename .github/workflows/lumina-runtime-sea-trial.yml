@@ -34,22 +34,22 @@ jobs:
           python-version: '3.11'
 
       - name: Prepare evidence directory
-        run: mkdir -p ../../../runtime-sea-trial-evidence
+        run: mkdir -p "$GITHUB_WORKSPACE/runtime-sea-trial-evidence"
 
       - name: Show runtime directory
         run: |
-          pwd | tee ../../../runtime-sea-trial-evidence/runtime-directory.txt
-          ls -la | tee ../../../runtime-sea-trial-evidence/runtime-directory-listing.txt
+          pwd | tee "$GITHUB_WORKSPACE/runtime-sea-trial-evidence/runtime-directory.txt"
+          ls -la | tee "$GITHUB_WORKSPACE/runtime-sea-trial-evidence/runtime-directory-listing.txt"
 
       - name: Run baseline runtime
         run: |
           set -o pipefail
-          python runtime_runner_r1_merged.py 2>&1 | tee ../../../runtime-sea-trial-evidence/baseline-runtime-output.txt
+          python runtime_runner_r1_merged.py 2>&1 | tee "$GITHUB_WORKSPACE/runtime-sea-trial-evidence/baseline-runtime-output.txt"
 
       - name: Run sea trial validation
         run: |
           set -o pipefail
-          python sea_trials_set_one_r1_merged.py 2>&1 | tee ../../../runtime-sea-trial-evidence/sea-trial-output.txt
+          python sea_trials_set_one_r1_merged.py 2>&1 | tee "$GITHUB_WORKSPACE/runtime-sea-trial-evidence/sea-trial-output.txt"
 
       - name: Write validation summary
         if: always()
@@ -71,8 +71,8 @@ jobs:
             echo "- runtime-directory-listing.txt"
             echo "- baseline-runtime-output.txt"
             echo "- sea-trial-output.txt"
-          } | tee ../../../runtime-sea-trial-evidence/validation-summary.md
-          cat ../../../runtime-sea-trial-evidence/validation-summary.md >> "$GITHUB_STEP_SUMMARY"
+          } | tee "$GITHUB_WORKSPACE/runtime-sea-trial-evidence/validation-summary.md"
+          cat "$GITHUB_WORKSPACE/runtime-sea-trial-evidence/validation-summary.md" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload runtime sea trial evidence
         if: always()
