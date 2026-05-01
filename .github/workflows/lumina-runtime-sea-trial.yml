@@ -1,0 +1,45 @@
+name: Lumina Runtime Sea Trial
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'LuminaOS/bootstrap/Ship_of_Ethereon_V2/**'
+      - '.github/workflows/lumina-runtime-sea-trial.yml'
+      - 'START_HERE_RUNTIME_PATH.md'
+  push:
+    branches:
+      - main
+    paths:
+      - 'LuminaOS/bootstrap/Ship_of_Ethereon_V2/**'
+      - '.github/workflows/lumina-runtime-sea-trial.yml'
+      - 'START_HERE_RUNTIME_PATH.md'
+
+jobs:
+  runtime-sea-trial:
+    name: Run Lumina runtime and sea trial
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Show runtime directory
+        run: |
+          pwd
+          ls -la
+
+      - name: Run baseline runtime
+        run: python runtime_runner_r1_merged.py
+
+      - name: Run sea trial validation
+        run: python sea_trials_set_one_r1_merged.py
