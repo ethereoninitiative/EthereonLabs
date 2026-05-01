@@ -89,6 +89,8 @@ The workflow runs the baseline runtime and sea-trial validation so GitHub can re
 
 Artifact preservation is part of that check: each successful run should keep runtime and sea-trial evidence for later review.
 
+A post-correction confirmation run should verify that the artifact upload step now succeeds.
+
 ---
 
 ## What this file is NOT
