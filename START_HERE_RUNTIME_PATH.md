@@ -81,6 +81,14 @@ From here you can:
 
 ---
 
+## GitHub Actions verification
+
+This runtime path is also checked by the `Lumina Runtime Sea Trial` workflow.
+
+The workflow runs the baseline runtime and sea-trial validation so GitHub can report whether the executable path still holds.
+
+---
+
 ## What this file is NOT
 
 This is not philosophy.
