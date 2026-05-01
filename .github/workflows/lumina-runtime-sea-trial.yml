@@ -51,6 +51,11 @@ jobs:
           set -o pipefail
           python sea_trials_set_one_r1_merged.py 2>&1 | tee "$GITHUB_WORKSPACE/runtime-sea-trial-evidence/sea-trial-output.txt"
 
+      - name: Run behavioral assertions
+        run: |
+          set -o pipefail
+          python assert_runtime_behavior_r1.py 2>&1 | tee "$GITHUB_WORKSPACE/runtime-sea-trial-evidence/behavioral-assertions-output.txt"
+
       - name: Write validation summary
         if: always()
         run: |
@@ -71,6 +76,7 @@ jobs:
             echo "- runtime-directory-listing.txt"
             echo "- baseline-runtime-output.txt"
             echo "- sea-trial-output.txt"
+            echo "- behavioral-assertions-output.txt"
           } | tee "$GITHUB_WORKSPACE/runtime-sea-trial-evidence/validation-summary.md"
           cat "$GITHUB_WORKSPACE/runtime-sea-trial-evidence/validation-summary.md" >> "$GITHUB_STEP_SUMMARY"
 
