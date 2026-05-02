@@ -245,64 +245,6 @@ node.innerHTML = sigilMarkup;
 node.dataset.sigilInjected = 'true';
 });
 };
-const initEthereonMotionField = () => {
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-const flowField = document.querySelector('.rse-flow-field');
-const flowLines = [...document.querySelectorAll('.rse-flow-field span')];
-const orbitRings = [...document.querySelectorAll('.orbit-field span')];
-if ((!flowLines.length && !orbitRings.length) || reduceMotion.matches) return;
-
-let frameId = null;
-const GOLD = '217, 168, 78';
-const PALE_GOLD = '255, 235, 190';
-const BLUE = '150, 178, 255';
-
-const animate = () => {
-const t = performance.now() * 0.001;
-const primaryPulse = Math.max(0, Math.sin(t * 0.72));
-const bloom = Math.pow(primaryPulse, 5);
-const secondaryPulse = Math.max(0, Math.sin(t * 0.37 + 1.6));
-const slowBreath = Math.sin(t * 0.21);
-
-if (flowField) {
-flowField.style.opacity = String(0.78 + bloom * 0.22);
-filter: drop-shadow(0 0 ${18 + bloom * 26}px rgba(${GOLD}, ${0.30 + bloom * 0.52}));
-}
-
-flowLines.forEach((line, i) => {
-const phase = i * 1.18;
-const travel = ((t * (7.5 + i * 0.5) + i * 18) % 210) - 92;
-const yDrift = Math.sin(t * 0.58 + phase) * (10 + i * 1.5);
-const scaleX = 0.92 + Math.sin(t * 0.31 + phase) * 0.09;
-const opacity = 0.24 + bloom * 0.58 + secondaryPulse * 0.12;
-const glow = 14 + bloom * 36 + secondaryPulse * 10;
-line.style.opacity = String(Math.min(0.96, opacity));
-line.style.transform = `translate3d(${travel}vw, ${yDrift}px, 0) scaleX(${scaleX})`;
-line.style.filter = `drop-shadow(0 0 ${glow}px rgba(${GOLD}, ${0.32 + bloom * 0.48}))`;
-});
-
-orbitRings.forEach((ring, i) => {
-const phase = i * 1.45;
-const driftX = Math.sin(t * (0.22 + i * 0.035) + phase) * (18 + i * 8);
-const driftY = Math.cos(t * (0.18 + i * 0.025) + phase) * (14 + i * 7);
-const rotate = Math.sin(t * (0.09 + i * 0.018) + phase) * (10 + i * 5);
-const scale = 1.02 + slowBreath * 0.035 + bloom * 0.045;
-const goldWeight = Math.min(1, bloom * 0.9 + secondaryPulse * 0.18);
-ring.style.transform = `translate3d(${driftX}px, ${driftY}px, 0) rotate(${rotate}deg) scale(${scale})`;
-ring.style.borderColor = `rgba(${goldWeight > 0.34 ? GOLD : BLUE}, ${0.28 + goldWeight * 0.48})`;
-ring.style.boxShadow = `0 0 ${18 + goldWeight * 56}px rgba(${GOLD}, ${0.10 + goldWeight * 0.35}), inset 0 0 ${10 + goldWeight * 24}px rgba(${PALE_GOLD}, ${goldWeight * 0.12})`;
-ring.style.opacity = String(0.72 + goldWeight * 0.18);
-});
-
-frameId = requestAnimationFrame(animate);
-};
-
-animate();
-reduceMotion.addEventListener?.('change', (event) => {
-if (event.matches && frameId) cancelAnimationFrame(frameId);
-else if (!event.matches && !frameId) animate();
-});
-};
 const FREQ = { presence: 432, transformation: 528, higher_awareness: 963 };
 const syncSoundLabel = () => {
 if (!soundButton) return;
@@ -388,7 +330,6 @@ box.remove();
 injectSpiralNavLink();
 injectBrandSigilStyles();
 injectBrandSigil();
-initEthereonMotionField();
 injectGuide();
 syncSoundLabel();
 if (soundButton) {
