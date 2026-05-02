@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title id="title">Referential spiral field</title>
+  <desc id="desc">A golden logarithmic spiral over a dark blue navigational chart field.</desc>
+  <defs>
+    <radialGradient id="core" cx="50%" cy="47%" r="55%">
+      <stop offset="0" stop-color="#ffe3a3" stop-opacity="0.95"/>
+      <stop offset="0.18" stop-color="#d9a84e" stop-opacity="0.42"/>
+      <stop offset="0.48" stop-color="#8aa4ff" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#06101f" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="goldLine" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff0c2"/>
+      <stop offset="0.45" stop-color="#c89537"/>
+      <stop offset="1" stop-color="#7ef0d1"/>
+    </linearGradient>
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <pattern id="chartGrid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M60 0H0V60" fill="none" stroke="#8aa4ff" stroke-opacity="0.08" stroke-width="1"/>
+      <path d="M30 0V60M0 30H60" fill="none" stroke="#8aa4ff" stroke-opacity="0.035" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="900" fill="#06101f"/>
+  <rect width="1200" height="900" fill="url(#chartGrid)" opacity="0.65"/>
+  <circle cx="620" cy="410" r="360" fill="url(#core)"/>
+  <g opacity="0.22" stroke="#d9b768" stroke-width="1" fill="none">
+    <circle cx="620" cy="410" r="105"/>
+    <circle cx="620" cy="410" r="190"/>
+    <circle cx="620" cy="410" r="280"/>
+    <circle cx="620" cy="410" r="370"/>
+    <path d="M620 40V780M250 410H990M358 148L882 672M882 148L358 672"/>
+  </g>
+  <path d="M620 410 C 642 391, 674 400, 680 429 C 689 474, 635 510, 586 484 C 514 446, 519 340, 607 299 C 724 245, 861 333, 846 474 C 826 655, 593 748, 424 629 C 221 486, 249 174, 510 52 C 824 -94, 1174 129, 1130 508" fill="none" stroke="url(#goldLine)" stroke-width="3.5" stroke-linecap="round" filter="url(#softGlow)"/>
+  <path d="M620 410 C 642 391, 674 400, 680 429 C 689 474, 635 510, 586 484 C 514 446, 519 340, 607 299 C 724 245, 861 333, 846 474 C 826 655, 593 748, 424 629 C 221 486, 249 174, 510 52 C 824 -94, 1174 129, 1130 508" fill="none" stroke="#fff1be" stroke-opacity="0.82" stroke-width="1.15" stroke-linecap="round"/>
+  <g fill="#f4c66f" opacity="0.62">
+    <circle cx="620" cy="410" r="5"/>
+    <circle cx="680" cy="429" r="3"/>
+    <circle cx="846" cy="474" r="3"/>
+    <circle cx="424" cy="629" r="3"/>
+  </g>
+  <g opacity="0.14" stroke="#7ef0d1" fill="none">
+    <path d="M90 720c120-90 230-120 360-80s230 20 350-45"/>
+    <path d="M820 92c70 18 135 55 200 112"/>
+    <path d="M110 210c95-40 185-53 270-37"/>
+  </g>
+</svg>
