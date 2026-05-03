@@ -39,7 +39,7 @@ body::before {
 }
 .rse-flow-field, .orbit-field { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
 .rse-flow-field { opacity: 0.92; mix-blend-mode: screen; }
-.rse-flow-field span { position: absolute; width: 82vw; height: 3px; left: -92vw; opacity: 0; background: linear-gradient(90deg, transparent, rgba(217,168,78,0), rgba(217,168,78,0.62), rgba(255,235,190,0.98), rgba(217,168,78,0.42), transparent); filter: drop-shadow(0 0 18px rgba(217,168,78,0.50)); transform-origin: center; will-change: transform, opacity, filter; animation-name: rseFlowSweep, rseLineBreathe; animation-timing-function: cubic-bezier(.35,0,.2,1), ease-in-out; animation-iteration-count: infinite, infinite; animation-direction: normal, alternate; }
+.rse-flow-field span { position: absolute; width: 82vw; height: 3px; left: -92vw; opacity: 0; background: linear-gradient(90deg, transparent, rgba(217,168,78,0), rgba(217,168,78,0.62), rgba(255,235,190,0.98), rgba(217,168,78,0.42), transparent); filter: drop-shadow(0 0 18px rgba(217,168,78,0.50)); transform-origin: center; will-change: transform, opacity, filter; animation-name: rseThreadVoyage, rseLineBreathe; animation-timing-function: cubic-bezier(.35,0,.2,1), ease-in-out; animation-iteration-count: infinite, infinite; animation-direction: normal, alternate; }
 .rse-flow-field span:nth-child(1) { top: 18%; rotate: -18deg; animation-duration: 14s, 9s; animation-delay: -3s, 0s; }
 .rse-flow-field span:nth-child(2) { top: 32%; rotate: 14deg; animation-duration: 18s, 11s; animation-delay: -10s, -2s; }
 .rse-flow-field span:nth-child(3) { top: 48%; rotate: -9deg; animation-duration: 22s, 13s; animation-delay: -6s, -5s; }
@@ -124,21 +124,21 @@ h1, h2, h3 { margin: 0; line-height: 1.04; }
   57% { opacity: 0.78; border-color: rgba(255,235,190,0.84); box-shadow: 0 0 64px rgba(217,168,78,0.40); }
   70% { opacity: 0.16; border-color: rgba(217,168,78,0.22); box-shadow: 0 0 20px rgba(217,168,78,0.10); }
 }
-@keyframes rseFlowSweep {
-  0% { opacity: 0; translate: -6vw 0; }
-  9% { opacity: 0.05; }
-  18% { opacity: 0.68; }
-  27% { opacity: 0.95; }
-  39% { opacity: 0.18; }
-  58% { opacity: 0.08; }
-  76% { opacity: 0.50; }
-  86% { opacity: 0.14; }
-  100% { opacity: 0; translate: 205vw 0; }
+@keyframes rseThreadVoyage {
+  0% { opacity: 0; translate: -8vw -7px; transform: skewX(-4deg) scaleX(0.68); }
+  9% { opacity: 0.06; }
+  18% { opacity: 0.56; translate: 30vw 8px; transform: skewX(2deg) scaleX(0.90); }
+  27% { opacity: 0.92; translate: 66vw -12px; transform: skewX(-7deg) scaleX(1.12); }
+  39% { opacity: 0.20; translate: 93vw 5px; transform: skewX(4deg) scaleX(0.84); }
+  58% { opacity: 0.07; translate: 124vw -8px; transform: skewX(-2deg) scaleX(0.76); }
+  76% { opacity: 0.46; translate: 160vw 11px; transform: skewX(6deg) scaleX(1.04); }
+  86% { opacity: 0.16; translate: 185vw -4px; transform: skewX(-3deg) scaleX(0.92); }
+  100% { opacity: 0; translate: 210vw 7px; transform: skewX(3deg) scaleX(0.70); }
 }
 @keyframes rseLineBreathe {
-  0% { transform: translateY(-5px) scaleX(0.72); filter: drop-shadow(0 0 12px rgba(217,168,78,0.22)); }
-  43% { transform: translateY(4px) scaleX(1.08); filter: drop-shadow(0 0 30px rgba(217,168,78,0.50)); }
-  100% { transform: translateY(-2px) scaleX(0.90); filter: drop-shadow(0 0 16px rgba(217,168,78,0.28)); }
+  0% { filter: drop-shadow(0 0 10px rgba(217,168,78,0.20)); height: 2px; }
+  43% { filter: drop-shadow(0 0 30px rgba(217,168,78,0.52)); height: 4px; }
+  100% { filter: drop-shadow(0 0 15px rgba(217,168,78,0.28)); height: 3px; }
 }
 @keyframes presencePulse {
   0% { opacity: 0.34; transform: scale(1); filter: blur(0px); }
