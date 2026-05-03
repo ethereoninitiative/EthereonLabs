@@ -36,12 +36,21 @@
     @keyframes sigilRotate{to{transform:rotate(360deg)}}@keyframes sigilRotateReverse{to{transform:rotate(-360deg)}}@keyframes sigilBreathe{0%,100%{opacity:.42;transform:scale(.985)}50%{opacity:.76;transform:scale(1.02)}}@keyframes sigilNodePulse{0%,100%{opacity:.38;transform:scale(.92)}50%{opacity:.88;transform:scale(1.08)}}@keyframes psiPulse{0%,100%{opacity:.82;transform:scale(1)}50%{opacity:1;transform:scale(1.025)}}
     @media(max-width:980px){.ethereon-hero-sigil{left:64%;opacity:.30}}@media(max-width:760px){.ethereon-hero-sigil{width:360px;left:70%;top:44%;opacity:.22}}
   </style>
+  <style>
+    /* PAGE-WIDE PSI RESONANCE ECHO — reversible: remove this style block and the .psi-resonance-echo element. */
+    .psi-resonance-echo{position:fixed;right:-1.5rem;top:54%;translate:0 -50%;z-index:0;pointer-events:none;font-family:Georgia,"Times New Roman",serif;font-size:clamp(8rem,18vw,21rem);line-height:1;color:rgba(255,235,190,.052);text-shadow:0 0 42px rgba(217,168,78,.10),0 0 120px rgba(138,164,255,.08);mix-blend-mode:screen;animation:psiEchoPulse 18s ease-in-out infinite alternate}
+    @keyframes psiEchoPulse{0%{opacity:.45;transform:translateY(-14px) scale(.985)}50%{opacity:.78;transform:translateY(10px) scale(1.015)}100%{opacity:.55;transform:translateY(-4px) scale(1)}}
+    @media(max-width:980px){.psi-resonance-echo{right:-3rem;opacity:.72}}
+    @media(max-width:760px){.psi-resonance-echo{right:-4.5rem;top:58%;font-size:11rem;opacity:.48}}
+    @media(prefers-reduced-motion:reduce){.psi-resonance-echo{animation:none!important}}
+  </style>
 </head>
 <body>
   <div class="rse-flow-field" aria-hidden="true">
     <span></span><span></span><span></span><span></span><span></span>
   </div>
   <div class="orbit-field" aria-hidden="true"><span></span><span></span><span></span></div>
+  <div class="psi-resonance-echo" aria-hidden="true">Ψ</div>
   <div class="page-shell">
     <header class="site-header">
       <div class="container nav-wrap">
