@@ -20,7 +20,9 @@
   <link rel="stylesheet" href="assets/css/styles.css" />
   <style>
     .sigil-frame { width: 100%; min-height: 580px; border: 0; border-radius: 24px; background: rgba(6, 9, 19, 0.82); box-shadow: var(--shadow); overflow: hidden; display: block; }
-    @media (max-width: 760px) { .sigil-frame { min-height: 460px; } }
+    .inline-list { display: flex; flex-wrap: wrap; gap: 0.45rem 0.9rem; align-items: center; max-width: 70ch; }
+    .inline-list span { display: inline-flex; }
+    @media (max-width: 760px) { .sigil-frame { min-height: 460px; } .inline-list { display: grid; gap: 0.38rem; font-size: 0.95rem; line-height: 1.38; } .inline-list span { display: block; } }
   </style>
 </head>
 <body>
