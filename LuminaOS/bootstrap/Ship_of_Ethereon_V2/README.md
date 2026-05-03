@@ -22,6 +22,7 @@ This folder is the GitHub bootstrap import for beginning **Lumina OS** from the 
 - repo-native workspace host proof
 - bounded self-guidance steward and checkpoint-linked advisory history
 - bounded orchestration lane built from context loader, decision engine, and orchestrator
+- Lumina Studio v0.1 local operator surface for running governed runtime cycles
 
 ## Current status
 
@@ -38,6 +39,46 @@ The repo-native layer now includes working proofs that Lumina can:
 
 In parallel, the Chamber lane now contains an advisory acceptance / rejection surface and a supervised action queue with both memory and Postgres-backed persistence.
 That Chamber work is not the Lumina substrate itself, but it is becoming the first consent surface adjacent to the substrate.
+
+Lumina Studio v0.1 now provides the first intentionally plain local control surface for running one governed cycle and seeing its receipt.
+Studio does not create runtime law. It packages a request, delegates to `runtime/runtime_runner_r1_merged.py`, and reports checkpoint, governance, capability, halt, and optional probe/return-host artifacts.
+
+Primary Studio files:
+
+- `studio/README.md`
+- `studio/lumina_cli.py`
+- `studio/lumina_studio_server.py`
+- `docs/lumina_studio_v0_1_spec.md`
+- `docs/lumina_next_build_plan_001.md`
+- `sea_trials_lumina_studio_v0_1.py`
+
+## Lumina Studio quick start
+
+Run a local governed cycle from the bootstrap folder:
+
+```bash
+python studio/lumina_cli.py "Review Lumina OS progress and produce the next governed action receipt."
+```
+
+Run the local browser surface:
+
+```bash
+python studio/lumina_studio_server.py
+```
+
+Then open:
+
+```text
+http://127.0.0.1:8765/studio
+```
+
+Run the Studio sea trial:
+
+```bash
+python sea_trials_lumina_studio_v0_1.py
+```
+
+Studio is local-first. Do not expose it publicly without authentication, request authorization, rate limiting, and a clear persistence policy.
 
 ## Quantum-concepts boundary
 
@@ -85,11 +126,12 @@ Current CI trigger note:
 
 The remaining hardening priority is less about inventing new core law and more about tightening the whole into a cleaner beta shape:
 
-- keep runtime, orchestration, Chamber, quantum-boundary, and continuity-validation lanes clearly linked in docs
+- keep runtime, orchestration, Chamber, quantum-boundary, Studio, and continuity-validation lanes clearly linked in docs
 - reduce operator friction through better entrypoint scripts and runbooks
 - continue proving that advisory outputs remain subordinate to runtime governance
 - connect accepted Chamber queue items to governed execution records while preserving consent and runtime law
 - verify that quantum-inspired terminology remains expressive/advisory and never becomes hidden governance law
+- extend Studio into a state browser and governance decision viewer without turning it into a shadow authority
 
 ## Intent
 
