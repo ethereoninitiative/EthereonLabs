@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-"""Lumina Studio Server v0.1.
+"""Lumina Studio Server v0.2.
 
 Tiny local HTTP control surface for the governed Lumina runtime.
 This is deliberately plain: standard library only, local-first, and subordinate
 to RuntimeRunner. It is not a public Chamber surface and not a governance owner.
+
+v0.2 adds read-only state inspection over runtime receipts and governance event
+summaries emitted by the governed runtime.
 """
 from __future__ import annotations
 
@@ -19,6 +22,7 @@ if str(STUDIO_ROOT) not in sys.path:
     sys.path.insert(0, str(STUDIO_ROOT))
 
 from lumina_cli import DEFAULT_FEATURE_FLAGS, compact_receipt, run_lumina_cycle  # noqa: E402
+from lumina_state_browser import state_snapshot  # noqa: E402
 
 
 HTML = """<!doctype html>
@@ -26,32 +30,39 @@ HTML = """<!doctype html>
 <head>
   <meta charset=\"utf-8\" />
   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />
-  <title>Lumina Studio v0.1</title>
+  <title>Lumina Studio v0.2</title>
   <style>
     :root { color-scheme: dark; }
     body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif; background: #07111f; color: #eaf2ff; }
-    main { max-width: 980px; margin: 0 auto; padding: 32px 20px 48px; }
+    main { max-width: 1080px; margin: 0 auto; padding: 32px 20px 48px; }
     h1 { margin: 0 0 6px; font-size: clamp(2rem, 5vw, 4rem); letter-spacing: -0.06em; }
+    h2 { margin-top: 0; }
     .kicker { color: #f6c96b; text-transform: uppercase; letter-spacing: 0.18em; font-size: 0.78rem; }
-    .sub { max-width: 780px; color: #b9c7dc; line-height: 1.55; }
-    form { display: grid; gap: 16px; margin-top: 28px; background: rgba(255,255,255,0.045); border: 1px solid rgba(255,255,255,0.12); border-radius: 22px; padding: 22px; box-shadow: 0 24px 80px rgba(0,0,0,0.35); }
+    .sub { max-width: 820px; color: #b9c7dc; line-height: 1.55; }
+    form, .panel { display: grid; gap: 16px; margin-top: 28px; background: rgba(255,255,255,0.045); border: 1px solid rgba(255,255,255,0.12); border-radius: 22px; padding: 22px; box-shadow: 0 24px 80px rgba(0,0,0,0.35); }
     label { display: grid; gap: 6px; color: #cbd8ec; font-size: 0.92rem; }
     input, textarea, select { width: 100%; box-sizing: border-box; border-radius: 12px; border: 1px solid rgba(255,255,255,0.16); background: rgba(0,0,0,0.25); color: #f7fbff; padding: 11px 12px; font: inherit; }
     textarea { min-height: 130px; resize: vertical; }
     .grid { display: grid; gap: 14px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; }
     button { justify-self: start; border: 0; border-radius: 999px; padding: 12px 18px; font-weight: 700; background: linear-gradient(135deg, #f6c96b, #fff1b5); color: #111522; cursor: pointer; }
+    button.secondary { background: rgba(255,255,255,0.12); color: #eaf2ff; border: 1px solid rgba(255,255,255,0.16); }
     pre { white-space: pre-wrap; overflow-wrap: anywhere; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.12); border-radius: 18px; padding: 18px; margin-top: 20px; color: #dbe8ff; }
     .receipt { margin-top: 24px; }
     .note { color: #8fa4c3; font-size: 0.9rem; }
+    .cards { display: grid; gap: 12px; }
+    .card { border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 14px; background: rgba(0,0,0,0.18); }
+    .card strong { color: #fff3bd; }
+    .muted { color: #90a4c4; }
     @media (max-width: 760px) { .grid, .grid.two { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <main>
-    <div class=\"kicker\">Local control surface · governed runtime</div>
-    <h1>Lumina Studio v0.1</h1>
-    <p class=\"sub\">Run one Lumina cycle through the existing runtime spine. Studio only packages the request and displays the receipt; mode legality, mutation gates, input integrity, capability exposure, checkpoints, and governance history remain owned by the runtime.</p>
+    <div class=\"kicker\">Local control surface · governed runtime · read-only state browser</div>
+    <h1>Lumina Studio v0.2</h1>
+    <p class=\"sub\">Run one Lumina cycle through the existing runtime spine, then inspect recent receipts and governance summaries. Studio only packages requests and reads emitted state; mode legality, mutation gates, input integrity, capability exposure, checkpoints, and governance history remain owned by the runtime.</p>
     <form method=\"post\" action=\"/run\">
       <label>Operator request
         <textarea name=\"prompt\" required>Review Lumina OS progress and produce the next governed action receipt.</textarea>
@@ -83,24 +94,61 @@ HTML = """<!doctype html>
           <input name=\"project_id\" value=\"lumina-os\" />
         </label>
         <label>Action label
-          <input name=\"action\" value=\"studio_runtime_cycle_v0_1\" />
+          <input name=\"action\" value=\"studio_runtime_cycle_v0_2\" />
         </label>
       </div>
       <label>Annotation
-        <input name=\"annotation\" value=\"Studio v0.1 local governed runtime loop\" />
+        <input name=\"annotation\" value=\"Studio v0.2 local governed runtime loop with state browser\" />
       </label>
       <label><input type=\"checkbox\" name=\"ethereonic_overlay\" value=\"1\" /> Attach optional expressive overlay</label>
-      <button type=\"submit\">Run Lumina cycle</button>
+      <div class=\"actions\">
+        <button type=\"submit\">Run Lumina cycle</button>
+        <button type=\"button\" class=\"secondary\" id=\"refresh-state\">Refresh state</button>
+      </div>
       <div class=\"note\">For local use only. Do not expose this server publicly without adding authentication and persistence policy.</div>
     </form>
     <section class=\"receipt\">
       <h2>Last receipt</h2>
       <pre id=\"receipt\">No cycle has run in this page yet.</pre>
     </section>
+    <section class=\"panel\">
+      <h2>Runtime state</h2>
+      <div id=\"state-cards\" class=\"cards\"><div class=\"muted\">State not loaded yet.</div></div>
+      <pre id=\"state-json\">Click Refresh state to inspect recent runtime receipts.</pre>
+    </section>
   </main>
   <script>
     const form = document.querySelector('form');
     const receipt = document.querySelector('#receipt');
+    const stateJson = document.querySelector('#state-json');
+    const stateCards = document.querySelector('#state-cards');
+    const refreshButton = document.querySelector('#refresh-state');
+
+    function renderStateCards(data) {
+      const runs = data.latest_runs || [];
+      const governance = data.governance || {};
+      const cards = [];
+      cards.push(`<div class=\"card\"><strong>Receipts:</strong> ${data.receipt_count_returned || 0}<br><span class=\"muted\">State root: ${data.state_root || 'unknown'}</span></div>`);
+      cards.push(`<div class=\"card\"><strong>Governance events:</strong> ${governance.event_count || 0}<br><span class=\"muted\">Latest: ${governance.latest_event_type || 'none'}</span></div>`);
+      cards.push(`<div class=\"card\"><strong>Canon head:</strong> ${data.canon_head || 'none'}<br><span class=\"muted\">Records: ${data.canon_record_count || 0}</span></div>`);
+      for (const run of runs.slice(0, 5)) {
+        cards.push(`<div class=\"card\"><strong>${run.run_id || 'unknown run'}</strong><br>${run.requested_mode || '?'} → ${run.target_mode || '?'} · ${run.action_type || '?'} · halted: ${run.halted}<br><span class=\"muted\">${run.requested_action || ''}</span></div>`);
+      }
+      stateCards.innerHTML = cards.join('');
+    }
+
+    async function refreshState() {
+      stateJson.textContent = 'Reading emitted runtime state…';
+      try {
+        const response = await fetch('/api/state?limit=12');
+        const data = await response.json();
+        renderStateCards(data);
+        stateJson.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        stateJson.textContent = 'State refresh failed: ' + err;
+      }
+    }
+
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       receipt.textContent = 'Running Lumina cycle…';
@@ -109,10 +157,14 @@ HTML = """<!doctype html>
         const response = await fetch('/run', { method: 'POST', body });
         const data = await response.json();
         receipt.textContent = JSON.stringify(data, null, 2);
+        await refreshState();
       } catch (err) {
         receipt.textContent = 'Lumina Studio request failed: ' + err;
       }
     });
+
+    refreshButton.addEventListener('click', refreshState);
+    refreshState();
   </script>
 </body>
 </html>"""
@@ -154,8 +206,16 @@ def _payload_from_body(raw_body: bytes, content_type: str) -> Dict[str, Any]:
     return payload
 
 
+def _query_limit(path: str, default: int = 20) -> int:
+    query = parse_qs(urlparse(path).query)
+    try:
+        return max(1, min(int(_single(query, "limit", str(default))), 100))
+    except Exception:
+        return default
+
+
 class LuminaStudioHandler(BaseHTTPRequestHandler):
-    server_version = "LuminaStudio/0.1"
+    server_version = "LuminaStudio/0.2"
 
     def _send(self, status: int, body: bytes, content_type: str) -> None:
         self.send_response(status)
@@ -170,7 +230,11 @@ class LuminaStudioHandler(BaseHTTPRequestHandler):
             self._send(200, HTML.encode("utf-8"), "text/html; charset=utf-8")
             return
         if path == "/health":
-            self._send(200, json.dumps({"ok": True, "service": "lumina-studio", "version": "0.1"}).encode("utf-8"), "application/json")
+            self._send(200, json.dumps({"ok": True, "service": "lumina-studio", "version": "0.2"}).encode("utf-8"), "application/json")
+            return
+        if path == "/api/state":
+            payload = state_snapshot(limit=_query_limit(self.path, 20))
+            self._send(200, json.dumps(payload, indent=2).encode("utf-8"), "application/json")
             return
         self._send(404, b"not found", "text/plain; charset=utf-8")
 
@@ -195,7 +259,7 @@ def main() -> int:
     host = "127.0.0.1"
     port = 8765
     server = ThreadingHTTPServer((host, port), LuminaStudioHandler)
-    print(f"Lumina Studio v0.1 running at http://{host}:{port}/studio")
+    print(f"Lumina Studio v0.2 running at http://{host}:{port}/studio")
     print("Use Ctrl-C to stop.")
     try:
         server.serve_forever()
