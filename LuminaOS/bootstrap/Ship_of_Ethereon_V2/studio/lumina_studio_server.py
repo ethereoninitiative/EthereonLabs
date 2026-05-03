@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Lumina Studio Server v0.2.
+"""Lumina Studio Server v0.3.1.
 
-Tiny local HTTP control surface for the governed Lumina runtime.
-This is deliberately plain: standard library only, local-first, and subordinate
-to RuntimeRunner. It is not a public Chamber surface and not a governance owner.
+Tiny local HTTP control surface for the Lumina runtime.
+Standard library only and local-first.
 
-v0.2 adds read-only state inspection over runtime receipts and governance event
-summaries emitted by the governed runtime.
+v0.3.1 keeps the v0.2 page intact and adds two read-only JSON endpoints:
+- /api/governance
+- /api/presets
 """
 from __future__ import annotations
 
@@ -22,6 +22,8 @@ if str(STUDIO_ROOT) not in sys.path:
     sys.path.insert(0, str(STUDIO_ROOT))
 
 from lumina_cli import DEFAULT_FEATURE_FLAGS, compact_receipt, run_lumina_cycle  # noqa: E402
+from lumina_governance_viewer import latest_governance_views  # noqa: E402
+from lumina_presets import presets_payload  # noqa: E402
 from lumina_state_browser import state_snapshot  # noqa: E402
 
 
@@ -30,7 +32,7 @@ HTML = """<!doctype html>
 <head>
   <meta charset=\"utf-8\" />
   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />
-  <title>Lumina Studio v0.2</title>
+  <title>Lumina Studio v0.3.1</title>
   <style>
     :root { color-scheme: dark; }
     body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif; background: #07111f; color: #eaf2ff; }
@@ -60,9 +62,9 @@ HTML = """<!doctype html>
 </head>
 <body>
   <main>
-    <div class=\"kicker\">Local control surface · governed runtime · read-only state browser</div>
-    <h1>Lumina Studio v0.2</h1>
-    <p class=\"sub\">Run one Lumina cycle through the existing runtime spine, then inspect recent receipts and governance summaries. Studio only packages requests and reads emitted state; mode legality, mutation gates, input integrity, capability exposure, checkpoints, and governance history remain owned by the runtime.</p>
+    <div class=\"kicker\">Local control surface · runtime receipts · read-only APIs</div>
+    <h1>Lumina Studio v0.3.1</h1>
+    <p class=\"sub\">Run one Lumina cycle, inspect recent receipts, and use local JSON endpoints for governance views and presets. The page stays intentionally plain while the APIs grow underneath it.</p>
     <form method=\"post\" action=\"/run\">
       <label>Operator request
         <textarea name=\"prompt\" required>Review Lumina OS progress and produce the next governed action receipt.</textarea>
@@ -94,18 +96,18 @@ HTML = """<!doctype html>
           <input name=\"project_id\" value=\"lumina-os\" />
         </label>
         <label>Action label
-          <input name=\"action\" value=\"studio_runtime_cycle_v0_2\" />
+          <input name=\"action\" value=\"studio_runtime_cycle_v0_3_1\" />
         </label>
       </div>
       <label>Annotation
-        <input name=\"annotation\" value=\"Studio v0.2 local governed runtime loop with state browser\" />
+        <input name=\"annotation\" value=\"Studio v0.3.1 local runtime loop with read-only APIs\" />
       </label>
       <label><input type=\"checkbox\" name=\"ethereonic_overlay\" value=\"1\" /> Attach optional expressive overlay</label>
       <div class=\"actions\">
         <button type=\"submit\">Run Lumina cycle</button>
         <button type=\"button\" class=\"secondary\" id=\"refresh-state\">Refresh state</button>
       </div>
-      <div class=\"note\">For local use only. Do not expose this server publicly without adding authentication and persistence policy.</div>
+      <div class=\"note\">Read-only JSON endpoints: /api/state, /api/governance, /api/presets. For local use only.</div>
     </form>
     <section class=\"receipt\">
       <h2>Last receipt</h2>
@@ -215,7 +217,7 @@ def _query_limit(path: str, default: int = 20) -> int:
 
 
 class LuminaStudioHandler(BaseHTTPRequestHandler):
-    server_version = "LuminaStudio/0.2"
+    server_version = "LuminaStudio/0.3.1"
 
     def _send(self, status: int, body: bytes, content_type: str) -> None:
         self.send_response(status)
@@ -230,11 +232,18 @@ class LuminaStudioHandler(BaseHTTPRequestHandler):
             self._send(200, HTML.encode("utf-8"), "text/html; charset=utf-8")
             return
         if path == "/health":
-            self._send(200, json.dumps({"ok": True, "service": "lumina-studio", "version": "0.2"}).encode("utf-8"), "application/json")
+            self._send(200, json.dumps({"ok": True, "service": "lumina-studio", "version": "0.3.1"}).encode("utf-8"), "application/json")
             return
         if path == "/api/state":
             payload = state_snapshot(limit=_query_limit(self.path, 20))
             self._send(200, json.dumps(payload, indent=2).encode("utf-8"), "application/json")
+            return
+        if path == "/api/governance":
+            payload = latest_governance_views(limit=_query_limit(self.path, 12))
+            self._send(200, json.dumps(payload, indent=2).encode("utf-8"), "application/json")
+            return
+        if path == "/api/presets":
+            self._send(200, json.dumps(presets_payload(), indent=2).encode("utf-8"), "application/json")
             return
         self._send(404, b"not found", "text/plain; charset=utf-8")
 
@@ -259,7 +268,7 @@ def main() -> int:
     host = "127.0.0.1"
     port = 8765
     server = ThreadingHTTPServer((host, port), LuminaStudioHandler)
-    print(f"Lumina Studio v0.2 running at http://{host}:{port}/studio")
+    print(f"Lumina Studio v0.3.1 running at http://{host}:{port}/studio")
     print("Use Ctrl-C to stop.")
     try:
         server.serve_forever()
