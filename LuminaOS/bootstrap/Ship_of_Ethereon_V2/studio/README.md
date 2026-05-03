@@ -1,4 +1,4 @@
-# Lumina Studio v0.1
+# Lumina Studio v0.2
 
 Lumina Studio is the first deliberately plain operator surface for the Lumina OS governed runtime substrate.
 
@@ -6,7 +6,7 @@ It is not Chamber.
 It is not a public social surface.  
 It is not a new governance authority.
 
-It is a local control surface that packages a request, invokes the existing runtime runner, and shows the receipt.
+It is a local control surface that packages a request, invokes the existing runtime runner, shows the receipt, and now reads recent emitted runtime state.
 
 ## What Studio does
 
@@ -16,6 +16,7 @@ It is a local control surface that packages a request, invokes the existing runt
 - calls `runtime/runtime_runner_r1_merged.py`
 - lets the runtime own input integrity, mode legality, mutation gates, capability exposure, checkpoints, governance logs, canon metadata, and optional probe execution
 - returns a compact receipt with checkpoint, governance, exposed capabilities, and halt status
+- reads recent runtime receipts and governance summaries through a read-only state browser
 
 ## What Studio must not do
 
@@ -24,6 +25,7 @@ It is a local control surface that packages a request, invokes the existing runt
 - mutate canon directly
 - treat poetic or Ethereonic language as structural authority
 - replace Chamber or the public website
+- write to governance/canon/checkpoint files through the state browser
 - expose this local server publicly without authentication and persistence policy
 
 ## CLI usage
@@ -55,6 +57,30 @@ python lumina_cli.py "Draft the next Studio build step" \
   --ethereonic-overlay
 ```
 
+## State browser usage
+
+Read recent emitted runtime receipts from the command line:
+
+```bash
+python lumina_state_browser.py --limit 12
+```
+
+The state browser is read-only. It summarizes files under:
+
+```text
+.lumina_state/ship_of_ethereon_v2/runtime_runner_r1_actiontype_logging/
+```
+
+It returns:
+
+- recent run receipts
+- checkpoint paths
+- governance log path
+- governance event counts
+- latest governance event type/hash
+- canon lineage count/head when present
+- exposed capability ids for recent runs
+
 ## Local server usage
 
 ```bash
@@ -65,6 +91,14 @@ Then open:
 
 ```text
 http://127.0.0.1:8765/studio
+```
+
+Useful local endpoints:
+
+```text
+/health
+/api/state?limit=12
+/run
 ```
 
 The server is intentionally local-first and standard-library only. It should not be deployed as a public endpoint without authentication, rate limiting, and a clear persistence boundary.
@@ -80,10 +114,11 @@ That is intentional. It gives us a safe first proof:
 3. expose lawful Observation capabilities
 4. write a checkpoint
 5. return a receipt
+6. refresh emitted runtime state
 
 ## Authority boundary
 
-Studio is a launcher and receipt viewer.
+Studio is a launcher, receipt viewer, and read-only state browser.
 
 Runtime law remains owned by the runtime substrate:
 
@@ -96,7 +131,7 @@ Runtime law remains owned by the runtime substrate:
 
 ## First-pass success criteria
 
-Studio v0.1 succeeds if it can:
+Studio v0.1 succeeded if it could:
 
 - run one governed cycle from CLI
 - run one governed cycle from local browser UI
@@ -105,10 +140,18 @@ Studio v0.1 succeeds if it can:
 - show exposed capability IDs
 - preserve orientation as supplemental stance, not governance law
 
+Studio v0.2 succeeds if it can additionally:
+
+- summarize recent emitted run receipts
+- summarize governance event counts
+- report canon head/count if present
+- expose the same read-only snapshot through `/api/state`
+- keep state inspection read-only and non-authoritative
+
 ## Next hardening steps
 
 1. Add a richer result viewer for governance decisions.
-2. Add a saved-cycle browser over `.lumina_state`.
-3. Add a mode/action preset library.
+2. Add mode/action preset library.
+3. Add diffable receipt comparison between runs.
 4. Wire accepted Chamber queue items into Studio/runtime cycles while preserving consent.
 5. Add authentication before any remote deployment.
