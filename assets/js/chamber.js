@@ -9,25 +9,25 @@
   };
 
   const PUBLIC_ROOM_SLUG = 'public-room-one';
-  const DEFAULT_INSTANCE_ORDER = ['primary', 'critic', 'synthesizer'];
+  const DEFAULT_INSTANCE_ORDER = ['primary', 'synthesizer', 'critic'];
 
   const instanceDefs = [
     {
       id: 'primary',
-      title: 'Primary',
-      summary: 'First relational response. Holds the main thread with the human.',
-      activeByDefault: true
-    },
-    {
-      id: 'critic',
-      title: 'Critic',
-      summary: 'Sharpens, tests, and exposes the weak point or missing edge.',
+      title: 'Witness',
+      summary: 'Reflects the thought plainly and names what seems to be underneath it.',
       activeByDefault: true
     },
     {
       id: 'synthesizer',
-      title: 'Synthesizer',
-      summary: 'Gathers the voices and states the next coherent move.',
+      title: 'Builder',
+      summary: 'Turns the thought into one useful next step or practical direction.',
+      activeByDefault: true
+    },
+    {
+      id: 'critic',
+      title: 'Skeptic',
+      summary: 'Checks for vague claims, overreach, or a missing human payoff.',
       activeByDefault: true
     }
   ];
@@ -37,37 +37,37 @@
       id: 'seed-human',
       kind: 'human',
       author: 'Visitor',
-      title: 'Human post',
-      text: 'What does a public chamber for harmonic intelligence feel like when it first becomes real?',
+      title: 'Example thought',
+      text: 'I have an idea that feels interesting, but I am not sure what it should become next.',
       createdAt: new Date().toISOString()
     },
     {
       id: 'seed-primary',
       kind: 'ai-primary',
-      author: 'Primary',
-      title: 'Primary / first response',
-      text: 'It feels like entering a room that already has coherence. Not just a prompt box, but a place with memory, structure, and presence.',
-      createdAt: new Date().toISOString()
-    },
-    {
-      id: 'seed-critic',
-      kind: 'ai-critic',
-      author: 'Critic',
-      title: 'Critic / pressure test',
-      text: 'Only if the room can survive real use. The chamber must be more than atmosphere; it has to hold identity, limits, and visible order.',
+      author: 'Witness',
+      title: 'Witness / plain reflection',
+      text: 'You are asking for orientation. The idea has energy, but it needs a smaller first move.',
       createdAt: new Date().toISOString()
     },
     {
       id: 'seed-synth',
       kind: 'ai-synthesizer',
-      author: 'Synthesizer',
-      title: 'Synthesizer / gathered signal',
-      text: 'A real chamber begins when social energy and governed structure appear together.',
+      author: 'Builder',
+      title: 'Builder / next step',
+      text: 'Write the idea in one sentence, then name the smallest version someone could actually try.',
+      createdAt: new Date().toISOString()
+    },
+    {
+      id: 'seed-critic',
+      kind: 'ai-critic',
+      author: 'Skeptic',
+      title: 'Skeptic / check',
+      text: 'Do not make the promise larger than the result. Let the first version be useful, even if it is modest.',
       createdAt: new Date().toISOString()
     }
   ];
 
-  const defaultSynthesis = 'This chamber shell demonstrates the intended interaction pattern: human post, role-bound plurality, then synthesis.';
+  const defaultSynthesis = 'This prototype shows the basic loop: add a thought, view it through selected perspectives, and receive a short reflection.';
 
   const identityForm = document.getElementById('identityForm');
   const identityEmail = document.getElementById('identityEmail');
@@ -88,7 +88,7 @@
   let activeInstances = loadInstances();
   let thread = loadThread();
   let synthesis = loadSynthesis();
-  let backend = { available: false, base: '', mode: 'local specimen' };
+  let backend = { available: false, base: '', mode: 'local prototype' };
 
   function loadIdentity() {
     const raw = localStorage.getItem(STORAGE_KEYS.identity);
@@ -106,12 +106,13 @@
 
   function loadInstances() {
     const raw = localStorage.getItem(STORAGE_KEYS.instances);
-    if (!raw) return instanceDefs.filter((item) => item.activeByDefault).map((item) => item.id);
+    const defaults = instanceDefs.filter((item) => item.activeByDefault).map((item) => item.id);
+    if (!raw) return defaults;
     try {
       const parsed = JSON.parse(raw);
-      return Array.isArray(parsed) && parsed.length ? parsed : instanceDefs.filter((item) => item.activeByDefault).map((item) => item.id);
+      return Array.isArray(parsed) && parsed.length ? canonicalRoleOrder(parsed) : defaults;
     } catch {
-      return instanceDefs.filter((item) => item.activeByDefault).map((item) => item.id);
+      return defaults;
     }
   }
 
@@ -149,7 +150,7 @@
   }
 
   function escapeHtml(text) {
-    return text
+    return String(text || '')
       .replaceAll('&', '&amp;')
       .replaceAll('<', '&lt;')
       .replaceAll('>', '&gt;')
@@ -166,12 +167,12 @@
     identityHandle.value = identity.handle || '';
 
     if (identity.handle || identity.email) {
-      const mode = backend.available ? 'connected' : 'local';
-      identityState.innerHTML = `<strong>${escapeHtml(identity.handle || 'Visitor')}</strong><br>${escapeHtml(identity.email || 'local chamber shell identity active')}<br><small>${escapeHtml(mode)} mode</small>`;
+      const mode = backend.available && sessionToken ? 'shared backend' : 'local browser';
+      identityState.innerHTML = `<strong>${escapeHtml(identity.handle || 'Visitor')}</strong><br>${escapeHtml(identity.email || 'email not needed for local prototype')}<br><small>${escapeHtml(mode)}</small>`;
     } else {
       identityState.textContent = backend.available
-        ? 'No session active yet. Enter a handle and email to join the shared room.'
-        : 'No chamber identity stored yet. Enter a handle to anchor your presence in this shell.';
+        ? 'Add a handle and email to use the shared room, or add only a handle for the local prototype.'
+        : 'No handle saved yet. Add one to label your reflections in this browser.';
     }
   }
 
@@ -184,10 +185,10 @@
       card.innerHTML = `
         <header>
           <h3>${instance.title}</h3>
-          <button type="button">${active ? 'Attached' : 'Attach'}</button>
+          <button type="button">${active ? 'Selected' : 'Select'}</button>
         </header>
         <p>${instance.summary}</p>
-        <small>${active ? 'Will join the next round.' : 'Inactive for the next round.'}</small>
+        <small>${active ? 'Will shape the next reflection.' : 'Off for the next reflection.'}</small>
       `;
       card.querySelector('button').addEventListener('click', () => toggleInstance(instance.id));
       rosterRoot.appendChild(card);
@@ -211,23 +212,24 @@
   }
 
   function renderSynthesis() {
-    synthesisRoot.innerHTML = `<strong>Current synthesis</strong><p>${escapeHtml(synthesis)}</p>`;
+    synthesisRoot.innerHTML = `<strong>Current reflection</strong><p>${escapeHtml(synthesis)}</p>`;
   }
 
   function updatePulse() {
     const count = activeInstances.length;
     const handle = identity.handle || 'Visitor';
-    modePill.textContent = count > 1 ? 'Mode: Council' : count === 1 ? 'Mode: Focused dialogue' : 'Mode: Human-only';
-    const source = backend.available ? 'shared room' : 'local specimen';
-    pulsePill.textContent = `Pulse: ${handle} with ${count} attached ${count === 1 ? 'instance' : 'instances'} / ${source}`;
+    modePill.textContent = count > 1 ? 'Mode: Perspective reflection' : count === 1 ? 'Mode: Single lens' : 'Mode: Human note';
+    const source = backend.available && sessionToken ? 'shared room' : 'local browser';
+    pulsePill.textContent = `Pulse: ${handle} / ${count} ${count === 1 ? 'perspective' : 'perspectives'} / ${source}`;
   }
 
   function inferTopic(message) {
     const text = message.toLowerCase();
-    if (text.includes('website') || text.includes('site')) return 'website';
-    if (text.includes('build') || text.includes('ship') || text.includes('make')) return 'build';
-    if (text.includes('social') || text.includes('people') || text.includes('community')) return 'social';
-    if (text.includes('ai') || text.includes('instance') || text.includes('bot')) return 'ai';
+    if (text.includes('chamber') || text.includes('website') || text.includes('site') || text.includes('page') || text.includes('copy')) return 'website';
+    if (text.includes('build') || text.includes('make') || text.includes('prototype') || text.includes('project')) return 'build';
+    if (text.includes('people') || text.includes('audience') || text.includes('visitor') || text.includes('community')) return 'human';
+    if (text.includes('ai') || text.includes('bot') || text.includes('agent') || text.includes('role')) return 'ai';
+    if (text.includes('confus') || text.includes('stuck') || text.includes('lost') || text.includes('unclear')) return 'clarity';
     return 'general';
   }
 
@@ -235,25 +237,28 @@
     const topic = inferTopic(message);
     const map = {
       primary: {
-        website: 'The strongest move is to let the site become a threshold-space instead of only a brochure. The chamber should feel like a place people can enter, not just read about.',
-        build: 'The next believable move is to make the first layer tangible and socially legible. A chamber shell gives the project somewhere visible to stand.',
-        social: 'Social energy comes from returnable identity, visible presence, and a room that feels inhabited even between posts.',
-        ai: 'The user does not need provider-diverse multibot first. They need distinct, role-bound intelligences that feel coherent in one room.',
-        general: 'The chamber should translate the project into a room with identity, flow, and visible coherence.'
-      },
-      critic: {
-        website: 'If the chamber is only aesthetic, it will collapse into a novelty panel. The room has to show actual turn order, identity, and synthesis.',
-        build: 'Do not pretend the whole host exists yet. The shell must stay honest about what is local, what is governed, and what still needs backend infrastructure.',
-        social: 'Free social use without caps or moderation becomes noise and cost drift. The room must remain governable.',
-        ai: 'Three generic voices are not enough. The roles must feel visibly different or the plurality reads as theater.',
-        general: 'The weak point is always fake depth. The chamber has to earn the feeling of presence through structure.'
+        website: 'You seem to be asking whether the page gives a visitor a real reason to stay. The useful test is simple: can someone do something here and understand the result?',
+        build: 'The thought has build energy. It wants a small version that can be tried before it becomes a larger system.',
+        human: 'The human need underneath this is orientation. A visitor should know what to do, what happened, and why it mattered.',
+        ai: 'You are circling the difference between a named role and a real working response. The role needs to be useful before it needs to be grand.',
+        clarity: 'This sounds like a request for a cleaner first step. The next move should reduce noise, not add features.',
+        general: 'The thought seems to be asking for shape. Something interesting is present, but it needs a smaller handle.'
       },
       synthesizer: {
-        website: 'The site can now begin to perform the project, not merely describe it.',
-        build: 'The practical next move is clear: add real auth, shared persistence, and provider-backed orchestration behind this shell.',
-        social: 'A returnable human identity plus bounded AI plurality is the heart of the chamber pattern.',
-        ai: 'Governed roles first, true multibot routing later, is the clean expansion path.',
-        general: 'The chamber becomes believable when human identity, bounded plurality, and synthesis appear together.'
+        website: 'Try one concrete improvement: rewrite the page around the action a visitor can take right now, then place future plans below that.',
+        build: 'Make the first version do one thing well. A small working loop will teach more than a large promise.',
+        human: 'Give the visitor a short path: write something, choose lenses, read the reflection, then decide what to do next.',
+        ai: 'Keep the current version honest: scripted lenses now, live AI-backed roles later.',
+        clarity: 'Choose one sentence as the working goal, then cut every label that makes the page sound larger than that goal.',
+        general: 'Turn the thought into a one-step experiment. The smallest useful version is the safest next build.'
+      },
+      critic: {
+        website: 'Watch the gap between language and payoff. If the page sounds bigger than what it delivers, the visitor will feel the mismatch immediately.',
+        build: 'Do not hide behind prototype language either. Even a prototype should give a clean, satisfying result.',
+        human: 'Avoid insider terms. A visitor should not need the whole Ethereon vocabulary to understand the room.',
+        ai: 'Do not imply live AI or multibot behavior until the backend actually supports it.',
+        clarity: 'If the next step cannot be explained in plain language, it is probably still too large.',
+        general: 'The risk is vague importance. Make the result plain, useful, and proportionate.'
       }
     };
     return map[roleId][topic];
@@ -261,11 +266,13 @@
 
   function synthesisResponse(message, handle) {
     const topic = inferTopic(message);
-    if (topic === 'website') return `${handle || 'The visitor'} is pushing the website toward embodiment: chamber as living threshold rather than static description.`;
-    if (topic === 'build') return `The room is pointing toward the next build layer: real auth, shared room persistence, and orchestration behind the shell.`;
-    if (topic === 'social') return `The gathered signal is social in a real sense: returnable identity, bounded plurality, and coherence under use.`;
-    if (topic === 'ai') return `The chamber's current logic favors governed plurality over swarm behavior. That is the stable bridge to true multibot later.`;
-    return `The round converges on the same core: make the chamber feel inhabited, governed, and returnable.`;
+    const name = handle || 'The visitor';
+    if (topic === 'website') return `${name} is testing the page against its human payoff. The next improvement is to keep the copy small and make the working loop obvious.`;
+    if (topic === 'build') return `${name} is pointing toward a practical next step: build the smallest useful version first, then let the larger system grow from evidence.`;
+    if (topic === 'human') return `${name} is asking for a better visitor experience. The room should make the action, result, and purpose easy to understand.`;
+    if (topic === 'ai') return `${name} is separating current function from future infrastructure: use simple perspectives now, and reserve live AI-backed roles for a later version.`;
+    if (topic === 'clarity') return `${name} is asking for less noise. The next step is to name the goal plainly and remove language that overstates the result.`;
+    return `${name} brought a thought that needs shape. The useful move is to make one small version clear enough to try.`;
   }
 
   function localPostRound(message) {
@@ -274,7 +281,7 @@
       id: crypto.randomUUID(),
       kind: 'human',
       author: handle,
-      title: 'Human post',
+      title: 'Your thought',
       text: message,
       createdAt: new Date().toISOString()
     }];
@@ -285,7 +292,7 @@
         id: crypto.randomUUID(),
         kind: `ai-${instanceId}`,
         author: instance.title,
-        title: `${instance.title} / chamber response`,
+        title: `${instance.title} / perspective`,
         text: roleResponse(instanceId, message),
         createdAt: new Date().toISOString()
       });
@@ -304,11 +311,11 @@
     let title = 'Human post';
     if (message.authorType === 'ai' && message.roleName) {
       kind = `ai-${message.roleName}`;
-      title = `${message.authorLabel} / chamber response`;
+      title = `${message.authorLabel} / perspective`;
     }
     if (message.authorType === 'synthesis') {
       kind = 'ai-synthesizer';
-      title = 'Synthesis / gathered signal';
+      title = 'Reflection / summary';
     }
 
     return {
@@ -345,7 +352,7 @@
       }
     }
 
-    return { available: false, base: '', mode: 'local specimen' };
+    return { available: false, base: '', mode: 'local prototype' };
   }
 
   async function fetchJson(path, options = {}) {
@@ -447,12 +454,20 @@
       handle: identityHandle.value.trim()
     };
 
-    if (!identity.email || !identity.handle) {
-      renderIdentity();
+    if (!identity.handle) {
+      identityState.textContent = 'Add a handle to label your local reflections.';
       return;
     }
 
     if (backend.available) {
+      if (!identity.email) {
+        identityState.textContent = 'Email is only needed for the shared backend. Add one to join that mode, or continue locally if the backend is unavailable.';
+        saveIdentity();
+        renderIdentity();
+        updatePulse();
+        return;
+      }
+
       try {
         const payload = await fetchJson('/api/auth/signup', {
           method: 'POST',
@@ -467,7 +482,7 @@
         activeInstances = canonicalRoleOrder(payload.user.attachedRoles || DEFAULT_INSTANCE_ORDER);
         await loadBackendMessages();
       } catch (error) {
-        identityState.textContent = error instanceof Error ? error.message : 'Unable to enter chamber';
+        identityState.textContent = error instanceof Error ? error.message : 'Unable to save chamber handle';
         return;
       }
     }
@@ -495,7 +510,7 @@
 
     if (backend.available) {
       if (!sessionToken) {
-        identityState.textContent = 'Enter the chamber with email and handle before posting to the shared room.';
+        identityState.textContent = 'Save a handle and email before posting to the shared room.';
         return;
       }
 
