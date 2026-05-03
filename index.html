@@ -18,6 +18,24 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    /* HERO SIGIL IMPLANT — reversible: remove this style block and the .ethereon-hero-sigil block. */
+    .hero{position:relative;isolation:isolate;overflow:hidden}
+    .hero>.container{position:relative;z-index:2}
+    .ethereon-hero-sigil{position:absolute;width:clamp(300px,47vw,640px);aspect-ratio:1;top:50%;left:58%;translate:-50% -52%;pointer-events:none;opacity:.42;z-index:0;mix-blend-mode:screen;filter:drop-shadow(0 0 38px rgba(138,164,255,.12))}
+    .hero-sigil-ring,.hero-sigil-axis,.hero-sigil-arc,.hero-sigil-node,.hero-sigil-core{position:absolute;left:50%;top:50%;translate:-50% -50%}
+    .hero-sigil-ring{border-radius:999px;border:1px solid rgba(205,220,255,.18);box-shadow:inset 0 0 34px rgba(138,164,255,.04),0 0 42px rgba(138,164,255,.08)}
+    .ring-one{width:100%;height:100%;animation:sigilRotate 96s linear infinite}.ring-two{width:68%;height:68%;border-color:rgba(126,240,209,.14);animation:sigilRotateReverse 74s linear infinite}
+    .hero-sigil-axis{background:linear-gradient(90deg,transparent,rgba(217,168,78,.62),rgba(245,230,198,.88),rgba(217,168,78,.62),transparent);box-shadow:0 0 22px rgba(217,168,78,.2)}
+    .axis-vertical{width:1px;height:108%}.axis-horizontal{width:108%;height:1px}
+    .hero-sigil-arc{width:74%;height:74%;border-radius:999px;border-color:rgba(217,168,78,.32);filter:drop-shadow(0 0 18px rgba(217,168,78,.22))}
+    .arc-left{border-left:3px solid rgba(217,168,78,.32);animation:sigilBreathe 8s ease-in-out infinite}.arc-right{border-right:3px solid rgba(217,168,78,.32);animation:sigilBreathe 8s ease-in-out infinite reverse}
+    .hero-sigil-node{width:13%;height:13%;border-radius:999px;border:1px solid rgba(255,235,190,.42);background:radial-gradient(circle,rgba(255,235,190,.24),rgba(217,168,78,.06) 48%,transparent 70%);box-shadow:0 0 22px rgba(217,168,78,.18)}
+    .node-top{top:19%;animation:sigilNodePulse 7s ease-in-out infinite}.node-bottom{top:81%;animation:sigilNodePulse 7s ease-in-out infinite 3.5s}
+    .hero-sigil-core{font-family:Georgia,"Times New Roman",serif;font-size:clamp(5rem,12vw,9rem);color:rgba(255,235,190,.84);text-shadow:0 0 12px rgba(255,235,190,.32),0 0 40px rgba(217,168,78,.22);animation:psiPulse 7s ease-in-out infinite}
+    @keyframes sigilRotate{to{transform:rotate(360deg)}}@keyframes sigilRotateReverse{to{transform:rotate(-360deg)}}@keyframes sigilBreathe{0%,100%{opacity:.42;transform:scale(.985)}50%{opacity:.76;transform:scale(1.02)}}@keyframes sigilNodePulse{0%,100%{opacity:.38;transform:scale(.92)}50%{opacity:.88;transform:scale(1.08)}}@keyframes psiPulse{0%,100%{opacity:.82;transform:scale(1)}50%{opacity:1;transform:scale(1.025)}}
+    @media(max-width:980px){.ethereon-hero-sigil{left:64%;opacity:.30}}@media(max-width:760px){.ethereon-hero-sigil{width:360px;left:70%;top:44%;opacity:.22}}
+  </style>
 </head>
 <body>
   <div class="rse-flow-field" aria-hidden="true">
@@ -34,6 +52,17 @@
     </header>
     <main>
       <section class="hero">
+        <div class="ethereon-hero-sigil" aria-hidden="true">
+          <div class="hero-sigil-ring ring-one"></div>
+          <div class="hero-sigil-ring ring-two"></div>
+          <div class="hero-sigil-axis axis-vertical"></div>
+          <div class="hero-sigil-axis axis-horizontal"></div>
+          <div class="hero-sigil-arc arc-left"></div>
+          <div class="hero-sigil-arc arc-right"></div>
+          <div class="hero-sigil-node node-top"></div>
+          <div class="hero-sigil-node node-bottom"></div>
+          <div class="hero-sigil-core">Ψ</div>
+        </div>
         <div class="container">
           <span class="eyebrow">Lumina OS — continuity substrate</span>
           <h1>Return to complex work without starting over.</h1>
