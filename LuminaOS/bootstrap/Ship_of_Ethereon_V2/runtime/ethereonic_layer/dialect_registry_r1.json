@@ -1,0 +1,14 @@
+{
+  "schema_version": "ethereonic_dialect_registry_r1",
+  "authority_boundary": "dialects are expressive adapters only; all dialect terms must normalize to ethereon core before runtime use",
+  "registered_dialects": {
+    "prisma": {
+      "display_name": "Prisma Dialect",
+      "extends": "ethereon_core",
+      "mapping_file": "dialects/prisma_map_r1.json",
+      "allowed": true,
+      "may_enrich_expression": true,
+      "may_redefine_core": false
+    }
+  }
+}
