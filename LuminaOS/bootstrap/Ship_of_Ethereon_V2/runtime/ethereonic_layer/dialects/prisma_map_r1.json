@@ -1,0 +1,8 @@
+{
+  "dialect": "prisma",
+  "mappings": {
+    "prismatic threads": "luminous_threads",
+    "facet resonance": "resonance",
+    "meridian chamber": "chamber"
+  }
+}
