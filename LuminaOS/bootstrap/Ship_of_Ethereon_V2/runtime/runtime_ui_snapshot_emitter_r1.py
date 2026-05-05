@@ -7,7 +7,11 @@ import json
 
 
 def _repo_root() -> Path:
-    return Path(__file__).resolve().parents[4]
+    path = Path(__file__).resolve()
+    for parent in [path.parent, *path.parents]:
+        if (parent / ".git").exists() or (parent / "chamber.html").exists():
+            return parent
+    return path.parents[4]
 
 
 REPO_ROOT = _repo_root()
