@@ -1,8 +1,8 @@
 {
   "schema_version": "lumina-runtime-ui-cycle-v0.1",
-  "timestamp": "2026-05-05T00:00:00Z",
-  "run_id": "sample-static-snapshot",
-  "requested_action": "public_runtime_snapshot_seed",
+  "timestamp": "2026-05-05T23:14:17.015541+00:00",
+  "run_id": "run-5a14c7bd-fa4",
+  "requested_action": "chamber_observation_cycle",
   "action_type": "audit",
   "mode": {
     "requested": "Continuity",
@@ -26,15 +26,19 @@
     "valid": true,
     "record_count": 0
   },
-  "capabilities": [],
+  "capabilities": [
+    "session_state_manager",
+    "mode_guard",
+    "context_bundle_builder",
+    "input_integrity_assessor",
+    "continuity_restore_store",
+    "lumina_workspace_host"
+  ],
   "probe": {
     "active": false,
     "coherence": null,
     "presence": null,
     "lock": null
   },
-  "notes": [
-    "Static seed snapshot for Chamber runtime presence panel.",
-    "Generated runtime receipts should replace this file when the live loop is invoked."
-  ]
+  "authority_boundary": "Display receipt only; does not authorize action, alter governance, mutate canon, change mode legality, expose capabilities, or execute tools."
 }
