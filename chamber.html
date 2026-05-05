@@ -76,6 +76,21 @@
               </div>
             </div>
 
+            <section class="chamber-runtime-panel" aria-label="Lumina runtime presence">
+              <div class="panel-title-row">
+                <h2>Runtime Presence</h2>
+                <span class="panel-tag">display-only</span>
+              </div>
+              <div class="runtime-presence-grid">
+                <div><small>Mode</small><strong id="runtimeMode">—</strong></div>
+                <div><small>Status</small><strong id="runtimeStatus">—</strong></div>
+                <div><small>Canon</small><strong id="runtimeCanon">—</strong></div>
+                <div><small>Governance</small><strong id="runtimeGov">—</strong></div>
+                <div><small>Probe</small><strong id="runtimeProbe">—</strong></div>
+              </div>
+              <p class="microcopy">This panel reads a public runtime receipt. It does not execute tools, authorize governance, alter canon, or change mode legality.</p>
+            </section>
+
             <div class="chamber-grid">
               <aside class="chamber-column chamber-column-left">
                 <section class="chamber-panel">
@@ -177,5 +192,6 @@
   <script src="assets/js/site.js"></script>
   <script src="assets/js/chamber_config.js"></script>
   <script src="assets/js/chamber.js"></script>
+  <script src="assets/js/runtime-viewer.js"></script>
 </body>
 </html>
