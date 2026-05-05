@@ -1,0 +1,88 @@
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Any, Dict, Optional
+import argparse
+import json
+
+try:
+    from .runtime_runner_r1_merged import RuntimeRunner, VALID_ACTION_TYPES
+    from .runtime_ui_snapshot_emitter_r1 import build_ui_snapshot, write_snapshot, PUBLIC_SNAPSHOT_PATH, STATE_SNAPSHOT_PATH
+except Exception:
+    from runtime_runner_r1_merged import RuntimeRunner, VALID_ACTION_TYPES
+    from runtime_ui_snapshot_emitter_r1 import build_ui_snapshot, write_snapshot, PUBLIC_SNAPSHOT_PATH, STATE_SNAPSHOT_PATH
+
+
+class AutoSnapshotRuntimeRunner(RuntimeRunner):
+    """RuntimeRunner wrapper that emits a Chamber-readable UI receipt after each cycle.
+
+    The snapshot is display-only. It does not grant the Chamber authority to execute tools,
+    alter governance, mutate canon, expose capabilities, or change mode legality.
+    """
+
+    def run_cycle(self, *args: Any, emit_public_snapshot: bool = True, emit_state_snapshot: bool = True, **kwargs: Any):
+        result = super().run_cycle(*args, **kwargs)
+        payload = result.to_dict()
+        snapshot = build_ui_snapshot(payload)
+        paths = []
+        if emit_public_snapshot:
+            paths.append(PUBLIC_SNAPSHOT_PATH)
+        if emit_state_snapshot:
+            paths.append(STATE_SNAPSHOT_PATH)
+        write_snapshot(snapshot, paths)
+        return result
+
+
+def _maybe_json(text: Optional[str]) -> Optional[Dict[str, Any]]:
+    if not text:
+        return None
+    return json.loads(text)
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Run one Lumina runtime cycle and automatically emit the Chamber UI snapshot.")
+    parser.add_argument("--current-mode", default="Continuity")
+    parser.add_argument("--target-mode", default="Observation")
+    parser.add_argument("--action", default="chamber_observation_cycle")
+    parser.add_argument("--action-type", default="audit", choices=sorted(VALID_ACTION_TYPES))
+    parser.add_argument("--target-is-canonical", action="store_true")
+    parser.add_argument("--repo-path", default=None)
+    parser.add_argument("--enable-flag", action="append", dest="feature_flags", default=[])
+    parser.add_argument("--artifact", action="append", dest="artifacts", default=[])
+    parser.add_argument("--note", action="append", dest="notes", default=[])
+    parser.add_argument("--lineage", default=None)
+    parser.add_argument("--overlay-json", default=None)
+    parser.add_argument("--runtime-config-json", default=None)
+    parser.add_argument("--promotion-json", default=None)
+    parser.add_argument("--raw-user-input", default=None)
+    parser.add_argument("--project-id", default=None)
+    parser.add_argument("--context-overrides-json", default=None)
+    parser.add_argument("--no-public-snapshot", action="store_true")
+    parser.add_argument("--no-state-snapshot", action="store_true")
+    return parser.parse_args()
+
+
+if __name__ == "__main__":
+    args = parse_args()
+    runner = AutoSnapshotRuntimeRunner()
+    result = runner.run_cycle(
+        current_mode=args.current_mode,
+        target_mode=args.target_mode,
+        requested_action=args.action,
+        action_type=args.action_type,
+        artifacts=args.artifacts or None,
+        continuation_notes=args.notes or None,
+        canon_lineage_head=args.lineage,
+        ethereonic_overlay=_maybe_json(args.overlay_json),
+        enabled_feature_flags=args.feature_flags or None,
+        target_is_canonical=args.target_is_canonical,
+        promotion_payload=_maybe_json(args.promotion_json),
+        runtime_config=_maybe_json(args.runtime_config_json),
+        repo_path=args.repo_path,
+        raw_user_input=args.raw_user_input,
+        context_bundle_overrides=_maybe_json(args.context_overrides_json),
+        project_id=args.project_id,
+        emit_public_snapshot=not args.no_public_snapshot,
+        emit_state_snapshot=not args.no_state_snapshot,
+    )
+    print(json.dumps(result.to_dict(), indent=2))
