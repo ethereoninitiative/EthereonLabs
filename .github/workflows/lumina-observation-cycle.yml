@@ -1,0 +1,44 @@
+name: Lumina Observation Cycle
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 */6 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  observe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run bounded Observation cycle
+        run: |
+          cd LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime
+          python runtime_runner_auto_snapshot_r1.py \
+            --current-mode Continuity \
+            --target-mode Observation \
+            --action chamber_observation_cycle \
+            --action-type audit \
+            --overlay-json '{"active":true,"anchor_language":["english"],"continuity_phrase":"scheduled observation cycle","harmonic_signature":[],"spiral_reference":null}' \
+            --runtime-config-json '{"toki_pona_required_for_resume":false,"binary_required_for_transition_validation":false,"light_language_required_for_capability_loading":false,"harmonic_frequency_required_for_mode_legality":false}'
+
+      - name: Commit runtime snapshot if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/runtime/latest_cycle.json
+          if git diff --cached --quiet; then
+            echo "No runtime snapshot changes to commit."
+          else
+            git commit -m "Update Lumina runtime observation snapshot"
+            git push
+          fi
