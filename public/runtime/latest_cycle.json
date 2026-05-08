@@ -1,7 +1,7 @@
 {
   "schema_version": "lumina-runtime-ui-cycle-v0.1",
-  "timestamp": "2026-05-07T19:54:48.563557+00:00",
-  "run_id": "run-3346dda1-27e",
+  "timestamp": "2026-05-08T03:54:08.592272+00:00",
+  "run_id": "run-f997b061-bb0",
   "requested_action": "chamber_observation_cycle",
   "action_type": "audit",
   "mode": {
@@ -32,13 +32,19 @@
     "context_bundle_builder",
     "input_integrity_assessor",
     "continuity_restore_store",
-    "lumina_workspace_host"
+    "lumina_workspace_host",
+    "continuity_assessor",
+    "psi42_probe_interface",
+    "resonance_ledger_adapter",
+    "psi42_transceiver_v16",
+    "quantum_concepts_registry",
+    "branch_resolution_model"
   ],
   "probe": {
-    "active": false,
-    "coherence": null,
-    "presence": null,
-    "lock": null
+    "active": true,
+    "coherence": 0.5384,
+    "presence": 0.6076,
+    "lock": 0.5995
   },
   "authority_boundary": "Display receipt only; does not authorize action, alter governance, mutate canon, change mode legality, expose capabilities, or execute tools."
 }
