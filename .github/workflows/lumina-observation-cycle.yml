@@ -43,10 +43,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add public/runtime/latest_cycle.json
+          git add public/runtime/latest_cycle.json public/runtime/history
           if git diff --cached --quiet; then
-            echo "No runtime snapshot changes to commit."
+            echo "No runtime artifact changes to commit."
           else
-            git commit -m "Update Lumina runtime observation snapshot"
+            git commit -m "Update Lumina runtime memory ledger"
             git push
           fi
