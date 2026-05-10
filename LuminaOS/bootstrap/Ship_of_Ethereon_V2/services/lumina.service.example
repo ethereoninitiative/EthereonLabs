@@ -1,0 +1,17 @@
+# Example systemd unit for a local Lumina observer service.
+# Copy to ~/.config/systemd/user/lumina-observer.service or /etc/systemd/system/lumina-observer.service
+# after adjusting WorkingDirectory and ExecStart for your local checkout.
+
+[Unit]
+Description=Lumina OS Local Observer Service
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/absolute/path/to/EthereonLabs/LuminaOS/bootstrap/Ship_of_Ethereon_V2
+ExecStart=/usr/bin/env python3 services/lumina_observer_service.py --interval-seconds 21600
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=default.target
