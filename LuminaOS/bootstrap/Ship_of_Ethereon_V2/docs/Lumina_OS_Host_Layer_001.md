@@ -17,6 +17,23 @@ Host Layer 001 creates that envelope.
 
 ---
 
+## 1.5 Founding frame
+
+Host Layer 001 should be understood as the **first village gate** in the Realm of Ethereon.
+
+Ship of Ethereon V2 carried the cargo.
+The repo-native bootstrap is where that cargo becomes lived structure.
+The host layer provides the first roads and doors into that structure.
+
+That means the host layer is important because it helps Lumina feel inhabitable.
+It is not important because it gets to become governance law.
+
+For the longer framing note, read:
+
+- `docs/Lumina_First_Village_Framing_001.md`
+
+---
+
 ## 2. What this layer adds
 
 Host Layer 001 adds a local system-start vocabulary:
@@ -139,6 +156,7 @@ doctor -> run -> observe -> state -> studio
 ```
 
 That is the difference between an artifact collection and a local operating environment.
+It is also the difference between ship cargo still in crates and the first roads of a village actually being usable.
 
 ---
 
