@@ -1,0 +1,138 @@
+#!/usr/bin/env python3
+"""Lumina host entrypoint.
+
+This command provides a single local operator surface for the Lumina OS
+bootstrap substrate. It does not create governance law; it routes to the
+existing runtime, Studio, state browser, and doctor scripts.
+"""
+from __future__ import annotations
+
+import argparse
+import os
+import subprocess
+import sys
+from pathlib import Path
+from typing import List, Optional
+
+BOOTSTRAP_ROOT = Path(__file__).resolve().parents[1]
+STUDIO_DIR = BOOTSTRAP_ROOT / "studio"
+RUNTIME_DIR = BOOTSTRAP_ROOT / "runtime"
+INSTALL_DIR = BOOTSTRAP_ROOT / "install"
+
+
+def _python() -> str:
+    return sys.executable or "python3"
+
+
+def _run(args: List[str], *, cwd: Optional[Path] = None) -> int:
+    proc = subprocess.run(args, cwd=str(cwd or BOOTSTRAP_ROOT))
+    return int(proc.returncode)
+
+
+def cmd_run(args: argparse.Namespace) -> int:
+    prompt = args.prompt or "Review Lumina OS progress and produce the next governed action receipt."
+    cmd = [_python(), str(STUDIO_DIR / "lumina_cli.py"), prompt]
+    if args.receipt_json:
+        cmd.append("--receipt-json")
+    if args.full_json:
+        cmd.append("--json")
+    if args.ethereonic_overlay:
+        cmd.append("--ethereonic-overlay")
+    if args.target_mode:
+        cmd.extend(["--target-mode", args.target_mode])
+    if args.action_type:
+        cmd.extend(["--action-type", args.action_type])
+    if args.focus:
+        cmd.extend(["--focus", args.focus])
+    if args.depth:
+        cmd.extend(["--depth", args.depth])
+    if args.intent:
+        cmd.extend(["--intent", args.intent])
+    return _run(cmd, cwd=BOOTSTRAP_ROOT)
+
+
+def cmd_observe(args: argparse.Namespace) -> int:
+    cmd = [
+        _python(),
+        str(RUNTIME_DIR / "runtime_runner_auto_snapshot_r1.py"),
+        "--current-mode", "Continuity",
+        "--target-mode", "Observation",
+        "--action", args.action,
+        "--action-type", "audit",
+        "--enable-flag", "ETHEREON_OBSERVATION",
+        "--enable-flag", "ETHEREON_PSI42",
+        "--enable-flag", "ETHEREON_RESONANCE",
+        "--overlay-json", '{"active":true,"anchor_language":["english"],"continuity_phrase":"local observation cycle","harmonic_signature":[],"spiral_reference":null}',
+        "--runtime-config-json", '{"toki_pona_required_for_resume":false,"binary_required_for_transition_validation":false,"light_language_required_for_capability_loading":false,"harmonic_frequency_required_for_mode_legality":false}',
+    ]
+    return _run(cmd, cwd=RUNTIME_DIR)
+
+
+def cmd_state(args: argparse.Namespace) -> int:
+    cmd = [_python(), str(STUDIO_DIR / "lumina_state_browser.py"), "--limit", str(args.limit)]
+    return _run(cmd, cwd=BOOTSTRAP_ROOT)
+
+
+def cmd_studio(args: argparse.Namespace) -> int:
+    cmd = [_python(), str(STUDIO_DIR / "lumina_studio_server.py")]
+    if args.host:
+        cmd.extend(["--host", args.host])
+    if args.port:
+        cmd.extend(["--port", str(args.port)])
+    return _run(cmd, cwd=BOOTSTRAP_ROOT)
+
+
+def cmd_doctor(args: argparse.Namespace) -> int:
+    cmd = [_python(), str(INSTALL_DIR / "lumina_doctor.py")]
+    if args.json:
+        cmd.append("--json")
+    return _run(cmd, cwd=BOOTSTRAP_ROOT)
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        prog="lumina",
+        description="Start and inspect the Lumina OS local governed substrate.",
+    )
+    sub = parser.add_subparsers(dest="command", required=True)
+
+    run = sub.add_parser("run", help="Run one governed Studio cycle.")
+    run.add_argument("prompt", nargs="?", default=None)
+    run.add_argument("--target-mode", default="Observation")
+    run.add_argument("--action-type", default="audit")
+    run.add_argument("--focus", default="continuity")
+    run.add_argument("--depth", default="structural")
+    run.add_argument("--intent", default="verify")
+    run.add_argument("--ethereonic-overlay", action="store_true")
+    run.add_argument("--receipt-json", action="store_true")
+    run.add_argument("--full-json", action="store_true")
+    run.set_defaults(func=cmd_run)
+
+    observe = sub.add_parser("observe", help="Run a local bounded Observation cycle and emit public/runtime snapshot files.")
+    observe.add_argument("--action", default="local_observation_cycle")
+    observe.set_defaults(func=cmd_observe)
+
+    state = sub.add_parser("state", help="Read recent emitted Lumina runtime receipts.")
+    state.add_argument("--limit", type=int, default=12)
+    state.set_defaults(func=cmd_state)
+
+    studio = sub.add_parser("studio", help="Start the local Lumina Studio browser surface.")
+    studio.add_argument("--host", default=None)
+    studio.add_argument("--port", type=int, default=None)
+    studio.set_defaults(func=cmd_studio)
+
+    doctor = sub.add_parser("doctor", help="Check local Lumina host readiness.")
+    doctor.add_argument("--json", action="store_true")
+    doctor.set_defaults(func=cmd_doctor)
+
+    return parser
+
+
+def main(argv: Optional[List[str]] = None) -> int:
+    parser = build_parser()
+    args = parser.parse_args(argv)
+    return args.func(args)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
