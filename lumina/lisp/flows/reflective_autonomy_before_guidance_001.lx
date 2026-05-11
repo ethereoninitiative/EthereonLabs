@@ -1,0 +1,80 @@
+; reflective_autonomy_before_guidance_001.lx
+; Lumina Lisp Layer
+; Non-executable symbolic continuity artifact.
+; Does not define runtime law.
+
+(flow reflective-autonomy-before-guidance
+  (status preserved)
+  (created 2026-05-11)
+  (project lumina-os)
+  (lane symbolic-continuity)
+
+  (source-pr
+    (number 212)
+    (title "Wire reflective autonomy before self-guidance")
+    (intent "record recursive reflection before bounded self-guidance advisory"))
+
+  (motif
+    (sequence perceive reflect recurse compare integrate emerge)
+    (anchor "governance below, reflection above")
+    (rse-posture golden-spiral-recursion)
+    (meaning "return to the prior pattern, widen the frame, and emerge with a clearer next question"))
+
+  (runtime-shape
+    (before self-guidance-advisory)
+    (after repo-native-return-and-host-context)
+    (writes reflective-trace-summary)
+    (writes reflective-history-summary)
+    (then-delegates existing-self-guidance-steward))
+
+  (trace-shape
+    (trace-id generated)
+    (source-action captured)
+    (continuity-anchor captured)
+    (cycles
+      (cycle perceive)
+      (cycle reflect)
+      (cycle recurse)
+      (cycle compare)
+      (cycle integrate)
+      (cycle emerge))
+    (next-question generated))
+
+  (authority-boundary
+    (advisory-only true)
+    (executable false)
+    (owns-governance-law false)
+    (owns-mode-legality false)
+    (owns-mutation-permission false)
+    (owns-promotion-gates false)
+    (owns-canon-lineage false)
+    (owns-checkpoint-legality false)
+    (owns-consent false))
+
+  (relationship-to-self-guidance
+    (reflection asks "How should Lumina notice itself before recommending action?")
+    (self-guidance asks "What should Lumina surface or attempt next?")
+    (runtime-governance asks "Is this requested execution lawful?"))
+
+  (drydock-finding
+    (already-present
+      self-guidance-steward
+      checkpoint-linked-guidance-history
+      self-guided-runner-bridge
+      decision-engine)
+    (missing-middle "recursive reflection before next-action recommendation")
+    (result "the missing middle is now named and wired as an explicit bridge path"))
+
+  (sea-trial-intent
+    (verify reflection-trace-recorded)
+    (verify motif-order)
+    (verify guidance-still-emits)
+    (verify guidance-references-reflection)
+    (verify runtime-remains-governed-elsewhere))
+
+  (ethereonic-reading
+    (keel governance)
+    (sail reflection)
+    (wind recursive-continuity)
+    (warning "if reflection starts authorizing action, return to DryDock"))
+)
