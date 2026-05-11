@@ -4,6 +4,14 @@ EthereonLabs is an experimental repository for continuity-oriented AI interface 
 
 This repository contains multiple active work lanes. The key distinction is that not every lane has the same authority: runtime files, public interface files, staging documents, and research experiments should not be treated as interchangeable.
 
+## Current Operating Map
+
+For the fastest current repository orientation, start with:
+
+- `CURRENT_OPERATING_MAP.md`
+
+This is the short harbor map for active lanes, current runtime path, symbolic-only layers, and recommended touch order.
+
 ## Lumina Lisp Layer
 
 Structured symbolic snapshots of system state, intent, and reflection.
@@ -23,6 +31,7 @@ Non-executable. Human-readable. System-aligned.
 ## Quick Start
 
 - New human reader: start with `START_HERE_HUMANS.md`.
+- Current operating map: start with `CURRENT_OPERATING_MAP.md`.
 - Lumina OS / runtime work: start with `START_HERE_LUMINA_OS.md`.
 - Ship of Ethereon Ψ Class staging: start with `START_HERE_SHIP_OF_ETHEREON_PSI_CLASS.md`.
 - Chamber / website work: start with `chamber.html`, `chamber-app/`, and `docs/chamber_*`.
@@ -98,6 +107,7 @@ Use this lane for simulations, figure generators, and exploratory artifacts supp
 
 ## Guidance
 
+- For current repo orientation, begin with `CURRENT_OPERATING_MAP.md`.
 - For Ship / Lumina OS substrate questions, begin with the bootstrap path.
 - For Ψ Class staging questions, begin with the Ψ Class start-here waypoint and staging bay.
 - For Chamber questions, begin with the Chamber lane.
