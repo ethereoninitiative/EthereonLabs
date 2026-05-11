@@ -1,5 +1,12 @@
 [
   {
+    "timestamp": "2026-05-11T20:04:14.077742+00:00",
+    "run_id": "run-e97ca443-3b8",
+    "status": "Stable",
+    "mode": "Observation",
+    "file": "/runtime/history/2026-05-11T20-04-14.077742_00-00_run-e97ca443-3b8.json"
+  },
+  {
     "timestamp": "2026-05-11T15:36:20.943122+00:00",
     "run_id": "run-38542338-ba1",
     "status": "Stable",
