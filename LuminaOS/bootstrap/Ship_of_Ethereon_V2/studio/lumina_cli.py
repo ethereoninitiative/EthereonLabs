@@ -64,6 +64,21 @@ def _request_slug(text: str) -> str:
     return (safe[:80] or "lumina_studio_cycle").lower()
 
 
+def _as_float(value: Any) -> Optional[float]:
+    try:
+        if value is None:
+            return None
+        return float(value)
+    except Exception:
+        return None
+
+
+def _metric_text(label: str, value: Optional[float]) -> Optional[str]:
+    if value is None:
+        return None
+    return f"{label} {value:.2f}"
+
+
 def build_orientation_payload(
     *,
     focus: str,
@@ -82,9 +97,99 @@ def build_orientation_payload(
     }
 
 
+def harmonic_witness_from_result(result: Dict[str, Any]) -> Dict[str, Any]:
+    """Summarize continuity shape as read-only witness, not runtime law."""
+    governance = result.get("governance", {}) or {}
+    if not isinstance(governance, dict):
+        governance = {}
+    input_integrity = governance.get("input_integrity", {}) or {}
+    if not isinstance(input_integrity, dict):
+        input_integrity = {}
+    probe = result.get("probe_artifacts", {}) or {}
+    if not isinstance(probe, dict):
+        probe = {}
+    metrics = probe.get("metrics", {}) or {}
+    if not isinstance(metrics, dict):
+        metrics = {}
+
+    chain_valid = bool((result.get("governance_chain_status") or {}).get("valid"))
+    recommended_behavior = input_integrity.get("recommended_behavior")
+    confidence_label = input_integrity.get("confidence_label")
+    chosen_interpretation = input_integrity.get("chosen_interpretation")
+
+    crs = _as_float(metrics.get("CRS"))
+    rf = _as_float(metrics.get("RF"))
+    lock = _as_float(metrics.get("alignment_strength") or metrics.get("lock"))
+    presence = _as_float(metrics.get("presence"))
+
+    if result.get("halted"):
+        continuity_shape = "halted_before_return"
+    elif crs is not None:
+        if crs >= 0.75 and chain_valid:
+            continuity_shape = "strong_return"
+        elif crs >= 0.45:
+            continuity_shape = "partial_return"
+        else:
+            continuity_shape = "fragile_return"
+    elif chain_valid and recommended_behavior in {"clarify", "accept_softly"}:
+        continuity_shape = "listened_return"
+    elif chain_valid:
+        continuity_shape = "lawful_return"
+    else:
+        continuity_shape = "unverified_return"
+
+    if not input_integrity:
+        input_listening_note = "No special listening event recorded."
+    elif recommended_behavior == "halt_for_confirmation":
+        input_listening_note = (
+            f"Load-bearing listening gate halted for confirmation"
+            f" ({confidence_label or 'unknown confidence'})."
+        )
+    elif recommended_behavior == "clarify":
+        input_listening_note = (
+            f"Listening pressure detected ambiguity"
+            f" ({confidence_label or 'unknown confidence'}); clarification preferred."
+        )
+    elif recommended_behavior == "accept_softly":
+        chosen = f" chosen interpretation: {chosen_interpretation}." if chosen_interpretation else ""
+        input_listening_note = (
+            f"Listening pass accepted a soft repair"
+            f" ({confidence_label or 'unknown confidence'}).{chosen}"
+        )
+    else:
+        input_listening_note = (
+            f"Input passed without special intervention"
+            f" ({confidence_label or 'clear'})."
+        )
+
+    metric_parts = [
+        _metric_text("CRS", crs),
+        _metric_text("RF", rf),
+        _metric_text("lock", lock),
+        _metric_text("presence", presence),
+    ]
+    metric_text = ", ".join(part for part in metric_parts if part)
+    if metric_text:
+        recomposition_summary = f"Lawful probe witness: {metric_text}."
+    elif probe:
+        recomposition_summary = "Lawful Psi-42 probe ran without recomposition summary metrics."
+    else:
+        recomposition_summary = "No lawful Psi-42 probe witness for this run."
+
+    recurrence_note = "Single-run witness only. Use `lumina state` for recurrence and drift across recent cycles."
+
+    return {
+        "continuity_shape": continuity_shape,
+        "input_listening_note": input_listening_note,
+        "recomposition_summary": recomposition_summary,
+        "recurrence_note": recurrence_note,
+    }
+
+
 def compact_receipt(result: Dict[str, Any]) -> Dict[str, Any]:
     governance = result.get("governance", {}) or {}
     exposed = result.get("exposed_capabilities", []) or []
+    harmonic_witness = harmonic_witness_from_result(result)
     return {
         "run_id": result.get("run_id"),
         "created_at": result.get("created_at"),
@@ -106,6 +211,8 @@ def compact_receipt(result: Dict[str, Any]) -> Dict[str, Any]:
         "input_behavior": (governance.get("input_integrity") or {}).get("recommended_behavior"),
         "probe_run_id": (result.get("probe_artifacts") or {}).get("run_id"),
         "lumina_project_id": (result.get("lumina_return_host_artifacts") or {}).get("project_id"),
+        "harmonic_witness": harmonic_witness,
+        "continuity_shape": harmonic_witness.get("continuity_shape"),
     }
 
 
@@ -159,6 +266,7 @@ def run_lumina_cycle(args: argparse.Namespace) -> Dict[str, Any]:
 
 
 def print_human_receipt(receipt: Dict[str, Any]) -> None:
+    witness = receipt.get("harmonic_witness") or {}
     print("Lumina Studio cycle complete")
     print(f"  run:        {receipt.get('run_id')}")
     print(f"  mode:       {receipt.get('requested_mode')} -> {receipt.get('target_mode')}")
@@ -171,6 +279,12 @@ def print_human_receipt(receipt: Dict[str, Any]) -> None:
     print(f"  chain ok:   {receipt.get('governance_chain_valid')}")
     if receipt.get("input_confidence"):
         print(f"  input:      {receipt.get('input_confidence')} / {receipt.get('input_behavior')}")
+    if witness.get("continuity_shape"):
+        print(f"  witness:    {witness.get('continuity_shape')}")
+    if witness.get("input_listening_note"):
+        print(f"  listening:  {witness.get('input_listening_note')}")
+    if witness.get("recomposition_summary"):
+        print(f"  pattern:    {witness.get('recomposition_summary')}")
     caps = receipt.get("exposed_capability_ids") or []
     print(f"  exposed:    {', '.join(caps) if caps else 'none'}")
 
