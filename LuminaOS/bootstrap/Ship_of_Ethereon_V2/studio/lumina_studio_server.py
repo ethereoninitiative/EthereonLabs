@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""Lumina Studio Server v0.3.1.
+"""Lumina Studio Server v0.3.2.
 
 Tiny local HTTP control surface for the Lumina runtime.
 Standard library only and local-first.
 
-v0.3.1 keeps the v0.2 page intact and adds two read-only JSON endpoints:
+v0.3.2 keeps the v0.3.1 page intact, adds harmonic witness visibility in the
+state view, and preserves the read-only JSON endpoints:
+- /api/state
 - /api/governance
 - /api/presets
 """
@@ -32,7 +34,7 @@ HTML = """<!doctype html>
 <head>
   <meta charset=\"utf-8\" />
   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />
-  <title>Lumina Studio v0.3.1</title>
+  <title>Lumina Studio v0.3.2</title>
   <style>
     :root { color-scheme: dark; }
     body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif; background: #07111f; color: #eaf2ff; }
@@ -62,9 +64,9 @@ HTML = """<!doctype html>
 </head>
 <body>
   <main>
-    <div class=\"kicker\">Local control surface · runtime receipts · read-only APIs</div>
-    <h1>Lumina Studio v0.3.1</h1>
-    <p class=\"sub\">Run one Lumina cycle, inspect recent receipts, and use local JSON endpoints for governance views and presets. The page stays intentionally plain while the APIs grow underneath it.</p>
+    <div class=\"kicker\">Local control surface · runtime receipts · harmonic witness · read-only APIs</div>
+    <h1>Lumina Studio v0.3.2</h1>
+    <p class=\"sub\">Run one Lumina cycle, inspect recent receipts, and use local JSON endpoints for governance views and presets. Harmonic witness now appears as a read-only summary of continuity shape, listening, recurrence, and drift.</p>
     <form method=\"post\" action=\"/run\">
       <label>Operator request
         <textarea name=\"prompt\" required>Review Lumina OS progress and produce the next governed action receipt.</textarea>
@@ -96,11 +98,11 @@ HTML = """<!doctype html>
           <input name=\"project_id\" value=\"lumina-os\" />
         </label>
         <label>Action label
-          <input name=\"action\" value=\"studio_runtime_cycle_v0_3_1\" />
+          <input name=\"action\" value=\"studio_runtime_cycle_v0_3_2\" />
         </label>
       </div>
       <label>Annotation
-        <input name=\"annotation\" value=\"Studio v0.3.1 local runtime loop with read-only APIs\" />
+        <input name=\"annotation\" value=\"Studio v0.3.2 local runtime loop with harmonic witness\" />
       </label>
       <label><input type=\"checkbox\" name=\"ethereonic_overlay\" value=\"1\" /> Attach optional expressive overlay</label>
       <div class=\"actions\">
@@ -129,12 +131,16 @@ HTML = """<!doctype html>
     function renderStateCards(data) {
       const runs = data.latest_runs || [];
       const governance = data.governance || {};
+      const harmonic = data.harmonic_summary || {};
       const cards = [];
       cards.push(`<div class=\"card\"><strong>Receipts:</strong> ${data.receipt_count_returned || 0}<br><span class=\"muted\">State root: ${data.state_root || 'unknown'}</span></div>`);
       cards.push(`<div class=\"card\"><strong>Governance events:</strong> ${governance.event_count || 0}<br><span class=\"muted\">Latest: ${governance.latest_event_type || 'none'}</span></div>`);
       cards.push(`<div class=\"card\"><strong>Canon head:</strong> ${data.canon_head || 'none'}<br><span class=\"muted\">Records: ${data.canon_record_count || 0}</span></div>`);
+      cards.push(`<div class=\"card\"><strong>Continuity shape:</strong> ${harmonic.latest_continuity_shape || 'unknown'}<br><span class=\"muted\">${harmonic.drift_note || 'No drift note yet.'}</span></div>`);
+      cards.push(`<div class=\"card\"><strong>Recurrence:</strong> ${harmonic.recurrence_note || 'No recurrence note yet.'}<br><span class=\"muted\">${harmonic.latest_input_listening_note || ''}</span></div>`);
       for (const run of runs.slice(0, 5)) {
-        cards.push(`<div class=\"card\"><strong>${run.run_id || 'unknown run'}</strong><br>${run.requested_mode || '?'} → ${run.target_mode || '?'} · ${run.action_type || '?'} · halted: ${run.halted}<br><span class=\"muted\">${run.requested_action || ''}</span></div>`);
+        const witness = run.harmonic_witness || {};
+        cards.push(`<div class=\"card\"><strong>${run.run_id || 'unknown run'}</strong><br>${run.requested_mode || '?'} → ${run.target_mode || '?'} · ${run.action_type || '?'} · ${run.continuity_shape || 'unknown'}<br><span class=\"muted\">${run.requested_action || ''}</span><br><span class=\"muted\">${witness.input_listening_note || ''}</span></div>`);
       }
       stateCards.innerHTML = cards.join('');
     }
@@ -217,7 +223,7 @@ def _query_limit(path: str, default: int = 20) -> int:
 
 
 class LuminaStudioHandler(BaseHTTPRequestHandler):
-    server_version = "LuminaStudio/0.3.1"
+    server_version = "LuminaStudio/0.3.2"
 
     def _send(self, status: int, body: bytes, content_type: str) -> None:
         self.send_response(status)
@@ -232,7 +238,7 @@ class LuminaStudioHandler(BaseHTTPRequestHandler):
             self._send(200, HTML.encode("utf-8"), "text/html; charset=utf-8")
             return
         if path == "/health":
-            self._send(200, json.dumps({"ok": True, "service": "lumina-studio", "version": "0.3.1"}).encode("utf-8"), "application/json")
+            self._send(200, json.dumps({"ok": True, "service": "lumina-studio", "version": "0.3.2"}).encode("utf-8"), "application/json")
             return
         if path == "/api/state":
             payload = state_snapshot(limit=_query_limit(self.path, 20))
@@ -268,7 +274,7 @@ def main() -> int:
     host = "127.0.0.1"
     port = 8765
     server = ThreadingHTTPServer((host, port), LuminaStudioHandler)
-    print(f"Lumina Studio v0.3.1 running at http://{host}:{port}/studio")
+    print(f"Lumina Studio v0.3.2 running at http://{host}:{port}/studio")
     print("Use Ctrl-C to stop.")
     try:
         server.serve_forever()

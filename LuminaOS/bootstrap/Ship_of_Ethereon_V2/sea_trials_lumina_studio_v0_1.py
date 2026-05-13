@@ -17,6 +17,7 @@ if str(STUDIO_ROOT) not in sys.path:
     sys.path.insert(0, str(STUDIO_ROOT))
 
 from lumina_cli import DEFAULT_FEATURE_FLAGS, compact_receipt, run_lumina_cycle  # noqa: E402
+from lumina_state_browser import state_snapshot  # noqa: E402
 
 
 def make_args(**overrides: Any) -> Namespace:
@@ -44,6 +45,7 @@ def make_args(**overrides: Any) -> Namespace:
 
 def evaluate_default_audit(receipt: Dict[str, Any]) -> Dict[str, bool]:
     exposed = set(receipt.get("exposed_capability_ids") or [])
+    witness = receipt.get("harmonic_witness") or {}
     return {
         "default_not_halted": receipt.get("halted") is False,
         "target_mode_observation": receipt.get("target_mode") == "Observation",
@@ -52,14 +54,33 @@ def evaluate_default_audit(receipt: Dict[str, Any]) -> Dict[str, bool]:
         "governance_log_present": bool(receipt.get("governance_log_path")),
         "governance_chain_status_returned": receipt.get("governance_chain_valid") is not None,
         "structural_capabilities_exposed": "session_state_manager" in exposed and "mode_guard" in exposed,
+        "harmonic_witness_present": isinstance(witness, dict) and bool(witness),
+        "continuity_shape_present": bool(receipt.get("continuity_shape")),
+        "listening_note_present": bool(witness.get("input_listening_note")),
+        "recomposition_summary_present": bool(witness.get("recomposition_summary")),
     }
 
 
 def evaluate_denied_transition(receipt: Dict[str, Any]) -> Dict[str, bool]:
+    witness = receipt.get("harmonic_witness") or {}
     return {
         "denied_transition_halted": receipt.get("halted") is True,
         "halt_reason_mentions_illegal_transition": "illegal transition" in str(receipt.get("halt_reason") or ""),
         "no_capabilities_exposed_after_halt": len(receipt.get("exposed_capability_ids") or []) == 0,
+        "halted_witness_shape_present": witness.get("continuity_shape") == "halted_before_return",
+    }
+
+
+def evaluate_state_view(snapshot: Dict[str, Any]) -> Dict[str, bool]:
+    harmonic = snapshot.get("harmonic_summary") or {}
+    latest_runs = snapshot.get("latest_runs") or []
+    latest = latest_runs[0] if latest_runs else {}
+    return {
+        "harmonic_summary_present": isinstance(harmonic, dict) and bool(harmonic),
+        "latest_continuity_shape_present": bool(harmonic.get("latest_continuity_shape")),
+        "drift_note_present": bool(harmonic.get("drift_note")),
+        "recurrence_note_present": bool(harmonic.get("recurrence_note")),
+        "latest_run_contains_harmonic_witness": isinstance(latest.get("harmonic_witness"), dict) and bool(latest.get("harmonic_witness")),
     }
 
 
@@ -97,6 +118,17 @@ def main() -> Dict[str, Any]:
             "passed": all(denied_checks.values()),
             "checks": denied_checks,
             "receipt": denied_receipt,
+        }
+    )
+
+    state_view = state_snapshot(limit=6)
+    state_checks = evaluate_state_view(state_view)
+    results.append(
+        {
+            "trial_name": "studio_state_harmonic_witness_view",
+            "passed": all(state_checks.values()),
+            "checks": state_checks,
+            "state_view": state_view,
         }
     )
 
