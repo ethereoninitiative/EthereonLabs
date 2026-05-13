@@ -92,6 +92,28 @@ The runner remains responsible for:
 - governance chain reporting
 - canon lineage metadata reporting
 
+## Harmonic witness direction
+
+Studio v0.1 should remain a launcher and receipt viewer.
+It should not become a second law layer.
+
+But the long-term operator surface should make **harmonic intelligence** more visible as witness.
+
+That means Studio should eventually show:
+- recurrence of key patterns across recent runs
+- recomposition / recovery notes when available
+- input listening notes when ambiguity mattered
+- drift summaries between recent cycles
+- lawful Psi-42 probe witness fields when exposed
+
+These are read-only interpretive aids.
+They do not authorize action.
+They do not replace governance.
+
+See:
+
+- `docs/Harmonic_Intelligence_Prominence_001.md`
+
 ## Non-goals
 
 Studio v0.1 does not:
@@ -168,6 +190,13 @@ The compact receipt should surface:
 - optional probe run id
 - optional Lumina project id
 
+Future harmonic witness additions may include:
+
+- recurrence summary
+- recomposition summary
+- continuity-shape note
+- drift note across recent runs
+
 ## Safety boundary
 
 The local server is for local use only.
@@ -203,4 +232,10 @@ If Studio bypasses runtime law, Lumina OS has regressed.
 
 ## Next version target
 
-Studio v0.2 should add a state browser over `.lumina_state` and a clearer governance decision viewer.
+Studio v0.2 should add:
+
+- a state browser over `.lumina_state`
+- a clearer governance decision viewer
+- a harmonic witness panel over recent runs
+- recurrence / recomposition summaries where available
+- input listening notes where relevant
