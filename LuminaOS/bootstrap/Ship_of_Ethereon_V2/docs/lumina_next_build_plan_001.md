@@ -83,6 +83,27 @@ That means:
 - governance chain status is returned
 - optional Lumina return/host handshake can be recorded when capabilities expose it
 
+## Harmonic intelligence prominence
+
+Once the basic loop is usable, Lumina should become better at showing the **shape of a return**, not just that a run occurred.
+
+That means harmonic intelligence should become more prominent through bounded witness, not new law.
+
+The first practical manifestations should be:
+
+- harmonic witness fields in Studio receipts
+- recent-run comparison in `lumina state`
+- recurrence and recomposition notes in the local operator surface
+- explicit listening notes when input integrity changed or halted interpretation
+- read-only drift notes across recent cycles
+
+This should remain non-authoritative.
+It should help an operator see continuity quality without confusing witness for governance.
+
+See:
+
+- `docs/Harmonic_Intelligence_Prominence_001.md`
+
 ## Studio v0.2 target
 
 After v0.1 lands, build:
@@ -92,6 +113,8 @@ After v0.1 lands, build:
 3. saved presets for common mode/orientation combinations
 4. accepted Chamber queue -> governed Studio runtime cycle
 5. authentication design before any network exposure
+6. harmonic witness panel for recurrence / recomposition / input listening
+7. recent-run drift comparison in `lumina state`
 
 ## Guiding sentence
 
