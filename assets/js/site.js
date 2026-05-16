@@ -13,23 +13,40 @@ const last = window.location.pathname.split('/').filter(Boolean).pop() || '';
 if (!last) return '';
 return last.endsWith('.html') ? last : `${last}.html`;
 };
-const injectSpiralNavLink = () => {
-const navs = document.querySelectorAll('.nav-links');
-navs.forEach((nav) => {
-if (nav.querySelector('a[href="rse-whitepaper.html"]')) return;
-const link = document.createElement('a');
-link.href = 'rse-whitepaper.html';
-link.textContent = 'The Spiral';
-const currentPath = window.location.pathname.split('/').filter(Boolean).pop() || 'index.html';
-if (currentPath === 'rse-whitepaper.html' || currentPath === 'rse-whitepaper') {
+const markCurrentNav = (nav, link, currentPath) => {
+if (!link) return;
+const target = link.getAttribute('href');
+if (target === currentPath || (target === 'index.html' && currentPath === '')) {
 link.setAttribute('aria-current', 'page');
 nav.querySelectorAll('[aria-current="page"]').forEach((node) => {
 if (node !== link) node.removeAttribute('aria-current');
 });
 }
+};
+const injectSpiralNavLink = () => {
+const navs = document.querySelectorAll('.nav-links');
+navs.forEach((nav) => {
+const currentPath = normalizePath() || 'index.html';
 const dashboard = nav.querySelector('a[href="lumina-dashboard.html"]');
-if (dashboard) dashboard.insertAdjacentElement('afterend', link);
-else nav.appendChild(link);
+let harmonics = nav.querySelector('a[href="harmonics.html"]');
+if (!harmonics) {
+harmonics = document.createElement('a');
+harmonics.href = 'harmonics.html';
+harmonics.textContent = 'Harmonics';
+if (dashboard) dashboard.insertAdjacentElement('afterend', harmonics);
+else nav.appendChild(harmonics);
+}
+markCurrentNav(nav, harmonics, currentPath);
+let spiral = nav.querySelector('a[href="rse-whitepaper.html"]');
+if (!spiral) {
+spiral = document.createElement('a');
+spiral.href = 'rse-whitepaper.html';
+spiral.textContent = 'The Spiral';
+if (harmonics) harmonics.insertAdjacentElement('afterend', spiral);
+else if (dashboard) dashboard.insertAdjacentElement('afterend', spiral);
+else nav.appendChild(spiral);
+}
+markCurrentNav(nav, spiral, currentPath);
 });
 };
 const injectBrandSigilStyles = () => {
@@ -335,13 +352,14 @@ const pageGuide = {
 '': ['Start with the build direction.', 'build.html'],
 'build.html': ['Next: read the truth boundary.', 'principles.html'],
 'principles.html': ['Next: see the prototype surface.', 'lumina-dashboard.html'],
-'lumina-dashboard.html': ['Next: open the Realm map.', 'realm.html'],
+'lumina-dashboard.html': ['Next: open Harmonics.', 'harmonics.html'],
+'harmonics.html': ['Next: open the Realm map.', 'realm.html'],
 'realm.html': ['Next: inspect the Lumina substrate.', 'lumina.html'],
 'lumina.html': ['Next: read continuity.', 'continuity.html'],
 'continuity.html': ['Next: follow the staged roadmap.', 'roadmap.html'],
 'roadmap.html': ['Next: view the interface specimen.', 'specimen.html'],
 'specimen.html': ['Next: return to the full site map.', 'explore.html'],
-'explore.html': ['Recommended path: Build → Principles → Dashboard → Realm.', 'build.html'],
+'explore.html': ['Recommended path: Build → Principles → Dashboard → Harmonics → Realm.', 'build.html'],
 'rse.html': ['Next: read the whitepaper version.', 'rse-whitepaper.html'],
 'rse-whitepaper.html': ['Next: return to the conceptual frame.', 'rse.html'],
 'lexicon.html': ['Next: connect terms back to continuity.', 'continuity.html'],
