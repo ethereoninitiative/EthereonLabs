@@ -82,7 +82,41 @@ Lumina comes first because the generalized habitat must be stable before special
 
 ---
 
-## 7. Design commitment
+## 7. Syntax Barnacle Scrape
+
+A **syntax barnacle** is accumulated language residue that clings to the project hull: obsolete terms, duplicated phrasing, metaphor drift, typo echoes, old scaffolding language, or once-useful labels that now slow clarity.
+
+A **Syntax Barnacle Scrape** is a DryDock documentation-maintenance ritual for removing that residue without altering load-bearing structure.
+
+Use it when:
+
+- a document has grown unclear through repeated edits
+- older terminology conflicts with current doctrine
+- poetic language is beginning to obscure engineering truth
+- public explanation has accumulated unnecessary complexity
+- a phrase feels charming but no longer helps navigation
+
+A Syntax Barnacle Scrape may:
+
+- simplify wording
+- remove duplicate explanation
+- align terminology with current doctrine
+- clarify authority boundaries
+- mark obsolete terms as historical
+
+It may not:
+
+- change runtime behavior
+- redefine governance law
+- rewrite canon lineage
+- remove conceptual history that is still needed for orientation
+- flatten expressive character into generic technical prose
+
+The goal is not sterilization. The goal is a cleaner hull.
+
+---
+
+## 8. Design commitment
 
 HABITAT should keep two truths together:
 
