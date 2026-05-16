@@ -13,7 +13,9 @@ This folder is the GitHub bootstrap import for beginning **Lumina OS** from the 
 - runtime runner
 - input integrity layer
 - Ethereonic layer registry helper
-- Psi-42 quantum-inspired classical signal transceiver
+- Psi-42 quantum-inspired classical signal transceiver v1.6
+- Psi-42 relational topology extension r1
+- Psi-42 hybrid signal-topology transceiver v1.7
 - quantum concepts boundary and registry
 - branch resolution model replacing overloaded collapse terminology
 - sea-trials runner
@@ -84,18 +86,27 @@ Studio is local-first. Do not expose it publicly without authentication, request
 
 The Lumina substrate now treats quantum-adjacent language as a disciplined, bounded vocabulary rather than an overclaim.
 
-Formal designation:
+Formal designations:
 
 > **Ψ-42 Transceiver v1.6** is a **quantum-inspired classical signal transceiver**.
 
-It is an experimental expressive instrument for continuity probing, namespaced coherence measurement, drift mitigation, decoherence estimation, and recomposition testing.
-It does **not** claim literal quantum hardware, literal quantum computation, or governance authority.
+> **Ψ-42 Transceiver v1.7** is a **hybrid signal-topology continuity transceiver**.
+
+v1.6 is an experimental expressive instrument for continuity probing, namespaced coherence measurement, drift mitigation, decoherence estimation, and recomposition testing.
+
+v1.7 extends that work by adding relational topology extraction, topology comparison, restoration receipts, and hybrid continuity metrics. It is an evolutionary extension, not a governance authority and not a replacement for runtime law.
+
+Neither instrument claims literal quantum hardware, literal quantum computation, or governance authority.
 
 Boundary artifacts:
 
 - `docs/Quantum_Concepts_Boundary_r1.md`
 - `runtime/quantum_concepts_registry_r1.json`
 - `runtime/branch_resolution_model_r1.json`
+- `runtime/psi42_relational_topology_r1.py`
+- `runtime/psi42_transceiver_v1_7.py`
+- `runtime/sea_trials_psi42_relational_topology_r1.py`
+- `runtime/sea_trials_psi42_v1_7_hybrid_r1.py`
 - `runtime/sea_trials_quantum_boundary_r1.py`
 
 Preferred terminology:
@@ -104,7 +115,18 @@ Preferred terminology:
 - `resolution_rule` instead of load-bearing `collapse_rule`
 - `measurement_basis` instead of ambiguous observer framing
 - namespaced coherence fields such as `signal_coherence`, `continuity_coherence`, `conceptual_coherence`, and `governance_coherence`
+- relational topology fields such as `RTC`, `RDS`, `RRS`, and `HRC`
 - `decoherence_index` for continuity degradation under noise, ambiguity, recomposition error, or boundary leakage
+
+## Psi-42 v1.7 runtime integration status
+
+Psi-42 v1.7 exists as a hybrid instrument and has dedicated sea trials.
+
+Runtime routing into `runtime_runner_r1_merged.py` is tracked separately as a surgical integration task:
+
+- issue `#224`: route runtime Psi-42 probes through v1.7 hybrid when exposed
+
+Do not perform broad replacement edits on the runtime runner to complete that task. The runner patch should be small, reviewable, and limited to v1.7 imports plus `_maybe_run_psi42_probe()` routing.
 
 ## Orchestration continuity boundary
 
@@ -131,6 +153,7 @@ The remaining hardening priority is less about inventing new core law and more a
 - continue proving that advisory outputs remain subordinate to runtime governance
 - connect accepted Chamber queue items to governed execution records while preserving consent and runtime law
 - verify that quantum-inspired terminology remains expressive/advisory and never becomes hidden governance law
+- complete the surgical Psi-42 v1.7 runtime routing patch without broad runner replacement
 - extend Studio into a state browser and governance decision viewer without turning it into a shadow authority
 
 ## Intent
