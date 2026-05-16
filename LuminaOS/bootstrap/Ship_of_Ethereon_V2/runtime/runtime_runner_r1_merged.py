@@ -24,6 +24,14 @@ except Exception:
         ResonanceTransceiverV16 = None
 
 try:
+    from .psi42_transceiver_v1_7 import ResonanceTransceiverV17
+except Exception:
+    try:
+        from psi42_transceiver_v1_7 import ResonanceTransceiverV17
+    except Exception:
+        ResonanceTransceiverV17 = None
+
+try:
     from .input_integrity_layer_r1 import InputIntegrityAssessor
 except Exception:
     try:
@@ -430,10 +438,10 @@ class RuntimeRunner:
         ethereonic_overlay: Optional[Dict[str, Any]],
         exposed_capabilities: List[Dict[str, Any]],
     ) -> Optional[Dict[str, Any]]:
-        if ResonanceTransceiverV16 is None or Psi42Config is None:
+        if Psi42Config is None:
             return None
         capability_ids = {cap.get("capability_id") for cap in exposed_capabilities}
-        if "psi42_transceiver_v16" not in capability_ids and "psi42_probe_interface" not in capability_ids:
+        if "psi42_transceiver_v16" not in capability_ids and "psi42_transceiver_v17" not in capability_ids and "psi42_probe_interface" not in capability_ids:
             return None
         if target_mode not in {"Observation", "Sandbox"}:
             return None
@@ -442,7 +450,12 @@ class RuntimeRunner:
         language_mode = "ethereonic" if any(x in anchors for x in ["toki_pona", "binary", "light_language"]) else "neutral"
         run_slug = "".join(c if c.isalnum() or c in "-_" else "_" for c in f"{requested_action}_{target_mode}")[:80]
         output_dir = self.base_dir / "psi42_artifacts" / (self._active_session_id or "session") / run_slug
-        rt = ResonanceTransceiverV16(Psi42Config(language_mode=language_mode, output_dir=str(output_dir)))
+        if "psi42_transceiver_v17" in capability_ids and ResonanceTransceiverV17 is not None:
+            rt = ResonanceTransceiverV17(Psi42Config(language_mode=language_mode, output_dir=str(output_dir), probe_mode="hybrid"))
+        elif ResonanceTransceiverV16 is not None:
+            rt = ResonanceTransceiverV16(Psi42Config(language_mode=language_mode, output_dir=str(output_dir)))
+        else:
+            return None
         result = rt.run(f"{requested_action} :: {target_mode}", {"OBSERVATION": 1.0 if target_mode == "Observation" else 0.0, "SANDBOX": 1.0 if target_mode == "Sandbox" else 0.0, "CONTINUITY": 0.8})
         return {
             "run_id": result.get("run_id"),
