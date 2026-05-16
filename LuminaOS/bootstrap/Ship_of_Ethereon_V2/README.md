@@ -38,6 +38,7 @@ The repo-native layer now includes working proofs that Lumina can:
 - accumulate checkpoint-linked advisory history
 - restore minimal context, orient from that surface, and route execution through the governed runtime
 - validate continuity of pattern across restored context, orientation shifts, advisory recommendation, and governed execution
+- run a Psi-42 v1.7 hybrid Observation probe and verify the resulting receipt
 
 In parallel, the Chamber lane now contains an advisory acceptance / rejection surface and a supervised action queue with both memory and Postgres-backed persistence.
 That Chamber work is not the Lumina substrate itself, but it is becoming the first consent surface adjacent to the substrate.
@@ -107,6 +108,8 @@ Boundary artifacts:
 - `runtime/psi42_transceiver_v1_7.py`
 - `runtime/sea_trials_psi42_relational_topology_r1.py`
 - `runtime/sea_trials_psi42_v1_7_hybrid_r1.py`
+- `runtime/psi42_v17_observation_receipt_summary_r1.py`
+- `runtime/sea_trials_psi42_v17_observation_receipt_summary_r1.py`
 - `runtime/sea_trials_quantum_boundary_r1.py`
 
 Preferred terminology:
@@ -118,15 +121,43 @@ Preferred terminology:
 - relational topology fields such as `RTC`, `RDS`, `RRS`, and `HRC`
 - `decoherence_index` for continuity degradation under noise, ambiguity, recomposition error, or boundary leakage
 
-## Psi-42 v1.7 runtime integration status
+## Psi-42 v1.7 Observation verification runbook
 
-Psi-42 v1.7 exists as a hybrid instrument and has dedicated sea trials.
+Psi-42 v1.7 is wired into the runtime runner as a bounded Observation/Sandbox probe path.
+It is exposed through the capability registry as `psi42_transceiver_v17` behind feature flag `ETHEREON_PSI42_V17`.
 
-Runtime routing into `runtime_runner_r1_merged.py` is tracked separately as a surgical integration task:
+From the repository root, run a full Observation receipt:
 
-- issue `#224`: route runtime Psi-42 probes through v1.7 hybrid when exposed
+```bash
+python LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_cli.py \
+  --target-mode Observation \
+  --action-type audit \
+  --feature-flag ETHEREON_PSI42 \
+  --feature-flag ETHEREON_PSI42_V17 \
+  --json \
+  "Run Psi-42 v1.7 Observation verification." > /tmp/lumina_psi42_v17_receipt.json
+```
 
-Do not perform broad replacement edits on the runtime runner to complete that task. The runner patch should be small, reviewable, and limited to v1.7 imports plus `_maybe_run_psi42_probe()` routing.
+Then summarize the receipt for CI or operator logs:
+
+```bash
+python LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/psi42_v17_observation_receipt_summary_r1.py \
+  /tmp/lumina_psi42_v17_receipt.json \
+  --pretty
+```
+
+A passing receipt should include:
+
+```text
+probe_artifacts.instrument_version: v1.7
+probe_artifacts.topology_receipt: present
+probe_artifacts.metrics.hybrid_continuity_coherence: present
+probe_artifacts.metrics.RTC / RDS / RRS / HRC: present
+halted: false
+governance_chain_status.valid: true
+```
+
+Post-merge verification has produced a successful Observation audit with `probe_artifacts.instrument_version: v1.7` and `hybrid_continuity_coherence: 0.8096`.
 
 ## Orchestration continuity boundary
 
@@ -153,7 +184,7 @@ The remaining hardening priority is less about inventing new core law and more a
 - continue proving that advisory outputs remain subordinate to runtime governance
 - connect accepted Chamber queue items to governed execution records while preserving consent and runtime law
 - verify that quantum-inspired terminology remains expressive/advisory and never becomes hidden governance law
-- complete the surgical Psi-42 v1.7 runtime routing patch without broad runner replacement
+- surface Psi-42 v1.7 receipt summaries in Studio without turning the Studio surface into a shadow authority
 - extend Studio into a state browser and governance decision viewer without turning it into a shadow authority
 
 ## Intent
