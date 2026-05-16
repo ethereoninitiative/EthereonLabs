@@ -17,6 +17,7 @@ It is a local control surface that packages a request, invokes the existing runt
 - lets the runtime own input integrity, mode legality, mutation gates, capability exposure, checkpoints, governance logs, canon metadata, and optional probe execution
 - returns a compact receipt with checkpoint, governance, exposed capabilities, and halt status
 - reads recent runtime receipts and governance summaries through a read-only state browser
+- can summarize Psi-42 v1.7 Observation receipts through a read-only receipt viewer
 
 ## What Studio must not do
 
@@ -56,6 +57,22 @@ python lumina_cli.py "Draft the next Studio build step" \
   --intent build \
   --ethereonic-overlay
 ```
+
+## Psi-42 v1.7 receipt viewer
+
+After generating a full JSON Observation receipt, summarize the v1.7 probe fields through Studio:
+
+```bash
+python lumina_psi42_v17_receipt_view_r1.py /tmp/lumina_psi42_v17_receipt.json
+```
+
+For machine-readable output:
+
+```bash
+python lumina_psi42_v17_receipt_view_r1.py /tmp/lumina_psi42_v17_receipt.json --pretty
+```
+
+The viewer is read-only. It verifies and displays instrument version, probe mode, probe identity, hybrid continuity coherence, topology metrics, topology receipt presence, and governance-chain status. It does not run Lumina or authorize action.
 
 ## State browser usage
 
@@ -147,6 +164,7 @@ Studio v0.2 succeeds if it can additionally:
 - report canon head/count if present
 - expose the same read-only snapshot through `/api/state`
 - keep state inspection read-only and non-authoritative
+- read and summarize Psi-42 v1.7 Observation receipts without becoming a probe authority
 
 ## Next hardening steps
 

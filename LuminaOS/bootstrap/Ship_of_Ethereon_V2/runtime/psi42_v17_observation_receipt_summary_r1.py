@@ -55,6 +55,22 @@ def _as_float(value: Any) -> Optional[float]:
         return None
 
 
+def _probe_run_id(probe: Dict[str, Any]) -> Optional[str]:
+    return (
+        probe.get("run_id")
+        or probe.get("signal_run_id")
+        or _nested(probe, "signal_result", "run_id")
+    )
+
+
+def _probe_pulse_id(probe: Dict[str, Any]) -> Optional[str]:
+    return (
+        probe.get("pulse_id")
+        or probe.get("signal_pulse_id")
+        or _nested(probe, "signal_result", "pulse_id")
+    )
+
+
 def summarize(receipt: Dict[str, Any], *, min_hybrid: float = 0.35) -> Dict[str, Any]:
     probe = receipt.get("probe_artifacts") or {}
     if not isinstance(probe, dict):
@@ -64,10 +80,13 @@ def summarize(receipt: Dict[str, Any], *, min_hybrid: float = 0.35) -> Dict[str,
         metrics = {}
 
     instrument_version = probe.get("instrument_version")
+    probe_mode = probe.get("probe_mode")
     hybrid = _as_float(metrics.get("hybrid_continuity_coherence"))
     topology_receipt = probe.get("topology_receipt")
     governance_valid = bool(_nested(receipt, "governance_chain_status", "valid"))
     halted = bool(receipt.get("halted"))
+    probe_run_id = _probe_run_id(probe)
+    probe_pulse_id = _probe_pulse_id(probe)
 
     checks = {
         "target_mode_observation": receipt.get("target_mode") == "Observation",
@@ -75,6 +94,8 @@ def summarize(receipt: Dict[str, Any], *, min_hybrid: float = 0.35) -> Dict[str,
         "not_halted": halted is False,
         "governance_chain_valid": governance_valid,
         "psi42_v17_selected": instrument_version == "v1.7",
+        "probe_mode_hybrid": probe_mode in (None, "hybrid") if instrument_version != "v1.7" else probe_mode == "hybrid",
+        "probe_identity_present": bool(probe_run_id),
         "topology_receipt_present": isinstance(topology_receipt, dict),
         "hybrid_continuity_present": hybrid is not None,
         "hybrid_continuity_threshold": hybrid is not None and hybrid >= min_hybrid,
@@ -89,6 +110,9 @@ def summarize(receipt: Dict[str, Any], *, min_hybrid: float = 0.35) -> Dict[str,
         "halted": halted,
         "governance_chain_valid": governance_valid,
         "instrument_version": instrument_version,
+        "probe_mode": probe_mode,
+        "probe_run_id": probe_run_id,
+        "probe_pulse_id": probe_pulse_id,
         "hybrid_continuity_coherence": hybrid,
         "topology_metrics": {metric: metrics.get(metric) for metric in TOPOLOGY_METRICS},
         "checks": checks,

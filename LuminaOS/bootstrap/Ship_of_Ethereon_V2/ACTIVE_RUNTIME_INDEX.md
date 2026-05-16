@@ -45,6 +45,7 @@ python bin/lumina state --limit 12
 | Self-guided runner bridge | `runtime/runtime_runner_self_guided_bridge_r1.py` |
 | Recursive reflection motif | `runtime/lumina_reflective_autonomy_layer_r1.py` |
 | Reflection-before-guidance runner bridge | `runtime/runtime_runner_reflective_self_guided_bridge_r1.py` |
+| Bridge-stack explanation | `docs/Lumina_Runner_Bridge_Stack_001.md` |
 
 Current motif:
 
@@ -82,13 +83,17 @@ Reflection and self-guidance are advisory. They do not own mode legality, mutati
 | CLI surface | `studio/lumina_cli.py` |
 | Local server | `studio/lumina_studio_server.py` |
 | State browser | `studio/lumina_state_browser.py` |
+| Psi-42 v1.7 receipt viewer | `studio/lumina_psi42_v17_receipt_view_r1.py` |
 | Studio sea trial | `sea_trials_lumina_studio_v0_1.py` |
 
 ## Psi-42 and quantum-adjacent boundaries
 
 | Responsibility | Primary files |
 |---|---|
-| Psi-42 transceiver | `runtime/psi42_transceiver_v1_6.py` |
+| Psi-42 v1.6 signal transceiver | `runtime/psi42_transceiver_v1_6.py` |
+| Psi-42 relational topology extension | `runtime/psi42_relational_topology_r1.py` |
+| Psi-42 v1.7 hybrid transceiver | `runtime/psi42_transceiver_v1_7.py` |
+| Psi-42 v1.7 receipt summary | `runtime/psi42_v17_observation_receipt_summary_r1.py` |
 | Quantum terminology boundary | `docs/Quantum_Concepts_Boundary_r1.md` |
 | Quantum concepts registry | `runtime/quantum_concepts_registry_r1.json` |
 | Branch resolution model | `runtime/branch_resolution_model_r1.json` |
@@ -107,6 +112,8 @@ Psi-42 is an instrument. It does not own governance, canon, or runtime law.
 | Orchestration stack | `sea_trials_lumina_orchestration_stack_r1.py` |
 | Orchestration continuity | `sea_trials_lumina_orchestration_continuity_r1.py` |
 | Studio | `sea_trials_lumina_studio_v0_1.py` |
+| Psi-42 v1.7 receipt summary | `runtime/sea_trials_psi42_v17_observation_receipt_summary_r1.py` |
+| Psi-42 v1.7 runtime integration | `runtime/sea_trials_psi42_v17_runtime_integration_r1.py` |
 
 ## Docs to read when uncertain
 
@@ -120,6 +127,7 @@ Psi-42 is an instrument. It does not own governance, canon, or runtime law.
 - `docs/Lumina_Local_Runbook_001.md`
 - `docs/Lumina_First_Village_Framing_001.md`
 - `docs/Lumina_Reflective_Autonomy_Layer_001.md`
+- `docs/Lumina_Runner_Bridge_Stack_001.md`
 
 ## Maintenance rule
 

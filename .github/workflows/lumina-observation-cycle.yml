@@ -35,6 +35,7 @@ jobs:
             --action-type audit \
             --enable-flag ETHEREON_OBSERVATION \
             --enable-flag ETHEREON_PSI42 \
+            --enable-flag ETHEREON_PSI42_V17 \
             --enable-flag ETHEREON_RESONANCE \
             --overlay-json '{"active":true,"anchor_language":["english"],"continuity_phrase":"scheduled observation cycle","harmonic_signature":[],"spiral_reference":null}' \
             --runtime-config-json '{"toki_pona_required_for_resume":false,"binary_required_for_transition_validation":false,"light_language_required_for_capability_loading":false,"harmonic_frequency_required_for_mode_legality":false}'
