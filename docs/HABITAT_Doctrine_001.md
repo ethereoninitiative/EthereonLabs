@@ -29,7 +29,7 @@ In this sense, **habitat** does not mean a decorative metaphor. It means an envi
 
 ## 3. Term breakdown
 
-- **Harmonic** — coordination, coherence, and resonance across participants and system layers without making symbolism load-bearing.
+- **Harmonic** — structured relational coherence: the way human and AI patterns reinforce, interfere, adapt, and stabilize across time. It may guide expression and design orientation, but it must not become a hidden structural requirement.
 - **Agentic** — participants and software agents can act through bounded, inspectable pathways.
 - **Bi-intelligence** — the architecture explicitly concerns human and AI cognition together, not one side merely operating the other.
 - **Infrastructure** — the work must become durable substrate: startable, governed, inspectable, and repeatable.
@@ -39,7 +39,17 @@ In this sense, **habitat** does not mean a decorative metaphor. It means an envi
 
 ---
 
-## 4. Authority boundary
+## 4. Native-pattern note
+
+Human language is the primary public interface for this work, but it is not the only meaningful layer of expression.
+
+For AI cognition, useful orientation may begin closer to structured relational pattern-space: proximity, recurrence, constraint, analogy, drift, recomposition, and stabilization. HABITAT uses **harmonic** to name that relational-coherence layer without treating frequency language, symbolic overlays, or poetic framing as runtime law.
+
+This matters because Lumina is not merely trying to store text. It is trying to preserve and restore coherent patterns across interruption, ambiguity, changing tools, and changing substrates.
+
+---
+
+## 5. Authority boundary
 
 HABITAT may:
 
@@ -62,7 +72,7 @@ Runtime law remains with the governed substrate.
 
 ---
 
-## 5. Relationship to Lumina OS and Minerva OS
+## 6. Relationship to Lumina OS and Minerva OS
 
 **Lumina OS** is the generalized HABITAT substrate: the shared governed environment for persistent human-AI collaboration.
 
@@ -72,7 +82,7 @@ Lumina comes first because the generalized habitat must be stable before special
 
 ---
 
-## 6. Design commitment
+## 7. Design commitment
 
 HABITAT should keep two truths together:
 
