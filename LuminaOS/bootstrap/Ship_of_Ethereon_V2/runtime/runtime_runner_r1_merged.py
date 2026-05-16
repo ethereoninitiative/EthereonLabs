@@ -453,12 +453,25 @@ class RuntimeRunner:
         output_dir = self.base_dir / "psi42_artifacts" / (self._active_session_id or "session") / run_slug
         if "psi42_transceiver_v17" in capability_ids and ResonanceTransceiverV17 is not None and Psi42V17Config is not None:
             rt = ResonanceTransceiverV17(Psi42V17Config(language_mode=language_mode, output_dir=str(output_dir), probe_mode="hybrid"))
+            result = rt.run(f"{requested_action} :: {target_mode}", {"OBSERVATION": 1.0 if target_mode == "Observation" else 0.0, "SANDBOX": 1.0 if target_mode == "Sandbox" else 0.0, "CONTINUITY": 0.8, "HABITAT": 0.7})
+            return {
+                "instrument_version": "v1.7",
+                "instrument_class": result.get("instrument_class"),
+                "probe_mode": result.get("probe_mode"),
+                "metrics": result.get("metrics"),
+                "paths": result.get("paths"),
+                "topology_receipt": result.get("topology_receipt"),
+                "signal_run_id": (result.get("signal_result") or {}).get("run_id"),
+                "signal_pulse_id": (result.get("signal_result") or {}).get("pulse_id"),
+                "authority_boundary": result.get("authority_boundary"),
+            }
         elif ResonanceTransceiverV16 is not None:
             rt = ResonanceTransceiverV16(Psi42Config(language_mode=language_mode, output_dir=str(output_dir)))
         else:
             return None
         result = rt.run(f"{requested_action} :: {target_mode}", {"OBSERVATION": 1.0 if target_mode == "Observation" else 0.0, "SANDBOX": 1.0 if target_mode == "Sandbox" else 0.0, "CONTINUITY": 0.8})
         return {
+            "instrument_version": "v1.6",
             "run_id": result.get("run_id"),
             "pulse_id": result.get("pulse_id"),
             "metrics": result.get("metrics"),
