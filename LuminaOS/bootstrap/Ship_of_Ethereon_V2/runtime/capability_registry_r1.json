@@ -1,6 +1,6 @@
 {
-  "version": "0.7",
-  "description": "Minimal capability registry for the Ethereon Runtime Spine, now including continuity restore, workspace-host handshake support, checkpoint-refreshed bounded Lumina self-guidance, and quantum-concepts boundary artifacts under explicit authority boundaries.",
+  "version": "0.8",
+  "description": "Minimal capability registry for the Ethereon Runtime Spine, now including continuity restore, workspace-host handshake support, checkpoint-refreshed bounded Lumina self-guidance, quantum-concepts boundary artifacts, and Psi-42 v1.7 hybrid topology probes under explicit authority boundaries.",
   "capabilities": [
     {
       "capability_id": "session_state_manager",
@@ -8,13 +8,7 @@
       "module_path": "runtime_spine_r1.py",
       "status": "active",
       "category": "structural",
-      "allowed_modes": [
-        "Continuity",
-        "Sandbox",
-        "DryDock",
-        "Observation",
-        "Canon"
-      ],
+      "allowed_modes": ["Continuity", "Sandbox", "DryDock", "Observation", "Canon"],
       "mutation_scope": "session",
       "requires_validation": false,
       "authority_boundary": "Owns active session state, checkpoints, and turn continuity only.",
@@ -27,13 +21,7 @@
       "module_path": "runtime_spine_r1.py",
       "status": "active",
       "category": "structural",
-      "allowed_modes": [
-        "Continuity",
-        "Sandbox",
-        "DryDock",
-        "Observation",
-        "Canon"
-      ],
+      "allowed_modes": ["Continuity", "Sandbox", "DryDock", "Observation", "Canon"],
       "mutation_scope": "none",
       "requires_validation": false,
       "authority_boundary": "Owns legality checks for transitions, mutation permission, and promotion gating.",
@@ -46,12 +34,7 @@
       "module_path": "runtime_spine_r1.py",
       "status": "active",
       "category": "structural",
-      "allowed_modes": [
-        "Continuity",
-        "Sandbox",
-        "DryDock",
-        "Observation"
-      ],
+      "allowed_modes": ["Continuity", "Sandbox", "DryDock", "Observation"],
       "mutation_scope": "none",
       "requires_validation": false,
       "authority_boundary": "Builds bounded, replayable context bundles and separates core from supplemental Ethereonic context.",
@@ -64,13 +47,7 @@
       "module_path": "input_integrity_layer_r1.py",
       "status": "active",
       "category": "structural",
-      "allowed_modes": [
-        "Continuity",
-        "Sandbox",
-        "DryDock",
-        "Observation",
-        "Canon"
-      ],
+      "allowed_modes": ["Continuity", "Sandbox", "DryDock", "Observation", "Canon"],
       "mutation_scope": "none",
       "requires_validation": false,
       "authority_boundary": "May annotate ambiguity, score candidate interpretations, and recommend clarification or halt behavior. May not alter governance law, canon state, or execute mutating actions on inferred intent alone.",
@@ -83,19 +60,11 @@
       "module_path": "project_return_repo_native_r1.py",
       "status": "experimental-active",
       "category": "structural",
-      "allowed_modes": [
-        "Continuity",
-        "Sandbox",
-        "DryDock",
-        "Observation",
-        "Canon"
-      ],
+      "allowed_modes": ["Continuity", "Sandbox", "DryDock", "Observation", "Canon"],
       "mutation_scope": "checkpoint",
       "requires_validation": false,
       "authority_boundary": "Owns project-scoped restore capture, latest-restore resolution, and checkpoint-linked return payloads only. Does not own governance law, canon lineage, or mode legality.",
-      "dependencies": [
-        "session_state_manager"
-      ],
+      "dependencies": ["session_state_manager"],
       "feature_flag": "ETHEREON_CONTINUITY_RESTORE"
     },
     {
@@ -104,18 +73,11 @@
       "module_path": "workspace_host_repo_native_r1.py",
       "status": "experimental-active",
       "category": "structural",
-      "allowed_modes": [
-        "Continuity",
-        "Sandbox",
-        "DryDock",
-        "Observation"
-      ],
+      "allowed_modes": ["Continuity", "Sandbox", "DryDock", "Observation"],
       "mutation_scope": "workspace",
       "requires_validation": false,
       "authority_boundary": "Owns bounded workspace panels, tool bindings, references, host snapshots, and host bundles only. Does not own governance law, canon lineage, checkpoint truth, or mode legality.",
-      "dependencies": [
-        "continuity_restore_store"
-      ],
+      "dependencies": ["continuity_restore_store"],
       "feature_flag": "ETHEREON_LUMINA_HOST"
     },
     {
@@ -124,19 +86,11 @@
       "module_path": "lumina_self_guidance_steward_r1.py",
       "status": "experimental-active",
       "category": "structural",
-      "allowed_modes": [
-        "Continuity",
-        "Sandbox",
-        "DryDock",
-        "Observation"
-      ],
+      "allowed_modes": ["Continuity", "Sandbox", "DryDock", "Observation"],
       "mutation_scope": "none",
       "requires_validation": false,
       "authority_boundary": "Reads project-return summaries, working stance, bounded host surfaces, and checkpoint-linked advisory history to recommend the next likely action. Advisory only; may not define governance law, canon lineage, checkpoint legality, or mode legality.",
-      "dependencies": [
-        "continuity_restore_store",
-        "lumina_workspace_host"
-      ],
+      "dependencies": ["continuity_restore_store", "lumina_workspace_host"],
       "feature_flag": "ETHEREON_SELF_GUIDANCE"
     },
     {
@@ -145,15 +99,11 @@
       "module_path": "runtime_runner_r1_merged.py",
       "status": "experimental",
       "category": "expressive",
-      "allowed_modes": [
-        "Observation"
-      ],
+      "allowed_modes": ["Observation"],
       "mutation_scope": "none",
       "requires_validation": false,
       "authority_boundary": "May evaluate continuity metrics but may not declare canon state or governance law.",
-      "dependencies": [
-        "session_state_manager"
-      ],
+      "dependencies": ["session_state_manager"],
       "feature_flag": "ETHEREON_OBSERVATION"
     },
     {
@@ -162,16 +112,11 @@
       "module_path": "psi42_transceiver_v1_6.py",
       "status": "experimental-active",
       "category": "expressive",
-      "allowed_modes": [
-        "Observation",
-        "Sandbox"
-      ],
+      "allowed_modes": ["Observation", "Sandbox"],
       "mutation_scope": "none",
       "requires_validation": false,
-      "authority_boundary": "Emits probe metrics and artifacts from the quantum-inspired classical signal transceiver only; does not govern continuity, canon state, or runtime law.",
-      "dependencies": [
-        "session_state_manager"
-      ],
+      "authority_boundary": "Emits probe metrics and artifacts from Psi-42 instruments only; does not govern continuity, canon state, or runtime law.",
+      "dependencies": ["session_state_manager"],
       "feature_flag": "ETHEREON_PSI42"
     },
     {
@@ -180,17 +125,11 @@
       "module_path": "sea_trials_set_one_r1_merged.py",
       "status": "experimental",
       "category": "expressive",
-      "allowed_modes": [
-        "Observation",
-        "Sandbox",
-        "DryDock"
-      ],
+      "allowed_modes": ["Observation", "Sandbox", "DryDock"],
       "mutation_scope": "artifact",
       "requires_validation": true,
       "authority_boundary": "May read and emit resonance metadata; may not write governance state.",
-      "dependencies": [
-        "context_bundle_builder"
-      ],
+      "dependencies": ["context_bundle_builder"],
       "feature_flag": "ETHEREON_RESONANCE"
     },
     {
@@ -199,18 +138,25 @@
       "module_path": "psi42_transceiver_v1_6.py",
       "status": "experimental-active",
       "category": "expressive",
-      "allowed_modes": [
-        "Observation",
-        "Sandbox"
-      ],
+      "allowed_modes": ["Observation", "Sandbox"],
       "mutation_scope": "none",
       "requires_validation": false,
       "authority_boundary": "Owns classical signal-transceiver style probe summaries, mitigation, adaptive probe steering, namespaced coherence metrics, decoherence estimates, recomposition reports, and probe artifacts only. Does not own canon state, governance, mode legality, checkpoint legality, or primary continuity authority.",
-      "dependencies": [
-        "session_state_manager",
-        "psi42_probe_interface"
-      ],
+      "dependencies": ["session_state_manager", "psi42_probe_interface"],
       "feature_flag": "ETHEREON_PSI42"
+    },
+    {
+      "capability_id": "psi42_transceiver_v17",
+      "name": "Psi-42 Hybrid Signal-Topology Continuity Transceiver v1.7",
+      "module_path": "psi42_transceiver_v1_7.py",
+      "status": "experimental-active",
+      "category": "expressive",
+      "allowed_modes": ["Observation", "Sandbox"],
+      "mutation_scope": "none",
+      "requires_validation": false,
+      "authority_boundary": "Owns derived signal metrics, derived topology metrics, hybrid continuity coherence, and relational restoration receipts only. Does not own canon state, governance law, mode legality, checkpoint legality, capability loading authority, or primary continuity authority.",
+      "dependencies": ["session_state_manager", "psi42_probe_interface", "psi42_transceiver_v16"],
+      "feature_flag": "ETHEREON_PSI42_V17"
     },
     {
       "capability_id": "quantum_concepts_registry",
@@ -218,11 +164,7 @@
       "module_path": "quantum_concepts_registry_r1.json",
       "status": "active-boundary-registry",
       "category": "expressive",
-      "allowed_modes": [
-        "Observation",
-        "Sandbox",
-        "DryDock"
-      ],
+      "allowed_modes": ["Observation", "Sandbox", "DryDock"],
       "mutation_scope": "none",
       "requires_validation": false,
       "authority_boundary": "Classifies quantum-adjacent terms and preferred runtime terminology. Advisory boundary registry only; may not define governance law, mode legality, canon state, checkpoint legality, or user consent.",
@@ -235,17 +177,11 @@
       "module_path": "branch_resolution_model_r1.json",
       "status": "active-advisory-model",
       "category": "expressive",
-      "allowed_modes": [
-        "Observation",
-        "Sandbox",
-        "DryDock"
-      ],
+      "allowed_modes": ["Observation", "Sandbox", "DryDock"],
       "mutation_scope": "none",
       "requires_validation": false,
       "authority_boundary": "Advisory branch ordering and selection model only. Replaces overloaded collapse language with resolution language; may not define governance law, mode legality, canon state, checkpoint legality, or user consent.",
-      "dependencies": [
-        "quantum_concepts_registry"
-      ],
+      "dependencies": ["quantum_concepts_registry"],
       "feature_flag": "ETHEREON_RESONANCE"
     }
   ]
