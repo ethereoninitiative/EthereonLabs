@@ -8,6 +8,11 @@ node.textContent = new Date().getFullYear();
 const SOUND_KEY = 'ethereonlabs-sound-enabled';
 let soundEnabled = localStorage.getItem(SOUND_KEY) === 'true';
 let audioContext = null;
+const normalizePath = () => {
+const last = window.location.pathname.split('/').filter(Boolean).pop() || '';
+if (!last) return '';
+return last.endsWith('.html') ? last : `${last}.html`;
+};
 const injectSpiralNavLink = () => {
 const navs = document.querySelectorAll('.nav-links');
 navs.forEach((nav) => {
@@ -196,6 +201,50 @@ margin: 0 auto 2.25rem;
 box-shadow: 0 14px 40px rgba(0,0,0,0.30);
 }
 }
+.runtime-witness-card {
+position: relative;
+overflow: hidden;
+}
+.runtime-witness-card::before {
+content: '';
+position: absolute;
+inset: -40%;
+background: radial-gradient(circle at 25% 15%, rgba(126,240,209,0.16), transparent 34%), radial-gradient(circle at 82% 22%, rgba(138,164,255,0.14), transparent 36%);
+pointer-events: none;
+}
+.runtime-witness-card > * {
+position: relative;
+}
+.runtime-witness-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+gap: 0.7rem;
+margin-top: 0.9rem;
+}
+.runtime-witness-tile {
+border: 1px solid rgba(255,255,255,0.12);
+border-radius: 16px;
+padding: 0.75rem;
+background: rgba(255,255,255,0.045);
+}
+.runtime-witness-tile small {
+display: block;
+opacity: 0.68;
+margin-bottom: 0.25rem;
+}
+.runtime-witness-value {
+font-weight: 800;
+letter-spacing: 0.02em;
+}
+.runtime-witness-pass {
+color: #83ffc5;
+}
+.runtime-witness-waiting {
+color: #ffe08a;
+}
+.runtime-witness-fail {
+color: #ff8f8f;
+}
 `;
 document.head.appendChild(style);
 };
@@ -302,11 +351,6 @@ const pageGuide = {
 'contact.html': ['Next: return to the site guide.', 'explore.html'],
 'chamber.html': ['Next: open the Realm map.', 'realm.html'],
 };
-const normalizePath = () => {
-const last = window.location.pathname.split('/').filter(Boolean).pop() || '';
-if (!last) return '';
-return last.endsWith('.html') ? last : `${last}.html`;
-};
 const injectGuide = () => {
 if (sessionStorage.getItem('ethereonlabs-guide-dismissed') === 'true') return;
 const key = normalizePath();
@@ -327,10 +371,88 @@ sessionStorage.setItem('ethereonlabs-guide-dismissed', 'true');
 box.remove();
 });
 };
+const runtimeLabel = (value, fallback = '—') => {
+if (value === undefined || value === null || value === '') return fallback;
+return String(value).replace(/_/g, ' ');
+};
+const runtimePercent = (value) => {
+if (typeof value !== 'number' || Number.isNaN(value)) return '—';
+return `${Math.round(value * 100)}%`;
+};
+const injectRuntimeWitness = () => {
+if (normalizePath() !== 'lumina-dashboard.html') return;
+const grid = document.querySelector('.dashboard-grid');
+if (!grid || document.querySelector('[data-runtime-witness-card]')) return;
+const card = document.createElement('article');
+card.className = 'dashboard-card wide runtime-witness-card';
+card.setAttribute('data-runtime-witness-card', '');
+card.setAttribute('aria-label', 'Lumina runtime witness');
+card.innerHTML = `
+<small>Runtime witness · display only</small>
+<strong data-runtime-witness-title>Loading latest Observation receipt...</strong>
+<p data-runtime-witness-summary>Reading generated runtime snapshot.</p>
+<div class="runtime-witness-grid">
+<div class="runtime-witness-tile"><small>Instrument</small><div class="runtime-witness-value" data-runtime-instrument>—</div></div>
+<div class="runtime-witness-tile"><small>Probe mode</small><div class="runtime-witness-value" data-runtime-probe-mode>—</div></div>
+<div class="runtime-witness-tile"><small>Hybrid coherence</small><div class="runtime-witness-value" data-runtime-hybrid>—</div></div>
+<div class="runtime-witness-tile"><small>Topology</small><div class="runtime-witness-value" data-runtime-topology>—</div></div>
+<div class="runtime-witness-tile"><small>Governance chain</small><div class="runtime-witness-value" data-runtime-chain>—</div></div>
+<div class="runtime-witness-tile"><small>Status</small><div class="runtime-witness-value" data-runtime-status>—</div></div>
+</div>
+<p class="boundary-note" data-runtime-boundary>Display receipt only. Runtime witness does not authorize action or alter governance.</p>`;
+const systemMood = document.querySelector('[data-system-mood]')?.closest('.dashboard-card');
+if (systemMood) systemMood.insertAdjacentElement('afterend', card);
+else grid.prepend(card);
+const render = (snapshot) => {
+const probe = snapshot?.probe || {};
+const governance = snapshot?.governance || {};
+const topology = probe.topology_metrics || {};
+const instrument = probe.instrument_version || (snapshot?.capabilities || []).find((id) => id === 'psi42_transceiver_v17') || null;
+const hasV17 = probe.instrument_version === 'v1.7' || (snapshot?.capabilities || []).includes('psi42_transceiver_v17');
+const hasTopology = probe.topology_receipt_present || ['RTC', 'RDS', 'RRS', 'HRC'].some((key) => topology[key] !== undefined);
+const halted = snapshot?.status?.halted === true;
+const chainValid = governance.chain_valid === true;
+const title = card.querySelector('[data-runtime-witness-title]');
+const summary = card.querySelector('[data-runtime-witness-summary]');
+const statusNode = card.querySelector('[data-runtime-status]');
+const chainNode = card.querySelector('[data-runtime-chain]');
+const topologyNode = card.querySelector('[data-runtime-topology]');
+const hybridNode = card.querySelector('[data-runtime-hybrid]');
+if (hasV17 && hasTopology && chainValid && !halted) {
+title.textContent = 'Psi-42 v1.7 hybrid witness online';
+title.className = 'runtime-witness-pass';
+summary.textContent = `Latest Observation: ${runtimeLabel(snapshot?.run_id)} · ${runtimeLabel(snapshot?.timestamp)}`;
+} else if (snapshot) {
+title.textContent = 'Awaiting v1.7 hybrid Observation snapshot';
+title.className = 'runtime-witness-waiting';
+summary.textContent = 'Latest runtime snapshot loaded, but the public ledger has not yet emitted the v1.7 hybrid topology fields.';
+} else {
+title.textContent = 'Runtime witness unavailable';
+title.className = 'runtime-witness-fail';
+summary.textContent = 'No generated runtime snapshot could be read.';
+}
+card.querySelector('[data-runtime-instrument]').textContent = runtimeLabel(instrument || probe.instrument_class);
+card.querySelector('[data-runtime-probe-mode]').textContent = runtimeLabel(probe.probe_mode);
+hybridNode.textContent = runtimePercent(probe.hybrid_continuity_coherence ?? probe.coherence);
+topologyNode.textContent = hasTopology ? ['RTC', 'RDS', 'RRS', 'HRC'].map((key) => `${key} ${runtimePercent(topology[key])}`).join(' · ') : 'waiting';
+chainNode.textContent = chainValid ? 'valid' : runtimeLabel(governance.chain_valid, 'waiting');
+chainNode.className = `runtime-witness-value ${chainValid ? 'runtime-witness-pass' : 'runtime-witness-waiting'}`;
+statusNode.textContent = halted ? 'halted' : runtimeLabel(snapshot?.status?.label, 'waiting');
+statusNode.className = `runtime-witness-value ${halted ? 'runtime-witness-fail' : 'runtime-witness-pass'}`;
+};
+fetch(`runtime/latest_cycle.json?t=${Date.now()}`, { cache: 'no-store' })
+.then((response) => {
+if (!response.ok) throw new Error('runtime snapshot missing');
+return response.json();
+})
+.then(render)
+.catch(() => render(null));
+};
 injectSpiralNavLink();
 injectBrandSigilStyles();
 injectBrandSigil();
 injectGuide();
+injectRuntimeWitness();
 syncSoundLabel();
 if (soundButton) {
 soundButton.addEventListener('click', async () => {
