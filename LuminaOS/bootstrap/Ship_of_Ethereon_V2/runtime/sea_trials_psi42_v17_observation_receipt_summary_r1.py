@@ -12,6 +12,9 @@ def main() -> int:
         "governance_chain_status": {"valid": True},
         "probe_artifacts": {
             "instrument_version": "v1.7",
+            "probe_mode": "hybrid",
+            "signal_run_id": "example-run-id",
+            "signal_pulse_id": "example-pulse-id",
             "metrics": {
                 "hybrid_continuity_coherence": 0.8096,
                 "RTC": 1.0,
@@ -25,6 +28,7 @@ def main() -> int:
     summary = summarize(receipt)
     assert summary["overall_pass"] is True
     assert summary["checks"]["psi42_v17_selected"] is True
+    assert summary["checks"]["probe_identity_present"] is True
     assert summary["checks"]["topology_metrics_present"] is True
     assert summary["hybrid_continuity_coherence"] == 0.8096
     print(summary)
