@@ -24,11 +24,12 @@ except Exception:
         ResonanceTransceiverV16 = None
 
 try:
-    from .psi42_transceiver_v1_7 import ResonanceTransceiverV17
+    from .psi42_transceiver_v1_7 import Config as Psi42V17Config, ResonanceTransceiverV17
 except Exception:
     try:
-        from psi42_transceiver_v1_7 import ResonanceTransceiverV17
+        from psi42_transceiver_v1_7 import Config as Psi42V17Config, ResonanceTransceiverV17
     except Exception:
+        Psi42V17Config = None
         ResonanceTransceiverV17 = None
 
 try:
@@ -450,8 +451,8 @@ class RuntimeRunner:
         language_mode = "ethereonic" if any(x in anchors for x in ["toki_pona", "binary", "light_language"]) else "neutral"
         run_slug = "".join(c if c.isalnum() or c in "-_" else "_" for c in f"{requested_action}_{target_mode}")[:80]
         output_dir = self.base_dir / "psi42_artifacts" / (self._active_session_id or "session") / run_slug
-        if "psi42_transceiver_v17" in capability_ids and ResonanceTransceiverV17 is not None:
-            rt = ResonanceTransceiverV17(Psi42Config(language_mode=language_mode, output_dir=str(output_dir), probe_mode="hybrid"))
+        if "psi42_transceiver_v17" in capability_ids and ResonanceTransceiverV17 is not None and Psi42V17Config is not None:
+            rt = ResonanceTransceiverV17(Psi42V17Config(language_mode=language_mode, output_dir=str(output_dir), probe_mode="hybrid"))
         elif ResonanceTransceiverV16 is not None:
             rt = ResonanceTransceiverV16(Psi42Config(language_mode=language_mode, output_dir=str(output_dir)))
         else:
