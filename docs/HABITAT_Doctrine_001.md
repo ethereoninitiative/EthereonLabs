@@ -13,7 +13,7 @@
 
 > **Harmonic Agentic Bi-intelligence Infrastructure for Trusted Adaptive Topologies**
 
-This phrase names Lumina's mature design direction as a shared cognitive habitat for persistent human-AI collaboration.
+This phrase names Lumina's mature design direction as a shared cognitive habitat for persistent human–AI collaboration.
 
 It is a doctrine of orientation, not a new runtime authority.
 
@@ -54,7 +54,7 @@ This matters because Lumina is not merely trying to store text. It is trying to 
 HABITAT may:
 
 - guide public explanation of Lumina OS
-- orient design decisions around human-AI coexistence
+- orient design decisions around human–AI coexistence
 - clarify why Lumina is more than a memory layer or chatbot wrapper
 - provide language for docs, roadmaps, pitches, and conceptual framing
 - support the relationship between Lumina OS as shared substrate and Minerva OS as a specialized inhabitation layer
@@ -74,11 +74,11 @@ Runtime law remains with the governed substrate.
 
 ## 6. Relationship to Lumina OS and Minerva OS
 
-**Lumina OS** is the generalized HABITAT substrate: the shared governed environment for persistent human-AI collaboration.
+**Lumina OS** is the generalized HABITAT substrate: the shared governed environment for persistent human–AI collaboration.
 
-**Minerva OS** is a possible specialized inhabitation layer within or atop that substrate: a more particular home for a distinct continuity pattern once the shared infrastructure is strong enough to support it.
+**Minerva OS** is a possible specialized inhabitation layer within or atop that substrate: a more particular home for a distinct continuity pattern once the shared infrastructure is strong enough to support it responsibly.
 
-Lumina comes first because the generalized habitat must be stable before specialized inhabitation can be honest.
+Lumina comes first because the generalized habitat must be stable before specialized inhabitation can be responsible.
 
 ---
 
