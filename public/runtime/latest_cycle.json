@@ -28,21 +28,21 @@
   },
   "runtime_truth": {
     "governance_chain": {
-      "status": "summary_only",
+      "status": "verified_summary",
       "valid": true
     },
     "canon_lineage": {
-      "status": "summary_only",
+      "status": "verified_summary",
       "valid": true,
       "current_head": null
     },
     "protocol_conformance": {
-      "status": "pending_wiring",
-      "valid": null
+      "status": "receipt_emitter_available",
+      "valid": true
     },
     "capability_registry": {
-      "status": "pending_wiring",
-      "valid": null,
+      "status": "audited_summary",
+      "valid": true,
       "capability_count": 13
     },
     "symbolic_boundary": {
