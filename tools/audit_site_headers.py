@@ -17,6 +17,12 @@ CANONICAL_PRIMARY = [
     ("contact.html", "Contact"),
 ]
 
+INTENTIONAL_NO_NAV_PAGES = {
+    "artist-spencer.html",
+    "lumina-dashboard-restored.html",
+    "revelation.html",
+}
+
 NAV_RE = re.compile(r'<nav[^>]*class="[^"]*nav-links[^"]*"[^>]*>(.*?)</nav>', re.DOTALL)
 LINK_RE = re.compile(r'<a[^>]*href="([^"]+)"[^>]*>(.*?)</a>', re.DOTALL)
 
@@ -33,18 +39,27 @@ def main() -> int:
     html_files = sorted(path for path in root.glob("*.html") if path.is_file())
     drifted = []
     missing = []
+    skipped = []
     for path in html_files:
         links = extract_nav_links(path.read_text(encoding="utf-8"))
         if links is None:
-            missing.append(path.name)
+            if path.name in INTENTIONAL_NO_NAV_PAGES:
+                skipped.append(path.name)
+            else:
+                missing.append(path.name)
             continue
         if links != CANONICAL_PRIMARY:
             drifted.append((path.name, links))
 
     print("Site header canonical audit")
     print(f"html_files={len(html_files)}")
+    print(f"intentional_no_nav={len(skipped)}")
     print(f"missing_nav={len(missing)}")
     print(f"drifted_nav={len(drifted)}")
+    if skipped:
+        print("\nIntentional no-nav pages:")
+        for name in skipped:
+            print(f"- {name}")
     if missing:
         print("\nMissing nav:")
         for name in missing:
