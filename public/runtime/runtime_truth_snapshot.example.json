@@ -1,0 +1,37 @@
+{
+  "generated_at": "2026-05-17T18:40:00Z",
+  "mode": "Observation",
+  "action_type": "audit",
+  "runtime_truth": {
+    "governance_chain": {
+      "status": "verified",
+      "valid": true,
+      "event_count": 42
+    },
+    "canon_lineage": {
+      "status": "verified",
+      "valid": true,
+      "current_head": "canon-0042"
+    },
+    "protocol_conformance": {
+      "status": "audited",
+      "valid": true,
+      "issues": []
+    },
+    "capability_registry": {
+      "status": "audited",
+      "valid": true,
+      "capability_count": 12,
+      "issues": []
+    },
+    "symbolic_boundary": {
+      "symbolic_context_present": true,
+      "symbolic_dependency_allowed": false,
+      "contract_version": "1.0"
+    }
+  },
+  "notes": [
+    "Observation receipts summarize runtime truth but do not grant authority.",
+    "Missing inputs should emit honest missing_input states rather than synthetic success."
+  ]
+}
