@@ -11,7 +11,17 @@ const ensureNavData = (callback) => {
   document.head.appendChild(navDataScript);
 };
 
+const loadBrandSigil = () => {
+  if (document.querySelector('script[data-brand-sigil]')) return;
+  const script = document.createElement('script');
+  script.src = 'assets/js/brand-sigil.js';
+  script.setAttribute('data-brand-sigil', '');
+  document.head.appendChild(script);
+};
+
 const enhanceSite = () => {
+  loadBrandSigil();
+
   const fallbackFooterLinks = [
     ['principles.html', 'Principles'],
     ['realm.html', 'Realm'],
