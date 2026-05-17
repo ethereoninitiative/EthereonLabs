@@ -1,0 +1,16 @@
+{
+  "schema_version": "origin_signature_ssc_r1",
+  "origin_signature": {
+    "seal": "SSC",
+    "role": "lineage_marker",
+    "authority": "symbolic_provenance_only",
+    "descends_from": "Minerva Framework v18.1",
+    "operational_effect": "none",
+    "notes": [
+      "Preserves origin continuity provenance",
+      "Not runtime governance",
+      "Not authorization",
+      "Not capability grant"
+    ]
+  }
+}
