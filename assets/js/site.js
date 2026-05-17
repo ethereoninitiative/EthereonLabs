@@ -12,10 +12,6 @@ const ensureNavData = (callback) => {
 };
 
 const enhanceSite = () => {
-  const headerNormalizer = document.createElement('script');
-  headerNormalizer.src = 'assets/js/header-normalizer.js';
-  document.head.appendChild(headerNormalizer);
-
   const fallbackFooterLinks = [
     ['principles.html', 'Principles'],
     ['realm.html', 'Realm'],
