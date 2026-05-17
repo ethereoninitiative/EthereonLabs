@@ -8,9 +8,11 @@ import json
 try:
     from .runtime_runner_r1_merged import RuntimeRunner, VALID_ACTION_TYPES
     from .runtime_ui_snapshot_emitter_r1 import build_ui_snapshot, write_snapshot, PUBLIC_SNAPSHOT_PATH, STATE_SNAPSHOT_PATH
+    from .runtime_truth_public_snapshot_r1 import build_public_runtime_truth_snapshot
 except Exception:
     from runtime_runner_r1_merged import RuntimeRunner, VALID_ACTION_TYPES
     from runtime_ui_snapshot_emitter_r1 import build_ui_snapshot, write_snapshot, PUBLIC_SNAPSHOT_PATH, STATE_SNAPSHOT_PATH
+    from runtime_truth_public_snapshot_r1 import build_public_runtime_truth_snapshot
 
 
 class AutoSnapshotRuntimeRunner(RuntimeRunner):
@@ -30,6 +32,17 @@ class AutoSnapshotRuntimeRunner(RuntimeRunner):
         if emit_state_snapshot:
             paths.append(STATE_SNAPSHOT_PATH)
         write_snapshot(snapshot, paths)
+
+        runtime_truth_emitted = False
+        runtime_truth_error = None
+        try:
+            build_public_runtime_truth_snapshot()
+            runtime_truth_emitted = True
+        except Exception as exc:
+            runtime_truth_error = str(exc)
+
+        payload["runtime_truth_snapshot_emitted"] = runtime_truth_emitted
+        payload["runtime_truth_snapshot_error"] = runtime_truth_error
         return result
 
 
