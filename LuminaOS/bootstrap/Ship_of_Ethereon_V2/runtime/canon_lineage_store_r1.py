@@ -110,16 +110,20 @@ class CanonLineageStore:
     def verify_lineage(self) -> Dict[str, Any]:
         rows = self._rows()
         errors: List[str] = []
+        warnings: List[str] = []
         previous_hash: Optional[str] = None
         previous_version: Optional[str] = None
         seen_versions = set()
+        lineage_tainted = False
 
         for idx, row in enumerate(rows):
             version = row.get("canon_version")
             if not version:
                 errors.append(f"row {idx}: missing canon_version")
+                lineage_tainted = True
             elif version in seen_versions:
                 errors.append(f"row {idx}: duplicate canon_version {version}")
+                lineage_tainted = True
             else:
                 seen_versions.add(version)
 
@@ -128,21 +132,29 @@ class CanonLineageStore:
                 errors.append(
                     f"row {idx}: canon_parent mismatch (expected {expected_parent}, got {row.get('canon_parent')})"
                 )
+                lineage_tainted = True
 
             if row.get("prev_lineage_hash") != previous_hash:
                 errors.append(
                     f"row {idx}: prev_lineage_hash mismatch (expected {previous_hash}, got {row.get('prev_lineage_hash')})"
                 )
+                lineage_tainted = True
 
             actual_hash = row.get("lineage_record_hash")
+            expected_hash = self._compute_record_hash(row)
             if not actual_hash:
                 errors.append(f"row {idx}: missing lineage_record_hash")
-            else:
-                expected_hash = self._compute_record_hash(row)
-                if actual_hash != expected_hash:
-                    errors.append(f"row {idx}: lineage_record_hash mismatch")
+                lineage_tainted = True
+            elif actual_hash != expected_hash:
+                errors.append(f"row {idx}: lineage_record_hash mismatch")
+                lineage_tainted = True
 
-            previous_hash = actual_hash
+            if lineage_tainted and idx < len(rows) - 1:
+                warnings.append(
+                    f"row {idx + 1}: downstream linkage follows a tainted lineage segment"
+                )
+
+            previous_hash = actual_hash if actual_hash == expected_hash else expected_hash
             previous_version = version
 
         return {
@@ -150,6 +162,7 @@ class CanonLineageStore:
             "record_count": len(rows),
             "valid": not errors,
             "errors": errors,
+            "warnings": warnings,
             "current_head": rows[-1]["canon_version"] if rows else None,
             "lineage_path": str(self.lineage_path),
         }
