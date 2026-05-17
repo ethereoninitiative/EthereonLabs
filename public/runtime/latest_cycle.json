@@ -1,5 +1,5 @@
 {
-  "schema_version": "lumina-runtime-ui-cycle-v0.3",
+  "schema_version": "lumina-runtime-ui-cycle-v0.4",
   "timestamp": "2026-05-17T13:57:24.494337+00:00",
   "run_id": "run-ac5f2ce5-641",
   "requested_action": "chamber_observation_cycle",
@@ -17,14 +17,39 @@
     "transition": true,
     "mutation": false,
     "promotion": null,
-    "symbolic_dependency": true,
-    "ethereonic_attachment": true,
+    "symbolic_context_present": true,
+    "symbolic_dependency_allowed": false,
     "chain_valid": true
   },
   "canon": {
     "current_head": null,
     "valid": true,
     "record_count": 0
+  },
+  "runtime_truth": {
+    "governance_chain": {
+      "status": "summary_only",
+      "valid": true
+    },
+    "canon_lineage": {
+      "status": "summary_only",
+      "valid": true,
+      "current_head": null
+    },
+    "protocol_conformance": {
+      "status": "pending_wiring",
+      "valid": null
+    },
+    "capability_registry": {
+      "status": "pending_wiring",
+      "valid": null,
+      "capability_count": 13
+    },
+    "symbolic_boundary": {
+      "symbolic_context_present": true,
+      "symbolic_dependency_allowed": false,
+      "contract_version": "1.0"
+    }
   },
   "capabilities": [
     "session_state_manager",
