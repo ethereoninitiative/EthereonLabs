@@ -129,7 +129,9 @@ class GovernanceIntegrityChain:
     def verify_chain(self) -> Dict[str, Any]:
         rows = self._rows()
         errors: List[str] = []
+        warnings: List[str] = []
         previous_hash: Optional[str] = None
+        chain_tainted = False
 
         for idx, row in enumerate(rows):
             expected_prev = previous_hash
@@ -138,22 +140,30 @@ class GovernanceIntegrityChain:
                 errors.append(
                     f"row {idx}: prev_event_hash mismatch (expected {expected_prev}, got {actual_prev})"
                 )
+                chain_tainted = True
 
             actual_hash = row.get("record_hash")
+            expected_hash = self._compute_record_hash(row)
             if not actual_hash:
                 errors.append(f"row {idx}: missing record_hash")
-            else:
-                expected_hash = self._compute_record_hash(row)
-                if actual_hash != expected_hash:
-                    errors.append(f"row {idx}: record_hash mismatch")
+                chain_tainted = True
+            elif actual_hash != expected_hash:
+                errors.append(f"row {idx}: record_hash mismatch")
+                chain_tainted = True
 
-            previous_hash = row.get("record_hash")
+            if chain_tainted and idx < len(rows) - 1:
+                warnings.append(
+                    f"row {idx + 1}: downstream linkage follows a tainted chain segment"
+                )
+
+            previous_hash = actual_hash if actual_hash == expected_hash else expected_hash
 
         return {
             "exists": self.log_path.exists(),
             "event_count": len(rows),
             "valid": not errors,
             "errors": errors,
+            "warnings": warnings,
             "latest_event_hash": previous_hash,
             "log_path": str(self.log_path),
         }
