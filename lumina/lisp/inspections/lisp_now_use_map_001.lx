@@ -1,0 +1,31 @@
+(lisp-now-use-map
+  (status active-breadcrumb)
+  (created-after notebooklm-structural-continuity-read)
+  (authority non-executable non-governing)
+
+  (now
+    (use session-return-snapshots)
+    (use drydock-findings)
+    (use sea-trial-summaries)
+    (use advisory-pipeline-maps)
+    (use public-language-distillations))
+
+  (not-now
+    (avoid executable-lisp)
+    (avoid mode-legality)
+    (avoid canon-authority)
+    (avoid checkpoint-truth)
+    (avoid capability-loading))
+
+  (future
+    (phase read-only-parser)
+    (phase lx-to-json-summaries)
+    (phase dashboard-symbolic-cards)
+    (phase limited-safe-commands-after-boundaries-proven))
+
+  (boundary
+    (phrase "symbolic notation may clarify meaning")
+    (phrase "symbolic notation must not silently become runtime law"))
+
+  (guiding-phrase
+    "Lisp becomes Lumina's symbolic nervous system before it ever becomes muscle."))
