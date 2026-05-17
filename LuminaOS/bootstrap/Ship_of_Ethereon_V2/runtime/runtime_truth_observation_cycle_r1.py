@@ -9,10 +9,56 @@ try:
 except Exception:
     from runtime_truth_emitter_r1 import RuntimeTruthEmitter
 
+try:
+    from .repo_paths_r1 import repo_root as _repo_root_helper, runtime_root as _runtime_root_helper, state_root as _state_root_helper
+except Exception:
+    try:
+        from repo_paths_r1 import repo_root as _repo_root_helper, runtime_root as _runtime_root_helper, state_root as _state_root_helper
+    except Exception:
+        _repo_root_helper = None
+        _runtime_root_helper = None
+        _state_root_helper = None
 
-RUNTIME_ROOT = Path(__file__).resolve().parent
-REPO_ROOT = RUNTIME_ROOT.parents[3] if len(RUNTIME_ROOT.parents) >= 4 else RUNTIME_ROOT
-STATE_ROOT = REPO_ROOT / ".lumina_state" / "ship_of_ethereon_v2"
+
+def infer_runtime_root() -> Path:
+    if _runtime_root_helper is not None:
+        try:
+            candidate = Path(_runtime_root_helper()).resolve()
+            if candidate.exists():
+                return candidate
+        except Exception:
+            pass
+    return Path(__file__).resolve().parent
+
+
+def infer_repo_root() -> Path:
+    if _repo_root_helper is not None:
+        try:
+            candidate = Path(_repo_root_helper()).resolve()
+            if candidate.exists():
+                return candidate
+        except Exception:
+            pass
+    for parent in Path(__file__).resolve().parents:
+        if (parent / ".git").exists() or (parent / "public").exists() or (parent / "LuminaOS").exists():
+            return parent
+    return infer_runtime_root()
+
+
+def infer_state_root() -> Path:
+    if _state_root_helper is not None:
+        try:
+            candidate = Path(_state_root_helper()).resolve()
+            if candidate.exists() or candidate.parent.exists():
+                return candidate
+        except Exception:
+            pass
+    return infer_repo_root() / ".lumina_state" / "ship_of_ethereon_v2"
+
+
+RUNTIME_ROOT = infer_runtime_root()
+REPO_ROOT = infer_repo_root()
+STATE_ROOT = infer_state_root()
 TRUTH_OUTPUT_DIR = REPO_ROOT / "artifacts" / "runtime_truth" / "current"
 
 
