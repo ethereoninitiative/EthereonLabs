@@ -307,6 +307,18 @@ class ModeGuard:
     """Enforces lawful transitions, mutation limits, promotion gates, and symbolic separation."""
 
     def validate_transition(self, current_mode: str, new_mode: str) -> GovernanceDecision:
+        if current_mode == new_mode:
+            return GovernanceDecision(
+                allowed=True,
+                reason="no-op transition; mode unchanged",
+                audit_event={
+                    "type": "mode_transition",
+                    "current_mode": current_mode,
+                    "new_mode": new_mode,
+                    "allowed": True,
+                    "no_op": True,
+                },
+            )
         allowed = new_mode in ALLOWED_TRANSITIONS.get(current_mode, [])
         reason = "transition allowed" if allowed else f"illegal transition: {current_mode} -> {new_mode}"
         return GovernanceDecision(
