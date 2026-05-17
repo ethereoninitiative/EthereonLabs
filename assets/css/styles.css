@@ -96,6 +96,9 @@ h1, h2, h3 { margin: 0; line-height: 1.04; }
 .card h3, .list-card h3, .timeline h3, .contact-card h3 { font-size: 1.15rem; margin-bottom: 0.7rem; }
 .card p, .list-card p, .timeline p, .contact-card p { margin: 0; line-height: 1.7; }
 .status-banner { display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: center; }
+.poster-section { padding-top: 0.4rem; padding-bottom: 4rem; }
+.realm-poster-frame { margin: 0 auto; width: min(100%, 760px); padding: clamp(0.55rem, 2vw, 0.9rem); border: 1px solid rgba(217,168,78,0.32); border-radius: calc(var(--radius-xl) + 6px); background: linear-gradient(180deg, rgba(217,168,78,0.10), rgba(16,24,42,0.38)); box-shadow: 0 34px 90px rgba(0,0,0,0.42), 0 0 42px rgba(217,168,78,0.08); }
+.realm-poster-frame img { display: block; width: 100%; height: auto; border-radius: var(--radius-xl); box-shadow: 0 20px 70px rgba(0,0,0,0.40); }
 .footer { padding: 2rem 0 2.5rem; color: var(--muted); border-top: 1px solid rgba(255,255,255,0.06); }
 .footer-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
 .footer a { color: var(--text); text-decoration: none; }
@@ -161,4 +164,7 @@ body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-in
   .header-actions { display: none; }
   .button { width: 100%; }
   .hero h1 { max-width: none; }
+  .poster-section { padding-bottom: 2.8rem; }
+  .realm-poster-frame { border-radius: var(--radius-lg); }
+  .realm-poster-frame img { border-radius: calc(var(--radius-lg) - 4px); }
 }
