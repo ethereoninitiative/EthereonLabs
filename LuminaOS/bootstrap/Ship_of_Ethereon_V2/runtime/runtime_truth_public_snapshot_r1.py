@@ -14,6 +14,7 @@ REPO_ROOT = infer_repo_root()
 PUBLIC_RUNTIME_DIR = REPO_ROOT / "public" / "runtime"
 LATEST_CYCLE_PATH = PUBLIC_RUNTIME_DIR / "latest_cycle.json"
 SNAPSHOT_PATH = PUBLIC_RUNTIME_DIR / "runtime_truth_snapshot.json"
+LATEST_CYCLE_SCHEMA_VERSION = "lumina-runtime-ui-cycle-v0.4"
 
 
 def _read_json(path: Path) -> Dict[str, Any]:
@@ -29,6 +30,24 @@ def _write_json(path: Path, payload: Dict[str, Any]) -> str:
         json.dump(payload, f, indent=2)
         f.write("\n")
     return str(path)
+
+
+def _normalize_latest_cycle_contract(latest: Dict[str, Any], runtime_truth: Dict[str, Any]) -> Dict[str, Any]:
+    normalized = dict(latest)
+    normalized["schema_version"] = LATEST_CYCLE_SCHEMA_VERSION
+    governance = dict(normalized.get("governance", {}))
+    governance.pop("symbolic_dependency", None)
+    governance.pop("ethereonic_attachment", None)
+    symbolic_boundary = runtime_truth.get("symbolic_boundary", {})
+    governance["symbolic_context_present"] = symbolic_boundary.get("symbolic_context_present", True)
+    governance["symbolic_dependency_allowed"] = symbolic_boundary.get("symbolic_dependency_allowed", False)
+    normalized["governance"] = governance
+    normalized["runtime_truth"] = runtime_truth
+    normalized.setdefault(
+        "authority_boundary",
+        "Display receipt only; does not authorize action, alter governance, mutate canon, change mode legality, expose capabilities, or execute tools.",
+    )
+    return normalized
 
 
 def _truth_payload_from_artifacts(artifact_map: Dict[str, str]) -> Dict[str, Any]:
@@ -100,9 +119,7 @@ def build_public_runtime_truth_snapshot(
     _write_json(out_path, public_snapshot)
 
     if latest:
-        latest["runtime_truth"] = runtime_truth
-        latest.setdefault("authority_boundary", public_snapshot["authority_boundary"])
-        _write_json(latest_path, latest)
+        _write_json(latest_path, _normalize_latest_cycle_contract(latest, runtime_truth))
 
     return public_snapshot
 
