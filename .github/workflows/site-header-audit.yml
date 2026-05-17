@@ -1,0 +1,19 @@
+name: Site Header Audit
+
+on:
+  pull_request:
+    paths:
+      - "*.html"
+      - "assets/js/site-navigation-data.js"
+      - "tools/audit_site_headers.py"
+      - ".github/workflows/site-header-audit.yml"
+  workflow_dispatch:
+
+jobs:
+  audit-site-headers:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run canonical site header audit
+        run: python tools/audit_site_headers.py
