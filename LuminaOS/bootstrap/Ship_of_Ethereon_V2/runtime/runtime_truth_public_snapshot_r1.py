@@ -5,13 +5,12 @@ from typing import Any, Dict, Optional
 import json
 
 try:
-    from .runtime_truth_observation_cycle_r1 import run_runtime_truth_observation_cycle
+    from .runtime_truth_observation_cycle_r1 import run_runtime_truth_observation_cycle, infer_repo_root
 except Exception:
-    from runtime_truth_observation_cycle_r1 import run_runtime_truth_observation_cycle
+    from runtime_truth_observation_cycle_r1 import run_runtime_truth_observation_cycle, infer_repo_root
 
 
-RUNTIME_ROOT = Path(__file__).resolve().parent
-REPO_ROOT = RUNTIME_ROOT.parents[3] if len(RUNTIME_ROOT.parents) >= 4 else RUNTIME_ROOT
+REPO_ROOT = infer_repo_root()
 PUBLIC_RUNTIME_DIR = REPO_ROOT / "public" / "runtime"
 LATEST_CYCLE_PATH = PUBLIC_RUNTIME_DIR / "latest_cycle.json"
 SNAPSHOT_PATH = PUBLIC_RUNTIME_DIR / "runtime_truth_snapshot.json"
@@ -28,6 +27,7 @@ def _write_json(path: Path, payload: Dict[str, Any]) -> str:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as f:
         json.dump(payload, f, indent=2)
+        f.write("\n")
     return str(path)
 
 
@@ -78,10 +78,6 @@ def build_public_runtime_truth_snapshot(
     latest_cycle_path: Optional[str | Path] = None,
     snapshot_path: Optional[str | Path] = None,
 ) -> Dict[str, Any]:
-    """Generate runtime truth receipts and attach their summary to public runtime JSON.
-
-    This performs receipt ingestion only. It does not authorize actions or alter runtime law.
-    """
     latest_path = Path(latest_cycle_path) if latest_cycle_path else LATEST_CYCLE_PATH
     out_path = Path(snapshot_path) if snapshot_path else SNAPSHOT_PATH
 
