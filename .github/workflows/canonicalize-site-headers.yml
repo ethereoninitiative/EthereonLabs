@@ -1,0 +1,27 @@
+name: Canonicalize Site Headers
+
+on:
+  workflow_dispatch:
+
+jobs:
+  canonicalize-site-headers:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run canonicalizer
+        run: python tools/canonicalize_site_headers.py
+      - name: Run audit after canonicalization
+        run: python tools/audit_site_headers.py
+      - name: Generate patch artifact
+        run: |
+          mkdir -p artifacts
+          git diff > artifacts/site-header-canonicalization.patch
+          if [ ! -s artifacts/site-header-canonicalization.patch ]; then
+            echo "Headers already canonical." > artifacts/site-header-canonicalization.patch
+          fi
+      - name: Upload patch artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-header-canonicalization-patch
+          path: artifacts/site-header-canonicalization.patch
