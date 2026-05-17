@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1600" role="img" aria-labelledby="title desc">
+  <title id="title">Lumina OS continuity poster</title>
+  <desc id="desc">A human and AI figure face a luminous golden spiral horizon representing creative continuity and return to the living current of a project.</desc>
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="42%" r="70%">
+      <stop offset="0" stop-color="#16223f"/>
+      <stop offset="0.48" stop-color="#091225"/>
+      <stop offset="1" stop-color="#050712"/>
+    </radialGradient>
+    <radialGradient id="portal" cx="50%" cy="50%" r="52%">
+      <stop offset="0" stop-color="#fff3c2" stop-opacity="0.95"/>
+      <stop offset="0.26" stop-color="#d9a84e" stop-opacity="0.62"/>
+      <stop offset="0.58" stop-color="#7ef0d1" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#8aa4ff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="threadGold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d9a84e" stop-opacity="0"/>
+      <stop offset="0.45" stop-color="#ffe6a3" stop-opacity="0.75"/>
+      <stop offset="1" stop-color="#7ef0d1" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="figureGlow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#eaf0ff"/>
+      <stop offset="1" stop-color="#7ef0d1"/>
+    </linearGradient>
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="wideGlow" x="-90%" y="-90%" width="280%" height="280%">
+      <feGaussianBlur stdDeviation="30" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="1600" fill="url(#bg)"/>
+  <rect x="36" y="36" width="1128" height="1528" fill="none" stroke="#d9a84e" stroke-opacity="0.65" stroke-width="3"/>
+  <rect x="58" y="58" width="1084" height="1484" fill="none" stroke="#8aa4ff" stroke-opacity="0.22" stroke-width="1"/>
+
+  <g opacity="0.7">
+    <circle cx="116" cy="140" r="2" fill="#eaf0ff" opacity="0.45"/><circle cx="282" cy="98" r="1.7" fill="#7ef0d1" opacity="0.35"/><circle cx="965" cy="152" r="2" fill="#d9b7ff" opacity="0.42"/><circle cx="1040" cy="426" r="1.8" fill="#ffe6a3" opacity="0.48"/><circle cx="138" cy="1058" r="2" fill="#eaf0ff" opacity="0.36"/><circle cx="1012" cy="1194" r="2" fill="#7ef0d1" opacity="0.36"/><circle cx="632" cy="226" r="1.8" fill="#ffe6a3" opacity="0.5"/><circle cx="760" cy="1322" r="2" fill="#d9b7ff" opacity="0.38"/>
+    <circle cx="220" cy="406" r="1" fill="#eaf0ff" opacity="0.42"/><circle cx="890" cy="604" r="1.2" fill="#eaf0ff" opacity="0.38"/><circle cx="340" cy="1298" r="1.2" fill="#ffe6a3" opacity="0.42"/><circle cx="1080" cy="930" r="1" fill="#eaf0ff" opacity="0.34"/>
+  </g>
+
+  <g opacity="0.52" filter="url(#softGlow)">
+    <path d="M-60 426 C 190 350, 260 520, 420 430 S 710 280, 1260 344" fill="none" stroke="url(#threadGold)" stroke-width="2"/>
+    <path d="M-40 730 C 180 600, 390 760, 554 640 S 870 486, 1240 620" fill="none" stroke="#8aa4ff" stroke-opacity="0.38" stroke-width="2"/>
+    <path d="M-100 1000 C 210 880, 300 1110, 580 960 S 900 850, 1320 980" fill="none" stroke="#7ef0d1" stroke-opacity="0.30" stroke-width="2"/>
+    <path d="M80 1380 C 300 1260, 520 1420, 730 1290 S 1020 1190, 1260 1300" fill="none" stroke="#d9a84e" stroke-opacity="0.28" stroke-width="2"/>
+  </g>
+
+  <g text-anchor="middle" font-family="Inter, Arial, sans-serif">
+    <text x="600" y="142" fill="#eaf0ff" font-size="38" font-weight="800" letter-spacing="7">ETHEREONLABS</text>
+    <line x1="430" y1="176" x2="770" y2="176" stroke="#d9a84e" stroke-width="3" opacity="0.72"/>
+    <text x="600" y="306" fill="#fff9ea" font-size="118" font-weight="800" letter-spacing="8">LUMINA OS</text>
+    <text x="600" y="383" fill="#a9d8ff" font-size="34" font-weight="800" letter-spacing="4">FOR HUMAN + AI CREATIVE CONTINUITY</text>
+    <text x="600" y="514" fill="#f2ead4" font-size="43" font-weight="500">Return to the living current of a project.</text>
+  </g>
+
+  <g transform="translate(600 870)">
+    <circle cx="0" cy="0" r="340" fill="url(#portal)" opacity="0.95" filter="url(#wideGlow)"/>
+    <circle cx="0" cy="0" r="318" fill="none" stroke="#d9a84e" stroke-width="4" opacity="0.85"/>
+    <circle cx="0" cy="0" r="250" fill="none" stroke="#7ef0d1" stroke-width="2" opacity="0.28"/>
+    <circle cx="0" cy="0" r="190" fill="none" stroke="#8aa4ff" stroke-width="2" opacity="0.32"/>
+
+    <path d="M0 0
+      C 18 -18, 52 -14, 68 10
+      C 92 46, 58 92, 10 96
+      C -66 102, -122 38, -96 -36
+      C -62 -132, 62 -160, 146 -88
+      C 250 0, 228 172, 92 242
+      C -92 336, -306 190, -286 -22
+      C -258 -326, 98 -450, 332 -242" fill="none" stroke="#fff0ae" stroke-width="12" stroke-linecap="round" opacity="0.96" filter="url(#softGlow)"/>
+    <path d="M0 0
+      C 18 -18, 52 -14, 68 10
+      C 92 46, 58 92, 10 96
+      C -66 102, -122 38, -96 -36
+      C -62 -132, 62 -160, 146 -88
+      C 250 0, 228 172, 92 242
+      C -92 336, -306 190, -286 -22
+      C -258 -326, 98 -450, 332 -242" fill="none" stroke="#d9a84e" stroke-width="4" stroke-linecap="round" opacity="0.92"/>
+
+    <path d="M-240 250 L240 250 L0 338 Z" fill="#071024" opacity="0.72" stroke="#d9a84e" stroke-opacity="0.56" stroke-width="2"/>
+    <ellipse cx="-78" cy="70" rx="28" ry="32" fill="#eaf0ff" opacity="0.88"/>
+    <path d="M-78 104 C -96 146, -104 184, -104 226 L-52 226 C -52 184, -60 146, -78 104 Z" fill="#eaf0ff" opacity="0.62"/>
+    <circle cx="82" cy="73" r="30" fill="none" stroke="#7fcfff" stroke-width="5" opacity="0.9"/>
+    <circle cx="82" cy="73" r="7" fill="#7fcfff" opacity="0.92"/>
+    <circle cx="40" cy="142" r="6" fill="#7fcfff" opacity="0.84"/><circle cx="126" cy="142" r="6" fill="#7fcfff" opacity="0.84"/><circle cx="82" cy="214" r="6" fill="#7fcfff" opacity="0.84"/>
+    <path d="M82 103 L40 142 L82 214 L126 142 Z" fill="none" stroke="#7fcfff" stroke-opacity="0.54" stroke-width="3"/>
+    <path d="M-118 132 C -55 84, 18 84, 118 132" fill="none" stroke="#ffe6a3" stroke-width="5" stroke-linecap="round" opacity="0.78"/>
+  </g>
+
+  <g text-anchor="middle" font-family="Inter, Arial, sans-serif">
+    <text x="600" y="1368" fill="#ffe6a3" font-size="31" font-weight="800" letter-spacing="2">RETURN · REFLECT · RECOMMEND · GOVERN · RECORD</text>
+    <text x="600" y="1472" fill="#7ef0d1" font-size="48" font-weight="800" letter-spacing="3">CONTINUITY IS CREATION. TOGETHER.</text>
+  </g>
+</svg>
