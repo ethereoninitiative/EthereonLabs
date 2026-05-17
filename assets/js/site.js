@@ -1,9 +1,13 @@
 (() => {
+const navDataScript = document.createElement('script');
+navDataScript.src = 'assets/js/site-navigation-data.js';
+document.head.appendChild(navDataScript);
+
 const headerNormalizer = document.createElement('script');
 headerNormalizer.src = 'assets/js/header-normalizer.js';
 document.head.appendChild(headerNormalizer);
 
-const orphanFooterLinks = [
+const fallbackFooterLinks = [
   ['principles.html', 'Principles'],
   ['realm.html', 'Realm'],
   ['lumina-dashboard.html', 'Dashboard'],
@@ -14,12 +18,14 @@ const orphanFooterLinks = [
   ['updates.html', 'Updates'],
 ];
 
+const footerLinks = (window.ETHEREON_SITE_NAVIGATION && window.ETHEREON_SITE_NAVIGATION.secondaryFooter) || fallbackFooterLinks;
+
 document.querySelectorAll('.footer-row').forEach((footerRow) => {
   if (footerRow.querySelector('[data-secondary-footer-links]')) return;
   const group = document.createElement('div');
   group.className = 'footer-secondary-links';
   group.setAttribute('data-secondary-footer-links', '');
-  group.innerHTML = orphanFooterLinks.map(([href, label]) => `<a href="${href}">${label}</a>`).join(' · ');
+  group.innerHTML = footerLinks.map(([href, label]) => `<a href="${href}">${label}</a>`).join(' · ');
   footerRow.insertAdjacentElement('afterend', group);
 });
 
