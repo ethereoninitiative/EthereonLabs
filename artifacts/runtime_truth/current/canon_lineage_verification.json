@@ -1,0 +1,11 @@
+{
+  "generated_at": "2026-05-18T03:27:35.231045+00:00",
+  "status": "empty_or_missing",
+  "exists": false,
+  "record_count": 0,
+  "valid": true,
+  "errors": [],
+  "warnings": [],
+  "current_head": null,
+  "lineage_path": "/home/runner/work/EthereonLabs/EthereonLabs/.lumina_state/ship_of_ethereon_v2/runtime_runner_r2_actiontype_logging/canon_lineage_r2.jsonl"
+}

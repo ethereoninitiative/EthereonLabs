@@ -1,8 +1,8 @@
 {
   "schema_version": "lumina-runtime-truth-public-snapshot-v0.1",
-  "source_latest_cycle": "public/runtime/latest_cycle.json",
-  "latest_cycle_run_id": "run-ac5f2ce5-641",
-  "latest_cycle_timestamp": "2026-05-17T13:57:24.494337+00:00",
+  "source_latest_cycle": "/home/runner/work/EthereonLabs/EthereonLabs/public/runtime/latest_cycle.json",
+  "latest_cycle_run_id": "run-28d5f853-fc7",
+  "latest_cycle_timestamp": "2026-05-17T19:36:33.310267+00:00",
   "mode": {
     "requested": "Continuity",
     "current": "Observation"
@@ -10,30 +10,29 @@
   "action_type": "audit",
   "runtime_truth": {
     "governance_chain": {
-      "status": "verified_summary",
+      "status": "empty_or_missing",
       "valid": true,
-      "event_count": null,
-      "note": "Public summary reflects the latest display receipt; full local governance chain receipts are emitted by runtime_truth_observation_cycle_r1.py when the runtime state directory is available."
+      "event_count": 0
     },
     "canon_lineage": {
-      "status": "verified_summary",
+      "status": "empty_or_missing",
       "valid": true,
       "current_head": null,
-      "record_count": 0,
-      "note": "No canon lineage records are present in the current public latest-cycle summary."
+      "record_count": 0
     },
     "protocol_conformance": {
-      "status": "receipt_emitter_available",
+      "status": "audited",
       "valid": true,
-      "issues": [],
-      "source": "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/runtime_truth_emitter_r1.py"
+      "issues": []
     },
     "capability_registry": {
-      "status": "audited_summary",
-      "valid": true,
-      "capability_count": 13,
-      "issues": [],
-      "source": "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/capability_registry_r1.json"
+      "status": "audited",
+      "valid": false,
+      "capability_count": 14,
+      "issues": [
+        "continuity_restore_store: unexpected mutation_scope checkpoint",
+        "lumina_workspace_host: unexpected mutation_scope workspace"
+      ]
     },
     "symbolic_boundary": {
       "symbolic_context_present": true,
@@ -41,11 +40,12 @@
       "contract_version": "1.0"
     }
   },
-  "authority_boundary": "Public runtime truth summary only; does not authorize action, alter governance, mutate canon, change mode legality, expose capabilities, or execute tools.",
-  "barnacle_scrape_receipt": {
-    "mode": "DryDock",
-    "scraped": true,
-    "barnacle": "Removed stale public runtime truth placeholder by adding an explicit public snapshot artifact and aligning latest_cycle runtime_truth language away from pending wiring.",
-    "remaining_boundary": "Full chain verification remains runtime-state dependent when .lumina_state is not committed to the public repo."
-  }
+  "artifact_paths": {
+    "symbolic_dependency_contract": "/home/runner/work/EthereonLabs/EthereonLabs/artifacts/runtime_truth/current/symbolic_dependency_contract.json",
+    "governance_chain_verification": "/home/runner/work/EthereonLabs/EthereonLabs/artifacts/runtime_truth/current/governance_chain_verification.json",
+    "canon_lineage_verification": "/home/runner/work/EthereonLabs/EthereonLabs/artifacts/runtime_truth/current/canon_lineage_verification.json",
+    "capability_registry_audit": "/home/runner/work/EthereonLabs/EthereonLabs/artifacts/runtime_truth/current/capability_registry_audit.json",
+    "protocol_conformance_report": "/home/runner/work/EthereonLabs/EthereonLabs/artifacts/runtime_truth/current/protocol_conformance_report.json"
+  },
+  "authority_boundary": "Public runtime truth summary only; does not authorize action, alter governance, mutate canon, change mode legality, expose capabilities, or execute tools."
 }

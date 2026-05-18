@@ -1,13 +1,8 @@
 {
   "version": "1.0",
-  "purpose": "Explicitly define the boundary between expressive symbolic systems and structural runtime authority.",
-  "allowed_symbolic_roles": [
-    "annotation",
-    "orientation",
-    "supplemental context",
-    "experimental probe metadata",
-    "non-authoritative expressive overlays"
-  ],
+  "generated_at": "2026-05-18T03:27:35.230528+00:00",
+  "symbolic_context_present_allowed": true,
+  "symbolic_dependency_allowed": false,
   "forbidden_symbolic_dependencies": [
     "session recovery legality",
     "mode transition legality",
@@ -18,10 +13,10 @@
     "capability exposure",
     "governance verification"
   ],
-  "semantic_clarity": {
-    "symbolic_context_present": true,
-    "symbolic_dependency_allowed": false,
-    "notes": "Presence of expressive context must never be interpreted as structural dependency."
+  "required_runtime_semantics": {
+    "symbolic_context_present": "expressive or supplemental context is attached or visible",
+    "symbolic_dependency": "structural behavior requires symbolic interpretation",
+    "symbolic_dependency_leakage": "symbolic interpretation becomes necessary for law, authority, or continuity"
   },
-  "enforcement_expectation": "Runtime law should halt when symbolic dependency leakage is detected."
+  "audit_rule": "Presence is allowed; dependency must halt or fail validation."
 }
