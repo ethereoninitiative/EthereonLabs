@@ -1,0 +1,42 @@
+{
+  "schema_version": "known-uncertainties-r1",
+  "purpose": "Track claims, limits, and unresolved truth boundaries so runtime language does not outrun evidence.",
+  "principle": "Truth includes uncertainty; uncertainty named early does not become drift later.",
+  "uncertainties": [
+    {
+      "id": "KU-001",
+      "area": "runtime truth automation",
+      "status": "active",
+      "statement": "Runtime truth refresh automation exists, but scheduled and push-trigger behavior must be observed over real runs before claiming lifecycle-wide automation.",
+      "needed_evidence": "Successful GitHub Action run that refreshes artifacts only when contents change."
+    },
+    {
+      "id": "KU-002",
+      "area": "public runtime truth",
+      "status": "active",
+      "statement": "Public runtime truth artifacts summarize observable receipts; they do not prove hidden local runtime state unless receipts are emitted and surfaced.",
+      "needed_evidence": "Linked receipt bundle with governance, canon, protocol, capability, and symbolic boundary outputs."
+    },
+    {
+      "id": "KU-003",
+      "area": "symbolic boundary",
+      "status": "active",
+      "statement": "Symbolic context may be present, but symbolic dependency must remain forbidden and tested.",
+      "needed_evidence": "Boundary tests confirming symbolic material stays in supplemental context and cannot authorize governance, canon, capability exposure, or checkpoint legality."
+    },
+    {
+      "id": "KU-004",
+      "area": "Lumina OS maturity",
+      "status": "active",
+      "statement": "Lumina currently functions as a governed continuity/runtime substrate, not a full desktop operating system with driver, package, kernel, and application-launch parity.",
+      "needed_evidence": "Installable image or desktop substrate milestone with documented OS-level capabilities."
+    },
+    {
+      "id": "KU-005",
+      "area": "meta-pulse instrumentation",
+      "status": "active",
+      "statement": "Meta-pulse findings are heuristic drift indicators, not governance law or proof of failure.",
+      "needed_evidence": "Repeated reports showing stable categories, low false positives, and useful corrective actions."
+    }
+  ]
+}
