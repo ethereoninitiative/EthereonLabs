@@ -1,0 +1,22 @@
+name: Runtime Truth Gate
+
+on:
+  pull_request:
+    paths:
+      - 'public/runtime/**'
+      - 'artifacts/runtime_truth/**'
+      - 'studio/runtime_truth_gate_r1.py'
+      - '.github/workflows/runtime-truth-gate.yml'
+  workflow_dispatch:
+
+jobs:
+  truth-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run runtime truth gate
+        run: |
+          python studio/runtime_truth_gate_r1.py
