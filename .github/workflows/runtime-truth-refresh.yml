@@ -1,0 +1,44 @@
+name: Runtime Truth Refresh
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 12 * * 0'
+  push:
+    branches:
+      - main
+    paths:
+      - 'LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/**'
+      - 'artifacts/runtime_truth/**'
+      - 'public/runtime/**'
+      - '.github/workflows/runtime-truth-refresh.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  refresh-runtime-truth:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Refresh runtime truth artifacts
+        run: |
+          python LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/runtime_truth_public_snapshot_r1.py
+
+      - name: Show runtime truth diff
+        run: |
+          git status --short
+          git diff -- artifacts/runtime_truth/current public/runtime || true
+
+      - name: Commit runtime truth changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'Generated: refresh runtime truth receipts'
+          file_pattern: 'artifacts/runtime_truth/current/*.json public/runtime/*.json'
