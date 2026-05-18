@@ -1,0 +1,19 @@
+{
+  "schema_version": "everything-status-r1",
+  "status": "working",
+  "meaning": "Everything is not finished; everything is accounted for.",
+  "rollup": {
+    "A_runtime_truth_automation": "implemented",
+    "B_meta_pulse_instrument": "implemented",
+    "C_known_uncertainties_ledger": "implemented",
+    "D_runtime_truth_gate": "implemented",
+    "E_everything_status_rollup": "implemented"
+  },
+  "truth_boundary": "This rollup summarizes current instrumentation. It does not claim full OS readiness, full autonomy, or hidden runtime state proof.",
+  "next_watchpoints": [
+    "Observe first scheduled runtime truth refresh action run.",
+    "Review meta-pulse report output after real repo churn.",
+    "Watch CI truth gate for false positives or missed drift.",
+    "Keep Lumina OS wording aligned to substrate/runtime maturity until desktop OS evidence exists."
+  ]
+}
