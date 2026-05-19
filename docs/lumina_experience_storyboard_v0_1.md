@@ -5,6 +5,7 @@
 **Status:** Draft canon / product north star  
 **Primary authorship:** Spencer Tracy Brown with Minerva, through sustained human-AI co-creative development  
 **Tone target:** elegant creative, cinematic, usable, emotionally memorable  
+**Source conversation:** https://chatgpt.com/share/6a0bcfe7-f900-83e8-8d2d-889d4abe4144  
 
 ---
 
