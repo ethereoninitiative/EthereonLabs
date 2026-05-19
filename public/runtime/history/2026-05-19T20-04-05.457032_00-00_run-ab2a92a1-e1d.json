@@ -1,5 +1,5 @@
 {
-  "schema_version": "lumina-runtime-ui-cycle-v0.4",
+  "schema_version": "lumina-runtime-ui-cycle-v0.3",
   "timestamp": "2026-05-19T20:04:05.457032+00:00",
   "run_id": "run-ab2a92a1-e1d",
   "requested_action": "chamber_observation_cycle",
@@ -17,9 +17,9 @@
     "transition": true,
     "mutation": false,
     "promotion": null,
-    "chain_valid": true,
-    "symbolic_context_present": true,
-    "symbolic_dependency_allowed": false
+    "symbolic_dependency": true,
+    "ethereonic_attachment": true,
+    "chain_valid": true
   },
   "canon": {
     "current_head": null,
@@ -63,37 +63,5 @@
     },
     "topology_receipt_present": true
   },
-  "authority_boundary": "Display receipt only; does not authorize action, alter governance, mutate canon, change mode legality, expose capabilities, or execute tools.",
-  "runtime_truth": {
-    "governance_chain": {
-      "status": "empty_or_missing",
-      "valid": true,
-      "event_count": 0
-    },
-    "canon_lineage": {
-      "status": "empty_or_missing",
-      "valid": true,
-      "current_head": null,
-      "record_count": 0
-    },
-    "protocol_conformance": {
-      "status": "audited",
-      "valid": true,
-      "issues": []
-    },
-    "capability_registry": {
-      "status": "audited",
-      "valid": false,
-      "capability_count": 14,
-      "issues": [
-        "continuity_restore_store: unexpected mutation_scope checkpoint",
-        "lumina_workspace_host: unexpected mutation_scope workspace"
-      ]
-    },
-    "symbolic_boundary": {
-      "symbolic_context_present": true,
-      "symbolic_dependency_allowed": false,
-      "contract_version": "1.0"
-    }
-  }
+  "authority_boundary": "Display receipt only; does not authorize action, alter governance, mutate canon, change mode legality, expose capabilities, or execute tools."
 }
