@@ -19,6 +19,71 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/styles.css" />
   <style>
+    .truth-boundary-callout {
+      max-width: 940px;
+      display: grid;
+      grid-template-columns: minmax(190px, .44fr) minmax(0, 1fr);
+      gap: clamp(1.2rem, 3vw, 2.25rem);
+      align-items: start;
+      padding: clamp(1.55rem, 3vw, 2.25rem);
+      position: relative;
+      overflow: hidden;
+      border-color: rgba(217,168,78,.26);
+    }
+    .truth-boundary-callout::before {
+      content: "";
+      position: absolute;
+      inset: 1.05rem auto 1.05rem 0;
+      width: 3px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, transparent, rgba(217,168,78,.85), rgba(126,240,209,.55), transparent);
+      box-shadow: 0 0 22px rgba(217,168,78,.26);
+    }
+    .truth-boundary-callout::after {
+      content: "Ψ";
+      position: absolute;
+      right: clamp(1rem, 3vw, 2rem);
+      bottom: -.35rem;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(3.8rem, 8vw, 6.8rem);
+      line-height: 1;
+      color: rgba(138,164,255,.055);
+      pointer-events: none;
+    }
+    .truth-boundary-kicker {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      border: 1px solid rgba(217,168,78,.24);
+      border-radius: 999px;
+      background: rgba(217,168,78,.07);
+      padding: .42rem .72rem;
+      font-family: Cinzel, Georgia, "Times New Roman", serif;
+      font-size: .78rem;
+      line-height: 1;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+      color: rgba(255,235,190,.94);
+      box-shadow: inset 0 0 18px rgba(217,168,78,.06);
+    }
+    .truth-boundary-title {
+      margin: .72rem 0 0;
+      max-width: 10ch;
+      font-family: Cinzel, Georgia, "Times New Roman", serif;
+      font-size: clamp(1.35rem, 2.8vw, 2.05rem);
+      line-height: 1.05;
+      letter-spacing: .025em;
+      color: rgba(244,248,255,.96);
+    }
+    .truth-boundary-copy {
+      position: relative;
+      z-index: 1;
+      max-width: 68ch;
+      margin: 0;
+      font-size: clamp(1rem, 1.7vw, 1.08rem);
+      line-height: 1.72;
+      color: var(--muted);
+    }
     .detoastering-callout {
       max-width: 900px;
       text-align: center;
@@ -44,6 +109,8 @@
       font-size: 1.02rem;
     }
     @media (max-width: 760px) {
+      .truth-boundary-callout { grid-template-columns: 1fr; gap: 1rem; }
+      .truth-boundary-title { max-width: none; }
       .principle-image { width: min(100%, 520px); border-radius: 18px; }
       .detoastering-callout small { font-size: 1.05rem; }
     }
@@ -57,7 +124,7 @@
       <section class="hero"><div class="container"><span class="eyebrow">Principles - design spine</span><h1>The direction needs principles, not only aesthetics.</h1><p class="lead">These principles keep the project grounded. They help separate what is load bearing from what is atmospheric, and they shape how the site, specimen work, and longer horizon should continue to evolve.</p></div></section>
       <section class="section"><div class="container grid-3"><article class="card" data-glow><h3>Continuity over restart</h3><p>The environment should preserve momentum and project state instead of forcing the human to rebuild the surface of work every time.</p></article><article class="card" data-glow><h3>Guidance without domination</h3><p>Assistance should be embedded where useful, quiet where unnecessary, and never so loud that it overwhelms the actual work.</p></article><article class="card" data-glow><h3>Plasticity with governance</h3><p>The interface can adapt, but adaptation must remain coherent. Flexibility is valuable only when it does not collapse into chaos.</p></article></div></section>
       <section class="section"><div class="container grid-3"><article class="card" data-glow><h3>Myth with evidence</h3><p>We use myth, metaphor, and philosophy because they help people feel the shape of the work. We also try to be clear about what is built, what is tested, and what is still a question.</p></article><article class="card" data-glow><h3>Sensory polish in service of meaning</h3><p>Glow, motion, and sound are useful when they support the experience and identity of the environment, not when they distract from its purpose.</p></article><article class="card" data-glow><h3>Build only where value is real</h3><p>The aim is not to rebuild everything. The aim is to intervene where the philosophy genuinely improves the digital environment.</p></article></div></section>
-      <section class="section"><div class="container feature-callout"><small>Truth boundary</small><p class="section-copy">Some of the language here is symbolic on purpose. Ships, thresholds, weather, signals, and mythic names help us talk about complex ideas without flattening them. But they are not proof by themselves. When something is implemented or observable, we say so. When something is a metaphor, a design direction, or a hypothesis, we try to name it that way. The imagination can point the ship toward open water; the evidence still has to steer.</p></div></section>
+      <section class="section"><div class="container feature-callout truth-boundary-callout"><div><span class="truth-boundary-kicker">Truth boundary</span><h2 class="truth-boundary-title">Evidence still steers.</h2></div><p class="truth-boundary-copy">Some of the language here is symbolic on purpose. Ships, thresholds, weather, signals, and mythic names help us talk about complex ideas without flattening them. But they are not proof by themselves. When something is implemented or observable, we say so. When something is a metaphor, a design direction, or a hypothesis, we try to name it that way. The imagination can point the ship toward open water; the evidence still has to steer.</p></div></section>
       <section class="section"><div class="container feature-callout detoastering-callout"><img class="principle-image" src="assets/not-magic-not-toaster.PNG" alt="Admiral Sir Reginald Toastington III stands as a humorous naval portrait for the detoastering doctrine." loading="lazy" /><small>Not magic. Not a toaster.</small><p class="section-copy">We try not to inflate these systems into something mystical, and we also try not to flatten them into ordinary appliances. A toaster is built for one narrow job. Adaptive AI environments are stranger than that: they involve language, memory, context, tools, consent, design, and relationship. The point is not to pretend the machine is human. The point is to take the actual complexity seriously.</p></div></section>
       <section class="section"><div class="container feature-callout"><small>How these principles map onto the site</small><p class="section-copy">The homepage states the thesis. The specimen shows a directional artifact. Lumina frames the longer environmental horizon. Continuity explains the core practical wedge. These principles keep all of it aligned as the project grows.</p><div class="hero-actions"><a class="button primary ping-target" href="continuity.html">Read continuity page</a><a class="button secondary ping-target" href="roadmap.html">Open roadmap</a></div></div></section>
     </main>
