@@ -42,6 +42,7 @@ return -> reflect -> recommend -> govern -> record
 - New human reader: `START_HERE_HUMANS.md`
 - Lumina OS work: `START_HERE_LUMINA_OS.md`
 - Active Lumina file ownership: `LuminaOS/bootstrap/Ship_of_Ethereon_V2/ACTIVE_RUNTIME_INDEX.md`
+- Artifact truth / drift prevention: `docs/ARTIFACT_TRUTH_CONTRACT.md`
 - Psi Class staging: `START_HERE_SHIP_OF_ETHEREON_PSI_CLASS.md`
 - Lisp symbolic continuity: `lumina/lisp/README.md`
 
@@ -54,7 +55,8 @@ return -> reflect -> recommend -> govern -> record
 - Lisp preserves thought-shapes and is not executable.
 - Psi Class is staging unless promoted through validated work.
 - Root spikes are reference material unless deliberately moved into the bootstrap path.
+- When runtime, registry, validation receipts, docs, or website language disagree, reconcile them through `docs/ARTIFACT_TRUTH_CONTRACT.md`.
 
 ## Next maintenance step
 
-Keep this file short. When a lane changes status, update this map and the matching lane-specific start file.
+Keep this file short. When a lane changes status, update this map, the matching lane-specific start file, and the artifact truth contract if the truth hierarchy itself changes.
