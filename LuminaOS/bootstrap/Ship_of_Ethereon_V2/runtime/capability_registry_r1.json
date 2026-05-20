@@ -120,19 +120,6 @@
       "feature_flag": "ETHEREON_PSI42"
     },
     {
-      "capability_id": "resonance_ledger_adapter",
-      "name": "Resonance Ledger Adapter",
-      "module_path": "sea_trials_set_one_r1_merged.py",
-      "status": "experimental",
-      "category": "expressive",
-      "allowed_modes": ["Observation", "Sandbox", "DryDock"],
-      "mutation_scope": "artifact",
-      "requires_validation": true,
-      "authority_boundary": "May read and emit resonance metadata; may not write governance state.",
-      "dependencies": ["context_bundle_builder"],
-      "feature_flag": "ETHEREON_RESONANCE"
-    },
-    {
       "capability_id": "psi42_transceiver_v16",
       "name": "Psi-42 Quantum-Inspired Classical Signal Transceiver v1.6",
       "module_path": "psi42_transceiver_v1_6.py",
