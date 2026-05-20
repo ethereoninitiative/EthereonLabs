@@ -44,16 +44,18 @@ python bin/lumina state --limit 12
 | Checkpoint-linked advisory history | `runtime/lumina_self_guidance_history_r1.py` |
 | Self-guided runner bridge | `runtime/runtime_runner_self_guided_bridge_r1.py` |
 | Recursive reflection motif | `runtime/lumina_reflective_autonomy_layer_r1.py` |
+| Meaning metabolism / assimilation ledger | `runtime/lumina_meaning_metabolism_layer_r1.py` |
 | Reflection-before-guidance runner bridge | `runtime/runtime_runner_reflective_self_guided_bridge_r1.py` |
 | Bridge-stack explanation | `docs/Lumina_Runner_Bridge_Stack_001.md` |
+| Meaning metabolism doctrine note | `docs/Lumina_Meaning_Metabolism_Layer_001.md` |
 
 Current motif:
 
 ```text
-return -> reflect -> recommend -> govern -> record
+return -> reflect -> assimilate -> recommend -> govern -> record
 ```
 
-Reflection and self-guidance are advisory. They do not own mode legality, mutation permission, canon lineage, promotion gates, checkpoint legality, or consent.
+Reflection, meaning metabolism, and self-guidance are advisory. They do not own mode legality, mutation permission, canon lineage, promotion gates, checkpoint legality, or consent.
 
 ## Orchestration lane
 
@@ -108,6 +110,7 @@ Psi-42 is an instrument. It does not own governance, canon, or runtime law.
 | Core runtime / governance / canon | `runtime/sea_trials_set_one_r1_merged.py` |
 | Self-guidance | `runtime/sea_trials_lumina_self_guidance_r1.py` |
 | Reflective autonomy | `sea_trials_lumina_reflective_autonomy_r1.py` |
+| Meaning metabolism | `sea_trials_lumina_meaning_metabolism_r1.py` |
 | Reflective autonomy wiring | `sea_trials_lumina_reflective_autonomy_wiring_r1.py` |
 | Orchestration stack | `sea_trials_lumina_orchestration_stack_r1.py` |
 | Orchestration continuity | `sea_trials_lumina_orchestration_continuity_r1.py` |
@@ -127,6 +130,7 @@ Psi-42 is an instrument. It does not own governance, canon, or runtime law.
 - `docs/Lumina_Local_Runbook_001.md`
 - `docs/Lumina_First_Village_Framing_001.md`
 - `docs/Lumina_Reflective_Autonomy_Layer_001.md`
+- `docs/Lumina_Meaning_Metabolism_Layer_001.md`
 - `docs/Lumina_Runner_Bridge_Stack_001.md`
 
 ## Maintenance rule
