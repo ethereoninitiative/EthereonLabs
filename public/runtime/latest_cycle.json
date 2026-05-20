@@ -84,7 +84,7 @@
     "capability_registry": {
       "status": "audited",
       "valid": true,
-      "capability_count": 14,
+      "capability_count": 13,
       "issues": []
     },
     "symbolic_boundary": {
