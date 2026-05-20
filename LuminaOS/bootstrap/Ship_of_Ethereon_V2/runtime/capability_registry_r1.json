@@ -94,19 +94,6 @@
       "feature_flag": "ETHEREON_SELF_GUIDANCE"
     },
     {
-      "capability_id": "continuity_assessor",
-      "name": "Continuity Assessor",
-      "module_path": "runtime_runner_r1_merged.py",
-      "status": "experimental",
-      "category": "expressive",
-      "allowed_modes": ["Observation"],
-      "mutation_scope": "none",
-      "requires_validation": false,
-      "authority_boundary": "May evaluate continuity metrics but may not declare canon state or governance law.",
-      "dependencies": ["session_state_manager"],
-      "feature_flag": "ETHEREON_OBSERVATION"
-    },
-    {
       "capability_id": "psi42_probe_interface",
       "name": "Psi-42 Probe Interface",
       "module_path": "psi42_transceiver_v1_6.py",
