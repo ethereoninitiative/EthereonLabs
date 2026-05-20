@@ -13,7 +13,7 @@ This file gives a fast map of the current EthereonLabs lanes.
 | Lumina host layer | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/`, `install/`, `services/` | Local command, doctor, observer, service examples |
 | Lumina Studio | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/` | Local operator surface |
 | Lumina orchestration | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/lumina_*` | Context loading and action routing |
-| Self-guidance and reflection | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/lumina_self_*`, `runtime/lumina_reflective_*` | Advisory recommendation and reflection before guidance |
+| Self-guidance, reflection, and meaning metabolism | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/lumina_self_*`, `runtime/lumina_reflective_*`, `runtime/lumina_meaning_metabolism_layer_r1.py` | Advisory reflection, assimilation, and recommendation before governance |
 | Chamber | `chamber.html`, `chamber-app/`, `docs/chamber_*` | Public interface and app lane |
 | RSE research | `research/rse_crystalline/` | Research, simulations, and figures |
 | Ship of Ethereon Psi Class | `START_HERE_SHIP_OF_ETHEREON_PSI_CLASS.md`, `LuminaOS/bootstrap/Ship_of_Ethereon_Psi_Class/` | Staging and project consolidation |
@@ -26,6 +26,7 @@ This file gives a fast map of the current EthereonLabs lanes.
 host or Studio
   -> project return / host context
   -> reflective trace
+  -> meaning assimilation
   -> self-guidance advisory
   -> governed runtime cycle
   -> checkpoint and receipt
@@ -34,7 +35,7 @@ host or Studio
 Short form:
 
 ```text
-return -> reflect -> recommend -> govern -> record
+return -> reflect -> assimilate -> recommend -> govern -> record
 ```
 
 ## Start points
@@ -43,19 +44,22 @@ return -> reflect -> recommend -> govern -> record
 - Lumina OS work: `START_HERE_LUMINA_OS.md`
 - Active Lumina file ownership: `LuminaOS/bootstrap/Ship_of_Ethereon_V2/ACTIVE_RUNTIME_INDEX.md`
 - Artifact truth / drift prevention: `docs/ARTIFACT_TRUTH_CONTRACT.md`
+- Governance / canon seed plan: `docs/GOVERNANCE_CANON_SEED_PLAN.md`
 - Psi Class staging: `START_HERE_SHIP_OF_ETHEREON_PSI_CLASS.md`
 - Lisp symbolic continuity: `lumina/lisp/README.md`
 
 ## Boundary reminders
 
 - Runtime work belongs in the Lumina OS substrate lane.
-- Reflection and self-guidance are advisory.
+- Reflection, meaning metabolism, and self-guidance are advisory.
+- Meaning metabolism may seed future stance, but it does not govern mode legality, mutation permission, promotion gates, checkpoint legality, canon lineage, or consent.
 - Chamber is public/app surface, not the runtime substrate.
 - RSE research does not define runtime behavior by default.
 - Lisp preserves thought-shapes and is not executable.
 - Psi Class is staging unless promoted through validated work.
 - Root spikes are reference material unless deliberately moved into the bootstrap path.
 - When runtime, registry, validation receipts, docs, or website language disagree, reconcile them through `docs/ARTIFACT_TRUTH_CONTRACT.md`.
+- Empty governance or canon history is valid only when explained; use `docs/GOVERNANCE_CANON_SEED_PLAN.md` before seeding history.
 
 ## Next maintenance step
 
