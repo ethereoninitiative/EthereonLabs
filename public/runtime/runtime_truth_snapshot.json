@@ -1,8 +1,8 @@
 {
   "schema_version": "lumina-runtime-truth-public-snapshot-v0.1",
   "source_latest_cycle": "/home/runner/work/EthereonLabs/EthereonLabs/public/runtime/latest_cycle.json",
-  "latest_cycle_run_id": "run-28d5f853-fc7",
-  "latest_cycle_timestamp": "2026-05-17T19:36:33.310267+00:00",
+  "latest_cycle_run_id": "run-1a93a6af-5cb",
+  "latest_cycle_timestamp": "2026-05-20T20:30:34.816086+00:00",
   "mode": {
     "requested": "Continuity",
     "current": "Observation"
@@ -27,12 +27,9 @@
     },
     "capability_registry": {
       "status": "audited",
-      "valid": false,
+      "valid": true,
       "capability_count": 14,
-      "issues": [
-        "continuity_restore_store: unexpected mutation_scope checkpoint",
-        "lumina_workspace_host: unexpected mutation_scope workspace"
-      ]
+      "issues": []
     },
     "symbolic_boundary": {
       "symbolic_context_present": true,

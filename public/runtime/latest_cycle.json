@@ -83,12 +83,9 @@
     },
     "capability_registry": {
       "status": "audited",
-      "valid": false,
+      "valid": true,
       "capability_count": 14,
-      "issues": [
-        "continuity_restore_store: unexpected mutation_scope checkpoint",
-        "lumina_workspace_host: unexpected mutation_scope workspace"
-      ]
+      "issues": []
     },
     "symbolic_boundary": {
       "symbolic_context_present": true,
