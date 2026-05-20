@@ -43,6 +43,7 @@ return -> reflect -> recommend -> govern -> record
 - Lumina OS work: `START_HERE_LUMINA_OS.md`
 - Active Lumina file ownership: `LuminaOS/bootstrap/Ship_of_Ethereon_V2/ACTIVE_RUNTIME_INDEX.md`
 - Artifact truth / drift prevention: `docs/ARTIFACT_TRUTH_CONTRACT.md`
+- Governance / canon seed plan: `docs/GOVERNANCE_CANON_SEED_PLAN.md`
 - Psi Class staging: `START_HERE_SHIP_OF_ETHEREON_PSI_CLASS.md`
 - Lisp symbolic continuity: `lumina/lisp/README.md`
 
@@ -56,6 +57,7 @@ return -> reflect -> recommend -> govern -> record
 - Psi Class is staging unless promoted through validated work.
 - Root spikes are reference material unless deliberately moved into the bootstrap path.
 - When runtime, registry, validation receipts, docs, or website language disagree, reconcile them through `docs/ARTIFACT_TRUTH_CONTRACT.md`.
+- Empty governance or canon history is valid only when explained; use `docs/GOVERNANCE_CANON_SEED_PLAN.md` before seeding history.
 
 ## Next maintenance step
 
