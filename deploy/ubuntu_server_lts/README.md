@@ -13,6 +13,10 @@ It establishes the first believable beta path:
 
 - `bootstrap_lumina_appliance_r1.sh`
   - first-pass installer scaffold for Ubuntu Server
+- `host_registry.example.json`
+  - example host-of-record registry for deployment drydock
+- `deployment_doctor_r1.py`
+  - non-mutating preflight checker for host boundary, env, path, and service-file readiness
 - `lumina-orchestrator.service`
   - systemd one-shot unit for bounded orchestration cycles
 - `lumina-orchestrator.timer`
@@ -82,11 +86,22 @@ On a fresh Ubuntu Server host:
 
 1. clone the repo or run the bootstrap script
 2. review and edit `/etc/lumina/lumina-appliance.env`
-3. build the Chamber app
-4. initialize PostgreSQL with the three Chamber SQL files
-5. install and enable the systemd units
-6. validate logs, queue persistence, and orchestration checkpoints across reboot
-7. run the deployment drydock checklist before treating the appliance as a real hosted runtime lane
+3. copy and edit `host_registry.example.json` for the real host
+4. build the Chamber app
+5. initialize PostgreSQL with the three Chamber SQL files
+6. install and enable the systemd units
+7. validate logs, queue persistence, and orchestration checkpoints across reboot
+8. run the deployment doctor / drydock checklist before treating the appliance as a real hosted runtime lane
+
+Example non-mutating preflight:
+
+```bash
+python deploy/ubuntu_server_lts/deployment_doctor_r1.py \
+  --repo-root /opt/lumina/EthereonLabs \
+  --env-file /etc/lumina/lumina-appliance.env \
+  --registry deploy/ubuntu_server_lts/host_registry.example.json \
+  --host-id host-local-dev-001
+```
 
 ## What this scaffold is for
 
