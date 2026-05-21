@@ -13,6 +13,10 @@ It establishes the first believable beta path:
 
 - `bootstrap_lumina_appliance_r1.sh`
   - first-pass installer scaffold for Ubuntu Server
+- `host_registry.example.json`
+  - example host-of-record registry for deployment drydock
+- `deployment_doctor_r1.py`
+  - non-mutating preflight checker for host boundary, env, path, and service-file readiness
 - `lumina-orchestrator.service`
   - systemd one-shot unit for bounded orchestration cycles
 - `lumina-orchestrator.timer`
@@ -58,16 +62,46 @@ It preserves the repo's present law:
 - consent remains visible in Chamber
 - accepted queue items do not yet automatically become governed execution records
 
+## Deployment keel guardrails
+
+This scaffold is now paired with a deployment keel documentation set:
+
+- `../../docs/DEPLOYMENT_HOST_REGISTRY_MODEL.md`
+- `../../docs/DEPLOYMENT_RUNTIME_RECEIPT_CONTRACT.md`
+- `../../docs/DEPLOYMENT_DRYDOCK_CHECKLIST.md`
+
+These documents define the host-of-record model, deployed receipt expectations, and drydock checks that should be satisfied before this appliance is treated as ordinary hosted operation.
+
+The short rule:
+
+```text
+host boundary -> appliance preflight -> governed runtime receipt -> Chamber bridge
+```
+
+Do not treat accepted Chamber queue items as executable work until both the Chamber bridge discipline and deployment host discipline hold.
+
 ## First-use sequence
 
 On a fresh Ubuntu Server host:
 
 1. clone the repo or run the bootstrap script
 2. review and edit `/etc/lumina/lumina-appliance.env`
-3. build the Chamber app
-4. initialize PostgreSQL with the three Chamber SQL files
-5. install and enable the systemd units
-6. validate logs, queue persistence, and orchestration checkpoints across reboot
+3. copy and edit `host_registry.example.json` for the real host
+4. build the Chamber app
+5. initialize PostgreSQL with the three Chamber SQL files
+6. install and enable the systemd units
+7. validate logs, queue persistence, and orchestration checkpoints across reboot
+8. run the deployment doctor / drydock checklist before treating the appliance as a real hosted runtime lane
+
+Example non-mutating preflight:
+
+```bash
+python deploy/ubuntu_server_lts/deployment_doctor_r1.py \
+  --repo-root /opt/lumina/EthereonLabs \
+  --env-file /etc/lumina/lumina-appliance.env \
+  --registry deploy/ubuntu_server_lts/host_registry.example.json \
+  --host-id host-local-dev-001
+```
 
 ## What this scaffold is for
 
@@ -81,4 +115,4 @@ into:
 
 ## Next likely hardening move
 
-After this scaffold, the next threshold is to validate the appliance end-to-end on a real Ubuntu Server VM and then decide whether accepted Chamber queue items should emit governed runtime execution records under explicit policy.
+After this scaffold, the next threshold is to validate the appliance end-to-end on a real Ubuntu Server VM, emit a deployment drydock receipt, and then decide whether accepted Chamber queue items should emit governed runtime execution records under explicit policy.

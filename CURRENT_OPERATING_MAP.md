@@ -13,6 +13,7 @@ This file gives a fast map of the current EthereonLabs lanes.
 | Lumina host layer | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/`, `install/`, `services/` | Local command, doctor, observer, service examples |
 | Lumina Studio | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/` | Local operator surface |
 | Lumina orchestration | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/lumina_*` | Context loading and action routing |
+| Lumina deployment appliance | `deploy/ubuntu_server_lts/`, `docs/DEPLOYMENT_*` | Ubuntu Server appliance scaffold and deployment keel guardrails |
 | Self-guidance, reflection, and meaning metabolism | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/lumina_self_*`, `runtime/lumina_reflective_*`, `runtime/lumina_meaning_metabolism_layer_r1.py` | Advisory reflection, assimilation, and recommendation before governance |
 | Chamber | `chamber.html`, `chamber-app/`, `docs/chamber_*` | Public interface and app lane |
 | RSE research | `research/rse_crystalline/` | Research, simulations, and figures |
@@ -39,11 +40,19 @@ Short form:
 return -> reflect -> assimilate -> recommend -> govern -> record
 ```
 
+Deployment bridge form:
+
+```text
+host boundary -> appliance preflight -> governed runtime receipt -> Chamber bridge
+```
+
 ## Start points
 
 - New human reader: `START_HERE_HUMANS.md`
 - Lumina OS work: `START_HERE_LUMINA_OS.md`
 - Active Lumina file ownership: `LuminaOS/bootstrap/Ship_of_Ethereon_V2/ACTIVE_RUNTIME_INDEX.md`
+- Lumina deployment appliance: `deploy/ubuntu_server_lts/README.md`
+- Deployment keel guardrails: `docs/DEPLOYMENT_HOST_REGISTRY_MODEL.md`, `docs/DEPLOYMENT_RUNTIME_RECEIPT_CONTRACT.md`, and `docs/DEPLOYMENT_DRYDOCK_CHECKLIST.md`
 - Artifact truth / drift prevention: `docs/ARTIFACT_TRUTH_CONTRACT.md`
 - Governance / canon seed plan: `docs/GOVERNANCE_CANON_SEED_PLAN.md`
 - Fleet stewardship follow-up: `docs/FLEET_STEWARDSHIP_PACKET_2026_05_20.md` and `docs/FLEET_STEWARDSHIP_PACKET_AMENDMENT_2026_05_20.md`
@@ -53,6 +62,7 @@ return -> reflect -> assimilate -> recommend -> govern -> record
 ## Boundary reminders
 
 - Runtime work belongs in the Lumina OS substrate lane.
+- Deployment appliance work must preserve a host/environment boundary before Chamber queue items become runtime work.
 - Reflection, meaning metabolism, and self-guidance are advisory.
 - Meaning metabolism may seed future stance, but it does not govern mode legality, mutation permission, promotion gates, checkpoint legality, canon lineage, or consent.
 - Chamber is public/app surface, not the runtime substrate.
