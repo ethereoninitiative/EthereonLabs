@@ -58,6 +58,24 @@ It preserves the repo's present law:
 - consent remains visible in Chamber
 - accepted queue items do not yet automatically become governed execution records
 
+## Deployment keel guardrails
+
+This scaffold is now paired with a deployment keel documentation set:
+
+- `../../docs/DEPLOYMENT_HOST_REGISTRY_MODEL.md`
+- `../../docs/DEPLOYMENT_RUNTIME_RECEIPT_CONTRACT.md`
+- `../../docs/DEPLOYMENT_DRYDOCK_CHECKLIST.md`
+
+These documents define the host-of-record model, deployed receipt expectations, and drydock checks that should be satisfied before this appliance is treated as ordinary hosted operation.
+
+The short rule:
+
+```text
+host boundary -> appliance preflight -> governed runtime receipt -> Chamber bridge
+```
+
+Do not treat accepted Chamber queue items as executable work until both the Chamber bridge discipline and deployment host discipline hold.
+
 ## First-use sequence
 
 On a fresh Ubuntu Server host:
@@ -68,6 +86,7 @@ On a fresh Ubuntu Server host:
 4. initialize PostgreSQL with the three Chamber SQL files
 5. install and enable the systemd units
 6. validate logs, queue persistence, and orchestration checkpoints across reboot
+7. run the deployment drydock checklist before treating the appliance as a real hosted runtime lane
 
 ## What this scaffold is for
 
@@ -81,4 +100,4 @@ into:
 
 ## Next likely hardening move
 
-After this scaffold, the next threshold is to validate the appliance end-to-end on a real Ubuntu Server VM and then decide whether accepted Chamber queue items should emit governed runtime execution records under explicit policy.
+After this scaffold, the next threshold is to validate the appliance end-to-end on a real Ubuntu Server VM, emit a deployment drydock receipt, and then decide whether accepted Chamber queue items should emit governed runtime execution records under explicit policy.
