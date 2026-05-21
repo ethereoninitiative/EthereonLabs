@@ -18,6 +18,7 @@ This file gives a fast map of the current EthereonLabs lanes.
 | RSE research | `research/rse_crystalline/` | Research, simulations, and figures |
 | Ship of Ethereon Psi Class | `START_HERE_SHIP_OF_ETHEREON_PSI_CLASS.md`, `LuminaOS/bootstrap/Ship_of_Ethereon_Psi_Class/` | Staging and project consolidation |
 | Lumina Lisp | `lumina/lisp/` | Non-executable symbolic snapshots |
+| Stewardship / review packets | `docs/FLEET_STEWARDSHIP_PACKET_*`, `docs/*BRIDGE*`, `docs/*REGISTRY*`, `docs/*VOCABULARY*` | Review follow-up, bridge discipline, surface maps, and naming hygiene |
 | Root spikes | `continuity_restore_spike_r1.py`, `lumina_workspace_host_spike_r1.py` | Reference / exploration history |
 
 ## Current active Lumina path
@@ -45,6 +46,7 @@ return -> reflect -> assimilate -> recommend -> govern -> record
 - Active Lumina file ownership: `LuminaOS/bootstrap/Ship_of_Ethereon_V2/ACTIVE_RUNTIME_INDEX.md`
 - Artifact truth / drift prevention: `docs/ARTIFACT_TRUTH_CONTRACT.md`
 - Governance / canon seed plan: `docs/GOVERNANCE_CANON_SEED_PLAN.md`
+- Fleet stewardship follow-up: `docs/FLEET_STEWARDSHIP_PACKET_2026_05_20.md` and `docs/FLEET_STEWARDSHIP_PACKET_AMENDMENT_2026_05_20.md`
 - Psi Class staging: `START_HERE_SHIP_OF_ETHEREON_PSI_CLASS.md`
 - Lisp symbolic continuity: `lumina/lisp/README.md`
 
@@ -57,6 +59,7 @@ return -> reflect -> assimilate -> recommend -> govern -> record
 - RSE research does not define runtime behavior by default.
 - Lisp preserves thought-shapes and is not executable.
 - Psi Class is staging unless promoted through validated work.
+- Stewardship and review packets guide future work; they do not create runtime authority by themselves.
 - Root spikes are reference material unless deliberately moved into the bootstrap path.
 - When runtime, registry, validation receipts, docs, or website language disagree, reconcile them through `docs/ARTIFACT_TRUTH_CONTRACT.md`.
 - Empty governance or canon history is valid only when explained; use `docs/GOVERNANCE_CANON_SEED_PLAN.md` before seeding history.
