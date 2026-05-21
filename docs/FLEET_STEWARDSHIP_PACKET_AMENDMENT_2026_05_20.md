@@ -18,6 +18,7 @@ It now also records the deployment-keel repair that followed Prisma's response: 
 - `docs/DEPLOYMENT_HOST_REGISTRY_MODEL.md`
 - `docs/DEPLOYMENT_RUNTIME_RECEIPT_CONTRACT.md`
 - `docs/DEPLOYMENT_DRYDOCK_CHECKLIST.md`
+- `docs/DEPLOYMENT_DOCTOR_NOTE.md`
 - `deploy/ubuntu_server_lts/host_registry.example.json`
 - `deploy/ubuntu_server_lts/deployment_doctor_r1.py`
 
@@ -25,4 +26,4 @@ It now also records the deployment-keel repair that followed Prisma's response: 
 
 The original boundary note remains a useful breadcrumb.
 
-The deployment-keel repair turns that breadcrumb into a first structural model: host-of-record, deployed receipt expectations, appliance drydock checklist, example registry, and non-mutating deployment doctor.
+The deployment-keel repair turns that breadcrumb into a first structural model: host-of-record, deployed receipt expectations, appliance drydock checklist, example registry, companion doctor note, and non-mutating deployment doctor.
