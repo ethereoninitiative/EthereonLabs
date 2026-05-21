@@ -1,0 +1,30 @@
+{
+  "version": "0.1",
+  "description": "Example host-of-record registry for the Lumina Ubuntu Server appliance scaffold. Example only; copy and edit for a real host.",
+  "hosts": [
+    {
+      "host_id": "host-local-dev-001",
+      "host_label": "Local Lumina development host",
+      "host_type": "local",
+      "runtime_scope": "development",
+      "approved_by_user_id": "spencer",
+      "operator_user_ids": [
+        "spencer"
+      ],
+      "allowed_runtime_paths": [
+        "/opt/lumina/EthereonLabs/LuminaOS/bootstrap/Ship_of_Ethereon_V2"
+      ],
+      "allowed_action_types": [
+        "audit",
+        "transition"
+      ],
+      "state_root": "/var/lib/lumina",
+      "log_root": "/var/log/lumina",
+      "service_user": "lumina",
+      "created_at": "2026-05-20T00:00:00Z",
+      "review_after": null,
+      "revoked_at": null,
+      "notes": "Example only. A real host should be reviewed and recorded before hosted runtime operation."
+    }
+  ]
+}
