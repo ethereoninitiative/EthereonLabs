@@ -1,6 +1,6 @@
 {
-  "version": "0.8",
-  "description": "Minimal capability registry for the Ethereon Runtime Spine, now including continuity restore, workspace-host handshake support, checkpoint-refreshed bounded Lumina self-guidance, quantum-concepts boundary artifacts, and Psi-42 v1.7 hybrid topology probes under explicit authority boundaries.",
+  "version": "0.9",
+  "description": "Minimal capability registry for the Ethereon Runtime Spine, now including continuity restore, workspace-host handshake support, checkpoint-refreshed bounded Lumina self-guidance, quantum-concepts boundary artifacts, Psi-42 v1.7 hybrid topology probes, and Psi-42 v1.8 doctrine-aligned transceiver diagnostics under explicit authority boundaries.",
   "capabilities": [
     {
       "capability_id": "session_state_manager",
@@ -131,6 +131,19 @@
       "authority_boundary": "Owns derived signal metrics, derived topology metrics, hybrid continuity coherence, and relational restoration receipts only. Does not own canon state, governance law, mode legality, checkpoint legality, capability loading authority, or primary continuity authority.",
       "dependencies": ["session_state_manager", "psi42_probe_interface", "psi42_transceiver_v16"],
       "feature_flag": "ETHEREON_PSI42_V17"
+    },
+    {
+      "capability_id": "psi42_transceiver_v18",
+      "name": "Psi-42 Doctrine-Aligned Transceiver Diagnostics v1.8",
+      "module_path": "psi42_transceiver_v1_8.py",
+      "status": "experimental-active",
+      "category": "expressive",
+      "allowed_modes": ["Observation", "Sandbox"],
+      "mutation_scope": "none",
+      "requires_validation": false,
+      "authority_boundary": "Owns derived transceiver diagnostics, derived signal metrics, derived topology metrics, and restoration receipts only. Does not own canon state, governance law, mode legality, checkpoint legality, capability loading authority, human consent, or primary continuity authority.",
+      "dependencies": ["session_state_manager", "psi42_probe_interface", "psi42_transceiver_v16", "psi42_transceiver_v17"],
+      "feature_flag": "ETHEREON_PSI42_V18"
     },
     {
       "capability_id": "quantum_concepts_registry",
