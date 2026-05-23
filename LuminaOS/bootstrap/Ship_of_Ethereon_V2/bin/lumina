@@ -31,7 +31,7 @@ def _run(args: List[str], *, cwd: Optional[Path] = None) -> int:
 
 def cmd_run(args: argparse.Namespace) -> int:
     prompt = args.prompt or "Review Lumina OS progress and produce the next governed action receipt."
-    cmd = [_python(), str(STUDIO_DIR / "lumina_cli.py"), prompt]
+    cmd = [_python(), str(STUDIO_DIR / "lumina_cli_psi42_v18.py"), prompt]
     if args.receipt_json:
         cmd.append("--receipt-json")
     if args.full_json:
@@ -54,13 +54,15 @@ def cmd_run(args: argparse.Namespace) -> int:
 def cmd_observe(args: argparse.Namespace) -> int:
     cmd = [
         _python(),
-        str(RUNTIME_DIR / "runtime_runner_auto_snapshot_r1.py"),
+        str(RUNTIME_DIR / "runtime_runner_auto_snapshot_psi42_v18_r1.py"),
         "--current-mode", "Continuity",
         "--target-mode", "Observation",
         "--action", args.action,
         "--action-type", "audit",
         "--enable-flag", "ETHEREON_OBSERVATION",
         "--enable-flag", "ETHEREON_PSI42",
+        "--enable-flag", "ETHEREON_PSI42_V17",
+        "--enable-flag", "ETHEREON_PSI42_V18",
         "--enable-flag", "ETHEREON_RESONANCE",
         "--overlay-json", '{"active":true,"anchor_language":["english"],"continuity_phrase":"local observation cycle","harmonic_signature":[],"spiral_reference":null}',
         "--runtime-config-json", '{"toki_pona_required_for_resume":false,"binary_required_for_transition_validation":false,"light_language_required_for_capability_loading":false,"harmonic_frequency_required_for_mode_legality":false}',
