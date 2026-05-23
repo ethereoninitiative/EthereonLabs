@@ -8,6 +8,8 @@
 
 **Date added:** 2026-05-23
 
+**Related doctrine:** `Psi42_Transceiver_Doctrine_r1.md` translates this ancestor material into bounded Psi-42 design vocabulary and verification guidance.
+
 ---
 
 ## Boundary statement
