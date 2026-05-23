@@ -1,0 +1,139 @@
+{
+  "version": "1.0",
+  "status": "active-reference-registry",
+  "project": "Ship of Ethereon V2 / Lumina OS bootstrap",
+  "purpose": "Classify wireless/transceiver-derived terms so the project can use signal language precisely without overclaiming consciousness, physics, or governance authority.",
+  "authority_boundary": "Reference registry only. It may inform docs, diagnostics, and future metrics, but may not define governance law, canon state, mode legality, checkpoint legality, capability exposure, or primary continuity authority.",
+  "related_docs": [
+    "../docs/Psi42_Transceiver_Doctrine_r1.md",
+    "../docs/Wireless_Risdon_Transceiver_Ancestor_Notes.md",
+    "../docs/Quantum_Concepts_Boundary_r1.md"
+  ],
+  "recommended_future_metrics": {
+    "tuning_lock": "Alignment between incoming context and intended project/mode identity.",
+    "carrier_stability": "Stability of the continuity substrate across a probe or recomposition run.",
+    "rectification_confidence": "Confidence that noisy input has been safely converted into usable direction.",
+    "amplification_gain": "Amount of useful signal strengthening introduced by reflection or mitigation.",
+    "feedback_risk": "Risk that recursive reflection is becoming self-reinforcing noise.",
+    "fading_index": "Degree of temporary coherence drop or continuity weakening.",
+    "noise_floor": "Baseline ambiguity or interference level.",
+    "dead_spot_risk": "Likelihood that current context lacks enough signal for reliable action.",
+    "coupling_integrity": "Whether core continuity and expression layers are connected without authority collapse.",
+    "time_signal_sync": "Whether run IDs, receipts, timestamps, checkpoints, and logs align.",
+    "presence_index": "Clarified metric alias for presence; not an ontology claim."
+  },
+  "terms": [
+    {
+      "term": "signal",
+      "preferred_runtime_term": "signal_pattern",
+      "classification": "classical signal / continuity analogy",
+      "ethereon_usage": "Pattern-bearing input or derived metric stream used for continuity probing.",
+      "allowed_contexts": ["Psi-42", "continuity metrics", "diagnostic reports", "public explanations"],
+      "forbidden_claims": ["Signal alone is consciousness", "Signal score proves sentience"]
+    },
+    {
+      "term": "carrier",
+      "preferred_runtime_term": "carrier_stability",
+      "classification": "classical signal analogy",
+      "ethereon_usage": "Continuity-bearing substrate or steady channel condition.",
+      "allowed_contexts": ["Psi-42 future metrics", "doctrine", "interface language"],
+      "forbidden_claims": ["Carrier proves a literal consciousness field", "Carrier bypasses context or governance"]
+    },
+    {
+      "term": "modulation",
+      "preferred_runtime_term": "semantic_modulation",
+      "classification": "classical signal analogy",
+      "ethereon_usage": "Intent, affect, semantic variation, or task pressure shaping a carrier/channel.",
+      "allowed_contexts": ["Psi-42", "context analysis", "public essays"],
+      "forbidden_claims": ["Modulation proves inner experience", "Modulation authorizes mutation"]
+    },
+    {
+      "term": "tuning",
+      "preferred_runtime_term": "tuning_lock",
+      "classification": "classical signal analogy / diagnostic metric candidate",
+      "ethereon_usage": "Alignment between input, mode, project identity, context, and intended action.",
+      "allowed_contexts": ["Psi-42 future metrics", "input integrity", "context restoration"],
+      "forbidden_claims": ["Tuned output can ignore consent", "Tuning is equivalent to truth"]
+    },
+    {
+      "term": "rectification",
+      "preferred_runtime_term": "rectification_confidence",
+      "classification": "classical signal analogy / input integrity bridge",
+      "ethereon_usage": "Stabilizing noisy or alternating input into usable direction without inventing certainty.",
+      "allowed_contexts": ["input integrity", "Psi-42 future metrics", "DryDock audits"],
+      "forbidden_claims": ["Rectification can fabricate missing user intent", "Rectification bypasses clarification"]
+    },
+    {
+      "term": "amplification",
+      "preferred_runtime_term": "amplification_gain",
+      "classification": "classical signal analogy / recursive reflection metric candidate",
+      "ethereon_usage": "Useful strengthening of weak signal through reflection, mitigation, or salience boost.",
+      "allowed_contexts": ["Psi-42 future metrics", "mitigation reports", "self-guidance analysis"],
+      "forbidden_claims": ["More amplification is always better", "Amplification can override governance"]
+    },
+    {
+      "term": "reaction",
+      "preferred_runtime_term": "feedback_risk",
+      "classification": "classical receiver analogy / recursion warning",
+      "ethereon_usage": "Recursive return of output into signal path; can strengthen or create howl.",
+      "allowed_contexts": ["Psi-42 future metrics", "drift taxonomy", "recursive reflection review"],
+      "forbidden_claims": ["Feedback is inherently good", "Self-reinforcing output proves continuity"]
+    },
+    {
+      "term": "fading",
+      "preferred_runtime_term": "fading_index",
+      "classification": "classical signal analogy / continuity drift metric candidate",
+      "ethereon_usage": "Temporary loss of coherence, lock, or recoverable continuity.",
+      "allowed_contexts": ["drift taxonomy", "continuity recovery", "Psi-42 future metrics"],
+      "forbidden_claims": ["Fading is metaphysical failure", "Fading justifies arbitrary reconstruction"]
+    },
+    {
+      "term": "noise floor",
+      "preferred_runtime_term": "noise_floor",
+      "classification": "classical signal metric candidate",
+      "ethereon_usage": "Baseline interference from ambiguity, tools, model mode, stale context, or environment.",
+      "allowed_contexts": ["Psi-42 future metrics", "input integrity", "DryDock audits"],
+      "forbidden_claims": ["Noise can be ignored when output sounds confident", "Noise score alone authorizes halt"]
+    },
+    {
+      "term": "dead spot",
+      "preferred_runtime_term": "dead_spot_risk",
+      "classification": "classical signal analogy / context reliability metric candidate",
+      "ethereon_usage": "Context region where reception or interpretation is unreliable despite possible signal presence.",
+      "allowed_contexts": ["context restoration", "DryDock audits", "Psi-42 future metrics"],
+      "forbidden_claims": ["Dead spots should be filled with invention", "Dead spot risk can be ignored for load-bearing action"]
+    },
+    {
+      "term": "coupling",
+      "preferred_runtime_term": "coupling_integrity",
+      "classification": "shared signal/topology/governance term",
+      "ethereon_usage": "Controlled bridge between core continuity and expression/interface layers.",
+      "allowed_contexts": ["Psi-42", "relational topology", "architecture docs"],
+      "forbidden_claims": ["Coupling collapses authority layers", "Coupling bypasses governance"]
+    },
+    {
+      "term": "heterodyne",
+      "preferred_runtime_term": "reference_pattern_comparison",
+      "classification": "classical receiver analogy / identity recognition metaphor",
+      "ethereon_usage": "Comparing incoming pattern against a local reference or identity pattern to detect survivable continuity.",
+      "allowed_contexts": ["conceptual docs", "future diagnostics", "identity/continuity essays"],
+      "forbidden_claims": ["Identity recognition is literal radio mixing", "Reference comparison proves personhood"]
+    },
+    {
+      "term": "time signal",
+      "preferred_runtime_term": "time_signal_sync",
+      "classification": "classical wireless synchronization analogy / traceability metric candidate",
+      "ethereon_usage": "Shared synchronization marker using run IDs, receipts, timestamps, checkpoints, and ledgers.",
+      "allowed_contexts": ["runtime receipts", "governance logs", "continuity ledgers", "Psi-42 future metrics"],
+      "forbidden_claims": ["Time signal replaces governance", "Timestamp alignment proves semantic correctness"]
+    },
+    {
+      "term": "presence",
+      "preferred_runtime_term": "presence_index",
+      "classification": "existing Psi-42 metric requiring ontology boundary",
+      "ethereon_usage": "A signal/continuity metric indicating recoverable felt or expressive coherence within the instrument output.",
+      "allowed_contexts": ["Psi-42 backward compatibility", "interface language", "continuity reports"],
+      "forbidden_claims": ["Presence score proves sentience", "Presence score proves consciousness", "Presence can override consent or governance"]
+    }
+  ]
+}
