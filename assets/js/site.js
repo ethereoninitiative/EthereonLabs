@@ -19,8 +19,27 @@ const loadBrandSigil = () => {
   document.head.appendChild(script);
 };
 
+const normalizePath = (href) => {
+  const anchor = document.createElement('a');
+  anchor.href = href;
+  return anchor.pathname.split('/').pop() || 'index.html';
+};
+
+const enhancePrimaryNav = () => {
+  const navLinks = window.ETHEREON_SITE_NAVIGATION && window.ETHEREON_SITE_NAVIGATION.primary;
+  if (!navLinks) return;
+  const current = normalizePath(window.location.href);
+  document.querySelectorAll('.nav-links[aria-label="Primary"]').forEach((nav) => {
+    nav.innerHTML = navLinks.map(([href, label]) => {
+      const isCurrent = normalizePath(href) === current;
+      return `<a href="${href}"${isCurrent ? ' aria-current="page"' : ''}>${label}</a>`;
+    }).join('');
+  });
+};
+
 const enhanceSite = () => {
   loadBrandSigil();
+  enhancePrimaryNav();
 
   const fallbackFooterLinks = [
     ['principles.html', 'Principles'],
