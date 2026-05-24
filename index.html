@@ -3,135 +3,80 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EthereonLabs - Lumina OS</title>
-  <meta name="description" content="Lumina OS is a governed continuity substrate for restoring project state, guiding next steps, and routing work through inspectable runtime systems." />
+  <title>EthereonLabs - Adaptive software for returning to complex work</title>
+  <meta name="description" content="EthereonLabs is building Lumina: an adaptive continuity workspace that helps people return to complex creative and technical projects without rebuilding context from scratch." />
   <link rel="canonical" href="https://ethereonlabs.com/" />
   <meta property="og:site_name" content="EthereonLabs" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="EthereonLabs - Lumina OS" />
-  <meta property="og:description" content="Lumina OS restores context, recommends next steps, and routes execution through governed runtime systems." />
+  <meta property="og:title" content="EthereonLabs - Adaptive continuity workspaces" />
+  <meta property="og:description" content="Lumina helps people return to complex work with context, next steps, records, and human-controlled boundaries intact." />
   <meta property="og:url" content="https://ethereonlabs.com/" />
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="EthereonLabs - Lumina OS" />
-  <meta name="twitter:description" content="A governed continuity substrate for restoring project state and guiding next steps." />
+  <meta name="twitter:title" content="EthereonLabs - Adaptive continuity workspaces" />
+  <meta name="twitter:description" content="Software for returning to complex creative and technical work without losing the thread." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/styles.css" />
-  <style>
-    /* HERO SIGIL IMPLANT — reversible: remove this style block and the .ethereon-hero-sigil block. */
-    .hero{position:relative;isolation:isolate;overflow:hidden}
-    .hero>.container{position:relative;z-index:2}
-    .ethereon-hero-sigil{position:absolute;width:clamp(300px,47vw,640px);aspect-ratio:1;top:50%;left:58%;translate:-50% -52%;pointer-events:none;opacity:.42;z-index:0;mix-blend-mode:screen;filter:drop-shadow(0 0 38px rgba(138,164,255,.12))}
-    .hero-sigil-ring,.hero-sigil-axis,.hero-sigil-arc,.hero-sigil-node,.hero-sigil-core{position:absolute;left:50%;top:50%;translate:-50% -50%}
-    .hero-sigil-ring{border-radius:999px;border:1px solid rgba(205,220,255,.18);box-shadow:inset 0 0 34px rgba(138,164,255,.04),0 0 42px rgba(138,164,255,.08)}
-    .ring-one{width:100%;height:100%;animation:sigilRotate 96s linear infinite}.ring-two{width:68%;height:68%;border-color:rgba(126,240,209,.14);animation:sigilRotateReverse 74s linear infinite}
-    .hero-sigil-axis{background:linear-gradient(90deg,transparent,rgba(217,168,78,.62),rgba(245,230,198,.88),rgba(217,168,78,.62),transparent);box-shadow:0 0 22px rgba(217,168,78,.2)}
-    .axis-vertical{width:1px;height:108%}.axis-horizontal{width:108%;height:1px}
-    .hero-sigil-arc{width:74%;height:74%;border-radius:999px;border-color:rgba(217,168,78,.32);filter:drop-shadow(0 0 18px rgba(217,168,78,.22))}
-    .arc-left{border-left:3px solid rgba(217,168,78,.32);animation:sigilBreathe 8s ease-in-out infinite}.arc-right{border-right:3px solid rgba(217,168,78,.32);animation:sigilBreathe 8s ease-in-out infinite reverse}
-    .hero-sigil-node{width:13%;height:13%;border-radius:999px;border:1px solid rgba(255,235,190,.42);background:radial-gradient(circle,rgba(255,235,190,.24),rgba(217,168,78,.06) 48%,transparent 70%);box-shadow:0 0 22px rgba(217,168,78,.18)}
-    .node-top{top:19%;animation:sigilNodePulse 7s ease-in-out infinite}.node-bottom{top:81%;animation:sigilNodePulse 7s ease-in-out infinite 3.5s}
-    .hero-sigil-core{font-family:Georgia,"Times New Roman",serif;font-size:clamp(5rem,12vw,9rem);color:rgba(255,235,190,.84);text-shadow:0 0 12px rgba(255,235,190,.32),0 0 40px rgba(217,168,78,.22);animation:psiPulse 7s ease-in-out infinite}
-    @keyframes sigilRotate{to{transform:rotate(360deg)}}@keyframes sigilRotateReverse{to{transform:rotate(-360deg)}}@keyframes sigilBreathe{0%,100%{opacity:.42;transform:scale(.985)}50%{opacity:.76;transform:scale(1.02)}}@keyframes sigilNodePulse{0%,100%{opacity:.38;transform:scale(.92)}50%{opacity:.88;transform:scale(1.08)}}@keyframes psiPulse{0%,100%{opacity:.82;transform:scale(1)}50%{opacity:1;transform:scale(1.025)}}
-    @media(max-width:980px){.ethereon-hero-sigil{left:64%;opacity:.30}}@media(max-width:760px){.ethereon-hero-sigil{width:360px;left:70%;top:44%;opacity:.22}}
-  </style>
-  <style>
-    /* PAGE-WIDE PSI RESONANCE ECHO — reversible: remove this style block and the .psi-resonance-echo element. */
-    .psi-resonance-echo{position:fixed;right:-1.5rem;top:54%;translate:0 -50%;z-index:0;pointer-events:none;font-family:Georgia,"Times New Roman",serif;font-size:clamp(8rem,18vw,21rem);line-height:1;color:rgba(255,235,190,.052);text-shadow:0 0 42px rgba(217,168,78,.10),0 0 120px rgba(138,164,255,.08);mix-blend-mode:screen;animation:psiEchoPulse 18s ease-in-out infinite alternate}
-    @keyframes psiEchoPulse{0%{opacity:.45;transform:translateY(-14px) scale(.985)}50%{opacity:.78;transform:translateY(10px) scale(1.015)}100%{opacity:.55;transform:translateY(-4px) scale(1)}}
-    @media(max-width:980px){.psi-resonance-echo{right:-3rem;opacity:.72}}
-    @media(max-width:760px){.psi-resonance-echo{right:-4.5rem;top:58%;font-size:11rem;opacity:.48}}
-    @media(prefers-reduced-motion:reduce){.psi-resonance-echo{animation:none!important}}
-  </style>
-  <style>
-    /* PAGE-WIDE PSI RESONANCE WAKE — reversible: remove this style block and the .psi-resonance-wake element. */
-    .psi-resonance-wake{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;mix-blend-mode:screen;opacity:.72}
-    .psi-resonance-wake span{position:absolute;display:block;pointer-events:none}
-    .wake-ring{right:clamp(1rem,6vw,7rem);top:54%;translate:50% -50%;border-radius:999px;border:1px solid rgba(217,168,78,.085);box-shadow:0 0 34px rgba(217,168,78,.06),inset 0 0 44px rgba(138,164,255,.035);animation:psiWakeRing 28s ease-in-out infinite}
-    .wake-ring-one{width:clamp(16rem,36vw,42rem);height:clamp(16rem,36vw,42rem);animation-delay:-4s}.wake-ring-two{width:clamp(22rem,48vw,58rem);height:clamp(22rem,48vw,58rem);border-color:rgba(126,240,209,.055);animation-duration:34s;animation-delay:-17s}.wake-ring-three{width:clamp(30rem,64vw,76rem);height:clamp(30rem,64vw,76rem);border-color:rgba(217,183,255,.045);animation-duration:42s;animation-delay:-25s}
-    .wake-thread{right:clamp(3rem,12vw,14rem);top:54%;width:clamp(18rem,42vw,54rem);height:1px;background:linear-gradient(90deg,transparent,rgba(217,168,78,.17),rgba(255,235,190,.26),transparent);box-shadow:0 0 16px rgba(217,168,78,.12);transform-origin:right center;opacity:0;animation:psiWakeThread 24s ease-in-out infinite}
-    .wake-thread-one{rotate:-16deg;animation-delay:-7s}.wake-thread-two{rotate:11deg;animation-duration:31s;animation-delay:-19s}.wake-thread-three{rotate:-4deg;animation-duration:37s;animation-delay:-28s;background:linear-gradient(90deg,transparent,rgba(126,240,209,.10),rgba(255,235,190,.20),transparent)}
-    @keyframes psiWakeRing{0%,100%{opacity:.10;transform:scale(.90)}45%{opacity:.30;transform:scale(1.035)}68%{opacity:.16;transform:scale(1.12)}}
-    @keyframes psiWakeThread{0%,100%{opacity:0;translate:0 0;transform:scaleX(.62)}22%{opacity:.16;translate:-3vw -10px;transform:scaleX(.88)}48%{opacity:.28;translate:-10vw 8px;transform:scaleX(1.04)}72%{opacity:.08;translate:-18vw -6px;transform:scaleX(.74)}}
-    @media(max-width:760px){.psi-resonance-wake{opacity:.48}.wake-ring-three,.wake-thread-three{display:none}.wake-thread{right:2.5rem;width:60vw}}
-    @media(prefers-reduced-motion:reduce){.psi-resonance-wake *{animation:none!important}}
-  </style>
 </head>
 <body>
   <div class="rse-flow-field" aria-hidden="true">
     <span></span><span></span><span></span><span></span><span></span>
   </div>
   <div class="orbit-field" aria-hidden="true"><span></span><span></span><span></span></div>
-  <div class="psi-resonance-echo" aria-hidden="true">Ψ</div>
-  <div class="psi-resonance-wake" aria-hidden="true">
-    <span class="wake-ring wake-ring-one"></span><span class="wake-ring wake-ring-two"></span><span class="wake-ring wake-ring-three"></span>
-    <span class="wake-thread wake-thread-one"></span><span class="wake-thread wake-thread-two"></span><span class="wake-thread wake-thread-three"></span>
-  </div>
   <div class="page-shell">
     <header class="site-header">
       <div class="container nav-wrap">
         <a class="brand ping-target" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span class="brand-text"><strong><span class="brand-cap">E</span>THEREON<span class="brand-cap brand-cap-l">L</span>ABS</strong><span>Adaptive digital environments</span></span></a>
-        <nav class="nav-links" aria-label="Primary"><a href="index.html" aria-current="page">Home</a><a href="lumina.html">Lumina</a><a href="continuity.html">Continuity</a><a href="roadmap.html">Roadmap</a><a href="harmonics.html">Harmonics</a><a href="rse.html">RSE</a><a href="rse-whitepaper.html">The Spiral</a><a href="explore.html">Explore</a><a href="chamber.html">Chamber</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
+        <nav class="nav-links" aria-label="Primary"><a href="index.html" aria-current="page">Home</a><a href="lumina.html">Lumina</a><a href="build.html">What we're building</a><a href="lumina-dashboard.html">Prototype</a><a href="roadmap.html">Roadmap</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="explore.html">Research</a></nav>
         <div class="header-actions"><button class="icon-button ping-target" type="button" data-sound-toggle aria-label="Toggle interface sounds" aria-pressed="false">○</button></div>
       </div>
     </header>
     <main>
       <section class="hero">
-        <div class="ethereon-hero-sigil" aria-hidden="true">
-          <div class="hero-sigil-ring ring-one"></div>
-          <div class="hero-sigil-ring ring-two"></div>
-          <div class="hero-sigil-axis axis-vertical"></div>
-          <div class="hero-sigil-axis axis-horizontal"></div>
-          <div class="hero-sigil-arc arc-left"></div>
-          <div class="hero-sigil-arc arc-right"></div>
-          <div class="hero-sigil-node node-top"></div>
-          <div class="hero-sigil-node node-bottom"></div>
-          <div class="hero-sigil-core">Ψ</div>
-        </div>
         <div class="container">
-          <span class="eyebrow">Lumina OS — continuity substrate</span>
-          <h1>Return to complex work without starting over.</h1>
-          <p class="lead">Lumina OS restores project state, surfaces what changed, recommends next steps, and routes execution through governed runtime systems. It is designed to preserve continuity while keeping human consent and system boundaries intact.</p>
+          <span class="eyebrow">For people who return to complicated work</span>
+          <h1>Software should help you pick up where you left off.</h1>
+          <p class="lead">EthereonLabs is building Lumina: an adaptive workspace for creative and technical projects that remembers context, shows what changed, suggests next steps, and keeps the human in control.</p>
           <div class="hero-actions">
-            <a class="button primary ping-target" href="lumina.html">Open Lumina page</a>
-            <a class="button secondary ping-target" href="lumina-dashboard.html">View dashboard</a>
-            <a class="button secondary ping-target" href="principles.html">Read principles</a>
-            <a class="button secondary ping-target" href="roadmap.html">Open roadmap</a>
+            <a class="button primary ping-target" href="lumina.html">Understand Lumina</a>
+            <a class="button secondary ping-target" href="lumina-dashboard.html">See the prototype</a>
+            <a class="button secondary ping-target" href="roadmap.html">View the roadmap</a>
           </div>
         </div>
       </section>
-      <section class="section">
-        <div class="container"><div class="section-header"><div><h2>What Lumina does</h2><p class="section-copy">Lumina is moving from interface concept into governed continuity infrastructure. Its purpose is to help complex work resume from the latest known state instead of forcing people to reconstruct context by hand.</p></div></div><div class="grid-3"><article class="card" data-glow><h3>Restore context</h3><p>Returns to the latest known project state, working surface, and recent orientation without guessing.</p></article><article class="card" data-glow><h3>Guide next steps</h3><p>Recommends actions from restored context while keeping the human in charge.</p></article><article class="card" data-glow><h3>Preserve continuity</h3><p>Records checkpoints, lineage, runtime evidence, and advisory history so progress can be audited.</p></article></div></div>
-      </section>
-      <section class="section">
-        <div class="container grid-2">
-          <article class="timeline" data-glow><h3>1. Restore the workspace</h3><p>Lumina is built to recover a project’s working state: notes, prior action, current mode, known references, and the surrounding context needed to resume.</p></article>
-          <article class="timeline" data-glow><h3>2. Recommend without sovereignty</h3><p>The decision engine proposes next actions from restored context and orientation, but it does not become authority. Runtime governance still decides what is allowed.</p></article>
-          <article class="timeline" data-glow><h3>3. Route through runtime</h3><p>The orchestrator passes advisory actions through governed runtime execution, preserving checkpoints and boundaries instead of bypassing the system.</p></article>
-          <article class="timeline" data-glow><h3>4. Preserve evidence</h3><p>Sea trials, behavioral assertions, drift checks, and validation records keep the project grounded in inspectable proof rather than presentation alone.</p></article>
-        </div>
-      </section>
+
       <section class="section">
         <div class="container feature-callout">
-          <small>Current sea-trial status</small>
-          <h2>Lumina has crossed from thesis into tested scaffold.</h2>
-          <p class="section-copy">The current runtime lane validates governed transitions, checkpoint continuity, symbolic-boundary enforcement, canon lineage integrity, orchestration continuity, behavioral assertions, and drift detection. This does not claim production readiness; it confirms a working continuity substrate under active hardening.</p>
-          <div class="hero-actions">
-            <a class="button primary ping-target" href="lumina-dashboard.html">Open prototype dashboard</a>
-            <a class="button secondary ping-target" href="updates.html">See recent updates</a>
-            <a class="button secondary ping-target" href="realm.html">View project map</a>
-          </div>
+          <small>First-time visitor version</small>
+          <h2>Lumina is for the moment when a project is still important, but the thread is scattered.</h2>
+          <p class="section-copy">Your notes are in one place, files in another, decisions in a conversation, references in tabs, and the next step is half-remembered. Lumina is our attempt to make a workspace that can help gather that state back together so you can continue instead of restarting.</p>
         </div>
       </section>
+
       <section class="section">
-        <div class="container"><div class="section-header"><div><h2>Runtime foundation</h2><p class="section-copy">Under the public surface is a governed runtime scaffold. This layer defines what can happen, what must be recorded, what must remain optional, and what requires validation before promotion.</p></div></div><div class="grid-3"><article class="card" data-glow><h3>Runtime spine</h3><p>Coordinates session state, checkpoints, mode transitions, context bundles, governance logs, and capability exposure.</p></article><article class="card" data-glow><h3>Context loader</h3><p>Restores minimal working context from runtime state so the system can resume from evidence instead of assumption.</p></article><article class="card" data-glow><h3>Decision engine</h3><p>Produces bounded recommendations from context and orientation while remaining subordinate to runtime law.</p></article><article class="card" data-glow><h3>Orchestrator</h3><p>Connects restored context, recommendation, and governed execution into a repeatable continuity loop.</p></article><article class="card" data-glow><h3>Canon lineage</h3><p>Keeps promoted structural states append-only so the project can evolve without rewriting its own history.</p></article><article class="card" data-glow><h3>Sea trials</h3><p>Stress-test transitions, mutation boundaries, promotion gates, checkpoint resume, drift, and orchestration continuity.</p></article></div></div>
+        <div class="container"><div class="section-header"><div><h2>What it does, in plain language</h2><p class="section-copy">The long-term vision is operating-system shaped, but the current work starts with a practical need: helping people return to complex work with context and boundaries intact.</p></div></div><div class="grid-3"><article class="card" data-glow><h3>Restores context</h3><p>Brings back the project state, recent decisions, working notes, and surrounding references needed to resume.</p></article><article class="card" data-glow><h3>Suggests next steps</h3><p>Uses the restored state to recommend useful next actions without pretending the system is in charge.</p></article><article class="card" data-glow><h3>Keeps a record</h3><p>Stores checkpoints, receipts, and boundaries so progress can be reviewed instead of becoming a blur.</p></article></div></div>
       </section>
+
       <section class="section">
-        <div class="container status-banner"><div><small>Truth boundary</small><h3>Guidance is not authority.</h3><p class="section-copy">Lumina may recommend. Humans approve. Runtime governance constrains. Poetic language may guide the design, but it does not become hidden system law.</p></div><a class="button primary ping-target" href="principles.html">Read principles</a></div>
+        <div class="container compare-grid">
+          <article class="list-card" data-glow><h3>What exists now</h3><ul class="compare-list"><li>A working runtime scaffold in the repository</li><li>Context return and workspace-host prototypes</li><li>A visible dashboard/prototype surface</li><li>Governance checks, receipts, and sea trials</li><li>New Ψ-42 signal diagnostics for continuity testing</li></ul></article>
+          <article class="list-card" data-glow><h3>What is still future</h3><ul class="compare-list"><li>Not yet a finished public operating system</li><li>Not yet an installable alpha for everyday users</li><li>Not yet a replacement for normal desktop workflows</li><li>Not an AI making decisions without human approval</li><li>Not a mystical claim disguised as software</li></ul></article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container grid-2">
+          <article class="timeline" data-glow><small>Why this matters</small><h3>Modern tools remember fragments. People need the whole working state.</h3><p>Lumina is aimed at artists, builders, researchers, educators, and teams whose work spans many tools and many sessions.</p></article>
+          <article class="timeline" data-glow><small>How we are building it</small><h3>Plain utility first. Deeper system language later.</h3><p>The project includes poetic and symbolic language, but the practical claim comes first: better return, clearer next steps, stronger records, and safer human-AI collaboration.</p></article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container status-banner"><div><small>Best first path</small><h3>Start simple: Lumina → Prototype → Roadmap.</h3><p class="section-copy">After that, the Research area holds the deeper material: continuity theory, harmonics, RSE, the Chamber, and the symbolic/technical vocabulary behind the work.</p></div><a class="button primary ping-target" href="lumina.html">Start with Lumina</a></div>
       </section>
     </main>
-    <footer class="footer"><div class="container footer-row"><div><a href="index.html">EthereonLabs</a></div><div><span data-year></span></div></div></footer>
+    <footer class="footer"><div class="container footer-row"><div><a href="index.html">EthereonLabs</a> · <a href="explore.html">Research and deeper system</a></div><div><span data-year></span></div></div></footer>
   </div>
   <script src="assets/js/site.js"></script>
 </body>
