@@ -16,7 +16,7 @@ Run from the repository root:
 
 from dataclasses import dataclass, asdict
 from pathlib import Path
-from typing import Dict, Iterable, List, Set
+from typing import Dict, List, Set
 import json
 import re
 
@@ -101,14 +101,22 @@ def top_level_html_files() -> List[Path]:
     return sorted(path for path in ROOT.glob("*.html") if path.is_file())
 
 
+def extract_array_block(nav_text: str, group_name: str) -> str:
+    start_match = re.search(rf"{group_name}:\s*\[", nav_text)
+    if not start_match:
+        return ""
+    start = start_match.end()
+    next_match = re.search(r"\n\s*[A-Za-z_$][\w$]*:\s*\[", nav_text[start:])
+    end = start + next_match.start() if next_match else nav_text.find("\n};", start)
+    if end == -1:
+        end = len(nav_text)
+    return nav_text[start:end]
+
+
 def extract_nav_pairs(nav_text: str, group_name: str) -> Dict[str, str]:
-    pattern = rf"{group_name}:\s*\[(.*?)\]\s*(?:,|\n\s*\])"
-    match = re.search(pattern, nav_text, re.S)
-    if not match:
-        return {}
-    body = match.group(1)
-    pairs = re.findall(r"\['([^']+)',\s*'([^']+)'\]", body)
-    return {label: href for href, label in pairs}
+    body = extract_array_block(nav_text, group_name)
+    pairs = re.findall(r"\['([^']+)',\s*'((?:\\'|[^'])+)'\]", body)
+    return {label.replace("\\'", "'"): href for href, label in pairs}
 
 
 def check_navigation_data() -> Check:
@@ -197,7 +205,6 @@ def check_internal_links() -> Check:
             href = normalize_internal_href(raw_href)
             if href is None:
                 continue
-            # Static site links are expected to be root-relative within the top-level site surface.
             target_name = Path(href).name
             if target_name not in existing:
                 missing.setdefault(str(path.relative_to(ROOT)), []).append(href)
@@ -210,14 +217,20 @@ def check_internal_links() -> Check:
 
 def check_footer_css_no_pseudo_only_brand() -> Check:
     css = read(ROOT / "assets" / "css" / "styles.css")
+    js = read(ROOT / "assets" / "js" / "site.js")
     details = {
         "has_footer_panel": ".footer-row" in css and "border-radius: 24px" in css,
         "has_mobile_footer_rules": "footer-secondary-links" in css and "@media (max-width: 760px)" in css,
         "has_old_pseudo_footer_text": ".footer-row > div:first-child::before" in css or ".footer-row > div:first-child::after" in css,
-        "drydock_js_overrides_old_pseudo_footer_text": "data-ethereon-drydock-styles" in read(ROOT / "assets" / "js" / "site.js"),
+        "drydock_js_overrides_old_pseudo_footer_text": "data-ethereon-drydock-styles" in js,
+        "footer_brand_is_real_dom": "footer-brand-block" in js and "footer-tagline" in js,
     }
-    # Old CSS selectors may remain temporarily while JS override scrapes them at render time.
-    passed = details["has_footer_panel"] and details["has_mobile_footer_rules"] and details["drydock_js_overrides_old_pseudo_footer_text"]
+    passed = (
+        details["has_footer_panel"]
+        and details["has_mobile_footer_rules"]
+        and details["drydock_js_overrides_old_pseudo_footer_text"]
+        and details["footer_brand_is_real_dom"]
+    )
     return Check("footer_bottom_surface_has_panel_and_render_override", passed, details)
 
 
