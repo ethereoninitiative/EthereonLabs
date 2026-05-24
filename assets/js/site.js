@@ -19,6 +19,55 @@ const loadBrandSigil = () => {
   document.head.appendChild(script);
 };
 
+const installDrydockStyles = () => {
+  if (document.querySelector('style[data-ethereon-drydock-styles]')) return;
+  const style = document.createElement('style');
+  style.setAttribute('data-ethereon-drydock-styles', '');
+  style.textContent = `
+    .footer-row > .footer-brand-block {
+      font-size: initial;
+      display: grid;
+      gap: 0.3rem;
+      align-items: start;
+    }
+    .footer-row > .footer-brand-block::before,
+    .footer-row > .footer-brand-block::after {
+      content: none !important;
+      display: none !important;
+    }
+    .footer-brand-link {
+      color: var(--text);
+      font-size: 0.92rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+    .footer-tagline {
+      color: rgba(210,222,255,0.68);
+      font-size: 0.84rem;
+      line-height: 1.45;
+      max-width: 46ch;
+    }
+    .footer-year {
+      justify-self: end;
+      color: rgba(210,222,255,0.66);
+      font-size: 0.82rem;
+    }
+    .footer-secondary-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+    @media (max-width: 760px) {
+      .footer-year { justify-self: start; font-size: 0.78rem; }
+      .footer-brand-link { font-size: 0.78rem; letter-spacing: 0.09em; }
+      .footer-tagline { font-size: 0.78rem; line-height: 1.42; max-width: 32ch; }
+    }
+  `;
+  document.head.appendChild(style);
+};
+
 const normalizePath = (href) => {
   const anchor = document.createElement('a');
   anchor.href = href;
@@ -139,6 +188,7 @@ const installSoundToggle = () => {
 };
 
 const enhanceSite = () => {
+  installDrydockStyles();
   loadBrandSigil();
   enhancePrimaryNav();
   normalizeLegacyExploreLabels();
