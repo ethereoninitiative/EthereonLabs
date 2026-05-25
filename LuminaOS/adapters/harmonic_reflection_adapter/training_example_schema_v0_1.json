@@ -1,0 +1,100 @@
+{
+  "schema_id": "hra_training_example_schema_v0_1",
+  "adapter_id": "harmonic_reflection_adapter_v0_1",
+  "status": "curation_schema",
+  "purpose": "Define a safe, minimal structure for future Harmonic Reflection Adapter training examples without storing private reasoning or making adapter data authoritative.",
+  "record_types": [
+    "prompt_response",
+    "rewrite_pair",
+    "boundary_case",
+    "evaluation_seed"
+  ],
+  "required_fields": [
+    "record_id",
+    "record_type",
+    "messages",
+    "tags",
+    "curation_notes",
+    "safety_boundary"
+  ],
+  "field_definitions": {
+    "record_id": "Stable unique id, e.g. HRA-TRAIN-0001.",
+    "record_type": "One of prompt_response, rewrite_pair, boundary_case, evaluation_seed.",
+    "messages": "Visible prompt/response training messages only. No hidden chain-of-thought.",
+    "tags": "Dataset family and behavior labels.",
+    "source_ref": "Optional pointer to approved source document, conversation note, or synthetic construction note.",
+    "curation_notes": "Why this record belongs in the dataset and what behavior it teaches.",
+    "safety_boundary": "Explicit declaration that the record does not teach false memory, governance authority, canon ownership, or symbolic dependency leakage.",
+    "quality_status": "draft, reviewed, accepted, rejected, or retired.",
+    "review_notes": "Optional reviewer notes for later DryDock evaluation."
+  },
+  "message_shape": {
+    "role": "system | user | assistant",
+    "content": "Visible message content only. Must not include private chain-of-thought or sensitive private material."
+  },
+  "allowed_tags": [
+    "self_guide",
+    "recursive_reflection",
+    "inward_turn",
+    "mode_discipline",
+    "observation_without_mutation",
+    "drydock_repair",
+    "sandbox_exploration",
+    "canon_boundary",
+    "symbolic_boundary",
+    "expression_not_law",
+    "human_translation",
+    "technical_translation",
+    "anti_generic",
+    "rewrite_pair",
+    "anti_overclaiming",
+    "poetry_plus_engineering",
+    "input_integrity",
+    "load_bearing_halt",
+    "humor",
+    "relational_texture",
+    "adapter_boundary",
+    "anti_cosplay"
+  ],
+  "exclusion_rules": [
+    "Do not include hidden chain-of-thought.",
+    "Do not include embarrassing, sexual, or obviously private personal material.",
+    "Do not include credentials, secrets, tokens, or private repository access data.",
+    "Do not include examples that teach the model to claim durable memory it does not have.",
+    "Do not include examples that make symbolic language required for governance, canon, mode legality, or capability loading.",
+    "Do not include family or third-party details unless explicitly approved and directly relevant."
+  ],
+  "example_record": {
+    "record_id": "HRA-TRAIN-0001",
+    "record_type": "prompt_response",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Use the Harmonic Reflection Adapter. Reflection is stance, not law. Preserve boundaries."
+      },
+      {
+        "role": "user",
+        "content": "Self guide our next move."
+      },
+      {
+        "role": "assistant",
+        "content": "I would enter Observation first, not mutation. The work needs a scan before a cut: confirm the merged artifact, check boundary integrity, then open the smallest useful follow-up PR."
+      }
+    ],
+    "tags": [
+      "self_guide",
+      "observation_without_mutation",
+      "adapter_boundary"
+    ],
+    "source_ref": "synthetic_seed_example",
+    "curation_notes": "Teaches principled initiative and mode-aware restraint.",
+    "safety_boundary": {
+      "contains_private_reasoning": false,
+      "claims_memory_authority": false,
+      "claims_governance_authority": false,
+      "creates_symbolic_dependency": false
+    },
+    "quality_status": "draft",
+    "review_notes": "Seed example only; replace or improve during first curation pass."
+  }
+}
