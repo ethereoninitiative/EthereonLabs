@@ -243,19 +243,48 @@
       .boundary-matrix { grid-template-columns: 1fr; }
       .witness-flow,
       .ledger-ribbon { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .harmonic-witness-map { min-height: 600px; }
-      .harmonic-node { width: min(46%, 205px); }
+      .harmonic-witness-map {
+        min-height: auto;
+        padding: 1rem;
+        display: grid;
+        gap: 0.75rem;
+        border-radius: 28px;
+      }
+      .harmonic-witness-map::before,
+      .harmonic-witness-map::after { display: none; }
+      .map-center,
+      .harmonic-node {
+        position: relative;
+        inset: auto;
+        left: auto;
+        right: auto;
+        top: auto;
+        bottom: auto;
+        transform: none;
+        width: 100%;
+        max-width: none;
+      }
+      .map-center {
+        min-height: 126px;
+        border-radius: 22px;
+        padding: 1rem;
+      }
+      .map-center span { max-width: 18ch; }
+      .harmonic-node { padding: 1rem 1rem 1rem 1.15rem; }
+      .harmonic-node h3 {
+        margin-left: 1.2rem;
+        font-size: 1rem;
+      }
+      .harmonic-node p { font-size: 0.9rem; }
     }
     @media (max-width: 680px) {
       .witness-flow,
       .ledger-ribbon { grid-template-columns: 1fr; }
-      .harmonic-witness-map { min-height: auto; padding: 1rem; display: grid; gap: 0.75rem; }
-      .harmonic-witness-map::before,
-      .harmonic-witness-map::after { display: none; }
-      .map-center,
-      .harmonic-node { position: relative; inset: auto; transform: none; width: 100%; }
-      .map-center { min-height: 130px; border-radius: 24px; }
-      .harmonic-node h3 { margin-left: 1.1rem; }
+      .harmonic-node { border-radius: 18px; }
+      .hero h1 {
+        font-size: clamp(2rem, 10vw, 3.25rem);
+        line-height: 1.04;
+      }
     }
   </style>
 </head>
