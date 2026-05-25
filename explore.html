@@ -18,6 +18,50 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      width: fit-content;
+      margin-top: 1rem;
+      padding: 0.48rem 0.72rem;
+      border: 1px solid rgba(126,240,209,0.24);
+      border-radius: 999px;
+      background: rgba(126,240,209,0.055);
+      color: rgba(222,255,247,0.95);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      box-shadow: 0 0 18px rgba(126,240,209,0.055);
+      transition: transform 160ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease, color 180ms ease;
+    }
+    .card-link::after {
+      content: "→";
+      color: var(--accent-2);
+      transform: translateY(-0.02em);
+      transition: transform 160ms ease;
+    }
+    .card-link:hover,
+    .card-link:focus-visible {
+      color: #ffffff;
+      border-color: rgba(126,240,209,0.52);
+      background: rgba(126,240,209,0.11);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.24), 0 0 24px rgba(126,240,209,0.11);
+      transform: translateY(-1px);
+      outline: none;
+    }
+    .card-link:hover::after,
+    .card-link:focus-visible::after { transform: translate(0.12rem, -0.02em); }
+    @media (max-width: 760px) {
+      .card-link {
+        margin-top: 0.85rem;
+        padding: 0.5rem 0.74rem;
+        font-size: 0.78rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="orbit-field" aria-hidden="true"><span></span><span></span><span></span></div>
