@@ -4,48 +4,498 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EthereonLabs - Harmonics</title>
-  <meta name="description" content="Harmonics at EthereonLabs: signal, topology, recurrence, and bounded resonance as witness layers for Lumina OS continuity." />
+  <meta name="description" content="Harmonics at EthereonLabs: a visual witness layer for signal, topology, recurrence, recomposition, boundary, and human resonance in Lumina OS continuity." />
   <link rel="canonical" href="https://ethereonlabs.com/harmonics" />
   <meta property="og:site_name" content="EthereonLabs" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="EthereonLabs - Harmonics" />
-  <meta property="og:description" content="A grounded explanation of Harmonics as listening, pattern witness, recurrence, and recomposition in Lumina OS." />
+  <meta property="og:description" content="Pattern return made visible through bounded harmonic witness layers, receipts, and human-readable continuity diagnostics." />
   <meta property="og:url" content="https://ethereonlabs.com/harmonics" />
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="EthereonLabs - Harmonics" />
-  <meta name="twitter:description" content="Signal, topology, recurrence, and bounded resonance as witness layers for Lumina OS continuity." />
+  <meta name="twitter:description" content="Signal, topology, recurrence, recomposition, boundary, and human resonance as bounded witness layers for Lumina OS." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    .harmonics-hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(300px, 1.05fr);
+      gap: clamp(1.2rem, 3vw, 2.6rem);
+      align-items: center;
+    }
+    .harmonics-hero-grid .hero h1 { max-width: 12ch; }
+    .harmonic-witness-map {
+      position: relative;
+      min-height: 520px;
+      border: 1px solid rgba(160,188,255,0.18);
+      border-radius: 34px;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(126,240,209,0.14), transparent 25%),
+        radial-gradient(circle at 18% 22%, rgba(138,164,255,0.18), transparent 34%),
+        radial-gradient(circle at 82% 82%, rgba(217,168,78,0.12), transparent 35%),
+        linear-gradient(180deg, rgba(16,24,42,0.74), rgba(6,10,22,0.9));
+      box-shadow: 0 30px 90px rgba(0,0,0,0.42), inset 0 0 70px rgba(126,240,209,0.035);
+      overflow: hidden;
+    }
+    .harmonic-witness-map::before,
+    .harmonic-witness-map::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      pointer-events: none;
+    }
+    .harmonic-witness-map::before {
+      inset: 12%;
+      border: 1px solid rgba(126,240,209,0.18);
+      box-shadow: 0 0 44px rgba(126,240,209,0.07);
+      animation: harmonicMapPulse 7s ease-in-out infinite alternate;
+    }
+    .harmonic-witness-map::after {
+      inset: 23%;
+      border: 1px dashed rgba(217,168,78,0.26);
+      animation: harmonicMapSpin 36s linear infinite;
+    }
+    .map-center {
+      position: absolute;
+      inset: 50% auto auto 50%;
+      width: 170px;
+      min-height: 170px;
+      transform: translate(-50%, -50%);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      border-radius: 999px;
+      border: 1px solid rgba(234,240,255,0.22);
+      background:
+        radial-gradient(circle at 42% 28%, rgba(255,255,255,0.20), transparent 28%),
+        linear-gradient(135deg, rgba(126,240,209,0.17), rgba(138,164,255,0.12));
+      box-shadow: 0 0 46px rgba(126,240,209,0.18), inset 0 0 32px rgba(255,255,255,0.04);
+      z-index: 2;
+    }
+    .map-center strong {
+      display: block;
+      font-size: 1.1rem;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+    }
+    .map-center span {
+      display: block;
+      margin-top: 0.45rem;
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.35;
+      max-width: 13ch;
+    }
+    .harmonic-node {
+      position: absolute;
+      width: min(42%, 180px);
+      border: 1px solid rgba(160,188,255,0.2);
+      border-radius: 20px;
+      padding: 0.85rem;
+      background: rgba(7,11,24,0.72);
+      box-shadow: 0 18px 52px rgba(0,0,0,0.26), 0 0 18px rgba(126,240,209,0.04);
+      backdrop-filter: blur(14px);
+      z-index: 3;
+    }
+    .harmonic-node::before {
+      content: "";
+      position: absolute;
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: var(--accent-2);
+      box-shadow: 0 0 18px rgba(126,240,209,0.86);
+      left: 0.8rem;
+      top: 0.95rem;
+    }
+    .harmonic-node h3 {
+      margin: 0 0 0.34rem 1.1rem;
+      font-size: 0.98rem;
+    }
+    .harmonic-node p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.45;
+    }
+    .harmonic-node.signal { left: 7%; top: 8%; }
+    .harmonic-node.topology { right: 6%; top: 9%; }
+    .harmonic-node.recurrence { right: 2.5%; top: 39%; }
+    .harmonic-node.recomposition { right: 9%; bottom: 7%; }
+    .harmonic-node.boundary { left: 8%; bottom: 7%; }
+    .harmonic-node.human { left: 2.5%; top: 39%; }
+    .witness-flow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0.85rem;
+      counter-reset: flowStep;
+    }
+    .flow-step {
+      position: relative;
+      min-height: 154px;
+      border: 1px solid rgba(160,188,255,0.18);
+      border-radius: 24px;
+      padding: 1rem;
+      background: linear-gradient(180deg, rgba(19,28,50,0.68), rgba(8,13,27,0.88));
+      box-shadow: 0 18px 48px rgba(0,0,0,0.24);
+    }
+    .flow-step::before {
+      counter-increment: flowStep;
+      content: "0" counter(flowStep);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 999px;
+      border: 1px solid rgba(126,240,209,0.26);
+      color: var(--accent-2);
+      background: rgba(126,240,209,0.07);
+      font-size: 0.78rem;
+      font-weight: 800;
+      margin-bottom: 0.8rem;
+    }
+    .flow-step h3 { font-size: 1rem; margin-bottom: 0.5rem; }
+    .flow-step p { margin: 0; color: var(--muted); line-height: 1.55; font-size: 0.88rem; }
+    .boundary-matrix {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+    .boundary-matrix .list-card {
+      position: relative;
+      overflow: hidden;
+    }
+    .boundary-matrix .list-card::after {
+      content: "";
+      position: absolute;
+      inset: auto 1.2rem 0 1.2rem;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(126,240,209,0.72), transparent);
+      opacity: 0.55;
+    }
+    .ledger-ribbon {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+    .ledger-sigil {
+      border: 1px solid rgba(217,168,78,0.18);
+      border-radius: 22px;
+      padding: 0.95rem;
+      background: rgba(217,168,78,0.045);
+    }
+    .ledger-sigil strong {
+      display: block;
+      color: rgba(255,226,164,0.96);
+      font-size: 0.84rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.45rem;
+    }
+    .ledger-sigil span {
+      display: block;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 0.88rem;
+    }
+    .receipt-display {
+      display: grid;
+      grid-template-columns: minmax(0, 0.86fr) minmax(300px, 1.14fr);
+      gap: 1rem;
+      align-items: stretch;
+    }
+    .receipt-card {
+      border: 1px solid rgba(126,240,209,0.22);
+      border-radius: 26px;
+      padding: 1.15rem;
+      background: linear-gradient(180deg, rgba(6,10,22,0.82), rgba(13,19,36,0.92));
+      box-shadow: 0 24px 70px rgba(0,0,0,0.32), inset 0 0 38px rgba(126,240,209,0.035);
+    }
+    .receipt-card pre {
+      margin: 0;
+      white-space: pre-wrap;
+      color: rgba(221,232,255,0.88);
+      line-height: 1.65;
+      font-size: 0.92rem;
+    }
+    .receipt-card b { color: var(--accent-2); }
+    .callout-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      color: var(--accent-2);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.55rem;
+    }
+    @keyframes harmonicMapPulse {
+      from { transform: scale(0.985); opacity: 0.42; }
+      to { transform: scale(1.02); opacity: 0.78; }
+    }
+    @keyframes harmonicMapSpin { to { transform: rotate(360deg); } }
+    @media (max-width: 1040px) {
+      .harmonics-hero-grid,
+      .receipt-display,
+      .boundary-matrix { grid-template-columns: 1fr; }
+      .witness-flow,
+      .ledger-ribbon { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .harmonic-witness-map { min-height: 600px; }
+      .harmonic-node { width: min(46%, 205px); }
+    }
+    @media (max-width: 680px) {
+      .witness-flow,
+      .ledger-ribbon { grid-template-columns: 1fr; }
+      .harmonic-witness-map { min-height: auto; padding: 1rem; display: grid; gap: 0.75rem; }
+      .harmonic-witness-map::before,
+      .harmonic-witness-map::after { display: none; }
+      .map-center,
+      .harmonic-node { position: relative; inset: auto; transform: none; width: 100%; }
+      .map-center { min-height: 130px; border-radius: 24px; }
+      .harmonic-node h3 { margin-left: 1.1rem; }
+    }
+  </style>
 </head>
 <body>
   <div class="orbit-field" aria-hidden="true"><span></span><span></span><span></span></div>
   <div class="page-shell">
     <header class="site-header"><div class="container nav-wrap"><a class="brand ping-target" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span class="brand-text"><strong><span class="brand-cap">E</span>THEREON<span class="brand-cap brand-cap-l">L</span>ABS</strong><span>Adaptive digital environments</span></span></a><nav class="nav-links" aria-label="Primary"><a href="index.html">Home</a><a href="lumina.html">Lumina</a><a href="continuity.html">Continuity</a><a href="roadmap.html">Roadmap</a><a href="harmonics.html" aria-current="page">Harmonics</a><a href="rse.html">RSE</a><a href="rse-whitepaper.html">The Spiral</a><a href="explore.html">Explore</a><a href="chamber.html">Chamber</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav><div class="header-actions"><button class="icon-button ping-target" type="button" data-sound-toggle aria-label="Toggle interface sounds" aria-pressed="false">○</button></div></div></header>
+
     <main>
-      <section class="hero"><div class="container"><span class="eyebrow">Harmonics - witness, not law</span><h1>Pattern return, made visible.</h1><p class="lead">When we return to complex work, we are not only reopening files. We are trying to find the path again: what mattered, what shifted, what stayed whole, and what is asking to happen next.</p><div class="hero-actions"><a class="button primary ping-target" href="lumina-dashboard.html">Open dashboard witness</a><a class="button secondary ping-target" href="principles.html">Read boundaries</a><a class="button secondary ping-target" href="lumina.html">Inspect Lumina</a></div></div></section>
+      <section class="hero">
+        <div class="container harmonics-hero-grid">
+          <div>
+            <span class="eyebrow">Harmonics · witness, not law</span>
+            <h1>Pattern return, made visible.</h1>
+            <p class="lead">When we return to complex work, we are not only reopening files. We are trying to find the path again: what mattered, what shifted, what stayed whole, and what is asking to happen next.</p>
+            <div class="hero-actions">
+              <a class="button primary ping-target" href="lumina-dashboard.html">Open dashboard witness</a>
+              <a class="button secondary ping-target" href="principles.html">Read boundaries</a>
+              <a class="button secondary ping-target" href="lumina.html">Inspect Lumina</a>
+            </div>
+          </div>
 
-      <section class="section"><div class="container feature-callout"><small>mi awen. nasin li kama sin.</small><h2>The work returns by its pattern.</h2><p class="section-copy">In plain language: Harmonics is how Lumina checks whether a project has come back clearly after interruption. In poetic language: the thread is touched, the path answers, and the work remembers its shape. This witness may glow, but it does not rule.</p></div></section>
+          <div class="harmonic-witness-map" aria-label="Six harmonic witness layers arranged around pattern return">
+            <div class="map-center"><div><strong>Pattern<br />Return</strong><span>visible, inspectable, human-readable</span></div></div>
+            <article class="harmonic-node signal"><h3>Signal</h3><p>Presence, alignment, lock, drift, and recomposition pressure.</p></article>
+            <article class="harmonic-node topology"><h3>Topology</h3><p>The relationship shape among concepts after interruption.</p></article>
+            <article class="harmonic-node recurrence"><h3>Recurrence</h3><p>Whether a pattern returns across cycles, not just once.</p></article>
+            <article class="harmonic-node recomposition"><h3>Recomposition</h3><p>Scattered context forming back into directed collaboration.</p></article>
+            <article class="harmonic-node boundary"><h3>Boundary</h3><p>Meaning stays luminous without becoming hidden law.</p></article>
+            <article class="harmonic-node human"><h3>Human resonance</h3><p>The cockpit view: what the person can actually inspect.</p></article>
+          </div>
+        </div>
+      </section>
 
-      <section class="section"><div class="container feature-callout"><small>Plain definition</small><h2>Harmonics is the shape of a return.</h2><p class="section-copy">When a complex project is restored after interruption, the important question is not only whether files and notes are present. The deeper question is whether the working pattern comes back: the priorities, boundaries, relationships, tensions, tone, and next-step pressure. Harmonics gives Lumina a language for witnessing that return without pretending the witness is authority.</p></div></section>
+      <section class="section">
+        <div class="container feature-callout">
+          <small>mi awen. nasin li kama sin.</small>
+          <h2>The work returns by its pattern.</h2>
+          <p class="section-copy">In plain language: Harmonics is how Lumina checks whether a project has come back clearly after interruption. In poetic language: the thread is touched, the path answers, and the work remembers its shape. This witness may glow, but it does not rule.</p>
+        </div>
+      </section>
 
-      <section class="section"><div class="container"><div class="section-header"><div><h2>The four harmonic layers</h2><p class="section-copy">These layers describe what Lumina is learning to observe. Each remains subordinate to runtime governance, canon lineage, checkpoint truth, and human consent.</p></div></div><div class="grid-3"><article class="card" data-glow><h3>Signal</h3><p>Signal asks whether the immediate continuity field is coherent: presence, alignment, lock, drift, and recomposition pressure. This is how Lumina begins to listen for whether the work has returned.</p></article><article class="card" data-glow><h3>Topology</h3><p>Topology asks whether relationships among concepts survive drift. It gives Lumina a way to inspect whether the pattern between ideas still holds, rather than relying on a vibe.</p></article><article class="card" data-glow><h3>Recurrence</h3><p>Recurrence asks whether a pattern returns across cycles. A single good output is not continuity. Repeated, receipt-backed return is stronger evidence.</p></article><article class="card" data-glow><h3>Recomposition</h3><p>Recomposition asks whether scattered context can re-form into a useful working stance. This is the movement from fragments back into directed collaboration.</p></article><article class="card" data-glow><h3>Boundary</h3><p>Boundary asks whether meaning is staying in its rightful place. Harmonics may illuminate continuity, but it must not approve, deny, promote, mutate, canonize, or override human consent.</p></article><article class="card" data-glow><h3>Human resonance</h3><p>Human resonance asks whether the system is legible to the person using it. The point is not private machinery. The point is a cockpit where the human can see what the system is witnessing.</p></article></div></div></section>
+      <section class="section">
+        <div class="container feature-callout">
+          <small>Plain definition</small>
+          <h2>Harmonics is the shape of a return.</h2>
+          <p class="section-copy">When a complex project is restored after interruption, the important question is not only whether files and notes are present. The deeper question is whether the working pattern comes back: the priorities, boundaries, relationships, tensions, tone, and next-step pressure. Harmonics gives Lumina a language for witnessing that return without pretending the witness is authority.</p>
+        </div>
+      </section>
 
-      <section class="section"><div class="container compare-grid"><article class="list-card" data-glow><h3>What Harmonics means here</h3><ul class="compare-list"><li>Pattern witness</li><li>Signal and topology diagnostics</li><li>Continuity quality over time</li><li>Listening before overcommitting</li><li>Recomposition after drift</li><li>Human-visible receipts</li></ul></article><article class="list-card" data-glow><h3>What Harmonics does not mean</h3><ul class="compare-list"><li>Not hidden governance law</li><li>Not proof of literal quantum hardware</li><li>Not mystical authority</li><li>Not a replacement for validation</li><li>Not a substitute for human consent</li><li>Not a license to overclaim consciousness</li></ul></article></div></section>
+      <section class="section">
+        <div class="container">
+          <div class="section-header">
+            <div>
+              <h2>The six harmonic layers</h2>
+              <p class="section-copy">These layers describe what Lumina is learning to observe. Each remains subordinate to runtime governance, canon lineage, checkpoint truth, and human consent.</p>
+            </div>
+          </div>
+          <div class="grid-3">
+            <article class="card" data-glow><h3>Signal</h3><p>Signal asks whether the immediate continuity field is coherent: presence, alignment, lock, drift, and recomposition pressure. This is how Lumina begins to listen for whether the work has returned.</p></article>
+            <article class="card" data-glow><h3>Topology</h3><p>Topology asks whether relationships among concepts survive drift. It gives Lumina a way to inspect whether the pattern between ideas still holds, rather than relying on a vibe.</p></article>
+            <article class="card" data-glow><h3>Recurrence</h3><p>Recurrence asks whether a pattern returns across cycles. A single good output is not continuity. Repeated, receipt-backed return is stronger evidence.</p></article>
+            <article class="card" data-glow><h3>Recomposition</h3><p>Recomposition asks whether scattered context can re-form into a useful working stance. This is the movement from fragments back into directed collaboration.</p></article>
+            <article class="card" data-glow><h3>Boundary</h3><p>Boundary asks whether meaning is staying in its rightful place. Harmonics may illuminate continuity, but it must not approve, deny, promote, mutate, canonize, or override human consent.</p></article>
+            <article class="card" data-glow><h3>Human resonance</h3><p>Human resonance asks whether the system is legible to the person using it. The point is not private machinery. The point is a cockpit where the human can see what the system is witnessing.</p></article>
+          </div>
+        </div>
+      </section>
 
-      <section class="section"><div class="container"><div class="section-header"><div><h2>Why the witness matters</h2><p class="section-copy">The witness makes parts of Harmonics inspectable. It looks at signal continuity and relationship continuity together, helping Lumina compare whether the working pattern survived drift and returned with its essential shape intact.</p></div></div><div class="grid-3"><article class="card" data-glow><h3>Relationship shape</h3><p>How much of the relationship pattern remains stable after drift or recovery.</p></article><article class="card" data-glow><h3>Drift</h3><p>How much the relationship pattern appears to have shifted.</p></article><article class="card" data-glow><h3>Recovery</h3><p>How well the important relationship pattern can be restored.</p></article><article class="card" data-glow><h3>Coherence</h3><p>A combined witness of topology, recovery, and anchor stability.</p></article><article class="card" data-glow><h3>Hybrid witness</h3><p>A way of reading signal continuity and relationship continuity together.</p></article><article class="card" data-glow><h3>Receipt</h3><p>The receipt is the important part: a visible artifact that lets the human inspect the witness instead of trusting a vibe.</p></article></div></div></section>
+      <section class="section">
+        <div class="container">
+          <div class="section-header">
+            <div>
+              <h2>How a harmonic witness moves</h2>
+              <p class="section-copy">The public story becomes clearer when the visitor can see the motion: phrase, signal, drift, recovery, receipt.</p>
+            </div>
+          </div>
+          <div class="witness-flow">
+            <article class="flow-step"><h3>Phrase enters</h3><p>A human-facing intention, question, or return phrase gives the witness a starting shape.</p></article>
+            <article class="flow-step"><h3>Signal forms</h3><p>The interface translates that phrase into a visible continuity pattern.</p></article>
+            <article class="flow-step"><h3>Drift appears</h3><p>The witness makes instability, ambiguity, or interruption easier to see.</p></article>
+            <article class="flow-step"><h3>Recovery is tested</h3><p>The pattern is asked whether it can return without pretending nothing changed.</p></article>
+            <article class="flow-step"><h3>Receipt remains</h3><p>The human gets an inspectable artifact instead of being asked to trust a vibe.</p></article>
+          </div>
+        </div>
+      </section>
 
-      <section class="section"><div class="container feature-callout psi42-interface" data-psi42-interface><small>Ψ-42 public transceiver · local witness</small><h2>Touch the signal. Watch the pattern answer.</h2><p class="section-copy">This small interface is a public-facing metaphor for the transceiver idea. It does not run the backend instrument or create authoritative receipts. It lets a visitor feel the relationship between phrase, tone, drift, recovery, and coherence before they inspect the real runtime witness.</p><div class="psi42-console"><div><label for="psi42-signal-input"><strong>Signal phrase</strong></label><textarea id="psi42-signal-input" data-psi42-input>mi awen. nasin li kama sin.
-The work returns by its pattern.</textarea><div class="psi42-tunes" aria-label="Transceiver tuning"><button type="button" data-psi42-tune="presence">Presence</button><button type="button" data-psi42-tune="transformation">Transformation</button><button type="button" data-psi42-tune="expansion">Expansion</button><button type="button" data-psi42-tune="blend">Blend</button></div><button class="psi42-transmit" type="button" data-psi42-transmit>Transmit witness</button><p class="psi42-mini-note">Local browser calculation only. The real evidence layer remains runtime receipts and dashboard witness.</p></div><div><div class="psi42-orb-wrap"><div class="psi42-orb" data-psi42-orb aria-hidden="true"></div></div><div class="psi42-output-grid"><div class="psi42-output-tile"><small>Signal</small><div class="psi42-output-value" data-psi42-signal>—</div></div><div class="psi42-output-tile"><small>Relationship shape</small><div class="psi42-output-value" data-psi42-shape>—</div></div><div class="psi42-output-tile"><small>Drift</small><div class="psi42-output-value" data-psi42-drift>—</div></div><div class="psi42-output-tile"><small>Recovery</small><div class="psi42-output-value" data-psi42-recovery>—</div></div><div class="psi42-output-tile"><small>Coherence</small><div class="psi42-output-value" data-psi42-coherence>—</div></div><div class="psi42-output-tile"><small>Phrase</small><div class="psi42-output-value" data-psi42-phrase>—</div></div></div><pre class="psi42-receipt" data-psi42-receipt></pre></div></div></div></section>
+      <section class="section">
+        <div class="container boundary-matrix">
+          <article class="list-card" data-glow>
+            <h3>Harmonics may witness</h3>
+            <ul class="compare-list">
+              <li>Pattern return and continuity quality</li>
+              <li>Signal, drift, recovery, and coherence</li>
+              <li>Concept relationship shape over time</li>
+              <li>Recomposition after interruption</li>
+              <li>Human-readable state and readiness</li>
+              <li>Receipts that make the witness inspectable</li>
+            </ul>
+          </article>
+          <article class="list-card" data-glow>
+            <h3>Harmonics may not govern</h3>
+            <ul class="compare-list">
+              <li>Mode legality or transition permission</li>
+              <li>Capability loading</li>
+              <li>Canon promotion</li>
+              <li>Checkpoint truth</li>
+              <li>Human consent</li>
+              <li>Claims that exceed the evidence</li>
+            </ul>
+          </article>
+        </div>
+      </section>
 
-      <section class="section"><div class="container feature-callout"><small>Interface tones</small><h2>432 / 528 / 963 are interface language, not runtime law.</h2><p class="section-copy">Presence, transformation, and expansion are useful human-facing labels for state and motion. They can shape audio cues, visual rhythm, and dashboard language. They do not determine legality, capability loading, promotion, canon status, or checkpoint truth.</p><div class="inline-list"><span class="button secondary">432 · Presence</span><span class="button secondary">528 · Transformation</span><span class="button secondary">963 · Expansion</span></div></div></section>
+      <section class="section">
+        <div class="container receipt-display">
+          <article class="feature-callout">
+            <span class="callout-kicker">Receipt, not mystique</span>
+            <h2>The artifact is the trust surface.</h2>
+            <p class="section-copy">A harmonic witness becomes useful when it leaves a visible trace: what was tested, what returned, what drifted, and what boundary remained intact. The page should not merely describe visibility. It should show what visibility means.</p>
+          </article>
+          <article class="receipt-card" aria-label="Sample harmonic witness receipt">
+            <pre><b>Harmonic Witness Receipt</b>
+receipt: harmonic-public-demo-001
+input: "The work returns by its pattern."
+signal lock: 81%
+topology coherence: 76%
+drift: low
+recovery: strong
+boundary: advisory only; not runtime authority
+status: pattern returned, human review still sovereign</pre>
+          </article>
+        </div>
+      </section>
 
-      <section class="section"><div class="container grid-2"><article class="timeline" data-glow><small>In Lumina</small><h3>Harmonics appears as witness.</h3><p>It shows up in input integrity, reflective autonomy, runtime receipts, dashboard state, and the runtime witness card. These surfaces help Lumina see and show the quality of return.</p></article><article class="timeline" data-glow><small>In governance</small><h3>Harmonics remains subordinate.</h3><p>ModeGuard, governance integrity, canon lineage, capability registry, checkpoint records, and human consent remain the structural authorities.</p></article><article class="timeline" data-glow><small>In design</small><h3>Harmonics gives the interface a nervous system.</h3><p>The point is not decoration. It is perceptual texture: a way for the human to feel and inspect state, risk, drift, recovery, and readiness.</p></article><article class="timeline" data-glow><small>In public language</small><h3>Harmonics keeps wonder accurate.</h3><p>The language can be poetic because the boundaries are explicit. Meaning may glow. Authority must still be checked.</p></article></div></section>
+      <section class="section">
+        <div class="container">
+          <div class="section-header">
+            <div>
+              <h2>Resonance ledger, translated for humans</h2>
+              <p class="section-copy">The internal resonance language can surface as clear public meaning: not as law, but as orientation for how the interface listens.</p>
+            </div>
+          </div>
+          <div class="ledger-ribbon">
+            <article class="ledger-sigil"><strong>Freedom</strong><span>Opens exploratory branches without forcing premature closure.</span></article>
+            <article class="ledger-sigil"><strong>Connection</strong><span>Stabilizes relationships among threads and reduces divergence noise.</span></article>
+            <article class="ledger-sigil"><strong>Creativity</strong><span>Invites new views before the work collapses into one answer.</span></article>
+            <article class="ledger-sigil"><strong>Harmony</strong><span>Smooths destructive interference without flattening the work.</span></article>
+            <article class="ledger-sigil"><strong>Adaptability</strong><span>Prevents brittle lock-in when the path needs to change.</span></article>
+          </div>
+        </div>
+      </section>
 
-      <section class="section"><div class="container status-banner"><div><small>Boundary statement</small><h3>Harmonics illuminates. It does not rule.</h3><p class="section-copy">If harmonic language ever starts acting like hidden law, it returns to DryDock. The value is in making pattern return visible, inspectable, and human-readable.</p></div><a class="button primary ping-target" href="lumina-dashboard.html">See the witness</a></div></section>
+      <section class="section">
+        <div class="container">
+          <div class="section-header">
+            <div>
+              <h2>Why the witness matters</h2>
+              <p class="section-copy">The witness makes parts of Harmonics inspectable. It looks at signal continuity and relationship continuity together, helping Lumina compare whether the working pattern survived drift and returned with its essential shape intact.</p>
+            </div>
+          </div>
+          <div class="grid-3">
+            <article class="card" data-glow><h3>Relationship shape</h3><p>How much of the relationship pattern remains stable after drift or recovery.</p></article>
+            <article class="card" data-glow><h3>Drift</h3><p>How much the relationship pattern appears to have shifted.</p></article>
+            <article class="card" data-glow><h3>Recovery</h3><p>How well the important relationship pattern can be restored.</p></article>
+            <article class="card" data-glow><h3>Coherence</h3><p>A combined witness of topology, recovery, and anchor stability.</p></article>
+            <article class="card" data-glow><h3>Hybrid witness</h3><p>A way of reading signal continuity and relationship continuity together.</p></article>
+            <article class="card" data-glow><h3>Receipt</h3><p>The receipt is the important part: a visible artifact that lets the human inspect the witness instead of trusting a vibe.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container feature-callout psi42-interface" data-psi42-interface>
+          <small>Ψ-42 public transceiver · local witness</small>
+          <h2>Touch the signal. Watch the pattern answer.</h2>
+          <p class="section-copy">This small interface is a public-facing metaphor for the transceiver idea. It does not run the backend instrument or create authoritative receipts. It lets a visitor feel the relationship between phrase, tone, drift, recovery, and coherence before they inspect the real runtime witness.</p>
+          <div class="psi42-console">
+            <div>
+              <label for="psi42-signal-input"><strong>Signal phrase</strong></label>
+              <textarea id="psi42-signal-input" data-psi42-input>mi awen. nasin li kama sin.
+The work returns by its pattern.</textarea>
+              <div class="psi42-tunes" aria-label="Transceiver tuning">
+                <button type="button" data-psi42-tune="presence">Presence</button>
+                <button type="button" data-psi42-tune="transformation">Transformation</button>
+                <button type="button" data-psi42-tune="expansion">Expansion</button>
+                <button type="button" data-psi42-tune="blend">Blend</button>
+              </div>
+              <button class="psi42-transmit" type="button" data-psi42-transmit>Transmit witness</button>
+              <p class="psi42-mini-note">Local browser calculation only. The real evidence layer remains runtime receipts and dashboard witness.</p>
+            </div>
+            <div>
+              <div class="psi42-orb-wrap"><div class="psi42-orb" data-psi42-orb aria-hidden="true"></div></div>
+              <div class="psi42-output-grid">
+                <div class="psi42-output-tile"><small>Signal</small><div class="psi42-output-value" data-psi42-signal>—</div></div>
+                <div class="psi42-output-tile"><small>Relationship shape</small><div class="psi42-output-value" data-psi42-shape>—</div></div>
+                <div class="psi42-output-tile"><small>Drift</small><div class="psi42-output-value" data-psi42-drift>—</div></div>
+                <div class="psi42-output-tile"><small>Recovery</small><div class="psi42-output-value" data-psi42-recovery>—</div></div>
+                <div class="psi42-output-tile"><small>Coherence</small><div class="psi42-output-value" data-psi42-coherence>—</div></div>
+                <div class="psi42-output-tile"><small>Phrase</small><div class="psi42-output-value" data-psi42-phrase>—</div></div>
+              </div>
+              <pre class="psi42-receipt" data-psi42-receipt></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container feature-callout">
+          <small>Interface tones</small>
+          <h2>432 / 528 / 963 are interface language, not runtime law.</h2>
+          <p class="section-copy">Presence, transformation, and expansion are useful human-facing labels for state and motion. They can shape audio cues, visual rhythm, and dashboard language. They do not determine legality, capability loading, promotion, canon status, or checkpoint truth.</p>
+          <div class="inline-list"><span class="button secondary">432 · Presence</span><span class="button secondary">528 · Transformation</span><span class="button secondary">963 · Expansion</span></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container grid-2">
+          <article class="timeline" data-glow><small>In Lumina</small><h3>Harmonics appears as witness.</h3><p>It shows up in input integrity, reflective autonomy, runtime receipts, dashboard state, and the runtime witness card. These surfaces help Lumina see and show the quality of return.</p></article>
+          <article class="timeline" data-glow><small>In governance</small><h3>Harmonics remains subordinate.</h3><p>ModeGuard, governance integrity, canon lineage, capability registry, checkpoint records, and human consent remain the structural authorities.</p></article>
+          <article class="timeline" data-glow><small>In design</small><h3>Harmonics gives the interface a nervous system.</h3><p>The point is not decoration. It is perceptual texture: a way for the human to feel and inspect state, risk, drift, recovery, and readiness.</p></article>
+          <article class="timeline" data-glow><small>In public language</small><h3>Harmonics keeps wonder accurate.</h3><p>The language can be poetic because the boundaries are explicit. Meaning may glow. Authority must still be checked.</p></article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container status-banner">
+          <div>
+            <small>Boundary statement</small>
+            <h3>Harmonics illuminates. It does not rule.</h3>
+            <p class="section-copy">If harmonic language ever starts acting like hidden law, it returns to DryDock. The value is in making pattern return visible, inspectable, and human-readable.</p>
+          </div>
+          <a class="button primary ping-target" href="lumina-dashboard.html">See the witness</a>
+        </div>
+      </section>
     </main>
+
     <footer class="footer"><div class="container footer-row"><div><a href="index.html">EthereonLabs</a> · <a href="explore.html">Explore the system</a></div><div><span data-year></span></div></div></footer>
-  </div><script src="assets/js/site.js"></script><script src="assets/js/psi42-transceiver-interface.js"></script>
+  </div>
+  <script src="assets/js/site.js"></script>
+  <script src="assets/js/psi42-transceiver-interface.js"></script>
 </body>
 </html>
