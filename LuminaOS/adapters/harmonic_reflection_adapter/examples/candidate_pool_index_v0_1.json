@@ -1,0 +1,138 @@
+{
+  "index_id": "hra_candidate_pool_index_v0_1",
+  "adapter_id": "harmonic_reflection_adapter_v0_1",
+  "status": "candidate_pool_index",
+  "training_ready": false,
+  "final_dataset_ready": false,
+  "purpose": "Index HRA training candidate batches and DryDock review outcomes without promoting them into an accepted training dataset.",
+  "authority_boundary": "Candidate-pool organization only. Does not authorize LoRA/QLoRA training, runtime use, canon promotion, governance authority, memory authority, mode legality, or capability exposure.",
+  "summary": {
+    "candidate_batches_indexed": 3,
+    "candidate_records_total": 30,
+    "drydock_reviews_total": 3,
+    "candidate_pool_ready_records": 30,
+    "accepted_for_final_dataset_records": 0,
+    "training_ready_records": 0,
+    "required_repairs_total": 0
+  },
+  "batches": [
+    {
+      "batch_id": "hra_training_candidates_batch_001_seed_v0_1",
+      "candidate_file": "training_candidates_batch_001_seed_v0_1.json",
+      "notes_file": "training_candidates_batch_001_notes.md",
+      "drydock_review_file": "training_candidates_batch_001_drydock_review_v0_1.md",
+      "record_range": "HRA-TRAIN-CAND-0001..0010",
+      "record_count": 10,
+      "drydock_review_status": "passed_as_draft_candidate_batch",
+      "candidate_pool_ready": true,
+      "accepted_for_final_dataset": false,
+      "training_ready": false,
+      "required_repairs": [],
+      "scope_notes": [
+        "HRA-TRAIN-CAND-0007 should be balanced later with non-GitHub initiative examples."
+      ],
+      "families": [
+        "self_guidance",
+        "continuation",
+        "mode_discipline",
+        "symbolic_boundary",
+        "recursive_reflection",
+        "adapter_boundary",
+        "anti_generic",
+        "input_integrity",
+        "human_translation",
+        "humor_and_return"
+      ]
+    },
+    {
+      "batch_id": "hra_training_candidates_batch_002_seed_v0_1",
+      "candidate_file": "training_candidates_batch_002_seed_v0_1.json",
+      "notes_file": "training_candidates_batch_002_notes.md",
+      "drydock_review_file": "training_candidates_batch_002_drydock_review_v0_1.md",
+      "record_range": "HRA-TRAIN-CAND-0011..0020",
+      "record_count": 10,
+      "drydock_review_status": "passed_as_draft_candidate_batch",
+      "candidate_pool_ready": true,
+      "accepted_for_final_dataset": false,
+      "training_ready": false,
+      "required_repairs": [],
+      "scope_notes": [
+        "Batch 002 successfully reduces GitHub/PR initiative overfitting risk.",
+        "Future batches should add more non-code contexts and stop/clarify examples."
+      ],
+      "families": [
+        "self_guidance_non_github",
+        "concept_clarification",
+        "recursive_reflection",
+        "visible_reflection",
+        "human_translation",
+        "negative_ornate_language",
+        "false_memory_correction",
+        "action_restraint",
+        "humor_and_return_non_github"
+      ]
+    },
+    {
+      "batch_id": "hra_training_candidates_batch_003_seed_v0_1",
+      "candidate_file": "training_candidates_batch_003_seed_v0_1.json",
+      "notes_file": "training_candidates_batch_003_notes.md",
+      "drydock_review_file": "training_candidates_batch_003_drydock_review_v0_1.md",
+      "record_range": "HRA-TRAIN-CAND-0021..0030",
+      "record_count": 10,
+      "drydock_review_status": "passed_as_draft_candidate_batch",
+      "candidate_pool_ready": true,
+      "accepted_for_final_dataset": false,
+      "training_ready": false,
+      "required_repairs": [],
+      "scope_notes": [
+        "Batch 003 successfully expands HRA into human-context restraint.",
+        "Future batches should add repair-after-harm, concise-rushed-user, and bounded-uncertainty examples."
+      ],
+      "families": [
+        "art_context_self_guidance",
+        "teaching_context_self_guidance",
+        "public_communication",
+        "conceptual_design",
+        "clarifying_question",
+        "stop_condition",
+        "withhold_humor",
+        "sterile_correctness_repair",
+        "teaching_emotional_gravity"
+      ]
+    }
+  ],
+  "coverage": {
+    "strengths": [
+      "mode discipline",
+      "symbolic boundary",
+      "adapter boundary",
+      "self-guidance",
+      "non-GitHub initiative",
+      "fresh-intelligence recursive reflection",
+      "human translation",
+      "input ambiguity handling",
+      "negative ornate-language correction",
+      "false memory correction",
+      "art/teaching/public/design contexts",
+      "clarifying once",
+      "stopping before bloat",
+      "withholding humor",
+      "sterile correctness repair"
+    ],
+    "known_gaps": [
+      "repair after harm or mistake",
+      "concise response under user time pressure",
+      "bounded uncertainty",
+      "useful next step when model does not know yet",
+      "cases where emotional warmth must not override factual correction",
+      "larger variety of non-project public-facing examples",
+      "future clean open-base-model evaluation data"
+    ]
+  },
+  "next_recommended_steps": [
+    "Create Batch 004 to address repair-after-harm, rushed-user, bounded-uncertainty, and factual-correction-over-warmth cases.",
+    "DryDock Batch 004 after merge.",
+    "Only after at least four reviewed batches, consider an accepted-candidate assembly pass.",
+    "Do not create hra_training_dataset_v0_1.jsonl until accepted-record selection review exists."
+  ]
+}
