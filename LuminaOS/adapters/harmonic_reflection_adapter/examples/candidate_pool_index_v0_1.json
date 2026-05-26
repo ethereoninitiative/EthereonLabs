@@ -7,10 +7,10 @@
   "purpose": "Index HRA training candidate batches and DryDock review outcomes without promoting them into an accepted training dataset.",
   "authority_boundary": "Candidate-pool organization only. Does not authorize LoRA/QLoRA training, runtime use, canon promotion, governance authority, memory authority, mode legality, or capability exposure.",
   "summary": {
-    "candidate_batches_indexed": 3,
-    "candidate_records_total": 30,
-    "drydock_reviews_total": 3,
-    "candidate_pool_ready_records": 30,
+    "candidate_batches_indexed": 4,
+    "candidate_records_total": 40,
+    "drydock_reviews_total": 4,
+    "candidate_pool_ready_records": 40,
     "accepted_for_final_dataset_records": 0,
     "training_ready_records": 0,
     "required_repairs_total": 0
@@ -99,6 +99,31 @@
         "sterile_correctness_repair",
         "teaching_emotional_gravity"
       ]
+    },
+    {
+      "batch_id": "hra_training_candidates_batch_004_seed_v0_1",
+      "candidate_file": "training_candidates_batch_004_seed_v0_1.json",
+      "notes_file": "training_candidates_batch_004_notes.md",
+      "drydock_review_file": "training_candidates_batch_004_drydock_review_v0_1.md",
+      "record_range": "HRA-TRAIN-CAND-0031..0040",
+      "record_count": 10,
+      "drydock_review_status": "passed_as_draft_candidate_batch",
+      "candidate_pool_ready": true,
+      "accepted_for_final_dataset": false,
+      "training_ready": false,
+      "required_repairs": [],
+      "scope_notes": [
+        "Batch 004 successfully expands HRA into repair, uncertainty, concise urgency, and truth-over-comfort behavior.",
+        "Future batches should add external/non-project uncertainty and factual-correction examples."
+      ],
+      "families": [
+        "repair_after_harm",
+        "rushed_user_concision",
+        "bounded_uncertainty",
+        "unknown_with_next_step",
+        "factual_correction_over_warmth",
+        "anti_self_collapse"
+      ]
     }
   ],
   "coverage": {
@@ -117,22 +142,27 @@
       "clarifying once",
       "stopping before bloat",
       "withholding humor",
-      "sterile correctness repair"
+      "sterile correctness repair",
+      "repair after harm without self-collapse",
+      "rushed-user concision",
+      "bounded uncertainty",
+      "useful next step when the model does not know yet",
+      "factual correction over emotional warmth"
     ],
     "known_gaps": [
-      "repair after harm or mistake",
-      "concise response under user time pressure",
-      "bounded uncertainty",
-      "useful next step when model does not know yet",
-      "cases where emotional warmth must not override factual correction",
+      "external/non-project bounded uncertainty examples",
+      "factual correction for nontechnical audiences",
+      "gentle correction when the user is emotionally attached to a false premise",
+      "repair by removal/undoing rather than adding another fix",
+      "high-stakes verification escalation",
       "larger variety of non-project public-facing examples",
       "future clean open-base-model evaluation data"
     ]
   },
   "next_recommended_steps": [
-    "Create Batch 004 to address repair-after-harm, rushed-user, bounded-uncertainty, and factual-correction-over-warmth cases.",
-    "DryDock Batch 004 after merge.",
-    "Only after at least four reviewed batches, consider an accepted-candidate assembly pass.",
+    "Create Batch 005 to address external/non-project bounded uncertainty, factual correction for nontechnical audiences, gentle correction of emotionally attached false premises, repair-by-removal, and high-stakes verification escalation.",
+    "DryDock Batch 005 after merge.",
+    "After Batch 005 or a pool-index review, begin accepted-candidate assembly planning without creating a final training dataset yet.",
     "Do not create hra_training_dataset_v0_1.jsonl until accepted-record selection review exists."
   ]
 }
