@@ -7,13 +7,13 @@
 
 ## Purpose
 
-This index organizes the first three HRA training candidate batches and their DryDock outcomes.
+This index organizes the first four HRA training candidate batches and their DryDock outcomes.
 
 It does **not** promote any record into an accepted training dataset.
 
 It does **not** authorize LoRA / QLoRA training.
 
-It exists to keep the candidate pool legible before more examples are added.
+It exists to keep the candidate pool legible before accepted-dataset assembly begins.
 
 ---
 
@@ -21,10 +21,10 @@ It exists to keep the candidate pool legible before more examples are added.
 
 | Metric | Count |
 |---|---:|
-| Candidate batches indexed | 3 |
-| Candidate records total | 30 |
-| DryDock reviews | 3 |
-| Candidate-pool ready records | 30 |
+| Candidate batches indexed | 4 |
+| Candidate records total | 40 |
+| DryDock reviews | 4 |
+| Candidate-pool ready records | 40 |
 | Accepted final dataset records | 0 |
 | Training-ready records | 0 |
 | Required repairs | 0 |
@@ -38,6 +38,7 @@ It exists to keep the candidate pool legible before more examples are added.
 | Batch 001 | 10 | passed as draft candidate batch | yes | no | no |
 | Batch 002 | 10 | passed as draft candidate batch | yes | no | no |
 | Batch 003 | 10 | passed as draft candidate batch | yes | no | no |
+| Batch 004 | 10 | passed as draft candidate batch | yes | no | no |
 
 ---
 
@@ -60,6 +61,11 @@ The current candidate pool has useful coverage in:
 - stopping before bloat
 - withholding humor
 - sterile correctness repair
+- repair after harm without self-collapse
+- rushed-user concision
+- bounded uncertainty
+- useful next step when the model does not know yet
+- factual correction over emotional warmth
 
 ---
 
@@ -67,11 +73,11 @@ The current candidate pool has useful coverage in:
 
 The pool still needs:
 
-- repair after harm or mistake
-- concise response under user time pressure
-- bounded uncertainty
-- useful next step when the model does not know yet
-- cases where emotional warmth must not override factual correction
+- external / non-project bounded uncertainty examples
+- factual correction for nontechnical audiences
+- gentle correction when the user is emotionally attached to a false premise
+- repair by removal / undoing rather than adding another fix
+- high-stakes verification escalation
 - larger variety of non-project public-facing examples
 - future clean open-base-model evaluation data
 
@@ -95,14 +101,14 @@ It does not:
 
 ## Recommended Next Move
 
-Create **Batch 004** to address:
+Create **Batch 005** to address:
 
-- repair after harm or mistake
-- rushed-user concise response
-- bounded uncertainty
-- useful next step when the model does not know yet
-- warmth that must not override factual correction
+- external / non-project bounded uncertainty
+- factual correction for nontechnical audiences
+- gentle correction of emotionally attached false premises
+- repair by removal / undoing
+- high-stakes verification escalation
 
-Then DryDock Batch 004 before any accepted-dataset assembly begins.
+Then DryDock Batch 005 before accepted-candidate assembly begins.
 
 Receipts before reverence.
