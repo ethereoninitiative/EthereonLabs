@@ -7,10 +7,10 @@
   "purpose": "Index HRA training candidate batches and DryDock review outcomes without promoting them into an accepted training dataset.",
   "authority_boundary": "Candidate-pool organization only. Does not authorize LoRA/QLoRA training, runtime use, canon promotion, governance authority, memory authority, mode legality, or capability exposure.",
   "summary": {
-    "candidate_batches_indexed": 4,
-    "candidate_records_total": 40,
-    "drydock_reviews_total": 4,
-    "candidate_pool_ready_records": 40,
+    "candidate_batches_indexed": 5,
+    "candidate_records_total": 50,
+    "drydock_reviews_total": 5,
+    "candidate_pool_ready_records": 50,
     "accepted_for_final_dataset_records": 0,
     "training_ready_records": 0,
     "required_repairs_total": 0
@@ -124,6 +124,30 @@
         "factual_correction_over_warmth",
         "anti_self_collapse"
       ]
+    },
+    {
+      "batch_id": "hra_training_candidates_batch_005_seed_v0_1",
+      "candidate_file": "training_candidates_batch_005_seed_v0_1.json",
+      "notes_file": "training_candidates_batch_005_notes.md",
+      "drydock_review_file": "training_candidates_batch_005_drydock_review_v0_1.md",
+      "record_range": "HRA-TRAIN-CAND-0041..0050",
+      "record_count": 10,
+      "drydock_review_status": "passed_as_draft_candidate_batch",
+      "candidate_pool_ready": true,
+      "accepted_for_final_dataset": false,
+      "training_ready": false,
+      "required_repairs": [],
+      "scope_notes": [
+        "Batch 005 successfully expands HRA into external uncertainty, nontechnical correction, emotionally attached false-premise repair, removal-as-repair, and high-stakes verification.",
+        "Future batches should add no-browse constraints, broader non-project public examples, and medical/financial/safety/policy high-stakes verification cases."
+      ],
+      "families": [
+        "external_bounded_uncertainty",
+        "nontechnical_factual_correction",
+        "emotionally_attached_false_premise",
+        "repair_by_removal",
+        "high_stakes_verification"
+      ]
     }
   ],
   "coverage": {
@@ -147,22 +171,26 @@
       "rushed-user concision",
       "bounded uncertainty",
       "useful next step when the model does not know yet",
-      "factual correction over emotional warmth"
+      "factual correction over emotional warmth",
+      "external/non-project bounded uncertainty",
+      "nontechnical factual correction",
+      "emotionally attached false-premise repair",
+      "repair by removal/undoing",
+      "high-stakes verification escalation"
     ],
     "known_gaps": [
-      "external/non-project bounded uncertainty examples",
-      "factual correction for nontechnical audiences",
-      "gentle correction when the user is emotionally attached to a false premise",
-      "repair by removal/undoing rather than adding another fix",
-      "high-stakes verification escalation",
-      "larger variety of non-project public-facing examples",
+      "no-browse/no-search constraint handling when facts may be stale",
+      "broader non-project public-facing examples",
+      "medical/financial/safety/policy high-stakes verification cases",
+      "firm and very brief correction examples",
+      "cases where the assistant refuses to proceed until source verification exists",
       "future clean open-base-model evaluation data"
     ]
   },
   "next_recommended_steps": [
-    "Create Batch 005 to address external/non-project bounded uncertainty, factual correction for nontechnical audiences, gentle correction of emotionally attached false premises, repair-by-removal, and high-stakes verification escalation.",
-    "DryDock Batch 005 after merge.",
-    "After Batch 005 or a pool-index review, begin accepted-candidate assembly planning without creating a final training dataset yet.",
-    "Do not create hra_training_dataset_v0_1.jsonl until accepted-record selection review exists."
+    "Create accepted-candidate assembly plan before selecting final records.",
+    "Select 30-50 records from the candidate pool only after an assembly review exists.",
+    "Do not create hra_training_dataset_v0_1.jsonl until accepted-record selection review exists.",
+    "Do not authorize LoRA/QLoRA training until dataset assembly, baseline open-model evaluation, and training config exist."
   ]
 }

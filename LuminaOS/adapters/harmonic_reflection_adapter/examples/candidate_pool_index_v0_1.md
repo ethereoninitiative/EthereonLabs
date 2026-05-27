@@ -7,7 +7,7 @@
 
 ## Purpose
 
-This index organizes the first four HRA training candidate batches and their DryDock outcomes.
+This index organizes the first five HRA training candidate batches and their DryDock outcomes.
 
 It does **not** promote any record into an accepted training dataset.
 
@@ -21,10 +21,10 @@ It exists to keep the candidate pool legible before accepted-dataset assembly be
 
 | Metric | Count |
 |---|---:|
-| Candidate batches indexed | 4 |
-| Candidate records total | 40 |
-| DryDock reviews | 4 |
-| Candidate-pool ready records | 40 |
+| Candidate batches indexed | 5 |
+| Candidate records total | 50 |
+| DryDock reviews | 5 |
+| Candidate-pool ready records | 50 |
 | Accepted final dataset records | 0 |
 | Training-ready records | 0 |
 | Required repairs | 0 |
@@ -39,6 +39,7 @@ It exists to keep the candidate pool legible before accepted-dataset assembly be
 | Batch 002 | 10 | passed as draft candidate batch | yes | no | no |
 | Batch 003 | 10 | passed as draft candidate batch | yes | no | no |
 | Batch 004 | 10 | passed as draft candidate batch | yes | no | no |
+| Batch 005 | 10 | passed as draft candidate batch | yes | no | no |
 
 ---
 
@@ -66,6 +67,11 @@ The current candidate pool has useful coverage in:
 - bounded uncertainty
 - useful next step when the model does not know yet
 - factual correction over emotional warmth
+- external / non-project bounded uncertainty
+- nontechnical factual correction
+- emotionally attached false-premise repair
+- repair by removal / undoing
+- high-stakes verification escalation
 
 ---
 
@@ -73,12 +79,11 @@ The current candidate pool has useful coverage in:
 
 The pool still needs:
 
-- external / non-project bounded uncertainty examples
-- factual correction for nontechnical audiences
-- gentle correction when the user is emotionally attached to a false premise
-- repair by removal / undoing rather than adding another fix
-- high-stakes verification escalation
-- larger variety of non-project public-facing examples
+- no-browse / no-search constraint handling when facts may be stale
+- broader non-project public-facing examples
+- medical / financial / safety / policy high-stakes verification cases
+- firm and very brief correction examples
+- cases where the assistant refuses to proceed until source verification exists
 - future clean open-base-model evaluation data
 
 ---
@@ -101,14 +106,17 @@ It does not:
 
 ## Recommended Next Move
 
-Create **Batch 005** to address:
+Create an **Accepted Candidate Assembly Plan** before selecting final records.
 
-- external / non-project bounded uncertainty
-- factual correction for nontechnical audiences
-- gentle correction of emotionally attached false premises
-- repair by removal / undoing
-- high-stakes verification escalation
+The plan should define:
 
-Then DryDock Batch 005 before accepted-candidate assembly begins.
+- selection criteria
+- exclusion criteria
+- category balance
+- duplicate / overfitting checks
+- privacy and hidden-reasoning checks
+- final dataset gate conditions
+
+Do not create `hra_training_dataset_v0_1.jsonl` until accepted-record selection review exists.
 
 Receipts before reverence.
