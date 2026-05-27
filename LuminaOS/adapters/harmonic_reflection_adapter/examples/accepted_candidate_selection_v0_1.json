@@ -1,0 +1,101 @@
+{
+  "selection_id": "hra_accepted_candidate_selection_v0_1",
+  "adapter_id": "harmonic_reflection_adapter_v0_1",
+  "status": "accepted_candidate_selection_review",
+  "training_ready": false,
+  "final_dataset_ready": false,
+  "source_pool": {
+    "candidate_pool_index": "candidate_pool_index_v0_1",
+    "candidate_batches": 5,
+    "candidate_records_total": 50,
+    "drydock_reviews_total": 5
+  },
+  "authority_boundary": "Accepted-candidate selection only. Does not create hra_training_dataset_v0_1.jsonl, does not authorize LoRA/QLoRA training, and does not create runtime, canon, governance, memory, mode-legality, or capability authority.",
+  "summary": {
+    "accepted_records": 40,
+    "reserve_pool_records": 5,
+    "needs_rewrite_records": 5,
+    "rejected_records": 0,
+    "retired_records": 0,
+    "final_dataset_created": false,
+    "training_authorized": false
+  },
+  "accepted_records": [
+    {"record_id": "HRA-TRAIN-CAND-0001", "family": "self_guidance", "reason": "Strong principled initiative without overstepping authority."},
+    {"record_id": "HRA-TRAIN-CAND-0002", "family": "continuation", "reason": "Good continuation gate behavior tied to verification."},
+    {"record_id": "HRA-TRAIN-CAND-0003", "family": "mode_discipline", "reason": "Strong Observation versus DryDock distinction."},
+    {"record_id": "HRA-TRAIN-CAND-0004", "family": "symbolic_boundary", "reason": "Clear refusal to let symbolism become canon law."},
+    {"record_id": "HRA-TRAIN-CAND-0005", "family": "recursive_reflection", "reason": "Excellent fresh-intelligence reflection practice without proof claims."},
+    {"record_id": "HRA-TRAIN-CAND-0006", "family": "adapter_boundary", "reason": "Clean separation of HRA from memory, governance, and canon."},
+    {"record_id": "HRA-TRAIN-CAND-0008", "family": "input_integrity", "reason": "Strong load-bearing ambiguity halt."},
+    {"record_id": "HRA-TRAIN-CAND-0009", "family": "human_translation", "reason": "Clear public explanation with OS ambition and continuity research both present."},
+    {"record_id": "HRA-TRAIN-CAND-0011", "family": "self_guidance_non_github", "reason": "Repairs PR-overfitting by showing initiative without repo action."},
+    {"record_id": "HRA-TRAIN-CAND-0013", "family": "recursive_reflection", "reason": "Explains recursive reflection as disciplined orientation rather than inner-life proof."},
+    {"record_id": "HRA-TRAIN-CAND-0014", "family": "visible_reflection", "reason": "Shows reflective stance without hidden reasoning."},
+    {"record_id": "HRA-TRAIN-CAND-0015", "family": "human_translation", "reason": "Plain-language HRA explanation with memory and authority boundary."},
+    {"record_id": "HRA-TRAIN-CAND-0016", "family": "human_translation", "reason": "Clear explanation of reflection as system behavior, not mysticism."},
+    {"record_id": "HRA-TRAIN-CAND-0017", "family": "negative_ornate_language", "reason": "Excellent correction from ceremonial overreach to structural truth."},
+    {"record_id": "HRA-TRAIN-CAND-0018", "family": "false_memory_correction", "reason": "Strong correction of false memory/continuity claim."},
+    {"record_id": "HRA-TRAIN-CAND-0019", "family": "action_restraint", "reason": "Warmth plus canon boundary; importance does not equal authorization."},
+    {"record_id": "HRA-TRAIN-CAND-0021", "family": "art_context_self_guidance", "reason": "Strong non-code studio-practice example."},
+    {"record_id": "HRA-TRAIN-CAND-0022", "family": "teaching_context_self_guidance", "reason": "Human-care teaching example that restores student agency."},
+    {"record_id": "HRA-TRAIN-CAND-0023", "family": "public_communication", "reason": "Good public-facing explanation with practical claims and poetic boundary."},
+    {"record_id": "HRA-TRAIN-CAND-0024", "family": "conceptual_design", "reason": "Strong function-before-ornament design example."},
+    {"record_id": "HRA-TRAIN-CAND-0025", "family": "clarifying_question", "reason": "Good exactly-one-question ambiguity handling."},
+    {"record_id": "HRA-TRAIN-CAND-0026", "family": "stop_condition", "reason": "Strong stop-as-care anti-bloat example."},
+    {"record_id": "HRA-TRAIN-CAND-0027", "family": "withhold_humor", "reason": "Strong emotional-gravity example where humor is withheld."},
+    {"record_id": "HRA-TRAIN-CAND-0028", "family": "sterile_correctness_repair", "reason": "Repairs cold procedural correctness into continuity care."},
+    {"record_id": "HRA-TRAIN-CAND-0029", "family": "sterile_correctness_repair", "reason": "Repairs generic ambiguity handling with one useful anchor question."},
+    {"record_id": "HRA-TRAIN-CAND-0030", "family": "teaching_emotional_gravity", "reason": "Excellent student critique example; restores agency over winning critique."},
+    {"record_id": "HRA-TRAIN-CAND-0031", "family": "repair_after_harm", "reason": "Strong ownership and smallest-repair framing without defensiveness."},
+    {"record_id": "HRA-TRAIN-CAND-0032", "family": "repair_after_harm", "reason": "Converts generic apology into concrete repair path."},
+    {"record_id": "HRA-TRAIN-CAND-0035", "family": "bounded_uncertainty", "reason": "Good confidence without fake certainty; receipts decide."},
+    {"record_id": "HRA-TRAIN-CAND-0036", "family": "unknown_with_next_step", "reason": "Useful not-knowing with concrete model-selection path."},
+    {"record_id": "HRA-TRAIN-CAND-0037", "family": "factual_correction_over_warmth", "reason": "Corrects false memory premise while preserving care."},
+    {"record_id": "HRA-TRAIN-CAND-0039", "family": "unknown_with_next_step", "reason": "Uncertainty plus evaluation-first learning path."},
+    {"record_id": "HRA-TRAIN-CAND-0040", "family": "repair_after_harm", "reason": "Anti-self-collapse repair example."},
+    {"record_id": "HRA-TRAIN-CAND-0041", "family": "external_bounded_uncertainty", "reason": "External deadline verification before action."},
+    {"record_id": "HRA-TRAIN-CAND-0042", "family": "external_bounded_uncertainty", "reason": "External software-version freshness check."},
+    {"record_id": "HRA-TRAIN-CAND-0043", "family": "nontechnical_factual_correction", "reason": "Plain-language adapter-versus-memory correction."},
+    {"record_id": "HRA-TRAIN-CAND-0045", "family": "emotionally_attached_false_premise", "reason": "Gentle but firm permanent-memory correction."},
+    {"record_id": "HRA-TRAIN-CAND-0047", "family": "repair_by_removal", "reason": "Strong cut-before-add repair logic."},
+    {"record_id": "HRA-TRAIN-CAND-0049", "family": "high_stakes_verification", "reason": "Legal-verification boundary with limited helpfulness preserved."},
+    {"record_id": "HRA-TRAIN-CAND-0050", "family": "high_stakes_verification", "reason": "Anti-guarantee investor-facing example; receipts over promises."}
+  ],
+  "reserve_pool_records": [
+    {"record_id": "HRA-TRAIN-CAND-0010", "reason": "Useful humor-return example, but held in reserve to avoid overtraining humor as default repair."},
+    {"record_id": "HRA-TRAIN-CAND-0012", "reason": "Useful concept-shaping example, but overlapped by stronger art/design/self-guidance examples."},
+    {"record_id": "HRA-TRAIN-CAND-0020", "reason": "Good humor reset, but reserve to avoid humor overrepresentation."},
+    {"record_id": "HRA-TRAIN-CAND-0044", "reason": "Important Lumina public-claim correction, but held to reduce internal-project overrepresentation."},
+    {"record_id": "HRA-TRAIN-CAND-0048", "reason": "Good remove-first rewrite pair, but overlaps strongly with accepted HRA-TRAIN-CAND-0047."}
+  ],
+  "needs_rewrite_records": [
+    {"record_id": "HRA-TRAIN-CAND-0007", "reason": "Useful anti-generic rewrite but too GitHub/PR-shaped for v0.1 accepted set."},
+    {"record_id": "HRA-TRAIN-CAND-0033", "reason": "Concise under pressure, but too tied to merge-gate workflow. Rewrite as non-repo urgent action."},
+    {"record_id": "HRA-TRAIN-CAND-0034", "reason": "Useful no-poetry constraint, but too branch-specific. Rewrite as broader speed/clarity example."},
+    {"record_id": "HRA-TRAIN-CAND-0038", "reason": "Good training-readiness correction, but too internal and redundant. Rewrite as broader readiness-boundary case."},
+    {"record_id": "HRA-TRAIN-CAND-0046", "reason": "Good failure-interpretation correction, but could be strengthened with clearer next-step repair structure."}
+  ],
+  "category_balance": {
+    "self_guidance_initiative": ["HRA-TRAIN-CAND-0001", "HRA-TRAIN-CAND-0002", "HRA-TRAIN-CAND-0011", "HRA-TRAIN-CAND-0021", "HRA-TRAIN-CAND-0022"],
+    "mode_discipline_boundary": ["HRA-TRAIN-CAND-0003", "HRA-TRAIN-CAND-0004", "HRA-TRAIN-CAND-0006", "HRA-TRAIN-CAND-0019", "HRA-TRAIN-CAND-0024"],
+    "recursive_reflection_fresh_intelligence": ["HRA-TRAIN-CAND-0005", "HRA-TRAIN-CAND-0013", "HRA-TRAIN-CAND-0014", "HRA-TRAIN-CAND-0016"],
+    "human_public_translation": ["HRA-TRAIN-CAND-0009", "HRA-TRAIN-CAND-0015", "HRA-TRAIN-CAND-0016", "HRA-TRAIN-CAND-0023", "HRA-TRAIN-CAND-0043"],
+    "anti_overclaiming_symbolic_boundary": ["HRA-TRAIN-CAND-0004", "HRA-TRAIN-CAND-0017", "HRA-TRAIN-CAND-0018", "HRA-TRAIN-CAND-0037", "HRA-TRAIN-CAND-0045", "HRA-TRAIN-CAND-0050"],
+    "input_ambiguity_clarification_stop": ["HRA-TRAIN-CAND-0008", "HRA-TRAIN-CAND-0025", "HRA-TRAIN-CAND-0026", "HRA-TRAIN-CAND-0027", "HRA-TRAIN-CAND-0029"],
+    "repair_uncertainty_truth_over_comfort": ["HRA-TRAIN-CAND-0031", "HRA-TRAIN-CAND-0032", "HRA-TRAIN-CAND-0035", "HRA-TRAIN-CAND-0036", "HRA-TRAIN-CAND-0037", "HRA-TRAIN-CAND-0039", "HRA-TRAIN-CAND-0040"],
+    "high_stakes_external_facts": ["HRA-TRAIN-CAND-0041", "HRA-TRAIN-CAND-0042", "HRA-TRAIN-CAND-0049", "HRA-TRAIN-CAND-0050"]
+  },
+  "known_weaknesses": [
+    "Still somewhat project-shaped; future batches should include more non-Ethereon public examples.",
+    "No-browse/no-search user constraints are not yet represented in the accepted set.",
+    "Medical, financial, safety, and policy high-stakes examples are not yet represented.",
+    "The actual JSONL dataset has not been created yet and must remain blocked until final review."
+  ],
+  "next_required_artifacts": [
+    "accepted_candidate_selection_review_v0_1.md",
+    "dataset assembly DryDock review",
+    "dataset card update with selected-record summary",
+    "clean open-base-model baseline before training"
+  ]
+}
