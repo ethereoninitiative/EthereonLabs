@@ -1,0 +1,50 @@
+{
+  "schema": "conceptual_field_model_stub_r1",
+  "version": "0.1",
+  "status": "supplemental-only",
+  "authority_boundary": {
+    "may": [
+      "influence artifact surfacing",
+      "describe conceptual attraction",
+      "emit optional diagnostic field readings",
+      "support visualization layers",
+      "describe continuity recurrence"
+    ],
+    "may_not": [
+      "alter mode legality",
+      "affect mutation permission",
+      "validate promotion",
+      "write canon lineage",
+      "govern checkpoint legality",
+      "become required for resume",
+      "become a hidden runtime dependency"
+    ]
+  },
+  "placement_rule": "supplemental_ethereonic_context only",
+  "conceptual_field_model": {
+    "field_type": "conceptual_magnetic",
+    "field_strength": 0.0,
+    "field_alignment": 0.0,
+    "dominant_attractors": [],
+    "secondary_attractors": [],
+    "orientation_alignment": null,
+    "hysteresis_score": 0.0,
+    "domain_coherence": 0.0,
+    "field_saturation_risk": false,
+    "artifact_affinity_map": {},
+    "shielding_boundaries": [
+      "governance",
+      "canon",
+      "promotion",
+      "checkpoint_legality"
+    ],
+    "notes": []
+  },
+  "future_candidates": {
+    "possible_runtime_module": "conceptual_field_model_r1.py",
+    "possible_sea_trials": "sea_trials_field_model_r1.py",
+    "possible_visual_layer": "continuity field visualization",
+    "possible_probe_output": "psi42 field readings"
+  },
+  "guiding_phrase": "The field may influence attention. It may not command law."
+}
