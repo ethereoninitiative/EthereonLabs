@@ -1,0 +1,24 @@
+{
+  "schema_version": "sea-trial-genesis-governance-r1-receipt",
+  "generated_at": "2026-05-30T04:37:53.725646+00:00",
+  "suite": "canon_readiness_genesis_governance_r1",
+  "passed": true,
+  "checks": {
+    "governance_chain_valid": true,
+    "governance_event_count_is_genesis": true,
+    "canon_lineage_valid": true,
+    "canon_record_count_is_genesis": true,
+    "promotion_receipt_passed": true,
+    "symbolic_dependency_violation_false": true,
+    "promotion_authority_runtime_artifacts_only": true
+  },
+  "generated_artifacts": {
+    "governance_chain_verification": "artifacts/runtime_truth/current/governance_chain_verification.json",
+    "canon_lineage_verification": "artifacts/runtime_truth/current/canon_lineage_verification.json",
+    "promotion_receipt": "artifacts/runtime_truth/current/promotion_receipt_0001.json"
+  },
+  "state_paths": {
+    "governance_log_path": "/workspace/EthereonLabs/.lumina_state/ship_of_ethereon_v2/canon_readiness_genesis_r1/governance_log_r1.jsonl",
+    "canon_lineage_path": "/workspace/EthereonLabs/.lumina_state/ship_of_ethereon_v2/canon_readiness_genesis_r1/canon_lineage_r1.jsonl"
+  }
+}

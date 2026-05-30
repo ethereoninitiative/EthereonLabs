@@ -1,0 +1,46 @@
+{
+  "schema_version": "post-promotion-verification-r1",
+  "generated_at": "2026-05-30T04:37:54.461623+00:00",
+  "verification_id": "post-promotion-verification-0001",
+  "passed": true,
+  "symbolic_dependency_violation": false,
+  "checks": {
+    "governance_chain_artifact_valid": true,
+    "governance_chain_recheck_valid": true,
+    "governance_latest_hash_matches_receipt": true,
+    "canon_lineage_artifact_valid": true,
+    "canon_lineage_recheck_valid": true,
+    "canon_head_is_genesis": true,
+    "promotion_receipt_passed": true,
+    "sea_trial_receipt_passed": true,
+    "symbolic_dependency_violation_false": true,
+    "promotion_authority_runtime_artifacts_only": true,
+    "promotion_authority_runtime_artifact_valid": true
+  },
+  "rechecked_with_repo_native_utilities": {
+    "governance_integrity_chain": {
+      "exists": true,
+      "event_count": 1,
+      "valid": true,
+      "errors": [],
+      "warnings": [],
+      "latest_event_hash": "284321688bf8bb4d777f060304e414779354c5452b9e460951d8b8154b00d99a",
+      "log_path": "/workspace/EthereonLabs/.lumina_state/ship_of_ethereon_v2/canon_readiness_genesis_r1/governance_log_r1.jsonl"
+    },
+    "canon_lineage_store": {
+      "exists": true,
+      "record_count": 1,
+      "valid": true,
+      "errors": [],
+      "warnings": [],
+      "current_head": "canon-0001",
+      "lineage_path": "/workspace/EthereonLabs/.lumina_state/ship_of_ethereon_v2/canon_readiness_genesis_r1/canon_lineage_r1.jsonl"
+    }
+  },
+  "verified_artifacts": {
+    "governance_chain_verification": "artifacts/runtime_truth/current/governance_chain_verification.json",
+    "canon_lineage_verification": "artifacts/runtime_truth/current/canon_lineage_verification.json",
+    "promotion_receipt": "artifacts/runtime_truth/current/promotion_receipt_0001.json",
+    "sea_trial_receipt": "artifacts/runtime_truth/current/sea_trial_genesis_governance_r1_receipt.json"
+  }
+}

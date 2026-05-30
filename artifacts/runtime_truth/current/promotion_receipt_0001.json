@@ -1,0 +1,61 @@
+{
+  "schema_version": "canon-readiness-promotion-receipt-r1",
+  "generated_at": "2026-05-30T04:37:53.725337+00:00",
+  "promotion_id": "promotion-0001",
+  "passed": true,
+  "symbolic_dependency_violation": false,
+  "promotion_authority": {
+    "source_type": "runtime_artifacts_only",
+    "authority_statement": "Promotion is authorized only by current runtime truth artifacts with valid structural checks and an explicit symbolic-dependency prohibition.",
+    "artifact_references": {
+      "protocol_conformance_report": {
+        "path": "/workspace/EthereonLabs/artifacts/runtime_truth/current/protocol_conformance_report.json",
+        "sha256": "d7ae944e774c9b395a4e3d0e4640dc5f76bac34b098c7284b951bd468e0d92d2",
+        "status": "audited",
+        "valid": true
+      },
+      "capability_registry_audit": {
+        "path": "/workspace/EthereonLabs/artifacts/runtime_truth/current/capability_registry_audit.json",
+        "sha256": "8c244f6dc2f2b6cb3b1d93b5a68fb0b0910605f92504bf613c9b1626ffb4c58d",
+        "status": "audited",
+        "valid": true
+      },
+      "symbolic_dependency_contract": {
+        "path": "/workspace/EthereonLabs/artifacts/runtime_truth/current/symbolic_dependency_contract.json",
+        "sha256": "b0607daceafad72f2bef2921d6256a5740aa3fded9a032de64b19464a9348f51",
+        "status": null,
+        "valid": null
+      }
+    },
+    "symbolic_dependency_violation": false,
+    "runtime_artifact_authority_valid": true,
+    "excluded_authority_sources": [
+      "symbolic_language",
+      "poetic_language",
+      "mythic_language",
+      "ceremonial_language"
+    ]
+  },
+  "governance_event": {
+    "event_id": "gov-032855c1f3e449ac",
+    "record_hash": "284321688bf8bb4d777f060304e414779354c5452b9e460951d8b8154b00d99a",
+    "log_path": "/workspace/EthereonLabs/.lumina_state/ship_of_ethereon_v2/canon_readiness_genesis_r1/governance_log_r1.jsonl"
+  },
+  "canon_lineage_record": {
+    "canon_version": "canon-0001",
+    "canon_parent": null,
+    "canon_commit_summary": "Establish canon readiness genesis evidence chain",
+    "canon_timestamp": "2026-05-30T04:37:53.724714+00:00",
+    "validation_artifact_reference": "artifacts/runtime_truth/current/governance_chain_verification.json",
+    "governance_event_hash": "284321688bf8bb4d777f060304e414779354c5452b9e460951d8b8154b00d99a",
+    "promotion_payload_hash": "d04015aabcee0dc3388e7ccdc3271254c483a702bb217c7cf68130007c22d723",
+    "runtime_seed_version": "canon-readiness-genesis-r1",
+    "notes": "Promotion authority is restricted to runtime artifacts and excludes symbolic dependencies.",
+    "prev_lineage_hash": null,
+    "lineage_record_hash": "48c2a5a3d66d4255adb9c562a8672e657b81b1bf454651919b2155cd389d75c8"
+  },
+  "verification_artifacts": {
+    "governance_chain_verification": "artifacts/runtime_truth/current/governance_chain_verification.json",
+    "canon_lineage_verification": "artifacts/runtime_truth/current/canon_lineage_verification.json"
+  }
+}

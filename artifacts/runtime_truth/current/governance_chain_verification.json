@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-05-24T13:57:21.435581+00:00",
-  "status": "empty_or_missing",
-  "exists": false,
-  "event_count": 0,
+  "generated_at": "2026-05-30T04:37:53.724260+00:00",
+  "status": "verified",
+  "exists": true,
+  "event_count": 1,
   "valid": true,
   "errors": [],
   "warnings": [],
-  "latest_event_hash": null,
-  "log_path": "/home/runner/work/EthereonLabs/EthereonLabs/.lumina_state/ship_of_ethereon_v2/runtime_runner_r2_actiontype_logging/governance_log_r2.jsonl"
+  "latest_event_hash": "284321688bf8bb4d777f060304e414779354c5452b9e460951d8b8154b00d99a",
+  "log_path": "/workspace/EthereonLabs/.lumina_state/ship_of_ethereon_v2/canon_readiness_genesis_r1/governance_log_r1.jsonl"
 }
