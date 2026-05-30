@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-24T13:57:21.436563+00:00",
+  "generated_at": "2026-05-30T05:14:00.166520+00:00",
   "status": "audited",
-  "protocol_path": "LuminaOS/bootstrap/Ship_of_Ethereon_V2/protocols/Ethereon_Mode_Protocol_v1.3.json",
+  "protocol_path": "/home/runner/work/EthereonLabs/EthereonLabs/LuminaOS/bootstrap/Ship_of_Ethereon_V2/protocols/Ethereon_Mode_Protocol_v1.3.json",
   "valid": true,
   "issues": []
 }

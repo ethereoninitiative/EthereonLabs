@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-05-30T00:00:00+00:00",
-  "status": "verified",
-  "exists": true,
-  "event_count": 1,
+  "generated_at": "2026-05-30T05:14:00.165573+00:00",
+  "status": "empty_or_missing",
+  "exists": false,
+  "event_count": 0,
   "valid": true,
   "errors": [],
   "warnings": [],
-  "latest_event_hash": "690b249ef2388ac70f9714ef3bd649b6bd235f0e32840faefe7c3562563a00ab",
-  "log_path": "artifacts/runtime_truth/current/governance_chain_0001.jsonl"
+  "latest_event_hash": null,
+  "log_path": "/home/runner/work/EthereonLabs/EthereonLabs/.lumina_state/ship_of_ethereon_v2/runtime_runner_r2_actiontype_logging/governance_log_r2.jsonl"
 }
