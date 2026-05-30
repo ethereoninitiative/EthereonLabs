@@ -20,6 +20,22 @@ def sha256_text(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
+def infer_repo_root() -> Path:
+    for parent in Path(__file__).resolve().parents:
+        if (parent / ".git").exists() or (parent / "LuminaOS").exists():
+            return parent
+    return Path.cwd()
+
+
+def repo_relative_path(path: str | Path) -> str:
+    resolved = Path(path).resolve()
+    root = infer_repo_root().resolve()
+    try:
+        return str(resolved.relative_to(root))
+    except ValueError:
+        return str(path)
+
+
 @dataclass
 class CanonRecord:
     canon_version: str
@@ -164,5 +180,5 @@ class CanonLineageStore:
             "errors": errors,
             "warnings": warnings,
             "current_head": rows[-1]["canon_version"] if rows else None,
-            "lineage_path": str(self.lineage_path),
+            "lineage_path": repo_relative_path(self.lineage_path),
         }

@@ -1,0 +1,11 @@
+{
+  "schema_version": "promotion-receipt-r1",
+  "promotion_receipt_id": "runtime-truth-promotion-001",
+  "promotion_artifact": "artifacts/runtime_truth/current",
+  "promotion_payload": {
+    "validation_artifact_id": "runtime-truth-current",
+    "change_summary": "Committed runtime truth promotion receipt for post-promotion verification.",
+    "symbolic_dependency_violation": false
+  },
+  "authority_boundary": "Committed receipt only; does not authorize action, mutate canon, change mode legality, expose capabilities, or execute tools."
+}

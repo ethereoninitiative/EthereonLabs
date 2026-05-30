@@ -5,10 +5,10 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 import json
 
-try:
+if __package__:
     from .governance_integrity_r1 import GovernanceIntegrityChain
     from .canon_lineage_store_r1 import CanonLineageStore
-except Exception:
+else:
     from governance_integrity_r1 import GovernanceIntegrityChain
     from canon_lineage_store_r1 import CanonLineageStore
 
@@ -27,6 +27,22 @@ DEFAULT_FORBIDDEN_SYMBOLIC_DEPENDENCIES = [
     "capability exposure",
     "governance verification",
 ]
+
+
+def infer_repo_root() -> Path:
+    for parent in Path(__file__).resolve().parents:
+        if (parent / ".git").exists() or (parent / "LuminaOS").exists():
+            return parent
+    return Path.cwd()
+
+
+def repo_relative_path(path: str | Path) -> str:
+    resolved = Path(path).resolve()
+    root = infer_repo_root().resolve()
+    try:
+        return str(resolved.relative_to(root))
+    except ValueError:
+        return str(path)
 
 
 class RuntimeTruthEmitter:
@@ -68,7 +84,7 @@ class RuntimeTruthEmitter:
         path = self.output_dir / filename
         with path.open("w", encoding="utf-8") as f:
             json.dump(payload, f, indent=2)
-        return str(path)
+        return repo_relative_path(path)
 
     def write_governance_chain_verification(self) -> str:
         if not self.governance_log_path:
@@ -142,7 +158,7 @@ class RuntimeTruthEmitter:
             payload = {
                 "generated_at": utc_now(),
                 "status": "audited",
-                "registry_path": str(self.capability_registry_path),
+                "registry_path": repo_relative_path(self.capability_registry_path),
                 "capability_count": len(capabilities),
                 "valid": not issues,
                 "issues": issues,
@@ -174,7 +190,7 @@ class RuntimeTruthEmitter:
             payload = {
                 "generated_at": utc_now(),
                 "status": "audited",
-                "protocol_path": str(self.protocol_path),
+                "protocol_path": repo_relative_path(self.protocol_path),
                 "valid": not issues,
                 "issues": issues,
             }

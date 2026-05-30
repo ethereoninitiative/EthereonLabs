@@ -29,6 +29,22 @@ def sha256_file(path: str | Path) -> str:
     return h.hexdigest()
 
 
+def infer_repo_root() -> Path:
+    for parent in Path(__file__).resolve().parents:
+        if (parent / ".git").exists() or (parent / "LuminaOS").exists():
+            return parent
+    return Path.cwd()
+
+
+def repo_relative_path(path: str | Path) -> str:
+    resolved = Path(path).resolve()
+    root = infer_repo_root().resolve()
+    try:
+        return str(resolved.relative_to(root))
+    except ValueError:
+        return str(path)
+
+
 @dataclass
 class GovernanceIntegrityRecord:
     event_id: str
@@ -165,5 +181,5 @@ class GovernanceIntegrityChain:
             "errors": errors,
             "warnings": warnings,
             "latest_event_hash": previous_hash,
-            "log_path": str(self.log_path),
+            "log_path": repo_relative_path(self.log_path),
         }

@@ -4,9 +4,9 @@ from pathlib import Path
 from typing import Any, Dict, Optional
 import json
 
-try:
+if __package__:
     from .runtime_truth_observation_cycle_r1 import run_runtime_truth_observation_cycle, infer_repo_root
-except Exception:
+else:
     from runtime_truth_observation_cycle_r1 import run_runtime_truth_observation_cycle, infer_repo_root
 
 
@@ -15,6 +15,15 @@ PUBLIC_RUNTIME_DIR = REPO_ROOT / "public" / "runtime"
 LATEST_CYCLE_PATH = PUBLIC_RUNTIME_DIR / "latest_cycle.json"
 SNAPSHOT_PATH = PUBLIC_RUNTIME_DIR / "runtime_truth_snapshot.json"
 LATEST_CYCLE_SCHEMA_VERSION = "lumina-runtime-ui-cycle-v0.4"
+
+
+def repo_relative_path(path: str | Path) -> str:
+    resolved = Path(path).resolve()
+    root = REPO_ROOT.resolve()
+    try:
+        return str(resolved.relative_to(root))
+    except ValueError:
+        return str(path)
 
 
 def _read_json(path: Path) -> Dict[str, Any]:
@@ -107,7 +116,7 @@ def build_public_runtime_truth_snapshot(
     latest = _read_json(latest_path)
     public_snapshot = {
         "schema_version": "lumina-runtime-truth-public-snapshot-v0.1",
-        "source_latest_cycle": str(latest_path),
+        "source_latest_cycle": repo_relative_path(latest_path),
         "latest_cycle_run_id": latest.get("run_id"),
         "latest_cycle_timestamp": latest.get("timestamp"),
         "mode": latest.get("mode", {}),

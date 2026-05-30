@@ -1,0 +1,15 @@
+{
+  "schema_version": "post-promotion-verification-r1",
+  "generated_at": "2026-05-30T05:01:10.951409+00:00",
+  "promotion_receipt_path": "artifacts/runtime_truth/current/promotion_receipt.json",
+  "promotion_receipt_id": "runtime-truth-promotion-001",
+  "promotion_artifact": "artifacts/runtime_truth/current",
+  "symbolic_dependency_violation": false,
+  "checks": {
+    "promotion_receipt_present": true,
+    "promotion_payload_present": true,
+    "no_symbolic_dependency_violation": true
+  },
+  "passed": true,
+  "authority_boundary": "Verification receipt only; does not authorize action, mutate canon, change mode legality, expose capabilities, or execute tools."
+}
