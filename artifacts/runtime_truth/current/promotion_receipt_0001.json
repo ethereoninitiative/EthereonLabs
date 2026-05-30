@@ -1,0 +1,22 @@
+{
+  "generated_at": "2026-05-30T00:00:00+00:00",
+  "promotion_id": "promotion-0001",
+  "valid": true,
+  "passed": true,
+  "promotion_payload": {
+    "promotion_id": "promotion-0001",
+    "runtime_seed_version": "ship-of-ethereon-v2-genesis-runtime-truth-r1",
+    "governance_event_hash": "690b249ef2388ac70f9714ef3bd649b6bd235f0e32840faefe7c3562563a00ab",
+    "governance_evidence_path": "artifacts/runtime_truth/current/governance_chain_0001.jsonl",
+    "canon_lineage_path": "artifacts/runtime_truth/current/canon_lineage_0001.jsonl",
+    "validation_reference": "artifacts/runtime_truth/current/sea_trial_genesis_governance_r1_receipt.json",
+    "symbolic_dependency_violation": false
+  },
+  "promotion_payload_hash": "fed4e6e257928a502355eaa18a81f8a1130a875c014da2c971c2ff49b5a60dbb",
+  "governance_event_hash": "690b249ef2388ac70f9714ef3bd649b6bd235f0e32840faefe7c3562563a00ab",
+  "canon_lineage_hash": "2664c65bdc3e37733d1262d436e2c615191dc69dc71b0b798d71227f283d5401",
+  "evidence_paths": {
+    "governance_chain": "artifacts/runtime_truth/current/governance_chain_0001.jsonl",
+    "canon_lineage": "artifacts/runtime_truth/current/canon_lineage_0001.jsonl"
+  }
+}
