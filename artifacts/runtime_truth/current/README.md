@@ -12,8 +12,13 @@ This is structural evidence.
 
 ## Intended Artifacts
 
+- `governance_chain_0001.jsonl`
+- `canon_lineage_0001.jsonl`
 - `governance_chain_verification.json`
 - `canon_lineage_verification.json`
+- `promotion_receipt_0001.json`
+- `sea_trial_genesis_governance_r1_receipt.json`
+- `post_promotion_verification_0001.json`
 - `capability_registry_audit.json`
 - `symbolic_dependency_contract.json`
 - `protocol_conformance_report.json`

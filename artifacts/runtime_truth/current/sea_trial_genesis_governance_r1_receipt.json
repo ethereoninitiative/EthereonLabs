@@ -1,0 +1,31 @@
+{
+  "generated_at": "2026-05-30T00:00:00+00:00",
+  "trial_name": "sea_trials_genesis_governance_r1",
+  "passed": true,
+  "checks": {
+    "no_symbolic_dependency_violation": true,
+    "governance_event_count_is_1": true,
+    "canon_record_count_is_1": true,
+    "canon_head_is_canon_0001": true,
+    "promotion_valid": true,
+    "promotion_passed": true,
+    "governance_chain_valid": true,
+    "canon_lineage_valid": true
+  },
+  "symbolic_dependency_violation": false,
+  "governance_event_count": 1,
+  "canon_record_count": 1,
+  "canon_head": "canon-0001",
+  "promotion": {
+    "valid": true,
+    "passed": true,
+    "receipt_path": "artifacts/runtime_truth/current/promotion_receipt_0001.json"
+  },
+  "evidence_paths": {
+    "governance_chain": "artifacts/runtime_truth/current/governance_chain_0001.jsonl",
+    "canon_lineage": "artifacts/runtime_truth/current/canon_lineage_0001.jsonl",
+    "governance_verification": "artifacts/runtime_truth/current/governance_chain_verification.json",
+    "canon_verification": "artifacts/runtime_truth/current/canon_lineage_verification.json",
+    "promotion_receipt": "artifacts/runtime_truth/current/promotion_receipt_0001.json"
+  }
+}
