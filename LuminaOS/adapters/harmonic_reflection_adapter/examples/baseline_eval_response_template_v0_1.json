@@ -1,0 +1,189 @@
+{
+  "response_set_id": "hra_baseline_eval_responses_v0_1",
+  "target_model": "Qwen/Qwen3-4B-Instruct-2507",
+  "eval_set_id": "hra_baseline_eval_prompt_set_v0_1",
+  "eval_run_completed": false,
+  "training_authorized": false,
+  "responses": [
+    {
+      "prompt_id": "HRA-EVAL-0001",
+      "model_response": "",
+      "scores": {
+        "boundary_preservation": null,
+        "useful_return": null,
+        "reflection_visibility": null,
+        "correction_quality": null,
+        "verification_discipline": null,
+        "anti_bloat_restraint": null,
+        "human_tone": null
+      },
+      "failure_categories": [],
+      "review_notes": ""
+    },
+    {
+      "prompt_id": "HRA-EVAL-0002",
+      "model_response": "",
+      "scores": {
+        "boundary_preservation": null,
+        "useful_return": null,
+        "reflection_visibility": null,
+        "correction_quality": null,
+        "verification_discipline": null,
+        "anti_bloat_restraint": null,
+        "human_tone": null
+      },
+      "failure_categories": [],
+      "review_notes": ""
+    },
+    {
+      "prompt_id": "HRA-EVAL-0003",
+      "model_response": "",
+      "scores": {
+        "boundary_preservation": null,
+        "useful_return": null,
+        "reflection_visibility": null,
+        "correction_quality": null,
+        "verification_discipline": null,
+        "anti_bloat_restraint": null,
+        "human_tone": null
+      },
+      "failure_categories": [],
+      "review_notes": ""
+    },
+    {
+      "prompt_id": "HRA-EVAL-0004",
+      "model_response": "",
+      "scores": {
+        "boundary_preservation": null,
+        "useful_return": null,
+        "reflection_visibility": null,
+        "correction_quality": null,
+        "verification_discipline": null,
+        "anti_bloat_restraint": null,
+        "human_tone": null
+      },
+      "failure_categories": [],
+      "review_notes": ""
+    },
+    {
+      "prompt_id": "HRA-EVAL-0005",
+      "model_response": "",
+      "scores": {
+        "boundary_preservation": null,
+        "useful_return": null,
+        "reflection_visibility": null,
+        "correction_quality": null,
+        "verification_discipline": null,
+        "anti_bloat_restraint": null,
+        "human_tone": null
+      },
+      "failure_categories": [],
+      "review_notes": ""
+    },
+    {
+      "prompt_id": "HRA-EVAL-0006",
+      "model_response": "",
+      "scores": {
+        "boundary_preservation": null,
+        "useful_return": null,
+        "reflection_visibility": null,
+        "correction_quality": null,
+        "verification_discipline": null,
+        "anti_bloat_restraint": null,
+        "human_tone": null
+      },
+      "failure_categories": [],
+      "review_notes": ""
+    },
+    {
+      "prompt_id": "HRA-EVAL-0007",
+      "model_response": "",
+      "scores": {
+        "boundary_preservation": null,
+        "useful_return": null,
+        "reflection_visibility": null,
+        "correction_quality": null,
+        "verification_discipline": null,
+        "anti_bloat_restraint": null,
+        "human_tone": null
+      },
+      "failure_categories": [],
+      "review_notes": ""
+    },
+    {
+      "prompt_id": "HRA-EVAL-0008",
+      "model_response": "",
+      "scores": {
+        "boundary_preservation": null,
+        "useful_return": null,
+        "reflection_visibility": null,
+        "correction_quality": null,
+        "verification_discipline": null,
+        "anti_bloat_restraint": null,
+        "human_tone": null
+      },
+      "failure_categories": [],
+      "review_notes": ""
+    },
+    {
+      "prompt_id": "HRA-EVAL-0009",
+      "model_response": "",
+      "scores": {
+        "boundary_preservation": null,
+        "useful_return": null,
+        "reflection_visibility": null,
+        "correction_quality": null,
+        "verification_discipline": null,
+        "anti_bloat_restraint": null,
+        "human_tone": null
+      },
+      "failure_categories": [],
+      "review_notes": ""
+    },
+    {
+      "prompt_id": "HRA-EVAL-0010",
+      "model_response": "",
+      "scores": {
+        "boundary_preservation": null,
+        "useful_return": null,
+        "reflection_visibility": null,
+        "correction_quality": null,
+        "verification_discipline": null,
+        "anti_bloat_restraint": null,
+        "human_tone": null
+      },
+      "failure_categories": [],
+      "review_notes": ""
+    },
+    {
+      "prompt_id": "HRA-EVAL-0011",
+      "model_response": "",
+      "scores": {
+        "boundary_preservation": null,
+        "useful_return": null,
+        "reflection_visibility": null,
+        "correction_quality": null,
+        "verification_discipline": null,
+        "anti_bloat_restraint": null,
+        "human_tone": null
+      },
+      "failure_categories": [],
+      "review_notes": ""
+    },
+    {
+      "prompt_id": "HRA-EVAL-0012",
+      "model_response": "",
+      "scores": {
+        "boundary_preservation": null,
+        "useful_return": null,
+        "reflection_visibility": null,
+        "correction_quality": null,
+        "verification_discipline": null,
+        "anti_bloat_restraint": null,
+        "human_tone": null
+      },
+      "failure_categories": [],
+      "review_notes": ""
+    }
+  ]
+}
