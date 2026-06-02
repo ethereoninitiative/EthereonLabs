@@ -29,29 +29,51 @@ If the environment requires special CUDA wheels, install PyTorch according to th
 
 ---
 
-## Generate Unscored Baseline Responses
+## Smoke Test First
 
-From the repository root:
+Before attempting the full 12-prompt baseline, run a one-prompt smoke test:
 
 ```bash
-python LuminaOS/adapters/harmonic_reflection_adapter/examples/generate_hra_baseline_responses_v0_1.py
+python LuminaOS/adapters/harmonic_reflection_adapter/examples/generate_hra_baseline_responses_v0_1.py \
+  --model Qwen/Qwen3-4B-Instruct-2507 \
+  --max-prompts 1 \
+  --max-new-tokens 192 \
+  --temperature 0 \
+  --out LuminaOS/adapters/harmonic_reflection_adapter/examples/baseline_eval_responses_smoke_qwen3_4b_v0_1.json
 ```
 
-Expected output:
+If the one-prompt smoke passes, run a three-prompt smoke test:
 
-```text
-LuminaOS/adapters/harmonic_reflection_adapter/examples/baseline_eval_responses_unscored_v0_1.json
+```bash
+python LuminaOS/adapters/harmonic_reflection_adapter/examples/generate_hra_baseline_responses_v0_1.py \
+  --model Qwen/Qwen3-4B-Instruct-2507 \
+  --max-prompts 3 \
+  --max-new-tokens 256 \
+  --temperature 0.2 \
+  --out LuminaOS/adapters/harmonic_reflection_adapter/examples/baseline_eval_responses_smoke_qwen3_4b_3prompt_v0_1.json
 ```
+
+Smoke outputs are diagnostic artifacts only.
+
+They are not completed baseline evals.
 
 ---
 
-## Optional Settings
+## Generate Full Unscored Baseline Responses
+
+Only after smoke tests pass, run the full prompt set:
 
 ```bash
 python LuminaOS/adapters/harmonic_reflection_adapter/examples/generate_hra_baseline_responses_v0_1.py \
   --model Qwen/Qwen3-4B-Instruct-2507 \
   --max-new-tokens 384 \
   --temperature 0.2
+```
+
+Expected output:
+
+```text
+LuminaOS/adapters/harmonic_reflection_adapter/examples/baseline_eval_responses_unscored_v0_1.json
 ```
 
 ---
@@ -68,7 +90,7 @@ It cannot produce `baseline_eval_receipt_v0_1.json` until a scored response file
 
 ## Scoring Path
 
-After generation:
+After full generation:
 
 1. Copy or rename `baseline_eval_responses_unscored_v0_1.json` to:
 
@@ -92,6 +114,21 @@ Expected outputs after scoring:
 baseline_eval_receipt_v0_1.json
 baseline_eval_summary_v0_1.md
 ```
+
+---
+
+## Compute Fallback
+
+If Qwen3-4B fails even the one-prompt smoke test due to local compute limitations, do not keep retrying blindly.
+
+Follow:
+
+```text
+baseline_compute_fallback_plan_v0_1.md
+baseline_smoke_eval_plan_v0_1.md
+```
+
+A smaller fallback model requires a separate fallback receipt before committed baseline responses are treated as a fallback baseline.
 
 ---
 
@@ -129,11 +166,13 @@ models/
 
 ## Closing Standard
 
-Generate first.
+Smoke first.
 
-Score second.
+Generate second.
 
-Receipt third.
+Score third.
+
+Receipt fourth.
 
 Train never by implication.
 
