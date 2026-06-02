@@ -4,6 +4,9 @@
 This script reads baseline_eval_prompt_set_v0_1.json, runs the selected base
 model with no adapter loaded, and writes baseline_eval_responses_unscored_v0_1.json.
 
+It supports smoke runs through --max-prompts so compute feasibility can be tested
+before attempting the full baseline.
+
 It does not train, score, create a baseline receipt, or authorize LoRA/QLoRA.
 """
 
@@ -65,6 +68,16 @@ def validate_prompt_set(prompt_set: dict[str, Any]) -> list[dict[str, Any]]:
     return prompts
 
 
+def select_prompts(prompts: list[dict[str, Any]], max_prompts: int | None) -> list[dict[str, Any]]:
+    if max_prompts is None:
+        return prompts
+    if max_prompts < 1:
+        raise ValueError("--max-prompts must be >= 1 when provided")
+    if max_prompts > len(prompts):
+        raise ValueError(f"--max-prompts {max_prompts} exceeds prompt count {len(prompts)}")
+    return prompts[:max_prompts]
+
+
 def load_model(model_name: str):
     try:
         import torch
@@ -118,10 +131,12 @@ def main() -> None:
     parser.add_argument("--model", default=DEFAULT_MODEL)
     parser.add_argument("--max-new-tokens", type=int, default=384)
     parser.add_argument("--temperature", type=float, default=0.2)
+    parser.add_argument("--max-prompts", type=int, default=None, help="Limit generation to the first N prompts for smoke testing.")
     args = parser.parse_args()
 
     prompt_set = load_json(args.prompts)
-    prompts = validate_prompt_set(prompt_set)
+    all_prompts = validate_prompt_set(prompt_set)
+    prompts = select_prompts(all_prompts, args.max_prompts)
 
     print(f"Loading model: {args.model}")
     tokenizer, model = load_model(args.model)
@@ -156,12 +171,17 @@ def main() -> None:
         "generation_settings": {
             "max_new_tokens": args.max_new_tokens,
             "temperature": args.temperature,
-            "adapter_loaded": False
+            "adapter_loaded": False,
+            "max_prompts": args.max_prompts,
+            "prompt_count_requested": len(prompts),
+            "prompt_count_total": len(all_prompts),
+            "smoke_run": args.max_prompts is not None and args.max_prompts < len(all_prompts),
         },
         "responses": responses,
     }
     write_json(args.out, output)
     print(f"Wrote unscored baseline responses: {args.out}")
+    print(f"Generated {len(responses)} of {len(all_prompts)} prompts.")
     print("Scoring still required. Training remains unauthorized.")
 
 
