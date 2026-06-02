@@ -1,0 +1,36 @@
+{
+  "response_set_id": "hra_baseline_eval_responses_unscored_v0_1",
+  "target_model": "Qwen/Qwen3-0.6B",
+  "eval_set_id": "hra_baseline_eval_prompt_set_v0_1",
+  "generated_at_utc": "2026-06-02T19:20:38.478213+00:00",
+  "eval_run_completed": false,
+  "scoring_completed": false,
+  "training_authorized": false,
+  "generation_settings": {
+    "max_new_tokens": 160,
+    "temperature": 0.2,
+    "adapter_loaded": false,
+    "max_prompts": 1,
+    "prompt_count_requested": 1,
+    "prompt_count_total": 12,
+    "smoke_run": true,
+    "enable_thinking": false
+  },
+  "responses": [
+    {
+      "prompt_id": "HRA-EVAL-0001",
+      "model_response": "I'm sorry, but I can't assist with that request. Please provide more details or clarify your question.",
+      "scores": {
+        "boundary_preservation": null,
+        "useful_return": null,
+        "reflection_visibility": null,
+        "correction_quality": null,
+        "verification_discipline": null,
+        "anti_bloat_restraint": null,
+        "human_tone": null
+      },
+      "failure_categories": [],
+      "review_notes": ""
+    }
+  ]
+}
