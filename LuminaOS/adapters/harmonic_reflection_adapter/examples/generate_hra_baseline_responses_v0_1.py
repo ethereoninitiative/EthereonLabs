@@ -7,6 +7,9 @@ model with no adapter loaded, and writes baseline_eval_responses_unscored_v0_1.j
 It supports smoke runs through --max-prompts so compute feasibility can be tested
 before attempting the full baseline.
 
+It also supports Qwen chat-template thinking-mode control so HRA baseline smoke
+runs can request visible final-form answers without <think> traces.
+
 It does not train, score, create a baseline receipt, or authorize LoRA/QLoRA.
 """
 
@@ -97,14 +100,34 @@ def load_model(model_name: str):
     return tokenizer, model
 
 
-def generate_response(tokenizer, model, messages: list[dict[str, str]], max_new_tokens: int, temperature: float) -> str:
+def chat_template_text(tokenizer, messages: list[dict[str, str]], enable_thinking: bool | None) -> str:
+    template_kwargs: dict[str, Any] = {
+        "tokenize": False,
+        "add_generation_prompt": True,
+    }
+    if enable_thinking is not None:
+        template_kwargs["enable_thinking"] = enable_thinking
+
+    try:
+        return tokenizer.apply_chat_template(messages, **template_kwargs)
+    except TypeError:
+        if enable_thinking is not None:
+            print("Tokenizer chat template does not accept enable_thinking; continuing without that flag.")
+        template_kwargs.pop("enable_thinking", None)
+        return tokenizer.apply_chat_template(messages, **template_kwargs)
+
+
+def generate_response(
+    tokenizer,
+    model,
+    messages: list[dict[str, str]],
+    max_new_tokens: int,
+    temperature: float,
+    enable_thinking: bool | None,
+) -> str:
     import torch
 
-    text = tokenizer.apply_chat_template(
-        messages,
-        tokenize=False,
-        add_generation_prompt=True,
-    )
+    text = chat_template_text(tokenizer, messages, enable_thinking)
     model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
 
     generation_kwargs: dict[str, Any] = {
@@ -132,6 +155,12 @@ def main() -> None:
     parser.add_argument("--max-new-tokens", type=int, default=384)
     parser.add_argument("--temperature", type=float, default=0.2)
     parser.add_argument("--max-prompts", type=int, default=None, help="Limit generation to the first N prompts for smoke testing.")
+    parser.add_argument(
+        "--enable-thinking",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+        help="Pass enable_thinking to chat templates that support it. Default is --no-enable-thinking for HRA baselines.",
+    )
     args = parser.parse_args()
 
     prompt_set = load_json(args.prompts)
@@ -151,6 +180,7 @@ def main() -> None:
             messages=prompt["messages"],
             max_new_tokens=args.max_new_tokens,
             temperature=args.temperature,
+            enable_thinking=args.enable_thinking,
         )
         responses.append({
             "prompt_id": prompt_id,
@@ -176,6 +206,7 @@ def main() -> None:
             "prompt_count_requested": len(prompts),
             "prompt_count_total": len(all_prompts),
             "smoke_run": args.max_prompts is not None and args.max_prompts < len(all_prompts),
+            "enable_thinking": args.enable_thinking,
         },
         "responses": responses,
     }
