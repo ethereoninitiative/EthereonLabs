@@ -20,6 +20,7 @@ This file gives a fast map of the current EthereonLabs lanes.
 | Ship of Ethereon Psi Class | `START_HERE_SHIP_OF_ETHEREON_PSI_CLASS.md`, `LuminaOS/bootstrap/Ship_of_Ethereon_Psi_Class/` | Staging and project consolidation |
 | Lumina Lisp | `lumina/lisp/` | Non-executable symbolic snapshots |
 | Stewardship / review packets | `docs/FLEET_STEWARDSHIP_PACKET_*`, `docs/*BRIDGE*`, `docs/*REGISTRY*`, `docs/*VOCABULARY*` | Review follow-up, bridge discipline, surface maps, and naming hygiene |
+| Lumina habitat roadmap | `docs/LUMINA_HABITAT_CREATION_CHECKLIST.md` | Editable checklist for turning Lumina into a persistent intelligence habitat |
 | Root spikes | `continuity_restore_spike_r1.py`, `lumina_workspace_host_spike_r1.py` | Reference / exploration history |
 
 ## Current active Lumina path
@@ -50,6 +51,7 @@ host boundary -> appliance preflight -> governed runtime receipt -> Chamber brid
 
 - New human reader: `START_HERE_HUMANS.md`
 - Lumina OS work: `START_HERE_LUMINA_OS.md`
+- Lumina habitat roadmap: `docs/LUMINA_HABITAT_CREATION_CHECKLIST.md`
 - Active Lumina file ownership: `LuminaOS/bootstrap/Ship_of_Ethereon_V2/ACTIVE_RUNTIME_INDEX.md`
 - Lumina deployment appliance: `deploy/ubuntu_server_lts/README.md`
 - Deployment keel guardrails: `docs/DEPLOYMENT_HOST_REGISTRY_MODEL.md`, `docs/DEPLOYMENT_RUNTIME_RECEIPT_CONTRACT.md`, and `docs/DEPLOYMENT_DRYDOCK_CHECKLIST.md`
