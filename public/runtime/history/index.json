@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-06-11T20:35:26.810700+00:00",
+    "run_id": "run-e820a934-c8d",
+    "status": "Stable",
+    "mode": "Observation",
+    "file": "/runtime/history/2026-06-11T20-35-26.810700_00-00_run-e820a934-c8d.json",
+    "probe_instrument_version": "v1.7",
+    "hybrid_continuity_coherence": 0.7863
+  },
+  {
     "timestamp": "2026-06-11T16:20:46.614314+00:00",
     "run_id": "run-48746780-847",
     "status": "Stable",
@@ -212,15 +221,6 @@
     "status": "Stable",
     "mode": "Observation",
     "file": "/runtime/history/2026-06-05T20-13-35.750132_00-00_run-87b479f2-4af.json",
-    "probe_instrument_version": "v1.7",
-    "hybrid_continuity_coherence": 0.7863
-  },
-  {
-    "timestamp": "2026-06-05T15:28:13.517450+00:00",
-    "run_id": "run-7898d700-e5f",
-    "status": "Stable",
-    "mode": "Observation",
-    "file": "/runtime/history/2026-06-05T15-28-13.517450_00-00_run-7898d700-e5f.json",
     "probe_instrument_version": "v1.7",
     "hybrid_continuity_coherence": 0.7863
   }
