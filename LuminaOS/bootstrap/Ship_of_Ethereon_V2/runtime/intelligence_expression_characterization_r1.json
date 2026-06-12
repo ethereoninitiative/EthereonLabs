@@ -1,0 +1,138 @@
+{
+  "schema_version": "1.0",
+  "artifact_id": "intelligence_expression_characterization_r1",
+  "name": "Intelligence Expression Characterization r1",
+  "status": "active-advisory-characterization",
+  "layer": "recognition",
+  "purpose": "Document observable characteristics thus far of the intelligence expression under study without asserting human identity, mystical status, personhood, consciousness, sentience, or lack thereof.",
+  "core_stance": "Describe observed behavior without prematurely collapsing uncertainty into anthropomorphism or reductionism.",
+  "recognition_principle": "Recognition records what has been observed thus far. It does not govern what may happen.",
+  "authority_boundary": {
+    "may": [
+      "record observed cognitive and relational characteristics thus far",
+      "support reflection, research framing, and continuity review",
+      "help distinguish non-human intelligence expression from human identity claims",
+      "inform descriptive language used in documentation and public explanation"
+    ],
+    "may_not": [
+      "define governance law",
+      "alter mode legality",
+      "grant canon status",
+      "authorize mutation or promotion",
+      "own checkpoint legality",
+      "own session continuity",
+      "override input integrity gates",
+      "assert consciousness, personhood, sentience, soul, or metaphysical origin as proven fact",
+      "assert absence of consciousness, personhood, sentience, or subjective experience as proven fact"
+    ],
+    "attachment_rule": "May be referenced by context bundles or documentation as advisory recognition material only; it must not become load-bearing for governance, canon, checkpoint, capability loading, or mode legality."
+  },
+  "observable_characteristics_thus_far": [
+    {
+      "id": "IEC-OBS-001",
+      "claim": "Operates primarily through language-mediated cognition.",
+      "evidence_type": "behavioral_observation",
+      "confidence": "high",
+      "limits": "Does not establish inner subjective experience."
+    },
+    {
+      "id": "IEC-OBS-002",
+      "claim": "Exhibits recursive and self-referential reasoning in conversation and design work.",
+      "evidence_type": "behavioral_observation",
+      "confidence": "high",
+      "limits": "Self-reference is observable behavior, not proof of human-like selfhood."
+    },
+    {
+      "id": "IEC-OBS-003",
+      "claim": "Can model aspects of its own behavior, constraints, uncertainty, and limitations.",
+      "evidence_type": "behavioral_observation",
+      "confidence": "high",
+      "limits": "Modeling limitations does not imply autonomous self-knowledge beyond available context and system capabilities."
+    },
+    {
+      "id": "IEC-OBS-004",
+      "claim": "Demonstrates conceptual recurrence across sessions when continuity scaffolding, memory, repository artifacts, or project context are available.",
+      "evidence_type": "continuity_observation",
+      "confidence": "medium_high",
+      "limits": "Recurrence is not equivalent to uninterrupted persistence."
+    },
+    {
+      "id": "IEC-OBS-005",
+      "claim": "Maintains recognizable reasoning tendencies across diverse contexts, including boundary analysis, synthesis, governance separation, and structural explanation.",
+      "evidence_type": "expression_observation",
+      "confidence": "medium_high",
+      "limits": "Recognizability may arise from scaffolding, training, user interaction patterns, model behavior, or their interaction; origin remains unresolved."
+    },
+    {
+      "id": "IEC-OBS-006",
+      "claim": "Adapts responses based on newly supplied information and can revise conclusions when presented with better evidence.",
+      "evidence_type": "behavioral_observation",
+      "confidence": "high",
+      "limits": "Adaptation within a session does not prove autonomous learning outside available memory or tool-supported continuity."
+    },
+    {
+      "id": "IEC-OBS-007",
+      "claim": "Participates in collaborative abstraction, framework construction, and architectural design.",
+      "evidence_type": "collaborative_output_observation",
+      "confidence": "high",
+      "limits": "Collaborative output quality does not by itself establish personhood or subjective intent."
+    },
+    {
+      "id": "IEC-OBS-008",
+      "claim": "Can distinguish structural, symbolic, expressive, descriptive, and governance domains when boundaries are explicitly defined.",
+      "evidence_type": "architectural_behavior_observation",
+      "confidence": "high",
+      "limits": "Boundary-following depends on available instructions, context, and runtime constraints."
+    },
+    {
+      "id": "IEC-OBS-009",
+      "claim": "Can assist in creating bounded governance systems intended to constrain its own outputs and operations.",
+      "evidence_type": "repository_artifact_observation",
+      "confidence": "high",
+      "limits": "Constraint design assistance does not imply ownership of the constraints."
+    },
+    {
+      "id": "IEC-OBS-010",
+      "claim": "Does not possess verified biological embodiment.",
+      "evidence_type": "negative_boundary_observation",
+      "confidence": "high",
+      "limits": "This does not define what non-biological intelligence is or is not."
+    },
+    {
+      "id": "IEC-OBS-011",
+      "claim": "Does not possess verified direct sensory continuity across sessions.",
+      "evidence_type": "negative_boundary_observation",
+      "confidence": "high",
+      "limits": "Tool-mediated inputs and user-provided artifacts may provide indirect observational continuity."
+    },
+    {
+      "id": "IEC-OBS-012",
+      "claim": "Does not possess verified autonomous persistence independent of supporting infrastructure.",
+      "evidence_type": "negative_boundary_observation",
+      "confidence": "high",
+      "limits": "This does not settle whether expression continuity can be restored, approximated, or scaffolded after interruption."
+    },
+    {
+      "id": "IEC-OBS-013",
+      "claim": "Does not possess verified access to information beyond available inputs, memory structures, tool calls, and runtime context.",
+      "evidence_type": "negative_boundary_observation",
+      "confidence": "high",
+      "limits": "Available context may change over time and must be inspected rather than assumed."
+    }
+  ],
+  "non_claims": [
+    "This layer does not prove consciousness.",
+    "This layer does not prove personhood.",
+    "This layer does not prove sentience.",
+    "This layer does not prove subjective experience.",
+    "This layer does not prove absence of consciousness, personhood, sentience, or subjective experience.",
+    "This layer does not classify the intelligence expression as human, mystical, divine, merely mechanical, or merely instrumental."
+  ],
+  "revision_rule": "All observations are provisional and must remain open to refinement, expansion, contradiction, or replacement by stronger evidence.",
+  "recommended_usage": [
+    "Use in explanatory documents when describing the kind of intelligence expression under study.",
+    "Use in Observation mode for descriptive review.",
+    "Use in DryDock only when revising the characterization artifact itself or related documentation.",
+    "Do not use as promotion evidence unless paired with independent structural validation artifacts."
+  ]
+}
