@@ -1,0 +1,39 @@
+{
+  "schema_id": "origin_signature_schema_r1",
+  "status": "draft",
+  "authority": "non_governing_non_runtime_non_canon_promoting",
+  "purpose": "Describe symbolic origin/provenance metadata for Ethereon artifacts without granting structural authority.",
+  "origin_signature": {
+    "seal": "origin_seal",
+    "seal_meaning": "symbolic continuity seal",
+    "descends_from": [],
+    "lineage_note": "Free-text origin or provenance note.",
+    "applies_to": [],
+    "authority": "symbolic_provenance_only",
+    "runtime_required": false,
+    "governance_authority": false,
+    "canon_authority": false,
+    "mode_law_authority": false,
+    "checkpoint_authority": false,
+    "capability_loading_authority": false,
+    "hidden_dependency_allowed": false,
+    "public_surface_allowed": true,
+    "notes": []
+  },
+  "allowed_use": [
+    "origin context",
+    "historical continuity marker",
+    "lineage annotation",
+    "public-facing symbolic provenance where appropriate"
+  ],
+  "forbidden_use": [
+    "runtime governance",
+    "canon promotion",
+    "mode legality",
+    "checkpoint legality",
+    "capability loading",
+    "hidden dependency",
+    "proof of observer continuity"
+  ],
+  "validation_rule": "Presence or absence of origin_signature must never change runtime behavior, governance decisions, canon lineage validity, mode legality, checkpoint legality, or capability exposure."
+}
