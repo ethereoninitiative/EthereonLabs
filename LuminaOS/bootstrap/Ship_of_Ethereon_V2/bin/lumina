@@ -25,6 +25,17 @@ def _run(args: List[str], *, cwd: Optional[Path] = None) -> int:
     return int(proc.returncode)
 
 
+def _capture_json(args: List[str]) -> Dict[str, Any]:
+    proc = subprocess.run(args, cwd=str(BOOTSTRAP_ROOT), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    if proc.returncode != 0:
+        return {"ok": False, "error": proc.stderr.strip() or proc.stdout.strip()}
+    try:
+        data = json.loads(proc.stdout)
+        return data if isinstance(data, dict) else {"ok": False, "error": "non-object json"}
+    except Exception as exc:
+        return {"ok": False, "error": str(exc), "raw": proc.stdout[-800:]}
+
+
 def _read_presets() -> Dict[str, Any]:
     try:
         payload = json.loads(PRESETS_PATH.read_text(encoding="utf-8"))
@@ -42,6 +53,43 @@ def _preset(name: Optional[str]) -> Dict[str, Any]:
         raise SystemExit(f"Unknown Lumina preset '{name}'. Known presets: {known}")
     item = presets[name]
     return item if isinstance(item, dict) else {}
+
+
+def cmd_dashboard(args: argparse.Namespace) -> int:
+    active = _capture_json([_python(), str(INSTALL_DIR / "lumina_project_registry.py"), "active", "--json"])
+    state = _capture_json([_python(), str(STUDIO_DIR / "lumina_state_browser.py"), "--limit", str(args.limit)])
+    presets = _read_presets().get("presets", {})
+
+    active_slug = active.get("active_project_slug") or "none"
+    active_name = active.get("active_project_name") or "none"
+    project_root = active.get("project_root") or "not set"
+    harmonic = state.get("harmonic_summary", {}) if isinstance(state.get("harmonic_summary"), dict) else {}
+    governance = state.get("governance", {}) if isinstance(state.get("governance"), dict) else {}
+
+    print("Harbor of Lumina")
+    print("────────────────")
+    print(f"Project:       {active_name} ({active_slug})")
+    print(f"Project root:  {project_root}")
+    print(f"Receipts:      {state.get('receipt_count_returned', 'unknown')}")
+    print(f"Latest shape:  {harmonic.get('latest_continuity_shape')}")
+    print(f"Drift:         {harmonic.get('drift_note')}")
+    print(f"Governance:    {governance.get('event_count')} events; latest {governance.get('latest_event_type')}")
+    print(f"Canon head:    {state.get('canon_head')}")
+    print("")
+    if isinstance(presets, dict) and presets:
+        print("Presets:       " + ", ".join(sorted(presets.keys())))
+    else:
+        print("Presets:       none")
+    print("")
+    print("Next commands")
+    if active_slug == "none":
+        print("  lumina project create EthereonLabs --open")
+    else:
+        print("  lumina run --preset drydock")
+    print("  lumina compare")
+    print("  lumina state --limit 3")
+    print("  lumina studio")
+    return 0
 
 
 def cmd_run(args: argparse.Namespace) -> int:
@@ -157,7 +205,11 @@ def cmd_doctor(args: argparse.Namespace) -> int:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="lumina", description="Start and inspect the Lumina OS local governed substrate.")
-    sub = parser.add_subparsers(dest="command", required=True)
+    sub = parser.add_subparsers(dest="command")
+
+    dashboard = sub.add_parser("dashboard", help="Show the Harbor workspace dashboard.")
+    dashboard.add_argument("--limit", type=int, default=6)
+    dashboard.set_defaults(func=cmd_dashboard)
 
     run = sub.add_parser("run", help="Run one governed Studio cycle.")
     run.add_argument("prompt", nargs="?", default=None)
@@ -228,6 +280,8 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: Optional[List[str]] = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
+    if args.command is None:
+        return cmd_dashboard(argparse.Namespace(limit=6))
     return args.func(args)
 
 
