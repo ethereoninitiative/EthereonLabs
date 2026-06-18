@@ -172,7 +172,7 @@ It is the first system-start layer for the governed Lumina runtime substrate.
 
 After Host Layer 001, the next OS-ward hardening steps are:
 
-1. Add a supported package/install path with dependency locking.
+1. Add a supported package/install path with dependency locking. See `docs/Lumina_Package_Install_R1.md` for the first package-readiness lane.
 2. Add state schema validation and migration checks.
 3. Add richer `lumina state` summaries and receipt comparison.
 4. Add preset-backed `lumina run` commands for common modes and orientations.
