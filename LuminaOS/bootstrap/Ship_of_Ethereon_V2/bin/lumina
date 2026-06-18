@@ -57,12 +57,15 @@ def _preset(name: Optional[str]) -> Dict[str, Any]:
 
 def cmd_dashboard(args: argparse.Namespace) -> int:
     active = _capture_json([_python(), str(INSTALL_DIR / "lumina_project_registry.py"), "active", "--json"])
+    active_session = _capture_json([_python(), str(INSTALL_DIR / "lumina_session_registry.py"), "active", "--json"])
     state = _capture_json([_python(), str(STUDIO_DIR / "lumina_state_browser.py"), "--limit", str(args.limit)])
     presets = _read_presets().get("presets", {})
 
     active_slug = active.get("active_project_slug") or "none"
     active_name = active.get("active_project_name") or "none"
     project_root = active.get("project_root") or "not set"
+    session_id = active_session.get("active_session_id") or "none"
+    session_title = active_session.get("active_session_title") or "none"
     harmonic = state.get("harmonic_summary", {}) if isinstance(state.get("harmonic_summary"), dict) else {}
     governance = state.get("governance", {}) if isinstance(state.get("governance"), dict) else {}
 
@@ -70,20 +73,20 @@ def cmd_dashboard(args: argparse.Namespace) -> int:
     print("────────────────")
     print(f"Project:       {active_name} ({active_slug})")
     print(f"Project root:  {project_root}")
+    print(f"Session:       {session_title} ({session_id})")
     print(f"Receipts:      {state.get('receipt_count_returned', 'unknown')}")
     print(f"Latest shape:  {harmonic.get('latest_continuity_shape')}")
     print(f"Drift:         {harmonic.get('drift_note')}")
     print(f"Governance:    {governance.get('event_count')} events; latest {governance.get('latest_event_type')}")
     print(f"Canon head:    {state.get('canon_head')}")
     print("")
-    if isinstance(presets, dict) and presets:
-        print("Presets:       " + ", ".join(sorted(presets.keys())))
-    else:
-        print("Presets:       none")
+    print("Presets:       " + (", ".join(sorted(presets.keys())) if isinstance(presets, dict) and presets else "none"))
     print("")
     print("Next commands")
     if active_slug == "none":
         print("  lumina project create EthereonLabs --open")
+    elif session_id == "none":
+        print("  lumina session create \"Initial Harbor session\" --open")
     else:
         print("  lumina run --preset drydock")
     print("  lumina compare")
@@ -163,6 +166,27 @@ def cmd_project(args: argparse.Namespace) -> int:
         cmd.extend(["--description", args.description])
     if getattr(args, "default_mode", None):
         cmd.extend(["--default-mode", args.default_mode])
+    for tag in getattr(args, "tag", []) or []:
+        cmd.extend(["--tag", tag])
+    if getattr(args, "open", False):
+        cmd.append("--open")
+    if getattr(args, "include_archived", False):
+        cmd.append("--include-archived")
+    if getattr(args, "json", False):
+        cmd.append("--json")
+    return _run(cmd, cwd=BOOTSTRAP_ROOT)
+
+
+def cmd_session(args: argparse.Namespace) -> int:
+    cmd = [_python(), str(INSTALL_DIR / "lumina_session_registry.py"), args.session_command]
+    if getattr(args, "title", None):
+        cmd.append(args.title)
+    if getattr(args, "session_id", None):
+        cmd.append(args.session_id)
+    if getattr(args, "project", None):
+        cmd.extend(["--project", args.project])
+    if getattr(args, "mode", None):
+        cmd.extend(["--mode", args.mode])
     for tag in getattr(args, "tag", []) or []:
         cmd.extend(["--tag", tag])
     if getattr(args, "open", False):
@@ -255,6 +279,35 @@ def build_parser() -> argparse.ArgumentParser:
     pactive = project_sub.add_parser("active")
     pactive.add_argument("--json", action="store_true")
     pactive.set_defaults(func=cmd_project)
+
+    session = sub.add_parser("session", help="Manage local Lumina sessions.")
+    session_sub = session.add_subparsers(dest="session_command", required=True)
+    screate = session_sub.add_parser("create")
+    screate.add_argument("title")
+    screate.add_argument("--project", default=None)
+    screate.add_argument("--mode", default="Observation")
+    screate.add_argument("--tag", action="append", default=[])
+    screate.add_argument("--open", action="store_true")
+    screate.add_argument("--json", action="store_true")
+    screate.set_defaults(func=cmd_session)
+    sopen = session_sub.add_parser("open")
+    sopen.add_argument("session_id")
+    sopen.add_argument("--project", default=None)
+    sopen.add_argument("--json", action="store_true")
+    sopen.set_defaults(func=cmd_session)
+    slist = session_sub.add_parser("list")
+    slist.add_argument("--project", default=None)
+    slist.add_argument("--include-archived", action="store_true")
+    slist.add_argument("--json", action="store_true")
+    slist.set_defaults(func=cmd_session)
+    sactive = session_sub.add_parser("active")
+    sactive.add_argument("--json", action="store_true")
+    sactive.set_defaults(func=cmd_session)
+    for name in ["archive", "restore"]:
+        p = session_sub.add_parser(name)
+        p.add_argument("session_id")
+        p.add_argument("--json", action="store_true")
+        p.set_defaults(func=cmd_session)
 
     observe = sub.add_parser("observe", help="Run a local bounded Observation cycle and emit public/runtime snapshot files.")
     observe.add_argument("--action", default="local_observation_cycle")
