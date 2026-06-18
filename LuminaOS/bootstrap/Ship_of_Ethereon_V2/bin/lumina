@@ -8,16 +8,17 @@ existing runtime, Studio, state browser, and doctor scripts.
 from __future__ import annotations
 
 import argparse
-import os
+import json
 import subprocess
 import sys
 from pathlib import Path
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
 BOOTSTRAP_ROOT = Path(__file__).resolve().parents[1]
 STUDIO_DIR = BOOTSTRAP_ROOT / "studio"
 RUNTIME_DIR = BOOTSTRAP_ROOT / "runtime"
 INSTALL_DIR = BOOTSTRAP_ROOT / "install"
+PRESETS_PATH = STUDIO_DIR / "lumina_presets_r1.json"
 
 
 def _python() -> str:
@@ -29,26 +30,98 @@ def _run(args: List[str], *, cwd: Optional[Path] = None) -> int:
     return int(proc.returncode)
 
 
+def _read_presets() -> Dict[str, Any]:
+    try:
+        payload = json.loads(PRESETS_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        return {"presets": {}}
+    return payload if isinstance(payload, dict) else {"presets": {}}
+
+
+def _preset(name: Optional[str]) -> Dict[str, Any]:
+    if not name:
+        return {}
+    presets = _read_presets().get("presets", {})
+    if not isinstance(presets, dict) or name not in presets:
+        known = ", ".join(sorted(presets.keys())) if isinstance(presets, dict) else "none"
+        raise SystemExit(f"Unknown Lumina preset '{name}'. Known presets: {known}")
+    item = presets[name]
+    return item if isinstance(item, dict) else {}
+
+
 def cmd_run(args: argparse.Namespace) -> int:
-    prompt = args.prompt or "Review Lumina OS progress and produce the next governed action receipt."
+    preset = _preset(args.preset)
+    prompt = args.prompt or preset.get("prompt") or "Review Lumina OS progress and produce the next governed action receipt."
+    target_mode = args.target_mode or preset.get("target_mode") or "Observation"
+    action_type = args.action_type or preset.get("action_type") or "audit"
+    focus = args.focus or preset.get("focus") or "continuity"
+    depth = args.depth or preset.get("depth") or "structural"
+    intent = args.intent or preset.get("intent") or "verify"
+    ethereonic_overlay = bool(args.ethereonic_overlay or preset.get("ethereonic_overlay"))
+
     cmd = [_python(), str(STUDIO_DIR / "lumina_cli_psi42_v18.py"), prompt]
     if args.receipt_json:
         cmd.append("--receipt-json")
     if args.full_json:
         cmd.append("--json")
-    if args.ethereonic_overlay:
+    if ethereonic_overlay:
         cmd.append("--ethereonic-overlay")
-    if args.target_mode:
-        cmd.extend(["--target-mode", args.target_mode])
-    if args.action_type:
-        cmd.extend(["--action-type", args.action_type])
-    if args.focus:
-        cmd.extend(["--focus", args.focus])
-    if args.depth:
-        cmd.extend(["--depth", args.depth])
-    if args.intent:
-        cmd.extend(["--intent", args.intent])
+    if target_mode:
+        cmd.extend(["--target-mode", str(target_mode)])
+    if action_type:
+        cmd.extend(["--action-type", str(action_type)])
+    if focus:
+        cmd.extend(["--focus", str(focus)])
+    if depth:
+        cmd.extend(["--depth", str(depth)])
+    if intent:
+        cmd.extend(["--intent", str(intent)])
     return _run(cmd, cwd=BOOTSTRAP_ROOT)
+
+
+def cmd_presets(args: argparse.Namespace) -> int:
+    payload = _read_presets()
+    presets = payload.get("presets", {}) if isinstance(payload, dict) else {}
+    if args.json:
+        print(json.dumps(payload, indent=2))
+        return 0
+    print("Lumina presets")
+    print("  boundary: presets are operator convenience only; runtime law remains authoritative")
+    if not isinstance(presets, dict) or not presets:
+        print("  no presets found")
+        return 1
+    for name in sorted(presets):
+        item = presets[name] if isinstance(presets[name], dict) else {}
+        print(f"  {name:10} {item.get('description', '')}")
+    print("\nUse: lumina run --preset observe")
+    return 0
+
+
+def cmd_compare(args: argparse.Namespace) -> int:
+    cmd = [_python(), str(STUDIO_DIR / "lumina_state_browser.py"), "--limit", str(args.limit)]
+    proc = subprocess.run(cmd, cwd=str(BOOTSTRAP_ROOT), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    if proc.returncode != 0:
+        sys.stderr.write(proc.stderr)
+        return int(proc.returncode)
+    try:
+        payload = json.loads(proc.stdout)
+    except Exception:
+        print(proc.stdout)
+        return 0
+    if args.json:
+        print(json.dumps(payload, indent=2))
+        return 0
+    harmonic = payload.get("harmonic_summary", {}) or {}
+    governance = payload.get("governance", {}) or {}
+    print("Lumina state comparison")
+    print(f"  latest shape:   {harmonic.get('latest_continuity_shape')}")
+    print(f"  drift:          {harmonic.get('drift_note')}")
+    print(f"  recurrence:     {harmonic.get('recurrence_note')}")
+    print(f"  shape counts:   {harmonic.get('recent_shape_counts')}")
+    print(f"  governance:     {governance.get('event_count')} events; latest {governance.get('latest_event_type')}")
+    print(f"  canon head:     {payload.get('canon_head')}")
+    print(f"  receipt count:  {payload.get('receipt_count_returned')}")
+    return 0
 
 
 def cmd_observe(args: argparse.Namespace) -> int:
@@ -88,6 +161,10 @@ def cmd_doctor(args: argparse.Namespace) -> int:
     cmd = [_python(), str(INSTALL_DIR / "lumina_doctor.py")]
     if args.json:
         cmd.append("--json")
+    if args.ensure_state:
+        cmd.append("--ensure-state")
+    if args.migrate_state:
+        cmd.append("--migrate-state")
     return _run(cmd, cwd=BOOTSTRAP_ROOT)
 
 
@@ -100,15 +177,25 @@ def build_parser() -> argparse.ArgumentParser:
 
     run = sub.add_parser("run", help="Run one governed Studio cycle.")
     run.add_argument("prompt", nargs="?", default=None)
-    run.add_argument("--target-mode", default="Observation")
-    run.add_argument("--action-type", default="audit")
-    run.add_argument("--focus", default="continuity")
-    run.add_argument("--depth", default="structural")
-    run.add_argument("--intent", default="verify")
+    run.add_argument("--preset", default=None, help="Named operator preset from studio/lumina_presets_r1.json.")
+    run.add_argument("--target-mode", default=None)
+    run.add_argument("--action-type", default=None)
+    run.add_argument("--focus", default=None)
+    run.add_argument("--depth", default=None)
+    run.add_argument("--intent", default=None)
     run.add_argument("--ethereonic-overlay", action="store_true")
     run.add_argument("--receipt-json", action="store_true")
     run.add_argument("--full-json", action="store_true")
     run.set_defaults(func=cmd_run)
+
+    presets = sub.add_parser("presets", help="List local operator presets.")
+    presets.add_argument("--json", action="store_true")
+    presets.set_defaults(func=cmd_presets)
+
+    compare = sub.add_parser("compare", help="Show recent-run drift and recurrence summary.")
+    compare.add_argument("--limit", type=int, default=12)
+    compare.add_argument("--json", action="store_true")
+    compare.set_defaults(func=cmd_compare)
 
     observe = sub.add_parser("observe", help="Run a local bounded Observation cycle and emit public/runtime snapshot files.")
     observe.add_argument("--action", default="local_observation_cycle")
@@ -125,6 +212,8 @@ def build_parser() -> argparse.ArgumentParser:
 
     doctor = sub.add_parser("doctor", help="Check local Lumina host readiness.")
     doctor.add_argument("--json", action="store_true")
+    doctor.add_argument("--ensure-state", action="store_true")
+    doctor.add_argument("--migrate-state", action="store_true")
     doctor.set_defaults(func=cmd_doctor)
 
     return parser
