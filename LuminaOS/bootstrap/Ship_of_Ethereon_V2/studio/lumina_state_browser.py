@@ -1,19 +1,30 @@
 #!/usr/bin/env python3
-"""Lumina Studio State Browser v0.3.
+"""Lumina Studio State Browser v0.4.
 
-Read-only helpers for inspecting Lumina runtime receipts and governance events.
-This module does not write state and does not own governance truth. It only
-summarizes files already emitted by the governed runtime runner.
+Read-only helpers for inspecting Lumina runtime receipts, governance events,
+and host-layer state schema status. This module does not write state and does
+not own governance truth. It only summarizes files already emitted by the
+governed runtime runner and host-layer schema helper.
 """
 from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional
 
 BOOTSTRAP_ROOT = Path(__file__).resolve().parents[1]
 REPO_ROOT = Path(__file__).resolve().parents[4]
+INSTALL_ROOT = BOOTSTRAP_ROOT / "install"
+if str(INSTALL_ROOT) not in sys.path:
+    sys.path.insert(0, str(INSTALL_ROOT))
+
+try:
+    from lumina_state_schema import inspect_state_schema
+except Exception:  # pragma: no cover - state browser reports unavailable helper
+    inspect_state_schema = None
+
 STATE_ROOT = REPO_ROOT / ".lumina_state" / "ship_of_ethereon_v2"
 DEFAULT_RUNTIME_BASE = STATE_ROOT / "runtime_runner_r1_actiontype_logging"
 
@@ -79,6 +90,18 @@ def _metric_text(label: str, value: Optional[float]) -> Optional[str]:
     if value is None:
         return None
     return f"{label} {value:.2f}"
+
+
+def state_schema_summary() -> Dict[str, Any]:
+    if inspect_state_schema is None:
+        return {
+            "available": False,
+            "compatible": False,
+            "reason": "lumina_state_schema helper unavailable",
+        }
+    status = inspect_state_schema(ensure=False, migrate=False).to_dict()
+    status["available"] = True
+    return status
 
 
 def harmonic_witness_from_payload(payload: Dict[str, Any]) -> Dict[str, Any]:
@@ -308,9 +331,10 @@ def state_snapshot(*, base_dir: Path = DEFAULT_RUNTIME_BASE, limit: int = 20) ->
     governance_events = _read_jsonl(governance_log_path, limit=500)
     canon_records = _read_jsonl(canon_lineage_path, limit=50)
     return {
-        "schema_version": "lumina-studio-state-browser-v0.3",
+        "schema_version": "lumina-studio-state-browser-v0.4",
         "read_only": True,
         "state_root": str(STATE_ROOT),
+        "state_schema": state_schema_summary(),
         "runtime_base_dir": str(base_dir),
         "runtime_base_exists": base_dir.exists(),
         "logs_dir": str(base_dir / "logs"),

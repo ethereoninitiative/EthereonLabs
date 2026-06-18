@@ -13,12 +13,13 @@ TARGET="${INSTALL_DIR}/lumina"
 
 usage() {
   cat <<'EOF'
-Usage: bash install/install_lumina.sh [--uninstall] [--doctor] [--ensure-state]
+Usage: bash install/install_lumina.sh [--uninstall] [--doctor] [--ensure-state] [--migrate-state]
 
 Options:
-  --uninstall     Remove the user-local lumina symlink if it points to this checkout.
-  --doctor        Run the Lumina doctor after install.
-  --ensure-state  Create the local .lumina_state schema marker through the doctor.
+  --uninstall      Remove the user-local lumina symlink if it points to this checkout.
+  --doctor         Run the Lumina doctor after install.
+  --ensure-state   Create the local .lumina_state schema marker through the doctor.
+  --migrate-state  Migrate a known older local state schema marker through the doctor.
 
 Environment:
   LUMINA_INSTALL_DIR  Override install directory. Defaults to $HOME/.local/bin.
@@ -28,12 +29,14 @@ EOF
 UNINSTALL=0
 RUN_DOCTOR=0
 ENSURE_STATE=0
+MIGRATE_STATE=0
 
 for arg in "$@"; do
   case "${arg}" in
     --uninstall) UNINSTALL=1 ;;
     --doctor) RUN_DOCTOR=1 ;;
     --ensure-state) ENSURE_STATE=1 ;;
+    --migrate-state) MIGRATE_STATE=1 ;;
     --help|-h) usage; exit 0 ;;
     *) echo "Unknown option: ${arg}" >&2; usage; exit 2 ;;
   esac
@@ -89,8 +92,11 @@ DOCTOR_ARGS=()
 if [[ ${ENSURE_STATE} -eq 1 ]]; then
   DOCTOR_ARGS+=("--ensure-state")
 fi
+if [[ ${MIGRATE_STATE} -eq 1 ]]; then
+  DOCTOR_ARGS+=("--migrate-state")
+fi
 
-if [[ ${RUN_DOCTOR} -eq 1 || ${ENSURE_STATE} -eq 1 ]]; then
+if [[ ${RUN_DOCTOR} -eq 1 || ${ENSURE_STATE} -eq 1 || ${MIGRATE_STATE} -eq 1 ]]; then
   echo "Running Lumina doctor..."
   python3 "${DOCTOR}" "${DOCTOR_ARGS[@]}"
 fi
@@ -104,6 +110,10 @@ echo "  lumina run \"Review Lumina OS progress and produce the next governed act
 echo "  lumina observe"
 echo "  lumina state"
 echo "  lumina studio"
+echo ""
+echo "State setup/migration:"
+echo "  bash install/install_lumina.sh --ensure-state"
+echo "  bash install/install_lumina.sh --migrate-state"
 echo ""
 echo "Reset/remove:"
 echo "  bash install/install_lumina.sh --uninstall"
