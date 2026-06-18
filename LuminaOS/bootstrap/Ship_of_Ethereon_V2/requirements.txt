@@ -1,0 +1,7 @@
+# Lumina OS bootstrap dependency inventory
+#
+# R1 package/install rule: keep this list pinned so `lumina doctor` can
+# distinguish a repeatable developer-beta install path from an ambient local
+# Python environment.
+
+numpy==2.3.0
