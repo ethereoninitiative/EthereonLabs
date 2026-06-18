@@ -1,0 +1,46 @@
+{
+  "schema_version": "lumina-presets-r1",
+  "authority_boundary": "Presets are operator convenience only. They do not define runtime law, mode legality, mutation permission, canon promotion, or capability authority.",
+  "presets": {
+    "observe": {
+      "description": "Default bounded Observation audit cycle.",
+      "prompt": "Review Lumina OS progress and produce the next governed action receipt.",
+      "target_mode": "Observation",
+      "action_type": "audit",
+      "focus": "continuity",
+      "depth": "structural",
+      "intent": "verify",
+      "ethereonic_overlay": false
+    },
+    "drydock": {
+      "description": "Architecture and package-readiness inspection without mutation authority.",
+      "prompt": "DryDock inspect Lumina OS and produce the next bounded engineering receipt.",
+      "target_mode": "Observation",
+      "action_type": "audit",
+      "focus": "architecture",
+      "depth": "foundational",
+      "intent": "verify",
+      "ethereonic_overlay": false
+    },
+    "return": {
+      "description": "Project return and continuity-orientation audit.",
+      "prompt": "Restore Lumina project stance and summarize the next lawful action.",
+      "target_mode": "Observation",
+      "action_type": "audit",
+      "focus": "project_return",
+      "depth": "structural",
+      "intent": "orient",
+      "ethereonic_overlay": false
+    },
+    "psi42": {
+      "description": "Observation audit with Ethereonic overlay and Psi-42 witness path enabled by default host flags.",
+      "prompt": "Run a bounded Psi-42 Observation witness and summarize continuity signal quality.",
+      "target_mode": "Observation",
+      "action_type": "audit",
+      "focus": "psi42_witness",
+      "depth": "structural",
+      "intent": "verify",
+      "ethereonic_overlay": true
+    }
+  }
+}
