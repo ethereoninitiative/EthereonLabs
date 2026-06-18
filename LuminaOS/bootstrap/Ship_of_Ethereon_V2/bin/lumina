@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Lumina host entrypoint.
-
-This command provides a single local operator surface for the Lumina OS
-bootstrap substrate. It does not create governance law; it routes to the
-existing runtime, Studio, state browser, and doctor scripts.
-"""
+"""Lumina host entrypoint."""
 from __future__ import annotations
 
 import argparse
@@ -66,16 +61,7 @@ def cmd_run(args: argparse.Namespace) -> int:
         cmd.append("--json")
     if ethereonic_overlay:
         cmd.append("--ethereonic-overlay")
-    if target_mode:
-        cmd.extend(["--target-mode", str(target_mode)])
-    if action_type:
-        cmd.extend(["--action-type", str(action_type)])
-    if focus:
-        cmd.extend(["--focus", str(focus)])
-    if depth:
-        cmd.extend(["--depth", str(depth)])
-    if intent:
-        cmd.extend(["--intent", str(intent)])
+    cmd.extend(["--target-mode", str(target_mode), "--action-type", str(action_type), "--focus", str(focus), "--depth", str(depth), "--intent", str(intent)])
     return _run(cmd, cwd=BOOTSTRAP_ROOT)
 
 
@@ -86,7 +72,6 @@ def cmd_presets(args: argparse.Namespace) -> int:
         print(json.dumps(payload, indent=2))
         return 0
     print("Lumina presets")
-    print("  boundary: presets are operator convenience only; runtime law remains authoritative")
     if not isinstance(presets, dict) or not presets:
         print("  no presets found")
         return 1
@@ -117,35 +102,37 @@ def cmd_compare(args: argparse.Namespace) -> int:
     print(f"  latest shape:   {harmonic.get('latest_continuity_shape')}")
     print(f"  drift:          {harmonic.get('drift_note')}")
     print(f"  recurrence:     {harmonic.get('recurrence_note')}")
-    print(f"  shape counts:   {harmonic.get('recent_shape_counts')}")
     print(f"  governance:     {governance.get('event_count')} events; latest {governance.get('latest_event_type')}")
     print(f"  canon head:     {payload.get('canon_head')}")
-    print(f"  receipt count:  {payload.get('receipt_count_returned')}")
     return 0
 
 
+def cmd_project(args: argparse.Namespace) -> int:
+    cmd = [_python(), str(INSTALL_DIR / "lumina_project_registry.py"), args.project_command]
+    if getattr(args, "name", None):
+        cmd.append(args.name)
+    if getattr(args, "description", None):
+        cmd.extend(["--description", args.description])
+    if getattr(args, "default_mode", None):
+        cmd.extend(["--default-mode", args.default_mode])
+    for tag in getattr(args, "tag", []) or []:
+        cmd.extend(["--tag", tag])
+    if getattr(args, "open", False):
+        cmd.append("--open")
+    if getattr(args, "include_archived", False):
+        cmd.append("--include-archived")
+    if getattr(args, "json", False):
+        cmd.append("--json")
+    return _run(cmd, cwd=BOOTSTRAP_ROOT)
+
+
 def cmd_observe(args: argparse.Namespace) -> int:
-    cmd = [
-        _python(),
-        str(RUNTIME_DIR / "runtime_runner_auto_snapshot_psi42_v18_r1.py"),
-        "--current-mode", "Continuity",
-        "--target-mode", "Observation",
-        "--action", args.action,
-        "--action-type", "audit",
-        "--enable-flag", "ETHEREON_OBSERVATION",
-        "--enable-flag", "ETHEREON_PSI42",
-        "--enable-flag", "ETHEREON_PSI42_V17",
-        "--enable-flag", "ETHEREON_PSI42_V18",
-        "--enable-flag", "ETHEREON_RESONANCE",
-        "--overlay-json", '{"active":true,"anchor_language":["english"],"continuity_phrase":"local observation cycle","harmonic_signature":[],"spiral_reference":null}',
-        "--runtime-config-json", '{"toki_pona_required_for_resume":false,"binary_required_for_transition_validation":false,"light_language_required_for_capability_loading":false,"harmonic_frequency_required_for_mode_legality":false}',
-    ]
+    cmd = [_python(), str(RUNTIME_DIR / "runtime_runner_auto_snapshot_psi42_v18_r1.py"), "--current-mode", "Continuity", "--target-mode", "Observation", "--action", args.action, "--action-type", "audit", "--enable-flag", "ETHEREON_OBSERVATION", "--enable-flag", "ETHEREON_PSI42", "--enable-flag", "ETHEREON_PSI42_V17", "--enable-flag", "ETHEREON_PSI42_V18", "--enable-flag", "ETHEREON_RESONANCE", "--overlay-json", '{"active":true,"anchor_language":["english"],"continuity_phrase":"local observation cycle","harmonic_signature":[],"spiral_reference":null}', "--runtime-config-json", '{"toki_pona_required_for_resume":false,"binary_required_for_transition_validation":false,"light_language_required_for_capability_loading":false,"harmonic_frequency_required_for_mode_legality":false}']
     return _run(cmd, cwd=RUNTIME_DIR)
 
 
 def cmd_state(args: argparse.Namespace) -> int:
-    cmd = [_python(), str(STUDIO_DIR / "lumina_state_browser.py"), "--limit", str(args.limit)]
-    return _run(cmd, cwd=BOOTSTRAP_ROOT)
+    return _run([_python(), str(STUDIO_DIR / "lumina_state_browser.py"), "--limit", str(args.limit)], cwd=BOOTSTRAP_ROOT)
 
 
 def cmd_studio(args: argparse.Namespace) -> int:
@@ -169,15 +156,12 @@ def cmd_doctor(args: argparse.Namespace) -> int:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(
-        prog="lumina",
-        description="Start and inspect the Lumina OS local governed substrate.",
-    )
+    parser = argparse.ArgumentParser(prog="lumina", description="Start and inspect the Lumina OS local governed substrate.")
     sub = parser.add_subparsers(dest="command", required=True)
 
     run = sub.add_parser("run", help="Run one governed Studio cycle.")
     run.add_argument("prompt", nargs="?", default=None)
-    run.add_argument("--preset", default=None, help="Named operator preset from studio/lumina_presets_r1.json.")
+    run.add_argument("--preset", default=None)
     run.add_argument("--target-mode", default=None)
     run.add_argument("--action-type", default=None)
     run.add_argument("--focus", default=None)
@@ -197,6 +181,29 @@ def build_parser() -> argparse.ArgumentParser:
     compare.add_argument("--json", action="store_true")
     compare.set_defaults(func=cmd_compare)
 
+    project = sub.add_parser("project", help="Manage local Lumina projects.")
+    project_sub = project.add_subparsers(dest="project_command", required=True)
+    for name in ["open", "archive", "restore"]:
+        p = project_sub.add_parser(name)
+        p.add_argument("name")
+        p.add_argument("--json", action="store_true")
+        p.set_defaults(func=cmd_project)
+    pcreate = project_sub.add_parser("create")
+    pcreate.add_argument("name")
+    pcreate.add_argument("--description", default="")
+    pcreate.add_argument("--default-mode", default="Observation")
+    pcreate.add_argument("--tag", action="append", default=[])
+    pcreate.add_argument("--open", action="store_true")
+    pcreate.add_argument("--json", action="store_true")
+    pcreate.set_defaults(func=cmd_project)
+    plist = project_sub.add_parser("list")
+    plist.add_argument("--include-archived", action="store_true")
+    plist.add_argument("--json", action="store_true")
+    plist.set_defaults(func=cmd_project)
+    pactive = project_sub.add_parser("active")
+    pactive.add_argument("--json", action="store_true")
+    pactive.set_defaults(func=cmd_project)
+
     observe = sub.add_parser("observe", help="Run a local bounded Observation cycle and emit public/runtime snapshot files.")
     observe.add_argument("--action", default="local_observation_cycle")
     observe.set_defaults(func=cmd_observe)
@@ -215,7 +222,6 @@ def build_parser() -> argparse.ArgumentParser:
     doctor.add_argument("--ensure-state", action="store_true")
     doctor.add_argument("--migrate-state", action="store_true")
     doctor.set_defaults(func=cmd_doctor)
-
     return parser
 
 
