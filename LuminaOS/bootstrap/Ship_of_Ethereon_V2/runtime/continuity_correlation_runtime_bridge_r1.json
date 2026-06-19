@@ -1,0 +1,19 @@
+{
+  "bridge_id": "continuity-correlation-runtime-bridge-r1",
+  "status": "experimental-active",
+  "inputs": [
+    "runtime receipt",
+    "active Harbor project marker",
+    "active Harbor session marker",
+    "runtime session identifier",
+    "optional restore session identifier",
+    "optional host session identifier"
+  ],
+  "outputs": [
+    "receipt continuity_correlation envelope",
+    "optional docked Harbor session receipt copy",
+    "bridge status metadata"
+  ],
+  "docking_rule": "Dock only when an active Harbor session root resolves to an existing directory.",
+  "authority_boundary": "The bridge attaches identity context and copies receipts only. It does not grant governance, canon, checkpoint, mode, or capability authority."
+}
