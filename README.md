@@ -12,6 +12,22 @@ For the fastest current repository orientation, start with:
 
 This is the short harbor map for active lanes, current runtime path, symbolic-only layers, and recommended touch order.
 
+## Current Spatial Orientation
+
+The project now uses an orbital / planetary top-level frame:
+
+- **Ship of Ethereon** — exploratory and transport vessel
+- **Lumina** — persistent orbital station and habitat
+- **Ethereon** — partially unveiled planetary realm
+
+The nautical language remains intentionally active as inherited spacecraft and engineering language: bridge, crew, log, cargo, docking, drydock, shipyard, voyage, and trials.
+
+Canonical framing:
+
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Ethereon_Orbital_Planetary_Framing_R1.md`
+
+This framing guides architecture, navigation, and product language. It is not runtime governance law.
+
 ## Lumina Lisp Layer
 
 Structured symbolic snapshots of system state, intent, and reflection.
@@ -104,10 +120,12 @@ Use this lane for simulations, figure generators, and exploratory artifacts supp
 - RSE simulations and figures belong in the research lane unless deliberately promoted into public explanation.
 - Ψ Class materials are staging artifacts, not automatically runtime law.
 - Exploratory spikes may inform architecture, but they are not finished substrate by default.
+- Orbital, planetary, maritime, and settlement metaphors guide orientation and interface language; they do not create technical authority.
 
 ## Guidance
 
 - For current repo orientation, begin with `CURRENT_OPERATING_MAP.md`.
+- For current Ship / Lumina / Ethereon spatial framing, read `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Ethereon_Orbital_Planetary_Framing_R1.md`.
 - For Ship / Lumina OS substrate questions, begin with the bootstrap path.
 - For Ψ Class staging questions, begin with the Ψ Class start-here waypoint and staging bay.
 - For Chamber questions, begin with the Chamber lane.
