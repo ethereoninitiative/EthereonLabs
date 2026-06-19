@@ -1,0 +1,64 @@
+name: Lumina DryDock Gate
+
+on:
+  pull_request:
+    paths:
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/**"
+      - ".github/workflows/lumina-drydock-gate.yml"
+  push:
+    branches: [main]
+    paths:
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/**"
+      - ".github/workflows/lumina-drydock-gate.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  lumina-drydock:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONUNBUFFERED: "1"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compile Lumina Python
+        run: |
+          python -m compileall -q LuminaOS/bootstrap/Ship_of_Ethereon_V2
+
+      - name: Host alignment trial
+        working-directory: LuminaOS/bootstrap/Ship_of_Ethereon_V2/install
+        run: python sea_trials_host_alignment_r1.py
+
+      - name: Core sea trials
+        working-directory: LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime
+        run: |
+          python sea_trials_set_one_r1_merged.py
+          python sea_trials_resonant_manifold_r1.py
+          if [ -f sea_trials_canon_readiness_r2.py ]; then
+            python sea_trials_canon_readiness_r2.py
+          fi
+
+      - name: Host command smoke checks
+        working-directory: LuminaOS/bootstrap/Ship_of_Ethereon_V2
+        run: |
+          python bin/lumina --help
+          python bin/lumina doctor --json
+          python bin/lumina project list --json
+          python bin/lumina session list --json
+
+      - name: Verify no tracked local state
+        run: |
+          if git ls-files | grep -q '^\.lumina_state/'; then
+            echo "Tracked local Lumina state is not allowed."
+            git ls-files | grep '^\.lumina_state/'
+            exit 1
+          fi
