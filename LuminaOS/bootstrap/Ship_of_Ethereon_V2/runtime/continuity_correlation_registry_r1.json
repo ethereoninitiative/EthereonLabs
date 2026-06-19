@@ -1,0 +1,22 @@
+{
+  "registry_id": "lumina-continuity-correlation-registry-r1",
+  "status": "experimental-active",
+  "primary_human_facing_reference": "harbor_session_id",
+  "typed_references": [
+    "project_slug",
+    "harbor_session_id",
+    "runtime_session_id",
+    "restore_session_id",
+    "host_session_id",
+    "correlation_id"
+  ],
+  "semantics": {
+    "project_slug": "persistent Harbor project reference",
+    "harbor_session_id": "persistent human-facing work episode",
+    "runtime_session_id": "governed execution instance",
+    "restore_session_id": "continuity reconstruction record",
+    "host_session_id": "workspace layout and tool-surface instance",
+    "correlation_id": "stable link across one coordinated work episode"
+  },
+  "authority_boundary": "Correlation links typed references only and does not transfer governance, canon, checkpoint, or capability authority."
+}
