@@ -110,7 +110,6 @@ def load_project(slug_or_name: str) -> Dict[str, Any]:
     path = project_file(slug)
     payload = read_json(path)
     if payload is None:
-        # Allow exact name fallback across registry.
         for item in list_projects(include_archived=True):
             if item.get("name") == slug_or_name:
                 payload = read_json(project_file(str(item["slug"])))
@@ -242,7 +241,10 @@ def main() -> int:
         print(json.dumps(payload, indent=2) if args.json else f"Opened Lumina project: {payload['active_project_slug']}")
     elif args.command == "list":
         payload = registry_snapshot(include_archived=args.include_archived)
-        print(json.dumps(payload, indent=2) if args.json else print_project_table(payload["projects"]))
+        if args.json:
+            print(json.dumps(payload, indent=2))
+        else:
+            print_project_table(payload["projects"])
     elif args.command == "active":
         payload = active_project() or {"active_project_slug": None, "active_project_name": None}
         print(json.dumps(payload, indent=2) if args.json else f"Active Lumina project: {payload.get('active_project_slug') or 'none'}")
