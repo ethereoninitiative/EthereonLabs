@@ -1,8 +1,8 @@
 {
   "schema_version": "lumina-runtime-truth-public-snapshot-v0.1",
   "source_latest_cycle": "/home/runner/work/EthereonLabs/EthereonLabs/public/runtime/latest_cycle.json",
-  "latest_cycle_run_id": "run-f389efc7-4f9",
-  "latest_cycle_timestamp": "2026-06-14T09:56:22.159948+00:00",
+  "latest_cycle_run_id": "run-64888cac-a5e",
+  "latest_cycle_timestamp": "2026-06-19T15:43:04.283519+00:00",
   "mode": {
     "requested": "Continuity",
     "current": "Observation"
