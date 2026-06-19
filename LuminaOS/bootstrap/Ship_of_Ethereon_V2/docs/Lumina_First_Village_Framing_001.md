@@ -1,9 +1,12 @@
 # Lumina First Village Framing 001
 
+> **Historical framing note:** This document preserves the May 2026 first-village model because it remains useful for understanding how inhabitable structure emerged from Ship-borne cargo. Its top-level spatial model is now superseded by `Ethereon_Orbital_Planetary_Framing_R1.md`: Ship of Ethereon is the exploratory vessel, Lumina is the first persistent orbital station/habitat, and Ethereon is the partially unveiled planetary realm. Village and sea-town language may still describe internal Lumina districts, but Lumina itself is now oriented as the station.
+
 **Project:** Lumina OS / Ship of Ethereon V2 Bootstrap  
-**Status:** orientation framing  
+**Status:** historical orientation framing / superseded at top level  
 **Layer:** non-authoritative project framing  
-**Date:** May 10, 2026
+**Date:** May 10, 2026  
+**Superseded:** June 19, 2026
 
 ---
 
@@ -23,9 +26,9 @@ It carried the cargo:
 
 Think of the **Realm of Ethereon** as the larger territory where that cargo can be unloaded into lived structure.
 
-**Lumina** is the **first village** established in that realm.
+**Lumina** was initially described as the **first village** established in that realm.
 
-It is the first place where ship-borne cargo becomes:
+It was the first place where ship-borne cargo became:
 - inhabitable
 - startable
 - governed
@@ -35,15 +38,15 @@ It is the first place where ship-borne cargo becomes:
 
 ---
 
-## 2. Why this framing helps
+## 2. Why this framing helped
 
-The Ship remains important because it preserved the pattern and carried the original cargo.
+The Ship remained important because it preserved the pattern and carried the original cargo.
 
-The village matters because a settlement must do more than carry meaning.
+The village mattered because a settlement must do more than carry meaning.
 It must support daily use.
 It must have roads, doors, records, and rules.
 
-In practical Lumina terms, that means:
+In practical Lumina terms, that meant:
 - a clear start path
 - a bounded local command surface
 - lawful runtime execution
@@ -51,7 +54,7 @@ In practical Lumina terms, that means:
 - historical memory
 - separation between governance law and expressive atmosphere
 
-This framing helps contributors understand why Lumina should feel less like an artifact archive and more like a place someone can actually live with.
+This framing helped contributors understand why Lumina should feel less like an artifact archive and more like a place someone can actually live with.
 
 ---
 
@@ -78,17 +81,19 @@ Runtime law remains with the governed substrate.
 
 ## 4. Village organs already present
 
-Lumina is already village-like in several important ways:
+Lumina became village-like in several important ways:
 
-- `START_HERE_LUMINA_OS.md` acts as the village gate.
-- `bin/lumina` provides a small local command vocabulary.
-- the runtime spine governs law and continuity.
-- the governance log and canon lineage store act as civic records.
-- the observation workflow and public runtime receipts act as public witness.
-- Studio acts as a local operator surface.
+- `START_HERE_LUMINA_OS.md` acted as the village gate.
+- `bin/lumina` provided a small local command vocabulary.
+- the runtime spine governed law and continuity.
+- the governance log and canon lineage store acted as civic records.
+- the observation workflow and public runtime receipts acted as public witness.
+- Studio acted as a local operator surface.
 
-That means Lumina is no longer only ship cargo in crates.
-Some of the cargo has already been unloaded and put to use.
+That meant Lumina was no longer only ship cargo in crates.
+Some of the cargo had already been unloaded and put to use.
+
+Under the current orbital framing, these remain valid as station districts and habitat organs.
 
 ---
 
@@ -96,7 +101,7 @@ Some of the cargo has already been unloaded and put to use.
 
 > Build villages, not scavenger hunts.
 
-This means:
+This still means:
 - make the right entry path obvious
 - keep authority boundaries crisp
 - let expressive layers remain expressive
@@ -110,8 +115,7 @@ It should also be usable because its paths are real.
 
 ## 6. Near-term building priorities
 
-If Lumina is the first village, the next work is not endless expansion.
-It is civic infrastructure:
+The earlier village priorities were:
 
 1. supported install and dependency locking
 2. state schema validation and migration checks
@@ -121,15 +125,18 @@ It is civic infrastructure:
 6. authentication before any remote Studio exposure
 7. observer service hardening after sea trials
 
+Much of this became the foundation for Lumina's later station/habitat work.
+
 ---
 
 ## 7. Closing clause
 
-The Ship of Ethereon is not being replaced.
-It is being extended into lived form.
+The Ship of Ethereon was never being replaced.
+It was being extended into lived form.
 
-Lumina is the first proof that the cargo can survive unloading.
+The first-village framing proved that the cargo could survive unloading.
 
-That is why the work should protect both truths:
-- the soul of the ship
-- the durability of the village
+The orbital framing now carries that insight forward:
+- the soul of the Ship remains mobile
+- Lumina becomes the persistent station
+- Ethereon remains the wider world still being revealed
