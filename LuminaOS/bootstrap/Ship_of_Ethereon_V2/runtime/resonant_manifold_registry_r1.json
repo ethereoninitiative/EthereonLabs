@@ -1,0 +1,74 @@
+{
+  "registry_id": "resonant-manifold-registry-r1",
+  "status": "experimental",
+  "model_class": "higher-dimensional-inspired classical state-space model",
+  "literal_fifth_dimension_claim": false,
+  "literal_quantum_hardware_claim": false,
+  "layers": {
+    "ethereonic_field": {
+      "role": "largest conceptual environment for continuity, resonance, orientation, relation, and potential",
+      "authority": "orientation_only"
+    },
+    "resonant_manifold": {
+      "role": "computational state-space model",
+      "authority": "derived_metrics_only"
+    },
+    "orientation_field": {
+      "role": "magnetic-style representation of attraction, persistence, hysteresis, and directional tendency",
+      "authority": "derived_metrics_only"
+    },
+    "potential_trajectories": {
+      "role": "explicit set of unrealized but representable next-state candidates",
+      "authority": "candidate_generation_only"
+    }
+  },
+  "axes": [
+    {
+      "name": "instantiated_state",
+      "question": "What is presently instantiated?"
+    },
+    {
+      "name": "continuity_history",
+      "question": "How did this configuration arrive?"
+    },
+    {
+      "name": "relational_context",
+      "question": "What relations currently shape the configuration?"
+    },
+    {
+      "name": "orientation_field",
+      "question": "What attractors, tendencies, or persistent alignments are active?"
+    },
+    {
+      "name": "potential_trajectories",
+      "question": "What lawful but unrealized futures remain reachable?"
+    }
+  ],
+  "instrument_relations": {
+    "psi42": "receives and probes manifold observations",
+    "harmonics": "measure coherence among manifold points and trajectories",
+    "magnetics": "measure orientation, attraction, persistence, and hysteresis analogues",
+    "governance": "filters lawful reachability and remains externally authoritative"
+  },
+  "implementation": {
+    "module": "resonant_manifold_r1.py",
+    "sea_trial": "sea_trials_resonant_manifold_r1.py"
+  },
+  "authority_boundary": {
+    "owns": [
+      "derived manifold coordinates",
+      "harmonic coherence scores",
+      "orientation attraction scores",
+      "potential-axis contribution",
+      "trajectory ranking"
+    ],
+    "does_not_own": [
+      "governance law",
+      "canon state",
+      "mode legality",
+      "checkpoint legality",
+      "capability authority",
+      "primary continuity truth"
+    ]
+  }
+}
