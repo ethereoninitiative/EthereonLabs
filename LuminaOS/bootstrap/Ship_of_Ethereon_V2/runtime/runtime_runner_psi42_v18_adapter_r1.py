@@ -1,18 +1,38 @@
 from __future__ import annotations
 
-"""RuntimeRunner adapter that prefers Psi-42 v1.8 when available.
+"""RuntimeRunner adapter for Psi-42 v1.8 and continuity correlation.
 
-This adapter avoids rewriting the core runner while giving local Studio / observe
-surfaces a clean route to the doctrine-aligned v1.8 transceiver diagnostics.
-It preserves the existing v1.7 and v1.6 fallbacks.
+This adapter avoids rewriting the core runner while giving local Studio and
+observe surfaces a clean route to doctrine-aligned Psi-42 diagnostics plus
+correlated Harbor/runtime receipts.
 """
 
+from dataclasses import dataclass
+from pathlib import Path
 from typing import Any, Dict, List, Optional
+import json
 
 try:
-    from .runtime_runner_r1_merged import RuntimeRunner as BaseRuntimeRunner, VALID_ACTION_TYPES
+    from .runtime_runner_r1_merged import (
+        RuntimeRunner as BaseRuntimeRunner,
+        RunnerResult as BaseRunnerResult,
+        VALID_ACTION_TYPES,
+        STATE_ROOT,
+        utc_now,
+    )
 except Exception:
-    from runtime_runner_r1_merged import RuntimeRunner as BaseRuntimeRunner, VALID_ACTION_TYPES
+    from runtime_runner_r1_merged import (
+        RuntimeRunner as BaseRuntimeRunner,
+        RunnerResult as BaseRunnerResult,
+        VALID_ACTION_TYPES,
+        STATE_ROOT,
+        utc_now,
+    )
+
+try:
+    from .continuity_correlation_bridge_r1 import bridge_runtime_receipt
+except Exception:
+    from continuity_correlation_bridge_r1 import bridge_runtime_receipt
 
 try:
     from .psi42_transceiver_v1_8 import Config as Psi42V18Config, ResonanceTransceiverV18
@@ -50,12 +70,18 @@ PSI42_DEFAULT_FLAGS = [
 ]
 
 
-class RuntimeRunner(BaseRuntimeRunner):
-    """RuntimeRunner variant that prefers Psi-42 v1.8 diagnostics.
+@dataclass
+class RunnerResult(BaseRunnerResult):
+    continuity_correlation: Optional[Dict[str, Any]] = None
+    continuity_correlation_bridge: Optional[Dict[str, Any]] = None
 
-    Authority remains unchanged: this adapter only changes probe routing. It does
-    not alter governance law, mode legality, mutation rules, canon lineage, or
-    checkpoint legality.
+
+class RuntimeRunner(BaseRuntimeRunner):
+    """RuntimeRunner variant that prefers Psi-42 v1.8 and correlates receipts.
+
+    Authority remains unchanged: this adapter changes probe routing and receipt
+    context only. It does not alter governance law, mode legality, mutation
+    rules, canon lineage, or checkpoint legality.
     """
 
     def _resolve_enabled_feature_flags(self, enabled_feature_flags: Optional[List[str]]) -> List[str]:
@@ -80,6 +106,86 @@ class RuntimeRunner(BaseRuntimeRunner):
             "GOVERNANCE": 0.6,
         }
 
+    @staticmethod
+    def _correlation_ids(lumina_return_host_artifacts: Optional[Dict[str, Any]]) -> Dict[str, Optional[str]]:
+        artifacts = lumina_return_host_artifacts or {}
+        checkpoint_only = artifacts.get("checkpoint_only") or {}
+        restore_payload = checkpoint_only.get("payload") or {}
+        latest_restore = restore_payload.get("latest_restore") or {}
+        checkpoint_plus_host = artifacts.get("checkpoint_plus_host") or {}
+        host_bundle = checkpoint_plus_host.get("host_bundle") or {}
+        return {
+            "restore_session_id": latest_restore.get("session_id"),
+            "host_session_id": host_bundle.get("host_session_id"),
+        }
+
+    def _finalize_result(
+        self,
+        *,
+        session_id: str,
+        current_mode: str,
+        target_mode: str,
+        requested_action: str,
+        action_type: str,
+        context_bundle_id: str,
+        governance: Dict[str, Any],
+        exposed_capabilities: List[Dict[str, Any]],
+        checkpoint_path: str | Path,
+        probe_artifacts: Optional[Dict[str, Any]],
+        lumina_return_host_artifacts: Optional[Dict[str, Any]],
+        canon_lineage: Optional[Dict[str, Any]],
+    ) -> RunnerResult:
+        session_path = self.session_engine.session_path(session_id)
+        result = RunnerResult(
+            run_id=f"run-{session_id[:12]}",
+            created_at=utc_now(),
+            requested_mode=current_mode,
+            target_mode=target_mode,
+            requested_action=requested_action,
+            action_type=action_type,
+            session_id=session_id,
+            context_bundle_id=context_bundle_id,
+            governance=governance,
+            exposed_capabilities=exposed_capabilities,
+            checkpoint_path=str(checkpoint_path),
+            session_path=str(session_path),
+            log_path="",
+            governance_log_path=str(self.governance_log_path),
+            governance_chain_status=self._current_chain_status(),
+            canon_lineage=canon_lineage or self._current_canon_metadata(),
+            probe_artifacts=probe_artifacts,
+            lumina_return_host_artifacts=lumina_return_host_artifacts,
+        )
+        log_path = self.logs_dir / f"{result.run_id}.json"
+        ids = self._correlation_ids(lumina_return_host_artifacts)
+        bridged = bridge_runtime_receipt(
+            result.to_dict(),
+            state_root=STATE_ROOT,
+            runtime_session_id=session_id,
+            restore_session_id=ids["restore_session_id"],
+            host_session_id=ids["host_session_id"],
+            dock_filename=f"{result.run_id}.json",
+        )
+        result.continuity_correlation = bridged.get("continuity_correlation")
+        result.continuity_correlation_bridge = bridged.get("continuity_correlation_bridge")
+        result.log_path = str(log_path)
+        payload = result.to_dict()
+        log_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+        docked_path = (result.continuity_correlation_bridge or {}).get("docked_receipt_path")
+        if docked_path:
+            Path(docked_path).write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+        return result
+
+    def _halted_result(self, **kwargs: Any) -> RunnerResult:
+        result = super()._halted_result(**kwargs)
+        payload = result.to_dict()
+        if result.log_path:
+            Path(result.log_path).write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+        docked_path = (getattr(result, "continuity_correlation_bridge", None) or {}).get("docked_receipt_path")
+        if docked_path:
+            Path(docked_path).write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+        return result
+
     def _maybe_run_psi42_probe(
         self,
         *,
@@ -98,9 +204,7 @@ class RuntimeRunner(BaseRuntimeRunner):
                 "psi42_transceiver_v18",
             }
         )
-        if not has_any_psi42:
-            return None
-        if target_mode not in {"Observation", "Sandbox"}:
+        if not has_any_psi42 or target_mode not in {"Observation", "Sandbox"}:
             return None
 
         language_mode = self._psi42_language_mode(ethereonic_overlay)
