@@ -276,7 +276,10 @@ def main() -> int:
         print(json.dumps(payload, indent=2) if args.json else f"Opened Lumina session: {payload['active_session_id']}")
     elif args.command == "list":
         payload = registry_snapshot(project_slug=args.project, include_archived=args.include_archived)
-        print(json.dumps(payload, indent=2) if args.json else print_session_table(payload["sessions"]))
+        if args.json:
+            print(json.dumps(payload, indent=2))
+        else:
+            print_session_table(payload["sessions"])
     elif args.command == "active":
         payload = active_session() or {"active_session_id": None, "active_session_title": None}
         print(json.dumps(payload, indent=2) if args.json else f"Active Lumina session: {payload.get('active_session_id') or 'none'}")
