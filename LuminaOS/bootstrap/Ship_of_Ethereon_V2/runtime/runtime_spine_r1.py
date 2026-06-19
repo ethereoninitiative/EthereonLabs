@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 import hashlib
+import hmac
 import json
 import subprocess
 import uuid
@@ -251,9 +252,23 @@ class SessionEngine:
         return path
 
     def resume_from_checkpoint(self, checkpoint_path: str | Path) -> SessionState:
-        with Path(checkpoint_path).open("r", encoding="utf-8") as f:
+        path = Path(checkpoint_path)
+        with path.open("r", encoding="utf-8") as f:
             payload = json.load(f)
-        state = self._from_dict(payload["session_state"])
+        if not isinstance(payload, dict):
+            raise ValueError("checkpoint payload must be a JSON object")
+        actual_hash = payload.get("checkpoint_hash")
+        if not isinstance(actual_hash, str) or not actual_hash:
+            raise ValueError("checkpoint integrity verification failed: missing checkpoint_hash")
+        unhashed_payload = {key: value for key, value in payload.items() if key != "checkpoint_hash"}
+        encoded = json.dumps(unhashed_payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+        expected_hash = sha256_text(encoded)
+        if not hmac.compare_digest(actual_hash, expected_hash):
+            raise ValueError("checkpoint integrity verification failed: checkpoint_hash mismatch")
+        session_payload = payload.get("session_state")
+        if not isinstance(session_payload, dict):
+            raise ValueError("checkpoint integrity verification failed: missing session_state")
+        state = self._from_dict(session_payload)
         state.continuity_state.resume_count += 1
         self.save_session(state)
         return state
@@ -415,17 +430,17 @@ class ContextBundleBuilder:
     def attach_project_orientation_vector(
         self,
         bundle: ContextBundle,
-        vector: Any,
+        project_orientation_vector: Optional[Any] = None,
     ) -> ContextBundle:
-        coerced = _coerce_project_orientation_vector(vector)
-        if coerced is None:
+        vector = _coerce_project_orientation_vector(project_orientation_vector)
+        if vector is None:
             return bundle
         if attach_project_orientation_to_supplemental is None:
-            raise ValueError("ProjectOrientationVector attachment is unavailable in this runtime")
+            raise ValueError("ProjectOrientationVector attachment support is unavailable in this runtime")
         payload = bundle.to_dict()
         payload["supplemental_ethereonic_context"] = attach_project_orientation_to_supplemental(
             payload.get("supplemental_ethereonic_context", {}),
-            coerced,
+            vector,
         )
         return ContextBundle(**payload)
 
