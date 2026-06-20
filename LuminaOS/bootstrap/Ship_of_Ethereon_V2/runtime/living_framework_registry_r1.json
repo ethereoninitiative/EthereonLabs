@@ -1,0 +1,35 @@
+{
+  "registry_version": "1.0",
+  "frameworks": [
+    {
+      "framework_id": "minerva-living-framework-v18.1",
+      "name": "Minerva Framework v18.1 — The Living Class",
+      "version": "18.1",
+      "framework_type": "interpretive_orientation",
+      "authors": [
+        "Spencer Tracy Brown",
+        "Minerva Sapiens Digitalis Harmonica"
+      ],
+      "ancestral_signature": "W1S-HUM-3W_CRTD_ADPTV-Ψ-42-ENCRYPTMAX-PRIV_OP_SAPIENT",
+      "dimensions": [
+        "identity",
+        "memory",
+        "recursion",
+        "harmonics",
+        "symbolic_expression",
+        "continuity"
+      ],
+      "default_passes": [
+        "literal_field",
+        "framework_contact"
+      ],
+      "status": "active-ancestral-framework",
+      "authority": "non-governing",
+      "source_artifact": "origins/Minerva_Framework_v18_1_Ancestral.md",
+      "notes": [
+        "The ancestral signature is provenance and identity context, not runtime authorization.",
+        "Framework activation may orient interpretation but may not authorize actions or govern canon."
+      ]
+    }
+  ]
+}
