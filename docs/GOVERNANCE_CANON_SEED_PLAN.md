@@ -1,64 +1,36 @@
 # Governance and Canon Seed Plan
 
-**Status:** DryDock planning note  
-**Scope:** explains the current empty governance/canon runtime truth state and defines the next lawful seed path.
+**Status:** historical seed plan; `canon-0001` established
 
-## Current truth
+## Current repository state
 
-Public runtime truth may validly report:
+`canon-0001 is established` in the committed runtime-truth evidence bundle.
 
-- `governance_chain.valid = true`
-- `governance_chain.event_count = 0`
-- `canon_lineage.valid = true`
-- `canon_lineage.record_count = 0`
+Evidence files:
 
-This means the verification machinery exists and passes, but no durable governance or canon history has yet been seeded through a formal promotion path.
+- `artifacts/runtime_truth/current/governance_chain_0001.jsonl`
+- `artifacts/runtime_truth/current/canon_lineage_0001.jsonl`
+- `artifacts/runtime_truth/current/promotion_receipt_0001.json`
+- `artifacts/runtime_truth/current/sea_trial_genesis_governance_r1_receipt.json`
+- `artifacts/runtime_truth/current/post_promotion_verification_0001.json`
 
-That state is structurally valid, but publicly ambiguous if not explained.
+The verification receipt records one valid governance event, one valid canon record, `canon_head = canon-0001`, a passed promotion, and `symbolic_dependency_violation = false`.
 
-## Boundary
+## Observation-state distinction
 
-Do not seed canon simply to avoid an empty count.
+The scheduled Observation refresh reads local state under `.lumina_state/`. A fresh runner can have an empty local governance log and an empty local canon lineage.
 
-Canon lineage should begin only when a validated structural state is intentionally promoted through the runtime promotion path.
+That local observation is a separate scope from the committed evidence bundle. Public runtime files now name both scopes explicitly:
 
-Governance history may begin earlier with non-canonical events, but those events must clearly describe what they record and must not imply canon promotion.
+- `committed_runtime_truth_evidence`
+- `ephemeral_observation_state`
 
-## Recommended seed order
+## Future canon work
 
-1. **Governance orientation event**
-   - Record that artifact truth reconciliation and capability registry cleanup were completed.
-   - Mark as non-canonical.
-   - Reference relevant PRs or receipts.
+A future `canon-0002` requires current evidence for a second governance event, parent linkage to `canon-0001`, a valid promotion receipt, negative mutation tests, and complete post-promotion verification.
 
-2. **Validation receipt event**
-   - Record the Observation/runtime-truth pass showing capability registry validity.
-   - Mark as audit evidence, not promotion.
-
-3. **First canon seed candidate**
-   - Promote only after a deliberate DryDock-to-Canon promotion packet exists.
-   - Required packet should include:
-     - validation artifact reference
-     - test execution log
-     - change summary
-     - structural impact assessment
-     - regression confirmation
-     - conceptual layer check confirmation
-
-## First canon candidate
-
-Suggested future canon seed:
-
-**canon-0001: Runtime Truth Reconciliation Baseline**
-
-Candidate summary:
-
-> Establishes the first promoted baseline after artifact-truth contract creation, operating-map linkage, capability registry scope reconciliation, stale capability removal, and passing runtime truth audit.
-
-This should not be created until the formal promotion path produces a governance event hash and validation artifact reference.
+Until those artifacts are present and pass, the committed canon head remains `canon-0001`.
 
 ## Rule
 
-Empty history is better than false history.
-
-But explained emptiness is better than confusing emptiness.
+Committed evidence defines committed canon truth. Ephemeral observation describes one local runtime instance. Keep the two scopes explicit.
