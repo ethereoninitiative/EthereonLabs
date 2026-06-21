@@ -6,7 +6,22 @@ import json
 import subprocess
 import sys
 
-from runtime_truth_reconciliation_gate_r1 import run_gate as run_reconciliation_gate
+
+def repo_root() -> Path:
+    here = Path(__file__).resolve()
+    for parent in here.parents:
+        if (parent / ".git").exists() or (parent / "LuminaOS").exists():
+            return parent
+    return Path.cwd()
+
+
+ROOT = repo_root()
+RUNTIME_DIR = ROOT / "LuminaOS" / "bootstrap" / "Ship_of_Ethereon_V2" / "runtime"
+if str(RUNTIME_DIR) not in sys.path:
+    sys.path.insert(0, str(RUNTIME_DIR))
+
+from runtime_truth_public_snapshot_r1 import build_public_runtime_truth_snapshot  # noqa: E402
+from runtime_truth_reconciliation_gate_r1 import run_gate as run_reconciliation_gate  # noqa: E402
 
 
 REQUIRED_RUNTIME_TRUTH_FILES = [
@@ -15,22 +30,11 @@ REQUIRED_RUNTIME_TRUTH_FILES = [
     "public/runtime/latest_cycle.json",
 ]
 
-FORBIDDEN_AMBIGUOUS_KEYS = [
-    "symbolic_dependency"
-]
-
+FORBIDDEN_AMBIGUOUS_KEYS = ["symbolic_dependency"]
 REQUIRED_SYMBOLIC_BOUNDARY = {
     "symbolic_context_present": True,
     "symbolic_dependency_allowed": False,
 }
-
-
-def repo_root() -> Path:
-    here = Path(__file__).resolve()
-    for parent in here.parents:
-        if (parent / ".git").exists() or (parent / "LuminaOS").exists():
-            return parent
-    return Path.cwd()
 
 
 def read_json(path: Path) -> Dict:
@@ -54,8 +58,7 @@ def scan_for_key(node, key: str, path: str = "$", hits: List[str] | None = None)
 
 def validate_known_uncertainties(root: Path) -> List[str]:
     errors: List[str] = []
-    path = root / "artifacts/runtime_truth/known_uncertainties.json"
-    payload = read_json(path)
+    payload = read_json(root / "artifacts/runtime_truth/known_uncertainties.json")
     uncertainties = payload.get("uncertainties", [])
     if not uncertainties:
         errors.append("known_uncertainties.json must contain at least one uncertainty")
@@ -73,13 +76,8 @@ def validate_symbolic_boundary(payload: Dict, label: str) -> List[str]:
         if hits:
             errors.append(f"{label} contains ambiguous forbidden key {key} at {hits}")
 
-    boundary = None
     runtime_truth = payload.get("runtime_truth") if isinstance(payload, dict) else None
-    if isinstance(runtime_truth, dict):
-        boundary = runtime_truth.get("symbolic_boundary")
-    if boundary is None and "symbolic_boundary" in payload:
-        boundary = payload.get("symbolic_boundary")
-
+    boundary = runtime_truth.get("symbolic_boundary") if isinstance(runtime_truth, dict) else payload.get("symbolic_boundary")
     if isinstance(boundary, dict):
         for key, expected in REQUIRED_SYMBOLIC_BOUNDARY.items():
             if boundary.get(key) is not expected:
@@ -90,11 +88,11 @@ def validate_symbolic_boundary(payload: Dict, label: str) -> List[str]:
 
 
 def validate_required_files(root: Path) -> List[str]:
-    errors: List[str] = []
-    for rel in REQUIRED_RUNTIME_TRUTH_FILES:
-        if not (root / rel).exists():
-            errors.append(f"missing required runtime truth file: {rel}")
-    return errors
+    return [
+        f"missing required runtime truth file: {rel}"
+        for rel in REQUIRED_RUNTIME_TRUTH_FILES
+        if not (root / rel).exists()
+    ]
 
 
 def validate_host_smoke(root: Path) -> List[str]:
@@ -114,10 +112,16 @@ def validate_host_smoke(root: Path) -> List[str]:
 
 
 def run_gate() -> Tuple[bool, List[str]]:
-    root = repo_root()
+    root = ROOT
     errors: List[str] = []
     errors.extend(validate_required_files(root))
     if errors:
+        return False, errors
+
+    try:
+        build_public_runtime_truth_snapshot()
+    except Exception as exc:
+        errors.append(f"runtime truth refresh failed: {exc}")
         return False, errors
 
     errors.extend(validate_known_uncertainties(root))
@@ -135,8 +139,5 @@ def run_gate() -> Tuple[bool, List[str]]:
 
 if __name__ == "__main__":
     ok, errors = run_gate()
-    if ok:
-        print(json.dumps({"status": "pass", "errors": []}, indent=2))
-        sys.exit(0)
-    print(json.dumps({"status": "fail", "errors": errors}, indent=2))
-    sys.exit(1)
+    print(json.dumps({"status": "pass" if ok else "fail", "errors": errors}, indent=2))
+    raise SystemExit(0 if ok else 1)
