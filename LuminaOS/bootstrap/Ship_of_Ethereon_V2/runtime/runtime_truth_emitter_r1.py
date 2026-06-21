@@ -17,6 +17,21 @@ def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
+def infer_repo_root() -> Path:
+    for parent in Path(__file__).resolve().parents:
+        if (parent / ".git").exists() or ((parent / "LuminaOS").exists() and (parent / "public").exists()):
+            return parent
+    return Path.cwd()
+
+
+def repo_relative_path(path: str | Path) -> str:
+    candidate = Path(path)
+    try:
+        return candidate.resolve().relative_to(infer_repo_root().resolve()).as_posix()
+    except Exception:
+        return candidate.as_posix()
+
+
 DEFAULT_FORBIDDEN_SYMBOLIC_DEPENDENCIES = [
     "session recovery legality",
     "mode transition legality",
@@ -30,11 +45,7 @@ DEFAULT_FORBIDDEN_SYMBOLIC_DEPENDENCIES = [
 
 
 class RuntimeTruthEmitter:
-    """Emits runtime truth receipts from concrete runtime state.
-
-    This module does not own governance, canon lineage, or protocol law.
-    It reads existing runtime artifacts and writes summary receipts for audit use.
-    """
+    """Emit audit receipts from concrete runtime state without claiming authority."""
 
     def __init__(
         self,
@@ -44,6 +55,8 @@ class RuntimeTruthEmitter:
         canon_lineage_path: Optional[str | Path] = None,
         protocol_path: Optional[str | Path] = None,
         capability_registry_path: Optional[str | Path] = None,
+        artifact_prefix: str = "",
+        authority_scope: str = "runtime_state_observation",
     ):
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
@@ -51,10 +64,13 @@ class RuntimeTruthEmitter:
         self.canon_lineage_path = Path(canon_lineage_path) if canon_lineage_path else None
         self.protocol_path = Path(protocol_path) if protocol_path else None
         self.capability_registry_path = Path(capability_registry_path) if capability_registry_path else None
+        self.artifact_prefix = artifact_prefix
+        self.authority_scope = authority_scope
 
     def emit_all(self) -> Dict[str, Any]:
-        outputs = {
+        outputs: Dict[str, Any] = {
             "generated_at": utc_now(),
+            "authority_scope": self.authority_scope,
             "artifacts": {},
         }
         outputs["artifacts"]["symbolic_dependency_contract"] = self.write_symbolic_dependency_contract()
@@ -65,25 +81,30 @@ class RuntimeTruthEmitter:
         return outputs
 
     def _write_json(self, filename: str, payload: Dict[str, Any]) -> str:
-        path = self.output_dir / filename
+        path = self.output_dir / f"{self.artifact_prefix}{filename}"
         with path.open("w", encoding="utf-8") as f:
             json.dump(payload, f, indent=2)
-        return str(path)
+            f.write("\n")
+        return repo_relative_path(path)
 
     def write_governance_chain_verification(self) -> str:
         if not self.governance_log_path:
             payload = {
                 "generated_at": utc_now(),
+                "authority_scope": self.authority_scope,
                 "status": "missing_input",
                 "valid": None,
                 "reason": "No governance_log_path supplied.",
             }
         else:
             chain = GovernanceIntegrityChain(self.governance_log_path)
+            verification = chain.verify_chain()
+            verification["log_path"] = repo_relative_path(self.governance_log_path)
             payload = {
                 "generated_at": utc_now(),
+                "authority_scope": self.authority_scope,
                 "status": "verified" if self.governance_log_path.exists() else "empty_or_missing",
-                **chain.verify_chain(),
+                **verification,
             }
         return self._write_json("governance_chain_verification.json", payload)
 
@@ -91,16 +112,20 @@ class RuntimeTruthEmitter:
         if not self.canon_lineage_path:
             payload = {
                 "generated_at": utc_now(),
+                "authority_scope": self.authority_scope,
                 "status": "missing_input",
                 "valid": None,
                 "reason": "No canon_lineage_path supplied.",
             }
         else:
             store = CanonLineageStore(self.canon_lineage_path)
+            verification = store.verify_lineage()
+            verification["lineage_path"] = repo_relative_path(self.canon_lineage_path)
             payload = {
                 "generated_at": utc_now(),
+                "authority_scope": self.authority_scope,
                 "status": "verified" if self.canon_lineage_path.exists() else "empty_or_missing",
-                **store.verify_lineage(),
+                **verification,
             }
         return self._write_json("canon_lineage_verification.json", payload)
 
@@ -108,6 +133,7 @@ class RuntimeTruthEmitter:
         payload = {
             "version": "1.0",
             "generated_at": utc_now(),
+            "authority_scope": self.authority_scope,
             "symbolic_context_present_allowed": True,
             "symbolic_dependency_allowed": False,
             "forbidden_symbolic_dependencies": DEFAULT_FORBIDDEN_SYMBOLIC_DEPENDENCIES,
@@ -123,6 +149,7 @@ class RuntimeTruthEmitter:
     def write_capability_registry_audit(self) -> str:
         payload: Dict[str, Any] = {
             "generated_at": utc_now(),
+            "authority_scope": self.authority_scope,
             "status": "missing_input",
             "capability_count": None,
             "issues": [],
@@ -141,8 +168,9 @@ class RuntimeTruthEmitter:
                     issues.append(f"{cid}: unexpected mutation_scope {cap.get('mutation_scope')}")
             payload = {
                 "generated_at": utc_now(),
+                "authority_scope": self.authority_scope,
                 "status": "audited",
-                "registry_path": str(self.capability_registry_path),
+                "registry_path": repo_relative_path(self.capability_registry_path),
                 "capability_count": len(capabilities),
                 "valid": not issues,
                 "issues": issues,
@@ -152,6 +180,7 @@ class RuntimeTruthEmitter:
     def write_protocol_conformance_report(self) -> str:
         payload: Dict[str, Any] = {
             "generated_at": utc_now(),
+            "authority_scope": self.authority_scope,
             "status": "missing_input",
             "valid": None,
             "issues": [],
@@ -173,8 +202,9 @@ class RuntimeTruthEmitter:
                 issues.append("promotion gate missing conceptual_layer_check_confirmation")
             payload = {
                 "generated_at": utc_now(),
+                "authority_scope": self.authority_scope,
                 "status": "audited",
-                "protocol_path": str(self.protocol_path),
+                "protocol_path": repo_relative_path(self.protocol_path),
                 "valid": not issues,
                 "issues": issues,
             }
