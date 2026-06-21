@@ -3,7 +3,10 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Dict, List, Tuple
 import json
+import subprocess
 import sys
+
+from runtime_truth_reconciliation_gate_r1 import run_gate as run_reconciliation_gate
 
 
 REQUIRED_RUNTIME_TRUTH_FILES = [
@@ -94,6 +97,22 @@ def validate_required_files(root: Path) -> List[str]:
     return errors
 
 
+def validate_host_smoke(root: Path) -> List[str]:
+    script = root / "LuminaOS/bootstrap/Ship_of_Ethereon_V2/install/lumina_doctor_ci_r1.py"
+    if not script.exists():
+        return [f"missing CI doctor: {script.relative_to(root)}"]
+    proc = subprocess.run(
+        [sys.executable, str(script)],
+        cwd=str(root / "LuminaOS/bootstrap/Ship_of_Ethereon_V2"),
+        capture_output=True,
+        text=True,
+    )
+    if proc.returncode == 0:
+        return []
+    detail = proc.stderr.strip() or proc.stdout.strip()
+    return [f"fresh-state host smoke failed: {detail[-1200:]}"]
+
+
 def run_gate() -> Tuple[bool, List[str]]:
     root = repo_root()
     errors: List[str] = []
@@ -105,6 +124,12 @@ def run_gate() -> Tuple[bool, List[str]]:
     for rel in ["public/runtime/runtime_truth_snapshot.json", "public/runtime/latest_cycle.json"]:
         errors.extend(validate_symbolic_boundary(read_json(root / rel), rel))
 
+    reconciliation_ok, reconciliation_checks, _ = run_reconciliation_gate()
+    if not reconciliation_ok:
+        failed = [name for name, passed in reconciliation_checks.items() if not passed]
+        errors.append(f"runtime truth reconciliation failed: {', '.join(failed)}")
+
+    errors.extend(validate_host_smoke(root))
     return not errors, errors
 
 
