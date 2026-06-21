@@ -70,18 +70,14 @@ def run_runtime_truth_observation_cycle(
     protocol_path: Optional[str | Path] = None,
     capability_registry_path: Optional[str | Path] = None,
 ) -> Dict[str, Any]:
-    """Run an Observation-only truth receipt generation cycle.
-
-    This adapter wires the RuntimeTruthEmitter into a repeatable observation action.
-    It does not mutate governance, canon lineage, mode legality, or capabilities.
-    It writes audit receipts only.
-    """
     emitter = RuntimeTruthEmitter(
         output_dir=output_dir or TRUTH_OUTPUT_DIR,
         governance_log_path=governance_log_path or STATE_ROOT / "runtime_runner_r2_actiontype_logging" / "governance_log_r2.jsonl",
         canon_lineage_path=canon_lineage_path or STATE_ROOT / "runtime_runner_r2_actiontype_logging" / "canon_lineage_r2.jsonl",
         protocol_path=protocol_path or RUNTIME_ROOT.parent / "protocols" / "Ethereon_Mode_Protocol_v1.3.json",
         capability_registry_path=capability_registry_path or RUNTIME_ROOT / "capability_registry_r1.json",
+        artifact_prefix="observation_",
+        authority_scope="ephemeral_observation_state",
     )
     return emitter.emit_all()
 
