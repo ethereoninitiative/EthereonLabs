@@ -1,0 +1,9 @@
+{
+  "generated_at": "2026-06-22T16:01:06.193156+00:00",
+  "authority_scope": "ephemeral_observation_state",
+  "status": "audited",
+  "registry_path": "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/capability_registry_r1.json",
+  "capability_count": 13,
+  "valid": true,
+  "issues": []
+}
