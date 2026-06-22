@@ -59,6 +59,8 @@ The generator verifies:
 - safety boundary fields exist and are false
 - JSONL reparses after writing
 - receipt says training is not authorized
+- receipt distinguishes structural checks from semantic reviews
+- semantic privacy and near-duplicate content scans are not performed by this generator
 
 ---
 
@@ -74,6 +76,8 @@ Stop and repair if the generator reports:
 - true safety boundary field
 - record count other than 40
 - JSONL parse failure
+
+Do not treat this receipt as proof of semantic privacy review, hidden-reasoning review, or near-duplicate / overfitting review. Those remain next-gate checks.
 
 ---
 
@@ -97,8 +101,10 @@ It does not:
 After the dataset and receipt exist, the next safe gate is:
 
 1. review generated JSONL and receipt
-2. update dataset card with actual dataset file presence
-3. create or run clean open-base-model baseline eval
-4. only then consider training configuration planning
+2. perform semantic privacy / hidden-reasoning review
+3. perform duplicate / near-duplicate content review
+4. update dataset card with actual dataset file presence and review status
+5. create or run clean open-base-model baseline eval
+6. only then consider training configuration planning
 
 Receipts before reverence.
