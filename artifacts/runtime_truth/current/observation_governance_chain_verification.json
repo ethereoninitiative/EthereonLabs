@@ -1,0 +1,12 @@
+{
+  "generated_at": "2026-06-21T14:32:53.423459+00:00",
+  "authority_scope": "ephemeral_observation_state",
+  "status": "empty_or_missing",
+  "exists": false,
+  "event_count": 0,
+  "valid": true,
+  "errors": [],
+  "warnings": [],
+  "latest_event_hash": null,
+  "log_path": ".lumina_state/ship_of_ethereon_v2/runtime_runner_r2_actiontype_logging/governance_log_r2.jsonl"
+}

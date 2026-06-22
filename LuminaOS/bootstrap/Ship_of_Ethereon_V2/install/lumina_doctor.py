@@ -16,8 +16,11 @@ from typing import Any, Dict, List
 BOOTSTRAP_ROOT = Path(__file__).resolve().parents[1]
 REPO_ROOT = Path(__file__).resolve().parents[4]
 INSTALL_ROOT = BOOTSTRAP_ROOT / "install"
-if str(INSTALL_ROOT) not in sys.path:
-    sys.path.insert(0, str(INSTALL_ROOT))
+RUNTIME_ROOT = BOOTSTRAP_ROOT / "runtime"
+STUDIO_ROOT = BOOTSTRAP_ROOT / "studio"
+for import_root in [INSTALL_ROOT, RUNTIME_ROOT, STUDIO_ROOT, BOOTSTRAP_ROOT]:
+    if str(import_root) not in sys.path:
+        sys.path.insert(0, str(import_root))
 
 try:
     from lumina_state_schema import inspect_state_schema
@@ -111,7 +114,7 @@ def run_doctor(*, ensure_state: bool = False, migrate_state: bool = False) -> Di
     registry = registry_check()
     ok = not missing and not failed_imports and bool(registry.get("ok")) and bool(state.get("compatible")) and bool(state.get("writable_parent"))
     return {
-        "schema_version": "lumina-doctor-v0.5",
+        "schema_version": "lumina-doctor-v0.6",
         "ok": ok,
         "bootstrap_root": str(BOOTSTRAP_ROOT),
         "repo_root": str(REPO_ROOT),

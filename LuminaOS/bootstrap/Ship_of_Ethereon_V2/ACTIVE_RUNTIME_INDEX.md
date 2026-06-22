@@ -1,15 +1,13 @@
 # Active Runtime Index — Ship of Ethereon V2 / Lumina OS
 
 **Status:** active file-ownership index.  
-**Scope:** navigation only. Runtime source files remain authoritative.
-
-Use this file when you need to know which files currently own which part of the Lumina OS bootstrap.
+**Scope:** navigation only. Runtime source files and validation receipts remain authoritative.
 
 ## Fast start
 
 ```bash
 cd LuminaOS/bootstrap/Ship_of_Ethereon_V2
-python install/lumina_doctor.py
+python install/lumina_doctor.py --ensure-state
 python bin/lumina run "Review Lumina OS progress and produce the next governed action receipt."
 python bin/lumina observe
 python bin/lumina state --limit 12
@@ -27,14 +25,32 @@ python bin/lumina state --limit 12
 | Canon lineage | `runtime/canon_lineage_store_r1.py` |
 | Ethereonic overlay boundary | `runtime/ethereonic_layer_r1.py`, `runtime/ethereonic_layer_registry_r1.json` |
 
-## Return, host, and continuity
+## Runtime truth and canon evidence
+
+| Responsibility | Primary files |
+|---|---|
+| Observation-scoped truth emission | `runtime/runtime_truth_emitter_r1.py`, `runtime/runtime_truth_observation_cycle_r1.py` |
+| Public truth projection | `runtime/runtime_truth_public_snapshot_r1.py` |
+| Canon genesis verification | `runtime/post_promotion_verifier_r1.py`, `artifacts/runtime_truth/current/post_promotion_verification_0001.json` |
+| Cross-surface reconciliation gate | `studio/runtime_truth_reconciliation_gate_r1.py` |
+| Existing truth hygiene gate | `studio/runtime_truth_gate_r1.py` |
+
+Committed canon evidence and ephemeral Observation receipts are separate scopes. Observation refreshes may describe an empty local runtime state, but they may not overwrite or nullify committed governance and canon evidence.
+
+## Return, Harbor, and continuity correlation
 
 | Responsibility | Primary files |
 |---|---|
 | Repo-native project return | `runtime/project_return_repo_native_r1.py` |
 | Workspace host state | `runtime/workspace_host_repo_native_r1.py` |
 | Return / host runner bridge | `runtime/runtime_runner_return_host_bridge_r1.py` |
-| Return host bridge helper | `runtime/lumina_return_host_repo_native_bridge_r1.py` |
+| Harbor project registry | `install/lumina_project_registry.py` |
+| Harbor session registry | `install/lumina_session_registry.py` |
+| Typed continuity correlation | `runtime/continuity_correlation_r1.py`, `runtime/continuity_correlation_registry_r1.json` |
+| Correlation receipt bridge | `runtime/continuity_correlation_bridge_r1.py` |
+| Psi-42 v1.8 correlated runner adapter | `runtime/runtime_runner_psi42_v18_adapter_r1.py` |
+
+Project, Harbor session, runtime session, restore session, and host session remain distinct references joined by a correlation envelope.
 
 ## Self-guidance and reflection
 
@@ -45,17 +61,24 @@ python bin/lumina state --limit 12
 | Self-guided runner bridge | `runtime/runtime_runner_self_guided_bridge_r1.py` |
 | Recursive reflection motif | `runtime/lumina_reflective_autonomy_layer_r1.py` |
 | Meaning metabolism / assimilation ledger | `runtime/lumina_meaning_metabolism_layer_r1.py` |
-| Reflection-before-guidance runner bridge | `runtime/runtime_runner_reflective_self_guided_bridge_r1.py` |
-| Bridge-stack explanation | `docs/Lumina_Runner_Bridge_Stack_001.md` |
-| Meaning metabolism doctrine note | `docs/Lumina_Meaning_Metabolism_Layer_001.md` |
-
-Current motif:
+| Reflection-before-guidance bridge | `runtime/runtime_runner_reflective_self_guided_bridge_r1.py` |
 
 ```text
 return -> reflect -> assimilate -> recommend -> govern -> record
 ```
 
-Reflection, meaning metabolism, and self-guidance are advisory. They do not own mode legality, mutation permission, canon lineage, promotion gates, checkpoint legality, or consent.
+These layers are advisory. They do not own mode legality, mutation permission, canon lineage, promotion gates, checkpoint legality, or consent.
+
+## Living Framework and state-space experiments
+
+| Responsibility | Primary files |
+|---|---|
+| Resonant Manifold model | `runtime/resonant_manifold_r1.py`, `runtime/resonant_manifold_registry_r1.json` |
+| Living Framework Chamber | `runtime/living_framework_chamber_r1.py`, `runtime/living_framework_registry_r1.json` |
+| Living Framework ignition | `runtime/living_framework_ignition_r1.py` |
+| Chamber and ignition docs | `docs/Lumina_Living_Framework_Chamber_R1.md`, `docs/Lumina_Living_Framework_Ignition_R1.md` |
+
+These are bounded computational and interpretive experiments. They do not gain runtime authority merely by existing or producing expressive output.
 
 ## Orchestration lane
 
@@ -64,75 +87,41 @@ Reflection, meaning metabolism, and self-guidance are advisory. They do not own 
 | Context loading | `lumina_context_loader_v0_1.py` |
 | Next-action selection | `lumina_decision_engine_v0_1.py` |
 | Orchestration runner | `lumina_orchestrator_v0_4.py` |
-| Orchestration stack validation | `sea_trials_lumina_orchestration_stack_r1.py` |
-| Orchestration continuity validation | `sea_trials_lumina_orchestration_continuity_r1.py` |
+| Orchestration validation | `sea_trials_lumina_orchestration_stack_r1.py`, `sea_trials_lumina_orchestration_continuity_r1.py` |
 
-## Host layer
+## Host layer and Studio
 
 | Responsibility | Primary files |
 |---|---|
 | Local command entry | `bin/lumina` |
-| Installer | `install/install_lumina.sh` |
-| Doctor | `install/lumina_doctor.py` |
+| Installer and doctor | `install/install_lumina.sh`, `install/lumina_doctor.py` |
 | Observer service | `services/lumina_observer_service.py` |
-| Service example | `services/lumina.service.example` |
-
-## Studio
-
-| Responsibility | Primary files |
-|---|---|
-| Studio docs | `studio/README.md`, `docs/lumina_studio_v0_1_spec.md` |
-| CLI surface | `studio/lumina_cli.py` |
-| Local server | `studio/lumina_studio_server.py` |
-| State browser | `studio/lumina_state_browser.py` |
-| Psi-42 v1.7 receipt viewer | `studio/lumina_psi42_v17_receipt_view_r1.py` |
-| Studio sea trial | `sea_trials_lumina_studio_v0_1.py` |
+| Studio CLI/server/state browser | `studio/lumina_cli.py`, `studio/lumina_studio_server.py`, `studio/lumina_state_browser.py` |
 
 ## Psi-42 and quantum-adjacent boundaries
 
 | Responsibility | Primary files |
 |---|---|
 | Psi-42 v1.6 signal transceiver | `runtime/psi42_transceiver_v1_6.py` |
-| Psi-42 relational topology extension | `runtime/psi42_relational_topology_r1.py` |
-| Psi-42 v1.7 hybrid transceiver | `runtime/psi42_transceiver_v1_7.py` |
-| Psi-42 v1.7 receipt summary | `runtime/psi42_v17_observation_receipt_summary_r1.py` |
+| Psi-42 v1.7 hybrid topology transceiver | `runtime/psi42_transceiver_v1_7.py` |
+| Psi-42 v1.8 doctrine-aligned diagnostics | `runtime/psi42_transceiver_v1_8.py` |
 | Quantum terminology boundary | `docs/Quantum_Concepts_Boundary_r1.md` |
-| Quantum concepts registry | `runtime/quantum_concepts_registry_r1.json` |
 | Branch resolution model | `runtime/branch_resolution_model_r1.json` |
-| Quantum boundary sea trial | `runtime/sea_trials_quantum_boundary_r1.py` |
 
-Psi-42 is an instrument. It does not own governance, canon, or runtime law.
+Psi-42 is an instrument. It does not own governance, canon, runtime law, consent, or primary continuity authority.
 
 ## Sea trials
 
 | Validation target | Primary file |
 |---|---|
 | Core runtime / governance / canon | `runtime/sea_trials_set_one_r1_merged.py` |
+| Resonant Manifold | `runtime/sea_trials_resonant_manifold_r1.py` |
+| Living Framework Chamber | `runtime/sea_trials_living_framework_chamber_r1.py` |
+| Living Framework ignition | `runtime/sea_trials_living_framework_ignition_r1.py` |
 | Self-guidance | `runtime/sea_trials_lumina_self_guidance_r1.py` |
-| Reflective autonomy | `sea_trials_lumina_reflective_autonomy_r1.py` |
-| Meaning metabolism | `sea_trials_lumina_meaning_metabolism_r1.py` |
-| Reflective autonomy wiring | `sea_trials_lumina_reflective_autonomy_wiring_r1.py` |
-| Orchestration stack | `sea_trials_lumina_orchestration_stack_r1.py` |
 | Orchestration continuity | `sea_trials_lumina_orchestration_continuity_r1.py` |
 | Studio | `sea_trials_lumina_studio_v0_1.py` |
-| Psi-42 v1.7 receipt summary | `runtime/sea_trials_psi42_v17_observation_receipt_summary_r1.py` |
-| Psi-42 v1.7 runtime integration | `runtime/sea_trials_psi42_v17_runtime_integration_r1.py` |
-
-## Docs to read when uncertain
-
-- `README.md`
-- `README_IMPORT.md`
-- `REPO_NATIVE_BOOTSTRAP_NOTE.md`
-- `RETURN_WITH_STANCE_BOOTSTRAP_NOTE_R1.md`
-- `SELF_GUIDANCE_STEWARD_NOTE_R1.md`
-- `LUMINA_ORCHESTRATION_STACK_NOTE_R1.md`
-- `docs/Lumina_OS_Host_Layer_001.md`
-- `docs/Lumina_Local_Runbook_001.md`
-- `docs/Lumina_First_Village_Framing_001.md`
-- `docs/Lumina_Reflective_Autonomy_Layer_001.md`
-- `docs/Lumina_Meaning_Metabolism_Layer_001.md`
-- `docs/Lumina_Runner_Bridge_Stack_001.md`
 
 ## Maintenance rule
 
-When a new runtime bridge, sea trial, or advisory layer becomes active, add it here. Keep prose short. This file is a map, not a doctrine.
+When a runtime bridge, capability, receipt contract, or sea trial becomes active, update this index in the same PR. This file maps ownership; it does not create authority.
