@@ -1,7 +1,7 @@
 {
   "schema_version": "lumina-runtime-ui-cycle-v0.4",
-  "timestamp": "2026-06-23T10:02:37.343062+00:00",
-  "run_id": "run-cd1351eb-705",
+  "timestamp": "2026-06-23T15:24:34.672442+00:00",
+  "run_id": "run-efb27bfd-ec0",
   "requested_action": "chamber_observation_cycle",
   "action_type": "audit",
   "mode": {
@@ -44,8 +44,8 @@
     "instrument_version": "v1.7",
     "instrument_class": "hybrid signal-topology continuity transceiver",
     "probe_mode": "hybrid",
-    "run_id": "31f8369b1188",
-    "pulse_id": "0692be07e95e",
+    "run_id": "7d70b41e1a84",
+    "pulse_id": "c65eb4922a30",
     "coherence": 0.7863,
     "presence": 0.6322,
     "lock": 0.6275,
