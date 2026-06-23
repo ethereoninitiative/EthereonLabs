@@ -1,0 +1,65 @@
+{
+  "schema_version": "lumina-runtime-ui-cycle-v0.3",
+  "timestamp": "2026-06-23T20:21:57.760786+00:00",
+  "run_id": "run-8e2282c0-c43",
+  "requested_action": "chamber_observation_cycle",
+  "action_type": "audit",
+  "mode": {
+    "requested": "Continuity",
+    "current": "Observation"
+  },
+  "status": {
+    "halted": false,
+    "reason": null,
+    "label": "Stable"
+  },
+  "governance": {
+    "transition": true,
+    "mutation": false,
+    "promotion": null,
+    "symbolic_dependency": true,
+    "ethereonic_attachment": true,
+    "chain_valid": true
+  },
+  "canon": {
+    "current_head": null,
+    "valid": true,
+    "record_count": 0
+  },
+  "capabilities": [
+    "session_state_manager",
+    "mode_guard",
+    "context_bundle_builder",
+    "input_integrity_assessor",
+    "continuity_restore_store",
+    "lumina_workspace_host",
+    "psi42_probe_interface",
+    "psi42_transceiver_v16",
+    "psi42_transceiver_v17",
+    "quantum_concepts_registry",
+    "branch_resolution_model"
+  ],
+  "probe": {
+    "active": true,
+    "instrument_version": "v1.7",
+    "instrument_class": "hybrid signal-topology continuity transceiver",
+    "probe_mode": "hybrid",
+    "run_id": "4c7034cd8c1d",
+    "pulse_id": "74fb01b5ae26",
+    "coherence": 0.7863,
+    "presence": 0.6322,
+    "lock": 0.6275,
+    "hybrid_continuity_coherence": 0.7863,
+    "topology_metrics": {
+      "RTC": 1.0,
+      "RDS": 0.0,
+      "RRS": 1.0,
+      "HRC": 1.0,
+      "node_coherence": 1.0,
+      "edge_coherence": 1.0,
+      "anchor_coherence": 1.0
+    },
+    "topology_receipt_present": true
+  },
+  "authority_boundary": "Display receipt only; does not authorize action, alter governance, mutate canon, change mode legality, expose capabilities, or execute tools."
+}
