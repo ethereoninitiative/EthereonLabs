@@ -1,5 +1,5 @@
 {
-  "schema_version": "lumina-runtime-ui-cycle-v0.3",
+  "schema_version": "lumina-runtime-ui-cycle-v0.4",
   "timestamp": "2026-06-24T15:08:38.378269+00:00",
   "run_id": "run-cafc6522-052",
   "requested_action": "chamber_observation_cycle",
@@ -17,14 +17,14 @@
     "transition": true,
     "mutation": false,
     "promotion": null,
-    "symbolic_dependency": true,
-    "ethereonic_attachment": true,
-    "chain_valid": true
+    "chain_valid": true,
+    "symbolic_context_present": true,
+    "symbolic_dependency_allowed": false
   },
   "canon": {
-    "current_head": null,
+    "current_head": "canon-0001",
     "valid": true,
-    "record_count": 0
+    "record_count": 1
   },
   "capabilities": [
     "session_state_manager",
@@ -61,5 +61,87 @@
     },
     "topology_receipt_present": true
   },
-  "authority_boundary": "Display receipt only; does not authorize action, alter governance, mutate canon, change mode legality, expose capabilities, or execute tools."
+  "authority_boundary": "Display receipt only; does not authorize action, alter governance, mutate canon, change mode legality, expose capabilities, or execute tools.",
+  "runtime_truth_scope": {
+    "public_projection": "committed_runtime_truth_evidence",
+    "observation_receipts": "ephemeral_observation_state",
+    "does_not_override_committed_authority": true
+  },
+  "runtime_truth": {
+    "governance_chain": {
+      "status": "verified",
+      "valid": true,
+      "event_count": 1,
+      "latest_event_hash": "690b249ef2388ac70f9714ef3bd649b6bd235f0e32840faefe7c3562563a00ab"
+    },
+    "canon_lineage": {
+      "status": "verified",
+      "valid": true,
+      "current_head": "canon-0001",
+      "record_count": 1
+    },
+    "committed_authority": {
+      "scope": "committed_runtime_truth_evidence",
+      "governance_chain": {
+        "status": "verified",
+        "valid": true,
+        "event_count": 1,
+        "latest_event_hash": "690b249ef2388ac70f9714ef3bd649b6bd235f0e32840faefe7c3562563a00ab"
+      },
+      "canon_lineage": {
+        "status": "verified",
+        "valid": true,
+        "current_head": "canon-0001",
+        "record_count": 1
+      },
+      "promotion": {
+        "valid": true,
+        "passed": true,
+        "promotion_id": "promotion-0001",
+        "symbolic_dependency_violation": false
+      },
+      "post_promotion_verification": {
+        "valid": true,
+        "passed": true,
+        "verifier": "post_promotion_verifier_r1"
+      },
+      "evidence_paths": {
+        "governance_chain": "artifacts/runtime_truth/current/governance_chain_0001.jsonl",
+        "canon_lineage": "artifacts/runtime_truth/current/canon_lineage_0001.jsonl",
+        "promotion_receipt": "artifacts/runtime_truth/current/promotion_receipt_0001.json",
+        "post_promotion_verification": "artifacts/runtime_truth/current/post_promotion_verification_0001.json"
+      }
+    },
+    "observed_runtime_state": {
+      "scope": "ephemeral_observation_state",
+      "does_not_override_committed_authority": true,
+      "governance_chain": {
+        "status": "empty_or_missing",
+        "valid": true,
+        "event_count": 0
+      },
+      "canon_lineage": {
+        "status": "empty_or_missing",
+        "valid": true,
+        "current_head": null,
+        "record_count": 0
+      }
+    },
+    "protocol_conformance": {
+      "status": "audited",
+      "valid": true,
+      "issues": []
+    },
+    "capability_registry": {
+      "status": "audited",
+      "valid": true,
+      "capability_count": 13,
+      "issues": []
+    },
+    "symbolic_boundary": {
+      "symbolic_context_present": true,
+      "symbolic_dependency_allowed": false,
+      "contract_version": "1.0"
+    }
+  }
 }
