@@ -23,6 +23,7 @@ from governance_integrity_r1 import GovernanceIntegrityChain  # noqa: E402
 from canon_lineage_store_r1 import CanonLineageStore  # noqa: E402
 
 
+EXPECTED_LATEST_SCHEMA = "lumina-runtime-ui-cycle-v0.4"
 PATHS = {
     "governance_chain": ROOT / "artifacts/runtime_truth/current/governance_chain_0001.jsonl",
     "canon_lineage": ROOT / "artifacts/runtime_truth/current/canon_lineage_0001.jsonl",
@@ -30,6 +31,7 @@ PATHS = {
     "post_promotion": ROOT / "artifacts/runtime_truth/current/post_promotion_verification_0001.json",
     "public_snapshot": ROOT / "public/runtime/runtime_truth_snapshot.json",
     "latest_cycle": ROOT / "public/runtime/latest_cycle.json",
+    "history_index": ROOT / "public/runtime/history/index.json",
     "capability_registry": RUNTIME_DIR / "capability_registry_r1.json",
     "active_runtime_index": ROOT / "LuminaOS/bootstrap/Ship_of_Ethereon_V2/ACTIVE_RUNTIME_INDEX.md",
     "seed_plan": ROOT / "docs/GOVERNANCE_CANON_SEED_PLAN.md",
@@ -44,6 +46,14 @@ def read_json(path: Path) -> Dict[str, Any]:
     return payload
 
 
+def read_json_list(path: Path) -> list[Dict[str, Any]]:
+    with path.open("r", encoding="utf-8") as f:
+        payload = json.load(f)
+    if not isinstance(payload, list):
+        raise ValueError(f"expected JSON list: {path}")
+    return [item for item in payload if isinstance(item, dict)]
+
+
 def contains_absolute_workspace_path(node: Any) -> bool:
     if isinstance(node, dict):
         return any(contains_absolute_workspace_path(value) for value in node.values())
@@ -52,6 +62,18 @@ def contains_absolute_workspace_path(node: Any) -> bool:
     if isinstance(node, str):
         return "/home/runner/" in node or "/workspace/" in node
     return False
+
+
+def public_history_receipt_path(entry: Dict[str, Any]) -> Path | None:
+    file_reference = entry.get("file")
+    if not isinstance(file_reference, str) or not file_reference.startswith("/runtime/history/"):
+        return None
+    candidate = (ROOT / "public" / file_reference.lstrip("/")).resolve()
+    try:
+        candidate.relative_to((ROOT / "public").resolve())
+    except ValueError:
+        return None
+    return candidate
 
 
 def run_gate() -> Tuple[bool, Dict[str, bool], Dict[str, Any]]:
@@ -65,9 +87,15 @@ def run_gate() -> Tuple[bool, Dict[str, bool], Dict[str, Any]]:
     post = read_json(PATHS["post_promotion"])
     snapshot = read_json(PATHS["public_snapshot"])
     latest = read_json(PATHS["latest_cycle"])
+    history_index = read_json_list(PATHS["history_index"])
     registry = read_json(PATHS["capability_registry"])
     index_text = PATHS["active_runtime_index"].read_text(encoding="utf-8")
     seed_text = PATHS["seed_plan"].read_text(encoding="utf-8")
+
+    latest_history_entry = history_index[0] if history_index else {}
+    history_receipt_path = public_history_receipt_path(latest_history_entry)
+    history_receipt_exists = history_receipt_path is not None and history_receipt_path.exists()
+    history_receipt = read_json(history_receipt_path) if history_receipt_exists and history_receipt_path else {}
 
     truth = snapshot.get("runtime_truth", {}) or {}
     public_governance = truth.get("governance_chain", {}) or {}
@@ -106,6 +134,7 @@ def run_gate() -> Tuple[bool, Dict[str, bool], Dict[str, Any]]:
         ),
         "snapshot_scope_prevents_override": scope.get("does_not_override_committed_authority") is True,
         "latest_scope_prevents_override": latest_scope.get("does_not_override_committed_authority") is True,
+        "latest_cycle_schema_is_current": latest.get("schema_version") == EXPECTED_LATEST_SCHEMA,
         "latest_canon_matches_committed": (
             latest_canon.get("current_head") == canon.get("current_head")
             and latest_canon.get("record_count") == canon.get("record_count")
@@ -115,9 +144,27 @@ def run_gate() -> Tuple[bool, Dict[str, bool], Dict[str, Any]]:
             (latest_truth.get("canon_lineage") or {}).get("current_head") == canon.get("current_head")
             and (latest_truth.get("governance_chain") or {}).get("event_count") == governance.get("event_count")
         ),
+        "snapshot_source_run_matches_latest": snapshot.get("latest_cycle_run_id") == latest.get("run_id"),
+        "snapshot_source_timestamp_matches_latest": snapshot.get("latest_cycle_timestamp") == latest.get("timestamp"),
+        "history_index_not_empty": bool(history_index),
+        "history_index_latest_run_matches_latest": latest_history_entry.get("run_id") == latest.get("run_id"),
+        "history_index_latest_timestamp_matches_latest": latest_history_entry.get("timestamp") == latest.get("timestamp"),
+        "history_receipt_path_is_valid": history_receipt_path is not None,
+        "history_receipt_exists": history_receipt_exists,
+        "history_receipt_run_matches_latest": history_receipt.get("run_id") == latest.get("run_id"),
+        "history_receipt_timestamp_matches_latest": history_receipt.get("timestamp") == latest.get("timestamp"),
+        "history_receipt_schema_matches_latest": history_receipt.get("schema_version") == latest.get("schema_version"),
+        "history_receipt_canon_matches_latest": history_receipt.get("canon") == latest.get("canon"),
+        "history_receipt_scope_matches_latest": history_receipt.get("runtime_truth_scope") == latest.get("runtime_truth_scope"),
+        "history_receipt_runtime_truth_matches_latest": history_receipt.get("runtime_truth") == latest.get("runtime_truth"),
+        "history_receipt_probe_version_matches_latest": (
+            (history_receipt.get("probe") or {}).get("instrument_version")
+            == (latest.get("probe") or {}).get("instrument_version")
+        ),
         "capability_count_matches_registry": (truth.get("capability_registry") or {}).get("capability_count") == capability_count,
         "public_artifacts_are_repo_relative": not contains_absolute_workspace_path(snapshot),
         "latest_cycle_is_repo_relative": not contains_absolute_workspace_path(latest),
+        "history_receipt_is_repo_relative": not contains_absolute_workspace_path(history_receipt),
         "active_index_names_reconciliation_gate": "runtime_truth_reconciliation_gate_r1.py" in index_text,
         "active_index_names_v18": "psi42_transceiver_v1_8.py" in index_text,
         "active_index_names_correlation": "continuity_correlation" in index_text,
@@ -132,6 +179,11 @@ def run_gate() -> Tuple[bool, Dict[str, bool], Dict[str, Any]]:
         "public_scope": scope,
         "observed_scope": observed.get("scope"),
         "capability_count": capability_count,
+        "latest_run_id": latest.get("run_id"),
+        "snapshot_source_run_id": snapshot.get("latest_cycle_run_id"),
+        "history_index_run_id": latest_history_entry.get("run_id"),
+        "history_receipt_path": str(history_receipt_path) if history_receipt_path else None,
+        "history_receipt_run_id": history_receipt.get("run_id"),
     }
     return all(checks.values()), checks, details
 
