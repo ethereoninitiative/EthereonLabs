@@ -6,6 +6,11 @@ on:
       - 'public/runtime/**'
       - 'artifacts/runtime_truth/**'
       - 'studio/runtime_truth_gate_r1.py'
+      - 'studio/runtime_truth_reconciliation_gate_r1.py'
+      - 'LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/runtime_truth_public_snapshot_r1.py'
+      - 'LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/runtime_ui_snapshot_emitter_r1.py'
+      - 'LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/runtime_runner_auto_snapshot_psi42_v18_r1.py'
+      - '.github/workflows/lumina-observation-cycle.yml'
       - '.github/workflows/runtime-truth-gate.yml'
   workflow_dispatch:
 

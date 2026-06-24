@@ -14,6 +14,8 @@ REPO_ROOT = infer_repo_root()
 PUBLIC_RUNTIME_DIR = REPO_ROOT / "public" / "runtime"
 LATEST_CYCLE_PATH = PUBLIC_RUNTIME_DIR / "latest_cycle.json"
 SNAPSHOT_PATH = PUBLIC_RUNTIME_DIR / "runtime_truth_snapshot.json"
+PUBLIC_HISTORY_DIR = PUBLIC_RUNTIME_DIR / "history"
+PUBLIC_HISTORY_INDEX = PUBLIC_HISTORY_DIR / "index.json"
 ARTIFACT_DIR = REPO_ROOT / "artifacts" / "runtime_truth" / "current"
 POST_PROMOTION_PATH = ARTIFACT_DIR / "post_promotion_verification_0001.json"
 PROMOTION_RECEIPT_PATH = ARTIFACT_DIR / "promotion_receipt_0001.json"
@@ -21,6 +23,7 @@ GOVERNANCE_CHAIN_PATH = ARTIFACT_DIR / "governance_chain_0001.jsonl"
 CANON_LINEAGE_PATH = ARTIFACT_DIR / "canon_lineage_0001.jsonl"
 LATEST_CYCLE_SCHEMA_VERSION = "lumina-runtime-ui-cycle-v0.4"
 PUBLIC_SNAPSHOT_SCHEMA_VERSION = "lumina-runtime-truth-public-snapshot-v0.2"
+PUBLIC_HISTORY_LIMIT = 25
 
 
 def _read_json(path: Path) -> Dict[str, Any]:
@@ -31,7 +34,25 @@ def _read_json(path: Path) -> Dict[str, Any]:
     return payload if isinstance(payload, dict) else {}
 
 
+def _read_json_list(path: Path) -> list[Dict[str, Any]]:
+    if not path.exists():
+        return []
+    with path.open("r", encoding="utf-8") as f:
+        payload = json.load(f)
+    if not isinstance(payload, list):
+        return []
+    return [item for item in payload if isinstance(item, dict)]
+
+
 def _write_json(path: Path, payload: Dict[str, Any]) -> str:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8") as f:
+        json.dump(payload, f, indent=2)
+        f.write("\n")
+    return _repo_relative(path)
+
+
+def _write_json_list(path: Path, payload: list[Dict[str, Any]]) -> str:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as f:
         json.dump(payload, f, indent=2)
@@ -178,6 +199,44 @@ def _normalize_latest_cycle_contract(latest: Dict[str, Any], runtime_truth: Dict
     return normalized
 
 
+def _history_archive_name(snapshot: Dict[str, Any]) -> Optional[str]:
+    run_id = snapshot.get("run_id")
+    timestamp = snapshot.get("timestamp")
+    if not run_id or not timestamp:
+        return None
+    safe_run = str(run_id).replace("/", "-").replace(":", "-")
+    safe_timestamp = str(timestamp).replace(":", "-").replace("+", "_")
+    return f"{safe_timestamp}_{safe_run}.json"
+
+
+def _sync_public_history(snapshot: Dict[str, Any]) -> Optional[str]:
+    archive_name = _history_archive_name(snapshot)
+    if archive_name is None:
+        return None
+
+    archive_path = PUBLIC_HISTORY_DIR / archive_name
+    _write_json(archive_path, snapshot)
+
+    probe = snapshot.get("probe", {}) if isinstance(snapshot.get("probe"), dict) else {}
+    status = snapshot.get("status", {}) if isinstance(snapshot.get("status"), dict) else {}
+    mode = snapshot.get("mode", {}) if isinstance(snapshot.get("mode"), dict) else {}
+    entry = {
+        "timestamp": snapshot.get("timestamp"),
+        "run_id": snapshot.get("run_id"),
+        "status": status.get("label"),
+        "mode": mode.get("current"),
+        "file": f"/runtime/history/{archive_name}",
+        "probe_instrument_version": probe.get("instrument_version"),
+        "hybrid_continuity_coherence": probe.get("hybrid_continuity_coherence"),
+    }
+
+    index = _read_json_list(PUBLIC_HISTORY_INDEX)
+    run_id = snapshot.get("run_id")
+    index = [entry] + [item for item in index if item.get("run_id") != run_id]
+    _write_json_list(PUBLIC_HISTORY_INDEX, index[:PUBLIC_HISTORY_LIMIT])
+    return _repo_relative(archive_path)
+
+
 def build_public_runtime_truth_snapshot(
     *,
     latest_cycle_path: Optional[str | Path] = None,
@@ -191,26 +250,35 @@ def build_public_runtime_truth_snapshot(
     artifact_map = observation.get("artifacts", {})
     runtime_truth = _truth_payload_from_artifacts(artifact_map)
     latest = _read_json(latest_path)
+    normalized_latest = _normalize_latest_cycle_contract(latest, runtime_truth) if latest else {}
+    history_receipt_path = None
+
+    if normalized_latest:
+        _write_json(latest_path, normalized_latest)
+        if latest_path.resolve() == LATEST_CYCLE_PATH.resolve():
+            history_receipt_path = _sync_public_history(normalized_latest)
+
+    source_latest = normalized_latest or latest
+    public_artifact_paths = {
+        **artifact_map,
+        **runtime_truth["committed_authority"]["evidence_paths"],
+    }
+    if history_receipt_path:
+        public_artifact_paths["history_receipt"] = history_receipt_path
+
     public_snapshot = {
         "schema_version": PUBLIC_SNAPSHOT_SCHEMA_VERSION,
         "source_latest_cycle": _repo_relative(latest_path),
-        "latest_cycle_run_id": latest.get("run_id"),
-        "latest_cycle_timestamp": latest.get("timestamp"),
-        "mode": latest.get("mode", {}),
-        "action_type": latest.get("action_type"),
+        "latest_cycle_run_id": source_latest.get("run_id"),
+        "latest_cycle_timestamp": source_latest.get("timestamp"),
+        "mode": source_latest.get("mode", {}),
+        "action_type": source_latest.get("action_type"),
         "runtime_truth_scope": _scope_payload(),
         "runtime_truth": runtime_truth,
-        "artifact_paths": {
-            **artifact_map,
-            **runtime_truth["committed_authority"]["evidence_paths"],
-        },
+        "artifact_paths": public_artifact_paths,
         "authority_boundary": "Public runtime truth summary only; does not authorize action, alter governance, mutate canon, change mode legality, expose capabilities, or execute tools.",
     }
     _write_json(out_path, public_snapshot)
-
-    if latest:
-        _write_json(latest_path, _normalize_latest_cycle_contract(latest, runtime_truth))
-
     return public_snapshot
 
 
