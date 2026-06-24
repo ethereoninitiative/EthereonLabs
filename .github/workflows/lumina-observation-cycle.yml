@@ -41,6 +41,27 @@ jobs:
             --overlay-json '{"active":true,"anchor_language":["english"],"continuity_phrase":"scheduled observation cycle","harmonic_signature":[],"spiral_reference":null}' \
             --runtime-config-json '{"toki_pona_required_for_resume":false,"binary_required_for_transition_validation":false,"light_language_required_for_capability_loading":false,"harmonic_frequency_required_for_mode_legality":false}'
 
+      - name: Verify v1.8 public witness
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          payload = json.loads(Path("public/runtime/latest_cycle.json").read_text(encoding="utf-8"))
+          failures = []
+          if payload.get("schema_version") != "lumina-runtime-ui-cycle-v0.4":
+              failures.append("latest cycle is not schema v0.4")
+          if (payload.get("probe") or {}).get("instrument_version") != "v1.8":
+              failures.append("public probe did not execute as Psi-42 v1.8")
+          if "psi42_transceiver_v18" not in (payload.get("capabilities") or []):
+              failures.append("v1.8 capability is absent from the public receipt")
+          if (payload.get("runtime_truth_scope") or {}).get("does_not_override_committed_authority") is not True:
+              failures.append("runtime truth scope does not preserve committed authority")
+          if failures:
+              raise SystemExit("; ".join(failures))
+          print(json.dumps({"status": "pass", "run_id": payload.get("run_id"), "probe_version": "v1.8"}, indent=2))
+          PY
+
       - name: Validate reconciled public truth
         run: |
           python studio/runtime_truth_reconciliation_gate_r1.py
