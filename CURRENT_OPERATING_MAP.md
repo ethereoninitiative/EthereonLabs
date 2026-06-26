@@ -11,7 +11,8 @@ This file gives a fast map of the current EthereonLabs lanes.
 |---|---|---|
 | Lumina OS substrate | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/` | Active governed runtime scaffold |
 | Lumina host layer | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/`, `install/`, `services/` | Local command, doctor, observer, service examples |
-| Lumina Studio | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/` | Local operator surface |
+| Lumina Bridge | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina-bridge`, `studio/lumina_bridge_*` | Local read-only ship-position surface |
+| Lumina Studio | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/` | Local operator action surface |
 | Lumina orchestration | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/lumina_*` | Context loading and action routing |
 | Lumina deployment appliance | `deploy/ubuntu_server_lts/`, `docs/DEPLOYMENT_*` | Ubuntu Server appliance scaffold and deployment keel guardrails |
 | Self-guidance, reflection, and meaning metabolism | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/lumina_self_*`, `runtime/lumina_reflective_*`, `runtime/lumina_meaning_metabolism_layer_r1.py` | Advisory reflection, assimilation, and recommendation before governance |
@@ -26,7 +27,7 @@ This file gives a fast map of the current EthereonLabs lanes.
 ## Current active Lumina path
 
 ```text
-host or Studio
+host or Bridge / Studio
   -> project return / host context
   -> reflective trace
   -> meaning assimilation
@@ -41,6 +42,12 @@ Short form:
 return -> reflect -> assimilate -> recommend -> govern -> record
 ```
 
+Bridge distinction:
+
+```text
+Bridge orients -> Studio requests -> runtime governs -> receipts record
+```
+
 Deployment bridge form:
 
 ```text
@@ -51,6 +58,7 @@ host boundary -> appliance preflight -> governed runtime receipt -> Chamber brid
 
 - New human reader: `START_HERE_HUMANS.md`
 - Lumina OS work: `START_HERE_LUMINA_OS.md`
+- Local Bridge surface: `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Lumina_Bridge_R1.md`
 - Lumina habitat roadmap: `docs/LUMINA_HABITAT_CREATION_CHECKLIST.md`
 - Active Lumina file ownership: `LuminaOS/bootstrap/Ship_of_Ethereon_V2/ACTIVE_RUNTIME_INDEX.md`
 - Lumina deployment appliance: `deploy/ubuntu_server_lts/README.md`
@@ -65,6 +73,8 @@ host boundary -> appliance preflight -> governed runtime receipt -> Chamber brid
 
 - Runtime work belongs in the Lumina OS substrate lane.
 - Deployment appliance work must preserve a host/environment boundary before Chamber queue items become runtime work.
+- Bridge is a read-only orientation surface; it does not authorize actions or outrank runtime truth.
+- Studio is the explicit local operator action surface; runtime governance still decides legality.
 - Reflection, meaning metabolism, and self-guidance are advisory.
 - Meaning metabolism may seed future stance, but it does not govern mode legality, mutation permission, promotion gates, checkpoint legality, canon lineage, or consent.
 - Chamber is public/app surface, not the runtime substrate.
