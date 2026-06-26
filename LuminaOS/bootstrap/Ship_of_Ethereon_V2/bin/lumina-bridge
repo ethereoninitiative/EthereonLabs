@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+"""Launch the local read-only Lumina Bridge R1 surface."""
+from pathlib import Path
+import sys
+
+BOOTSTRAP_ROOT = Path(__file__).resolve().parents[1]
+STUDIO_ROOT = BOOTSTRAP_ROOT / "studio"
+if str(STUDIO_ROOT) not in sys.path:
+    sys.path.insert(0, str(STUDIO_ROOT))
+
+from lumina_bridge_server_r1 import main  # noqa: E402
+
+if __name__ == "__main__":
+    raise SystemExit(main())
