@@ -8,6 +8,7 @@
 ```bash
 cd LuminaOS/bootstrap/Ship_of_Ethereon_V2
 python install/lumina_doctor.py --ensure-state
+python bin/lumina-bridge
 python bin/lumina run "Review Lumina OS progress and produce the next governed action receipt."
 python bin/lumina observe
 python bin/lumina state --limit 12
@@ -96,7 +97,10 @@ These are bounded computational and interpretive experiments. They do not gain r
 | Local command entry | `bin/lumina` |
 | Installer and doctor | `install/install_lumina.sh`, `install/lumina_doctor.py` |
 | Observer service | `services/lumina_observer_service.py` |
+| Read-only Bridge position surface | `bin/lumina-bridge`, `studio/lumina_bridge_state_r1.py`, `studio/lumina_bridge_server_r1.py` |
 | Studio CLI/server/state browser | `studio/lumina_cli.py`, `studio/lumina_studio_server.py`, `studio/lumina_state_browser.py` |
+
+Bridge orients. Studio requests explicit actions. Runtime governance remains authoritative.
 
 ## Psi-42 and quantum-adjacent boundaries
 
@@ -121,6 +125,7 @@ Psi-42 is an instrument. It does not own governance, canon, runtime law, consent
 | Self-guidance | `runtime/sea_trials_lumina_self_guidance_r1.py` |
 | Orchestration continuity | `sea_trials_lumina_orchestration_continuity_r1.py` |
 | Studio | `sea_trials_lumina_studio_v0_1.py` |
+| Bridge R1 | `sea_trials_lumina_bridge_r1.py` |
 
 ## Maintenance rule
 
