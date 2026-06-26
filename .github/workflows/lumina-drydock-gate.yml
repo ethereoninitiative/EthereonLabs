@@ -49,10 +49,15 @@ jobs:
             python sea_trials_canon_readiness_r2.py
           fi
 
+      - name: Bridge sea trial
+        working-directory: LuminaOS/bootstrap/Ship_of_Ethereon_V2
+        run: python sea_trials_lumina_bridge_r1.py
+
       - name: Host command smoke checks
         working-directory: LuminaOS/bootstrap/Ship_of_Ethereon_V2
         run: |
           python bin/lumina --help
+          python bin/lumina-bridge --help
           python bin/lumina doctor --json
           python bin/lumina project list --json
           python bin/lumina session list --json
