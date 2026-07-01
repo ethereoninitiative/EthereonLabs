@@ -1,0 +1,96 @@
+name: Lumina Windows Host R1
+
+on:
+  pull_request:
+    paths:
+      - "deploy/windows_desktop_r1/**"
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/repo_paths_r1.py"
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/install/lumina_state_schema.py"
+      - ".github/workflows/lumina-windows-host-r1.yml"
+  push:
+    branches: [main]
+    paths:
+      - "deploy/windows_desktop_r1/**"
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/repo_paths_r1.py"
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/install/lumina_state_schema.py"
+      - ".github/workflows/lumina-windows-host-r1.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-host-foundation:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONUNBUFFERED: "1"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install user-local host foundation
+        shell: pwsh
+        run: |
+          $installRoot = Join-Path $env:RUNNER_TEMP "LuminaDesktopBetaR1"
+          ./deploy/windows_desktop_r1/install_lumina_windows_r1.ps1 `
+            -SourceRoot $pwd `
+            -InstallRoot $installRoot `
+            -SkipShortcuts `
+            -Force
+          "LUMINA_TEST_ROOT=$installRoot" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Run installed doctor and command smoke checks
+        shell: pwsh
+        run: |
+          $lumina = Join-Path $env:LUMINA_TEST_ROOT "bin\lumina.cmd"
+          $bridge = Join-Path $env:LUMINA_TEST_ROOT "bin\lumina-bridge.cmd"
+          & $lumina doctor --json
+          & $lumina project create "Windows CI Project" --open --json
+          & $lumina session create "Windows CI Session" --open --json
+          & $lumina dashboard
+          & $bridge --help
+
+      - name: Prove state survives application replacement
+        shell: pwsh
+        run: |
+          $stateRoot = Join-Path $env:LUMINA_TEST_ROOT "state\ship_of_ethereon_v2"
+          $marker = Join-Path $stateRoot "windows-ci-continuity-marker.txt"
+          "continuity-held" | Set-Content -Path $marker -Encoding utf8
+          ./deploy/windows_desktop_r1/install_lumina_windows_r1.ps1 `
+            -SourceRoot $pwd `
+            -InstallRoot $env:LUMINA_TEST_ROOT `
+            -SkipShortcuts `
+            -Force
+          if (-not (Test-Path $marker)) {
+            throw "State marker did not survive application replacement."
+          }
+          $value = (Get-Content $marker -Raw).Trim()
+          if ($value -ne "continuity-held") {
+            throw "State marker content changed during application replacement."
+          }
+          $lumina = Join-Path $env:LUMINA_TEST_ROOT "bin\lumina.cmd"
+          & $lumina project active --json
+          & $lumina session active --json
+
+      - name: Verify application and state separation
+        shell: pwsh
+        run: |
+          $appRoot = Join-Path $env:LUMINA_TEST_ROOT "app\EthereonLabs"
+          $stateRoot = Join-Path $env:LUMINA_TEST_ROOT "state\ship_of_ethereon_v2"
+          $repoState = Join-Path $appRoot ".lumina_state"
+          if (-not (Test-Path $stateRoot)) { throw "External state root is missing." }
+          if (-not (Test-Path $repoState)) { throw "Repository state junction is missing." }
+          $item = Get-Item $repoState -Force
+          if (-not ($item.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+            throw "Repository state path is not a junction or symbolic link."
+          }
+          $receipt = Join-Path $env:LUMINA_TEST_ROOT "receipts\windows_install_receipt_r1.json"
+          if (-not (Test-Path $receipt)) { throw "Installation receipt is missing." }
+          Get-Content $receipt
