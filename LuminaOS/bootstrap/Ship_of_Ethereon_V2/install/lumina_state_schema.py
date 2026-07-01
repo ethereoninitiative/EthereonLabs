@@ -12,11 +12,18 @@ from typing import Any, Dict, List, Optional
 import argparse
 import json
 import os
+import sys
 
 BOOTSTRAP_ROOT = Path(__file__).resolve().parents[1]
 REPO_ROOT = Path(__file__).resolve().parents[4]
-DEFAULT_STATE_ROOT = REPO_ROOT / ".lumina_state" / "ship_of_ethereon_v2"
-CURRENT_STATE_SCHEMA_VERSION = "lumina-state-v0.2"
+RUNTIME_ROOT = BOOTSTRAP_ROOT / "runtime"
+if str(RUNTIME_ROOT) not in sys.path:
+    sys.path.insert(0, str(RUNTIME_ROOT))
+
+from repo_paths_r1 import state_root as configured_state_root, state_root_source  # noqa: E402
+
+DEFAULT_STATE_ROOT = configured_state_root()
+CURRENT_STATE_SCHEMA_VERSION = "lumina-state-v0.3"
 
 KNOWN_SUBDIRECTORIES = [
     "runtime_runner_r1_actiontype_logging",
@@ -29,6 +36,7 @@ KNOWN_SUBDIRECTORIES = [
 @dataclass
 class StateSchemaStatus:
     state_root: str
+    state_root_source: str
     schema_path: str
     exists: bool
     schema_exists: bool
@@ -52,6 +60,11 @@ def expected_state_schema_payload() -> Dict[str, Any]:
     return {
         "schema_version": CURRENT_STATE_SCHEMA_VERSION,
         "state_root_owner": "Lumina host/runtime local state",
+        "state_location_contract": (
+            "The active state root may be supplied by LUMINA_STATE_ROOT. "
+            "Windows defaults to user-local application data; POSIX development "
+            "keeps the historical repository-local default."
+        ),
         "authority_boundary": (
             "State schema supports host readiness and migration only; "
             "runtime governance remains authoritative."
@@ -87,7 +100,7 @@ def migrate_schema_payload(payload: Optional[Dict[str, Any]]) -> Dict[str, Any]:
         {
             "from": prior_version,
             "to": CURRENT_STATE_SCHEMA_VERSION,
-            "reason": "host-layer state schema reconciliation",
+            "reason": "host-layer state path and schema reconciliation",
         }
     )
     migrated = expected_state_schema_payload()
@@ -104,7 +117,9 @@ def inspect_state_schema(
     path = schema_path(state_root)
     errors: List[str] = []
     created_or_updated = False
-    parent = state_root.parent if state_root.parent.exists() else REPO_ROOT
+    parent = state_root.parent if state_root.parent.exists() else state_root.parent.parent
+    if not parent.exists():
+        parent = Path.home()
     writable_parent = bool(parent.exists() and os.access(parent, os.W_OK))
 
     payload: Optional[Dict[str, Any]] = None
@@ -140,6 +155,7 @@ def inspect_state_schema(
     compatible = version in {None, CURRENT_STATE_SCHEMA_VERSION} and not migration_required and not errors
     return StateSchemaStatus(
         state_root=str(state_root),
+        state_root_source=state_root_source(),
         schema_path=str(path),
         exists=state_root.exists(),
         schema_exists=path.exists(),
