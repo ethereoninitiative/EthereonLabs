@@ -81,16 +81,16 @@ $(Join-Path $InstalledBootstrap "install")
 $(Join-Path $InstalledBootstrap "studio")
 "@ | Set-Content -Path $PthPath.FullName -Encoding ASCII
 
-$installerArgs = @(
-    "-SourceRoot", $SourceRoot,
-    "-InstallRoot", $InstallRoot,
-    "-PythonCommand", $InstalledPython
-)
-if ($Force) { $installerArgs += "-Force" }
-if ($SkipShortcuts) { $installerArgs += "-SkipShortcuts" }
-if ($LaunchBridge) { $installerArgs += "-LaunchBridge" }
+$installerParams = @{
+    SourceRoot = $SourceRoot
+    InstallRoot = $InstallRoot
+    PythonCommand = $InstalledPython
+    Force = [bool]$Force
+    SkipShortcuts = [bool]$SkipShortcuts
+    LaunchBridge = [bool]$LaunchBridge
+}
 
-& $BaseInstaller @installerArgs
+& $BaseInstaller @installerParams
 if ($LASTEXITCODE -ne 0) {
     throw "Lumina base installation failed."
 }
