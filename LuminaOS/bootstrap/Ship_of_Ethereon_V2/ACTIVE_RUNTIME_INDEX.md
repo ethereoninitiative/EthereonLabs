@@ -14,6 +14,29 @@ python bin/lumina observe
 python bin/lumina state --limit 12
 ```
 
+## Execution path truth
+
+### Default host / Studio path
+
+The ordinary `bin/lumina run` route is:
+
+```text
+bin/lumina
+  -> studio/lumina_cli_psi42_v18.py
+  -> runtime/runtime_runner_psi42_v18_adapter_r1.py
+  -> runtime/runtime_runner_r1_merged.py
+```
+
+This path performs bounded project return / host work, governed runtime execution, Psi-42 v1.8 diagnostics when lawfully exposed, continuity-correlation receipt handling, checkpointing, and receipt emission.
+
+### Optional reflective / self-guided adapter path
+
+`runtime/runtime_runner_reflective_self_guided_bridge_r1.py` extends the dedicated self-guided return/host adapter. It records a reflective trace before bounded self-guidance after the governed return/host cycle. It is an explicit alternate runner path and is not the default `bin/lumina run` route.
+
+### Meaning Metabolism status
+
+`runtime/lumina_meaning_metabolism_layer_r1.py` is a standalone validated advisory experiment. It is not exposed in the capability registry and is not wired into the default host path or the reflective/self-guided adapter path.
+
 ## Runtime core
 
 | Responsibility | Primary files |
@@ -53,19 +76,27 @@ Committed canon evidence and ephemeral Observation receipts are separate scopes.
 
 Project, Harbor session, runtime session, restore session, and host session remain distinct references joined by a correlation envelope.
 
-## Self-guidance and reflection
+## Self-guidance, reflection, and meaning assimilation
 
-| Responsibility | Primary files |
-|---|---|
-| Bounded next-action advisory | `runtime/lumina_self_guidance_steward_r1.py` |
-| Checkpoint-linked advisory history | `runtime/lumina_self_guidance_history_r1.py` |
-| Self-guided runner bridge | `runtime/runtime_runner_self_guided_bridge_r1.py` |
-| Recursive reflection motif | `runtime/lumina_reflective_autonomy_layer_r1.py` |
-| Meaning metabolism / assimilation ledger | `runtime/lumina_meaning_metabolism_layer_r1.py` |
-| Reflection-before-guidance bridge | `runtime/runtime_runner_reflective_self_guided_bridge_r1.py` |
+| Responsibility | Primary files | Wiring status |
+|---|---|---|
+| Bounded next-action advisory | `runtime/lumina_self_guidance_steward_r1.py` | Used by the explicit self-guided adapter |
+| Checkpoint-linked advisory history | `runtime/lumina_self_guidance_history_r1.py` | Used by the explicit self-guided adapter |
+| Self-guided runner bridge | `runtime/runtime_runner_self_guided_bridge_r1.py` | Optional alternate runner path |
+| Recursive reflection motif | `runtime/lumina_reflective_autonomy_layer_r1.py` | Used by the explicit reflective/self-guided adapter |
+| Reflection-before-guidance bridge | `runtime/runtime_runner_reflective_self_guided_bridge_r1.py` | Optional alternate runner path |
+| Meaning metabolism / assimilation ledger | `runtime/lumina_meaning_metabolism_layer_r1.py` | Standalone validated experiment; not wired into default or adapter execution |
+
+The reflective/self-guided adapter follows this extension shape:
 
 ```text
-return -> reflect -> assimilate -> recommend -> govern -> record
+governed return / host cycle -> checkpoint -> reflect -> recommend -> refresh advisory receipt/history
+```
+
+The standalone Meaning Metabolism experiment models:
+
+```text
+reflect -> assimilate -> seed future guidance
 ```
 
 These layers are advisory. They do not own mode legality, mutation permission, canon lineage, promotion gates, checkpoint legality, or consent.
@@ -98,7 +129,7 @@ These are bounded computational and interpretive experiments. They do not gain r
 | Installer and doctor | `install/install_lumina.sh`, `install/lumina_doctor.py` |
 | Observer service | `services/lumina_observer_service.py` |
 | Read-only Bridge position surface | `bin/lumina-bridge`, `studio/lumina_bridge_state_r1.py`, `studio/lumina_bridge_server_r1.py` |
-| Studio CLI/server/state browser | `studio/lumina_cli.py`, `studio/lumina_studio_server.py`, `studio/lumina_state_browser.py` |
+| Studio CLI/server/state browser | `studio/lumina_cli.py`, `studio/lumina_cli_psi42_v18.py`, `studio/lumina_studio_server.py`, `studio/lumina_state_browser.py` |
 
 Bridge orients. Studio requests explicit actions. Runtime governance remains authoritative.
 
@@ -123,10 +154,12 @@ Psi-42 is an instrument. It does not own governance, canon, runtime law, consent
 | Living Framework Chamber | `runtime/sea_trials_living_framework_chamber_r1.py` |
 | Living Framework ignition | `runtime/sea_trials_living_framework_ignition_r1.py` |
 | Self-guidance | `runtime/sea_trials_lumina_self_guidance_r1.py` |
+| Reflective/self-guided adapter wiring | `sea_trials_lumina_reflective_autonomy_wiring_r1.py` |
+| Meaning Metabolism standalone layer | `sea_trials_lumina_meaning_metabolism_r1.py` |
 | Orchestration continuity | `sea_trials_lumina_orchestration_continuity_r1.py` |
 | Studio | `sea_trials_lumina_studio_v0_1.py` |
 | Bridge R1 | `sea_trials_lumina_bridge_r1.py` |
 
 ## Maintenance rule
 
-When a runtime bridge, capability, receipt contract, or sea trial becomes active, update this index in the same PR. This file maps ownership; it does not create authority.
+When a runtime bridge, capability, receipt contract, sea trial, or default entrypoint becomes active, update this index in the same PR. Distinguish default wiring, optional adapters, and standalone experiments. This file maps ownership; it does not create authority.

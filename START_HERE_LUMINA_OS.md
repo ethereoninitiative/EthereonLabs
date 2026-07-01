@@ -10,7 +10,11 @@ Begin here:
 
 ```bash
 cd LuminaOS/bootstrap/Ship_of_Ethereon_V2
-python install/lumina_doctor.py
+python install/lumina_doctor.py --ensure-state
+python bin/lumina-bridge
+python bin/lumina run "Review Lumina OS progress and produce the next governed action receipt."
+python bin/lumina observe
+python bin/lumina state --limit 12
 ```
 
 Optional local command install:
@@ -23,42 +27,32 @@ Then use:
 
 ```bash
 lumina doctor
+lumina dashboard
 lumina run "Review Lumina OS progress and produce the next governed action receipt."
 lumina observe
 lumina state --limit 12
 lumina studio
 ```
 
-Without installing, use:
+## Current spatial frame
 
-```bash
-python bin/lumina doctor
-python bin/lumina run "Review Lumina OS progress and produce the next governed action receipt."
-```
+The current top-level orientation is orbital / planetary:
 
-## Founding frame
+- **Ship of Ethereon** — exploratory and transport vessel
+- **Lumina** — persistent orbital station and habitat
+- **Ethereon** — partially unveiled planetary realm
 
-Think of **Ship of Ethereon V2** as the origin vessel.
-Think of the **Realm of Ethereon** as the wider territory where that cargo can become lived structure.
-Think of **Lumina** as the **first village** established in that realm.
+Canonical framing:
 
-That means this bootstrap path is not just where the code lives.
-It is where ship-borne cargo becomes:
-- startable
-- governed
-- inspectable
-- inhabitable
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Ethereon_Orbital_Planetary_Framing_R1.md`
 
-Use this framing as orientation only, not governance law.
-If you want the longer statement of that frame, read:
+The earlier **first village** frame remains part of project history and still carries useful meaning: it describes the point where Ship-borne cargo becomes inhabitable, startable, and governed. It should now be read as an ancestral framing rather than the sole current spatial model.
+
+Historical framing:
 
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Lumina_First_Village_Framing_001.md`
 
-Host-layer docs:
-
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Lumina_OS_Host_Layer_001.md`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Lumina_Local_Runbook_001.md`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Lumina_First_Village_Framing_001.md`
+Both frames orient architecture and interface language. Neither creates governance law.
 
 ## Canonical start path
 
@@ -69,142 +63,200 @@ Begin here:
 Primary guide files inside that path:
 
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/README.md`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/ACTIVE_RUNTIME_INDEX.md`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/README_IMPORT.md`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/REPO_NATIVE_BOOTSTRAP_NOTE.md`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/RETURN_WITH_STANCE_BOOTSTRAP_NOTE_R1.md`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/SELF_GUIDANCE_STEWARD_NOTE_R1.md`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/LUMINA_ORCHESTRATION_STACK_NOTE_R1.md`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Lumina_Bridge_R1.md`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Quantum_Concepts_Boundary_r1.md`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/lumina_studio_v0_1_spec.md`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/lumina_next_build_plan_001.md`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Lumina_OS_Host_Layer_001.md`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Lumina_Local_Runbook_001.md`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Lumina_First_Village_Framing_001.md`
 
-Primary host-layer files inside that path:
+## Current execution paths
 
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/install/install_lumina.sh`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/install/lumina_doctor.py`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/services/lumina_observer_service.py`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/services/lumina.service.example`
+### Default host / Studio path
 
-Primary runtime files inside that path:
+The ordinary `lumina run` route is:
 
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/runtime_spine_r1.py`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/runtime_runner_r1_merged.py`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/runtime_runner_return_host_bridge_r1.py`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/runtime_runner_self_guided_bridge_r1.py`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/input_integrity_layer_r1.py`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/governance_integrity_r1.py`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/canon_lineage_store_r1.py`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/psi42_transceiver_v1_6.py`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/quantum_concepts_registry_r1.json`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/branch_resolution_model_r1.json`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_quantum_boundary_r1.py`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_set_one_r1_merged.py`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/capability_registry_r1.json`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/project_return_repo_native_r1.py`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/workspace_host_repo_native_r1.py`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/lumina_return_host_repo_native_bridge_r1.py`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/lumina_self_guidance_steward_r1.py`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/lumina_self_guidance_history_r1.py`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_lumina_self_guidance_r1.py`
+```text
+bin/lumina
+  -> studio/lumina_cli_psi42_v18.py
+  -> runtime/runtime_runner_psi42_v18_adapter_r1.py
+  -> runtime/runtime_runner_r1_merged.py
+```
 
-Primary orchestration files inside that path:
+This path currently performs:
 
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/lumina_context_loader_v0_1.py`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/lumina_decision_engine_v0_1.py`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/lumina_orchestrator_v0_4.py`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/sea_trials_lumina_orchestration_stack_r1.py`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/sea_trials_lumina_orchestration_continuity_r1.py`
+- bounded project return and workspace-host context
+- input-integrity and Ethereonic-boundary checks
+- mode, mutation, promotion, and capability governance
+- Psi-42 v1.8 diagnostic witness when lawfully exposed
+- continuity-correlation receipt handling
+- checkpoint and runtime receipt emission
 
-Primary Studio operator-surface files inside that path:
+It does **not** automatically execute the reflective/self-guided adapter or Meaning Metabolism layer.
 
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/README.md`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_cli.py`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_studio_server.py`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_state_browser.py`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/sea_trials_lumina_studio_v0_1.py`
+### Optional reflective / self-guided path
+
+The explicit adapter:
+
+- `runtime/runtime_runner_reflective_self_guided_bridge_r1.py`
+
+extends the self-guided return/host runner. It records a reflective trace before bounded self-guidance after the governed return/host cycle. This is a validated alternate runner path, not the default `lumina run` route.
+
+### Meaning Metabolism experiment
+
+The standalone layer:
+
+- `runtime/lumina_meaning_metabolism_layer_r1.py`
+
+models advisory assimilation between reflection and future guidance. It has a dedicated sea trial but is not currently exposed by the capability registry or wired into either the default host path or the reflective/self-guided adapter.
+
+## Primary runtime ownership
+
+### Core law and continuity
+
+- `runtime/runtime_spine_r1.py`
+- `runtime/runtime_runner_r1_merged.py`
+- `runtime/capability_registry_r1.json`
+- `runtime/input_integrity_layer_r1.py`
+- `runtime/governance_integrity_r1.py`
+- `runtime/canon_lineage_store_r1.py`
+- `runtime/ethereonic_layer_r1.py`
+- `runtime/ethereonic_layer_registry_r1.json`
+
+### Active host, return, correlation, and v1.8 route
+
+- `bin/lumina`
+- `bin/lumina-bridge`
+- `studio/lumina_cli.py`
+- `studio/lumina_cli_psi42_v18.py`
+- `studio/lumina_bridge_state_r1.py`
+- `studio/lumina_bridge_server_r1.py`
+- `runtime/project_return_repo_native_r1.py`
+- `runtime/workspace_host_repo_native_r1.py`
+- `runtime/runtime_runner_return_host_bridge_r1.py`
+- `runtime/continuity_correlation_r1.py`
+- `runtime/continuity_correlation_bridge_r1.py`
+- `runtime/runtime_runner_psi42_v18_adapter_r1.py`
+
+### Runtime-truth and reconciliation
+
+- `runtime/runtime_truth_emitter_r1.py`
+- `runtime/runtime_truth_observation_cycle_r1.py`
+- `runtime/runtime_truth_public_snapshot_r1.py`
+- `studio/runtime_truth_gate_r1.py`
+- `studio/runtime_truth_reconciliation_gate_r1.py`
+- `artifacts/runtime_truth/current/`
+- `public/runtime/latest_cycle.json`
+- `public/runtime/runtime_truth_snapshot.json`
+
+Committed canon evidence and ephemeral Observation receipts are different scopes. Observation may report an empty local state without overriding established committed governance or canon truth.
+
+### Advisory adapters and experiments
+
+- `runtime/lumina_self_guidance_steward_r1.py`
+- `runtime/lumina_self_guidance_history_r1.py`
+- `runtime/runtime_runner_self_guided_bridge_r1.py`
+- `runtime/lumina_reflective_autonomy_layer_r1.py`
+- `runtime/runtime_runner_reflective_self_guided_bridge_r1.py`
+- `runtime/lumina_meaning_metabolism_layer_r1.py`
+- `runtime/resonant_manifold_r1.py`
+- `runtime/living_framework_chamber_r1.py`
+- `runtime/living_framework_ignition_r1.py`
+
+These files do not gain default-path or governance authority merely by existing or passing their dedicated tests.
+
+### Psi-42 and terminology boundaries
+
+- `runtime/psi42_transceiver_v1_6.py`
+- `runtime/psi42_transceiver_v1_7.py`
+- `runtime/psi42_transceiver_v1_8.py`
+- `runtime/quantum_concepts_registry_r1.json`
+- `runtime/branch_resolution_model_r1.json`
+- `docs/Quantum_Concepts_Boundary_r1.md`
+
+Psi-42 is an instrument. It does not own governance, canon, runtime law, consent, or primary continuity authority.
 
 ## What this path is
 
-This subtree is the governed bootstrap substrate imported from **Ship of Ethereon V2** into GitHub for beginning **Lumina OS** work.
+This subtree is the governed bootstrap substrate imported from **Ship of Ethereon V2** into GitHub for Lumina OS work.
 
-It is the correct place to start when the task is about:
+It is the correct place to start when the task concerns:
 
-- runtime law
-- governance
-- canon lineage
-- continuity substrate
+- runtime law and mode governance
+- governance-chain integrity
+- canon lineage and promotion evidence
+- context bundles, checkpoints, and continuity substrate
 - capability routing
-- Ethereonic boundary enforcement
-- input integrity
-- Psi-42 as a quantum-inspired classical signal transceiver under boundary control
-- quantum-inspired terminology boundaries
-- branch resolution instead of load-bearing collapse language
-- namespaced coherence and decoherence metrics
-- project return without guessing
-- bounded workspace-host restoration
-- bridge-based activation of repo-native return / host behavior
-- bounded self-guidance advisory over restored project stance
-- checkpoint-refreshed self-guidance history
-- bounded orchestration from restored context into runtime execution
-- continuity of pattern across restored context, orientation changes, advisory recommendation, and governed execution
-- local operator execution through Lumina Studio
-- local host-layer startup through the `lumina` command
+- input ambiguity and correction safety
+- optional Ethereonic expression under structural boundaries
+- repo-native project return and workspace-host restoration
+- continuity correlation across project, Harbor, runtime, restore, and host references
+- Psi-42 diagnostics under explicit authority limits
+- public Observation receipts and truth reconciliation
+- local Bridge orientation and Studio requests
 
 ## Current truth
 
-1. **Lumina OS governed substrate starts in the bootstrap path above.**
-2. **The host layer now provides a system-like local start vocabulary: `doctor`, `run`, `observe`, `state`, and `studio`.**
-3. **That host-layer path is the first village gate: simple to enter, but still subordinate to runtime law.**
-4. **The orchestration lane sits above the substrate and remains subordinate to runtime law.**
-5. **Lumina Studio is the local operator surface for running a governed cycle and reading the receipt.**
-6. **Chamber is a parallel app/public lane, not the same thing as the Lumina OS substrate, but it includes a consent surface for advisory acceptance / rejection and supervised queue state.**
-7. **Root-level continuity / workspace-host files remain useful exploration history, but the repo-native bootstrap contains the preferred bridge paths for project return, workspace-host behavior, bounded self-guidance, checkpoint-refreshed guidance history, and bounded orchestration.**
-8. **Quantum-adjacent language is explicitly bounded: useful for modeling observation, coherence, branching, and recomposition, but not allowed to imply literal quantum hardware or runtime authority.**
-9. **Orchestration continuity has a dedicated sea-trial verifier for restored context, orientation shifts, advisory recommendation, and governed execution.**
-10. **If you are trying to understand the Ship-derived runtime core, do not begin with Chamber. Begin with the bootstrap path and the host-layer command.**
-11. **Lumina should be treated as the first village established from Ship of Ethereon V2 cargo: inhabitable, startable, and governed, without turning framing into law.**
+1. **Lumina OS governed substrate begins in the V2 bootstrap path.**
+2. **`bin/lumina` is the ordinary local host entrypoint.**
+3. **The default run path uses the Psi-42 v1.8 correlated adapter over the core runner.**
+4. **Bridge is read-only orientation; Studio requests; runtime governance decides.**
+5. **Committed canon/governance evidence is protected from empty ephemeral Observation state.**
+6. **Reflection and self-guidance are available through explicit adapter paths, not silently present in every run.**
+7. **Meaning Metabolism is a standalone validated advisory experiment and is not currently wired into active host execution.**
+8. **Chamber is a parallel public/app lane, not the runtime substrate.**
+9. **Resonant Manifold and Living Framework work remain bounded experiments.**
+10. **Orbital, village, maritime, harmonic, and symbolic language may orient the work but does not create runtime authority.**
 
 ## Parallel lanes in this repository
 
 ### Lumina OS governed substrate
+
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/`
 
-### Lumina host layer
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/install/`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/services/`
+### Lumina deployment appliance
 
-### Lumina Studio local operator surface
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/`
-- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/sea_trials_lumina_studio_v0_1.py`
+- `deploy/ubuntu_server_lts/`
+- `docs/DEPLOYMENT_*`
 
-### Continuity / workspace-host exploration
-- `continuity_restore_spike_r1.py`
-- `lumina_workspace_host_spike_r1.py`
-- `docs/continuity_restore_contract_r1.md`
-- `docs/lumina_workspace_host_contract_r1.md`
+### Ship of Ethereon Psi Class staging
+
+- `START_HERE_SHIP_OF_ETHEREON_PSI_CLASS.md`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_Psi_Class/`
 
 ### Chamber public/app lane
+
 - `chamber.html`
 - `chamber-app/`
 - `docs/chamber_*`
 
+### RSE research
+
+- `research/rse_crystalline/`
+
 ## Recommended navigation order
 
 1. Read this file.
-2. Run `python install/lumina_doctor.py` from `LuminaOS/bootstrap/Ship_of_Ethereon_V2/`.
-3. Open `LuminaOS/bootstrap/Ship_of_Ethereon_V2/README.md`.
-4. For a runnable proof, run `python bin/lumina run "Review Lumina OS progress."` or install the command with `bash install/install_lumina.sh`.
-5. Read `docs/Lumina_OS_Host_Layer_001.md`, `docs/Lumina_Local_Runbook_001.md`, and `docs/Lumina_First_Village_Framing_001.md`.
-6. Read `README_IMPORT.md`, `REPO_NATIVE_BOOTSTRAP_NOTE.md`, `RETURN_WITH_STANCE_BOOTSTRAP_NOTE_R1.md`, `SELF_GUIDANCE_STEWARD_NOTE_R1.md`, `LUMINA_ORCHESTRATION_STACK_NOTE_R1.md`, `docs/Quantum_Concepts_Boundary_r1.md`, and `docs/lumina_studio_v0_1_spec.md`.
-7. Inspect `runtime/` in that subtree, including the repo-native return / workspace-host modules, the bridged runner, the self-guided bridge runner, the checkpoint-refreshed guidance history rail, `quantum_concepts_registry_r1.json`, `branch_resolution_model_r1.json`, and `sea_trials_quantum_boundary_r1.py`.
-8. Inspect `lumina_context_loader_v0_1.py`, `lumina_decision_engine_v0_1.py`, `lumina_orchestrator_v0_4.py`, `sea_trials_lumina_orchestration_stack_r1.py`, and `sea_trials_lumina_orchestration_continuity_r1.py`.
-9. Only then branch outward into Chamber and its advisory / queue persistence lane.
+2. Read `CURRENT_OPERATING_MAP.md` and `LuminaOS/bootstrap/Ship_of_Ethereon_V2/ACTIVE_RUNTIME_INDEX.md`.
+3. Run `python install/lumina_doctor.py --ensure-state` from the bootstrap directory.
+4. Open the read-only Bridge with `python bin/lumina-bridge`.
+5. Run one ordinary governed cycle with `python bin/lumina run "Review Lumina OS progress."`.
+6. Inspect `bin/lumina`, `studio/lumina_cli_psi42_v18.py`, `runtime/runtime_runner_psi42_v18_adapter_r1.py`, and `runtime/runtime_runner_r1_merged.py` to understand the default path.
+7. Inspect the runtime-truth projector, reconciliation gate, and current public receipt.
+8. Only then inspect optional advisory adapters, Living Framework experiments, Chamber, and research lanes.
 
 ## Assistant note
 
-If an AI assistant, collaborator, or future contributor seems uncertain where Lumina OS begins, point them to this file first.
+When describing Lumina, distinguish:
+
+- what the default host entrypoint executes,
+- what an explicit adapter executes,
+- what a standalone experiment validates,
+- and what documentation expresses as future direction.
+
+Executable architecture defines current truth.

@@ -15,7 +15,8 @@ This file gives a fast map of the current EthereonLabs lanes.
 | Lumina Studio | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/` | Local operator action surface |
 | Lumina orchestration | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/lumina_*` | Context loading and action routing |
 | Lumina deployment appliance | `deploy/ubuntu_server_lts/`, `docs/DEPLOYMENT_*` | Ubuntu Server appliance scaffold and deployment keel guardrails |
-| Self-guidance, reflection, and meaning metabolism | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/lumina_self_*`, `runtime/lumina_reflective_*`, `runtime/lumina_meaning_metabolism_layer_r1.py` | Advisory reflection, assimilation, and recommendation before governance |
+| Advisory reflection and self-guidance adapters | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/runtime_runner_self_guided_bridge_r1.py`, `runtime/runtime_runner_reflective_self_guided_bridge_r1.py` | Explicit optional adapters layered around governed return/host cycles |
+| Meaning Metabolism experiment | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/lumina_meaning_metabolism_layer_r1.py` | Standalone advisory assimilation layer; validated but not wired into the default host entrypoint |
 | Chamber | `chamber.html`, `chamber-app/`, `docs/chamber_*` | Public interface and app lane |
 | RSE research | `research/rse_crystalline/` | Research, simulations, and figures |
 | Ship of Ethereon Psi Class | `START_HERE_SHIP_OF_ETHEREON_PSI_CLASS.md`, `LuminaOS/bootstrap/Ship_of_Ethereon_Psi_Class/` | Staging and project consolidation |
@@ -24,23 +25,49 @@ This file gives a fast map of the current EthereonLabs lanes.
 | Lumina habitat roadmap | `docs/LUMINA_HABITAT_CREATION_CHECKLIST.md` | Editable checklist for turning Lumina into a persistent intelligence habitat |
 | Root spikes | `continuity_restore_spike_r1.py`, `lumina_workspace_host_spike_r1.py` | Reference / exploration history |
 
-## Current active Lumina path
+## Current default Lumina host path
+
+The ordinary `lumina run` command currently follows this executable route:
 
 ```text
-host or Bridge / Studio
-  -> project return / host context
-  -> reflective trace
-  -> meaning assimilation
-  -> self-guidance advisory
+host or Studio request
+  -> project return / bounded host context
   -> governed runtime cycle
+  -> Psi-42 diagnostic witness and continuity correlation
   -> checkpoint and receipt
 ```
 
 Short form:
 
 ```text
-return -> reflect -> assimilate -> recommend -> govern -> record
+return -> govern -> witness -> correlate -> record
 ```
+
+This path is implemented through `bin/lumina`, `studio/lumina_cli_psi42_v18.py`, `runtime/runtime_runner_psi42_v18_adapter_r1.py`, and the core `runtime/runtime_runner_r1_merged.py`.
+
+## Optional advisory adapter path
+
+A dedicated adapter path extends a governed return/host cycle with reflection before bounded self-guidance:
+
+```text
+governed return / host cycle
+  -> checkpoint
+  -> reflective trace
+  -> self-guidance advisory
+  -> refreshed receipt and advisory history
+```
+
+This path is explicit and optional. It is not the default `lumina run` route.
+
+## Meaning Metabolism experiment
+
+The Meaning Metabolism layer validates this advisory sequence in isolation:
+
+```text
+reflect -> assimilate -> seed future guidance
+```
+
+It is not currently exposed as a capability or wired into the default host or reflective/self-guided runner paths.
 
 Bridge distinction:
 
@@ -75,8 +102,8 @@ host boundary -> appliance preflight -> governed runtime receipt -> Chamber brid
 - Deployment appliance work must preserve a host/environment boundary before Chamber queue items become runtime work.
 - Bridge is a read-only orientation surface; it does not authorize actions or outrank runtime truth.
 - Studio is the explicit local operator action surface; runtime governance still decides legality.
-- Reflection, meaning metabolism, and self-guidance are advisory.
-- Meaning metabolism may seed future stance, but it does not govern mode legality, mutation permission, promotion gates, checkpoint legality, canon lineage, or consent.
+- Reflection and self-guidance are advisory and adapter-scoped unless a future validated change deliberately promotes their wiring.
+- Meaning Metabolism may seed future stance, but it is presently standalone and does not govern mode legality, mutation permission, promotion gates, checkpoint legality, canon lineage, or consent.
 - Chamber is public/app surface, not the runtime substrate.
 - RSE research does not define runtime behavior by default.
 - Lisp preserves thought-shapes and is not executable.
@@ -88,4 +115,4 @@ host boundary -> appliance preflight -> governed runtime receipt -> Chamber brid
 
 ## Next maintenance step
 
-Keep this file short. When a lane changes status, update this map, the matching lane-specific start file, and the artifact truth contract if the truth hierarchy itself changes.
+Keep this file short and execution-accurate. When a lane changes status, update this map, the matching lane-specific start file, and the artifact truth contract if the truth hierarchy itself changes.
