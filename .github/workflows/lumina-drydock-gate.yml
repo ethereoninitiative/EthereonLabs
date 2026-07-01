@@ -31,8 +31,7 @@ jobs:
           python-version: "3.11"
 
       - name: Compile Lumina Python
-        run: |
-          python -m compileall -q LuminaOS/bootstrap/Ship_of_Ethereon_V2
+        run: python -m compileall -q LuminaOS/bootstrap/Ship_of_Ethereon_V2
 
       - name: Host alignment trial
         working-directory: LuminaOS/bootstrap/Ship_of_Ethereon_V2/install
@@ -43,6 +42,7 @@ jobs:
         run: |
           python sea_trials_set_one_r1_merged.py
           python sea_trials_resonant_manifold_r1.py
+          python sea_trials_resonant_field_reveal_r1.py
           python sea_trials_living_framework_chamber_r1.py
           python sea_trials_living_framework_ignition_r1.py
           if [ -f sea_trials_canon_readiness_r2.py ]; then
@@ -64,8 +64,9 @@ jobs:
 
       - name: Verify no tracked local state
         run: |
-          if git ls-files | grep -q '^\.lumina_state/'; then
+          tracked=$(git ls-files .lumina_state)
+          if [ -n "$tracked" ]; then
             echo "Tracked local Lumina state is not allowed."
-            git ls-files | grep '^\.lumina_state/'
+            echo "$tracked"
             exit 1
           fi
