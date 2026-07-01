@@ -1,0 +1,13 @@
+{
+  "registry_id": "lumina-windows-python-runtime-source-r1",
+  "status": "pinned",
+  "vendor": "Python Software Foundation",
+  "version": "3.13.14",
+  "architecture": "amd64",
+  "distribution": "Windows embeddable package",
+  "url": "https://www.python.org/ftp/python/3.13.14/python-3.13.14-embed-amd64.zip",
+  "sha256": "90b4e5b9898b72d744650524bff92377c367f44bd5fbd09e3148656c080ad907",
+  "source_page": "https://www.python.org/downloads/release/python-31314/",
+  "license": "Python Software Foundation License",
+  "authority_boundary": "The bundled interpreter supplies execution substrate only; it does not alter Lumina runtime governance or canon authority."
+}
