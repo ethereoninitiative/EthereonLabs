@@ -1,0 +1,26 @@
+name: Resonant Field Sample Gate
+
+on:
+  pull_request:
+    paths:
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/resonant_field_reveal_sample_r1.py"
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_resonant_field_reveal_sample_r1.py"
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/artifacts/resonant_field_reveal/**"
+      - ".github/workflows/resonant-field-sample-gate.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify-sample:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Verify committed sample
+        working-directory: LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime
+        run: python sea_trials_resonant_field_reveal_sample_r1.py
