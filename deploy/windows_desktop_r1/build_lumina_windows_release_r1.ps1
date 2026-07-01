@@ -73,10 +73,10 @@ if (-not $PthPath) {
 @"
 python313.zip
 .
-..\..\..\..\LuminaOS\bootstrap\Ship_of_Ethereon_V2
-..\..\..\..\LuminaOS\bootstrap\Ship_of_Ethereon_V2\runtime
-..\..\..\..\LuminaOS\bootstrap\Ship_of_Ethereon_V2\install
-..\..\..\..\LuminaOS\bootstrap\Ship_of_Ethereon_V2\studio
+..\..\app\EthereonLabs\LuminaOS\bootstrap\Ship_of_Ethereon_V2
+..\..\app\EthereonLabs\LuminaOS\bootstrap\Ship_of_Ethereon_V2\runtime
+..\..\app\EthereonLabs\LuminaOS\bootstrap\Ship_of_Ethereon_V2\install
+..\..\app\EthereonLabs\LuminaOS\bootstrap\Ship_of_Ethereon_V2\studio
 "@ | Set-Content -Path $PthPath.FullName -Encoding ASCII
 
 $EmbeddedPython = Join-Path $RuntimeRoot "python.exe"
@@ -110,6 +110,7 @@ $Receipt = [ordered]@{
     runtime_source_sha256 = $RuntimeHash
     bundles_python = $true
     requires_system_python = $false
+    embedded_runtime_layout = "windows-user-local"
     authority_boundary = "Release packaging supplies a host runtime and application archive only; Lumina governance remains authoritative."
 }
 $Receipt | ConvertTo-Json -Depth 5 | Set-Content -Path $ReceiptPath -Encoding UTF8
