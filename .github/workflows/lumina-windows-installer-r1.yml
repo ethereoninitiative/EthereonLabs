@@ -37,24 +37,35 @@ jobs:
           $out = Join-Path $env:RUNNER_TEMP "lumina-installer"
           ./deploy/windows_desktop_r1/build_lumina_windows_installer_r1.ps1 -SourceRoot $pwd -OutputRoot $out -IsccPath $env:LUMINA_ISCC
           "LUMINA_INSTALLER_ROOT=$out" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "LUMINA_INSTALL_ROOT=$(Join-Path $env:LOCALAPPDATA 'Lumina')" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
-      - name: Install silently and exercise Lumina
+      - name: Install silently
         shell: pwsh
         run: |
           $setup = Join-Path $env:LUMINA_INSTALLER_ROOT "LuminaDesktopBetaR1-Setup.exe"
           & $setup /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP- /LOG="$env:RUNNER_TEMP\lumina-install.log"
           if ($LASTEXITCODE -ne 0) { throw "Graphical installer returned $LASTEXITCODE." }
-          $root = Join-Path $env:LOCALAPPDATA "Lumina"
-          $lumina = Join-Path $root "bin\lumina.cmd"
-          $bridge = Join-Path $root "bin\lumina-bridge.cmd"
+          Get-Content "$env:RUNNER_TEMP\lumina-install.log" -Tail 80
+
+      - name: Exercise installed Lumina
+        shell: pwsh
+        run: |
+          $lumina = Join-Path $env:LUMINA_INSTALL_ROOT "bin\lumina.cmd"
+          $bridge = Join-Path $env:LUMINA_INSTALL_ROOT "bin\lumina-bridge.cmd"
+          if (-not (Test-Path $lumina)) { throw "Installed Lumina launcher is missing." }
+          if (-not (Test-Path $bridge)) { throw "Installed Bridge launcher is missing." }
           & $lumina doctor --json
+          if ($LASTEXITCODE -ne 0) { throw "Installed doctor failed." }
           & $lumina project create "Installer Project" --open --json
+          if ($LASTEXITCODE -ne 0) { throw "Installed project creation failed." }
           & $lumina session create "Installer Session" --open --json
+          if ($LASTEXITCODE -ne 0) { throw "Installed session creation failed." }
           & $lumina dashboard
+          if ($LASTEXITCODE -ne 0) { throw "Installed dashboard failed." }
           & $bridge --help
-          $marker = Join-Path $root "state\ship_of_ethereon_v2\installer-continuity-marker.txt"
+          if ($LASTEXITCODE -ne 0) { throw "Installed Bridge launcher failed." }
+          $marker = Join-Path $env:LUMINA_INSTALL_ROOT "state\ship_of_ethereon_v2\installer-continuity-marker.txt"
           "continuity-held" | Set-Content -Path $marker -Encoding utf8
-          "LUMINA_INSTALL_ROOT=$root" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - name: Upgrade in place and preserve state
         shell: pwsh
@@ -92,6 +103,17 @@ jobs:
           if ($receipt.signed) { throw "Developer preview must not claim code signing." }
           if (-not $receipt.state_preserved_on_upgrade) { throw "Upgrade state boundary is missing." }
           if (-not $receipt.state_preserved_on_uninstall) { throw "Removal state boundary is missing." }
+
+      - name: Upload installer diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: LuminaDesktopBetaR1-installer-diagnostics
+          path: |
+            ${{ runner.temp }}/lumina-install.log
+            ${{ runner.temp }}/lumina-upgrade.log
+          if-no-files-found: ignore
+          retention-days: 3
 
       - name: Upload graphical installer
         uses: actions/upload-artifact@v4
