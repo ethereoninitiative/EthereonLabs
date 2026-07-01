@@ -23,6 +23,13 @@
     "reachable_score": "lawful thread reach beyond the governance membrane",
     "governance_denial": "dashed thread terminated at the governance membrane"
   },
+  "committed_sample": {
+    "sample_id": "resonant-field-reveal-sample-0001",
+    "generator": "resonant_field_reveal_sample_r1.py",
+    "sea_trial": "sea_trials_resonant_field_reveal_sample_r1.py",
+    "artifact_directory": "../artifacts/resonant_field_reveal/sample_0001",
+    "authority": "inspection_fixture_only"
+  },
   "claims": {
     "literal_magnetism": false,
     "identity_proof": false,
