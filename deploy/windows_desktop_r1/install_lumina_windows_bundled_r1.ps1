@@ -31,6 +31,7 @@ $InstalledRuntime = Join-Path $InstallRoot "runtime\python"
 $BundledPython = Join-Path $BundledRuntime "python.exe"
 $InstalledPython = Join-Path $InstalledRuntime "python.exe"
 $BaseInstaller = Join-Path $SourceRoot "deploy\windows_desktop_r1\install_lumina_windows_r1.ps1"
+$InstalledBootstrap = Join-Path $InstallRoot "app\EthereonLabs\LuminaOS\bootstrap\Ship_of_Ethereon_V2"
 
 if (-not (Test-Path $BundledPython -PathType Leaf)) {
     throw "The release does not contain the bundled Python runtime."
@@ -61,6 +62,24 @@ if ($LASTEXITCODE -gt 7) {
 if (-not (Test-Path $InstalledPython -PathType Leaf)) {
     throw "Installed bundled Python executable is missing."
 }
+
+$PthPath = Get-ChildItem -Path $InstalledRuntime -Filter "python*._pth" | Select-Object -First 1
+if (-not $PthPath) {
+    throw "Installed bundled Python path configuration is missing."
+}
+$PythonZip = Get-ChildItem -Path $InstalledRuntime -Filter "python*.zip" | Select-Object -First 1
+if (-not $PythonZip) {
+    throw "Installed bundled Python standard-library archive is missing."
+}
+
+@"
+$($PythonZip.Name)
+.
+$InstalledBootstrap
+$(Join-Path $InstalledBootstrap "runtime")
+$(Join-Path $InstalledBootstrap "install")
+$(Join-Path $InstalledBootstrap "studio")
+"@ | Set-Content -Path $PthPath.FullName -Encoding ASCII
 
 $installerArgs = @(
     "-SourceRoot", $SourceRoot,
