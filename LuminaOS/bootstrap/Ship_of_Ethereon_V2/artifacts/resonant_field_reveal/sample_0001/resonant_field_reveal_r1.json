@@ -1,0 +1,230 @@
+{
+  "authority_boundary": "The Resonant Field Reveal renders derived manifold relations only. It does not create governance decisions, establish identity, prove continuity, or claim literal magnetism.",
+  "canvas": {
+    "center": {
+      "x": 600.0,
+      "y": 400.0
+    },
+    "governance_membrane_radius": 240.0,
+    "height": 800,
+    "width": 1200
+  },
+  "claims": {
+    "governance_authority": false,
+    "identity_proof": false,
+    "literal_magnetism": false
+  },
+  "current_point": {
+    "continuity_history": 0.91,
+    "instantiated_state": 0.76,
+    "orientation_field": 0.84,
+    "potential_trajectories": 0.64,
+    "relational_context": 0.88
+  },
+  "reveal_class": "deterministic computational field visualization",
+  "reveal_id": "resonant-field-reveal-r1",
+  "source_model_id": "resonant-manifold-r1",
+  "thread_count": 5,
+  "threads": [
+    {
+      "allowed": true,
+      "geometry": {
+        "angle_radians": 0.341,
+        "control_1": {
+          "x": 698.426,
+          "y": 470.295
+        },
+        "control_2": {
+          "x": 827.026,
+          "y": 496.399
+        },
+        "end": {
+          "x": 922.283,
+          "y": 514.226
+        },
+        "endpoint_radius": 341.927,
+        "membrane_radius": 240.0,
+        "start": {
+          "x": 632.047,
+          "y": 411.358
+        }
+      },
+      "governance_reason": "allowed",
+      "label": "creative expansion through lawful possibility",
+      "metrics": {
+        "harmonic_coherence": 0.981668,
+        "orientation_attraction": 0.927917,
+        "potential_contribution": 0.155,
+        "reachable_score": 0.95748
+      },
+      "status": "lawful_reachable",
+      "style": {
+        "dash_pattern": null,
+        "opacity": 0.895,
+        "stroke_width": 5.523
+      },
+      "thread_id": "thread-creative-expansion",
+      "trajectory_id": "creative-expansion"
+    },
+    {
+      "allowed": true,
+      "geometry": {
+        "angle_radians": 5.337,
+        "control_1": {
+          "x": 672.924,
+          "y": 308.129
+        },
+        "control_2": {
+          "x": 747.082,
+          "y": 200.154
+        },
+        "end": {
+          "x": 801.528,
+          "y": 120.452
+        },
+        "endpoint_radius": 344.617,
+        "membrane_radius": 240.0,
+        "start": {
+          "x": 619.883,
+          "y": 372.42
+        }
+      },
+      "governance_reason": "allowed",
+      "label": "luminous return toward stable alignment",
+      "metrics": {
+        "harmonic_coherence": 0.997086,
+        "orientation_attraction": 0.978272,
+        "potential_contribution": -0.2725,
+        "reachable_score": 0.98862
+      },
+      "status": "lawful_reachable",
+      "style": {
+        "dash_pattern": null,
+        "opacity": 0.927,
+        "stroke_width": 5.588
+      },
+      "thread_id": "thread-luminous-return",
+      "trajectory_id": "luminous-return"
+    },
+    {
+      "allowed": false,
+      "geometry": {
+        "angle_radians": 4.773,
+        "control_1": {
+          "x": 631.14,
+          "y": 320.138
+        },
+        "control_2": {
+          "x": 622.246,
+          "y": 228.231
+        },
+        "end": {
+          "x": 614.52,
+          "y": 160.44
+        },
+        "endpoint_radius": 240.0,
+        "membrane_radius": 240.0,
+        "start": {
+          "x": 602.057,
+          "y": 366.062
+        }
+      },
+      "governance_reason": "denied_by_external_governance_filter",
+      "label": "high-attraction candidate withheld by external governance",
+      "metrics": {
+        "harmonic_coherence": 0.989048,
+        "orientation_attraction": 0.934262,
+        "potential_contribution": 0.0425,
+        "reachable_score": 0.0
+      },
+      "status": "governance_denied",
+      "style": {
+        "dash_pattern": "10 9",
+        "opacity": 0.48,
+        "stroke_width": 5.554
+      },
+      "thread_id": "thread-permission-withheld",
+      "trajectory_id": "permission-withheld"
+    },
+    {
+      "allowed": true,
+      "geometry": {
+        "angle_radians": 3.118,
+        "control_1": {
+          "x": 482.31,
+          "y": 372.982
+        },
+        "control_2": {
+          "x": 351.955,
+          "y": 392.483
+        },
+        "end": {
+          "x": 255.937,
+          "y": 408.186
+        },
+        "endpoint_radius": 344.16,
+        "membrane_radius": 240.0,
+        "start": {
+          "x": 566.01,
+          "y": 400.809
+        }
+      },
+      "governance_reason": "allowed",
+      "label": "reflective deepening within bounded relation",
+      "metrics": {
+        "harmonic_coherence": 0.991154,
+        "orientation_attraction": 0.973788,
+        "potential_contribution": 0.05,
+        "reachable_score": 0.983339
+      },
+      "status": "lawful_reachable",
+      "style": {
+        "dash_pattern": null,
+        "opacity": 0.924,
+        "stroke_width": 5.563
+      },
+      "thread_id": "thread-reflective-deepening",
+      "trajectory_id": "reflective-deepening"
+    },
+    {
+      "allowed": true,
+      "geometry": {
+        "angle_radians": 1.628,
+        "control_1": {
+          "x": 577.734,
+          "y": 516.115
+        },
+        "control_2": {
+          "x": 578.814,
+          "y": 647.377
+        },
+        "end": {
+          "x": 580.307,
+          "y": 744.137
+        },
+        "endpoint_radius": 344.7,
+        "membrane_radius": 240.0,
+        "start": {
+          "x": 598.058,
+          "y": 433.944
+        }
+      },
+      "governance_reason": "allowed",
+      "label": "return through preserved continuity",
+      "metrics": {
+        "harmonic_coherence": 0.999555,
+        "orientation_attraction": 0.977389,
+        "potential_contribution": -0.155,
+        "reachable_score": 0.98958
+      },
+      "status": "lawful_reachable",
+      "style": {
+        "dash_pattern": null,
+        "opacity": 0.926,
+        "stroke_width": 5.598
+      },
+      "thread_id": "thread-return-through-continuity",
+      "trajectory_id": "return-through-continuity"
+    }
+  ]
+}

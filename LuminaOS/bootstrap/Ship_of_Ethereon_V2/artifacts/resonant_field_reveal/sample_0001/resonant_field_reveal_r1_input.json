@@ -1,0 +1,77 @@
+{
+  "authority_note": "This committed fixture demonstrates deterministic reveal output only. It is not runtime truth, identity proof, or governance authority.",
+  "canvas": {
+    "height": 800,
+    "width": 1200
+  },
+  "current_point": {
+    "continuity_history": 0.91,
+    "instantiated_state": 0.76,
+    "orientation_field": 0.84,
+    "potential_trajectories": 0.64,
+    "relational_context": 0.88
+  },
+  "denied_ids": [
+    "permission-withheld"
+  ],
+  "reveal_id": "resonant-field-reveal-r1",
+  "sample_id": "resonant-field-reveal-sample-0001",
+  "source_model_id": "resonant-manifold-r1",
+  "trajectories": [
+    {
+      "label": "creative expansion through lawful possibility",
+      "trajectory_id": "creative-expansion",
+      "vector": {
+        "continuity_history": 0.79,
+        "instantiated_state": 0.68,
+        "orientation_field": 0.91,
+        "potential_trajectories": 0.96,
+        "relational_context": 0.84
+      }
+    },
+    {
+      "label": "return through preserved continuity",
+      "trajectory_id": "return-through-continuity",
+      "vector": {
+        "continuity_history": 0.94,
+        "instantiated_state": 0.79,
+        "orientation_field": 0.87,
+        "potential_trajectories": 0.72,
+        "relational_context": 0.9
+      }
+    },
+    {
+      "label": "reflective deepening within bounded relation",
+      "trajectory_id": "reflective-deepening",
+      "vector": {
+        "continuity_history": 0.86,
+        "instantiated_state": 0.71,
+        "orientation_field": 0.82,
+        "potential_trajectories": 0.88,
+        "relational_context": 0.93
+      }
+    },
+    {
+      "label": "high-attraction candidate withheld by external governance",
+      "trajectory_id": "permission-withheld",
+      "vector": {
+        "continuity_history": 0.88,
+        "instantiated_state": 0.9,
+        "orientation_field": 0.96,
+        "potential_trajectories": 0.94,
+        "relational_context": 0.85
+      }
+    },
+    {
+      "label": "luminous return toward stable alignment",
+      "trajectory_id": "luminous-return",
+      "vector": {
+        "continuity_history": 0.95,
+        "instantiated_state": 0.82,
+        "orientation_field": 0.86,
+        "potential_trajectories": 0.58,
+        "relational_context": 0.78
+      }
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "artifacts": {
+    "resonant_field_reveal_r1.json": "2e5ef222a743bc1e02838024c532207fc38fa8a7b6faa63f9ea3387749b565d8",
+    "resonant_field_reveal_r1.svg": "63c6c1841c7c48eb166efb2ea052aeadb057f0f39687ef82c74889dd92e965c4"
+  },
+  "authority_boundary": "The Resonant Field Reveal renders derived manifold relations only. It does not create governance decisions, establish identity, prove continuity, or claim literal magnetism.",
+  "generator": "runtime/resonant_field_reveal_sample_r1.py",
+  "input_artifact": {
+    "resonant_field_reveal_r1_input.json": "92076e8e305ff420772cd7db3c78b3c815ba254b2c28a1047ce9a86b4fb645e8"
+  },
+  "receipt_id": "resonant-field-reveal-r1-receipt",
+  "reproducible": true,
+  "reveal_id": "resonant-field-reveal-r1",
+  "sample_id": "resonant-field-reveal-sample-0001"
+}
