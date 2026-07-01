@@ -106,6 +106,7 @@ These layers are advisory. They do not own mode legality, mutation permission, c
 | Responsibility | Primary files |
 |---|---|
 | Resonant Manifold model | `runtime/resonant_manifold_r1.py`, `runtime/resonant_manifold_registry_r1.json` |
+| Resonant Field Reveal | `runtime/resonant_field_reveal_r1.py`, `runtime/resonant_field_reveal_registry_r1.json`, `docs/Resonant_Field_Reveal_R1.md` |
 | Living Framework Chamber | `runtime/living_framework_chamber_r1.py`, `runtime/living_framework_registry_r1.json` |
 | Living Framework ignition | `runtime/living_framework_ignition_r1.py` |
 | Chamber and ignition docs | `docs/Lumina_Living_Framework_Chamber_R1.md`, `docs/Lumina_Living_Framework_Ignition_R1.md` |
@@ -151,6 +152,7 @@ Psi-42 is an instrument. It does not own governance, canon, runtime law, consent
 |---|---|
 | Core runtime / governance / canon | `runtime/sea_trials_set_one_r1_merged.py` |
 | Resonant Manifold | `runtime/sea_trials_resonant_manifold_r1.py` |
+| Resonant Field Reveal | `runtime/sea_trials_resonant_field_reveal_r1.py` |
 | Living Framework Chamber | `runtime/sea_trials_living_framework_chamber_r1.py` |
 | Living Framework ignition | `runtime/sea_trials_living_framework_ignition_r1.py` |
 | Self-guidance | `runtime/sea_trials_lumina_self_guidance_r1.py` |
