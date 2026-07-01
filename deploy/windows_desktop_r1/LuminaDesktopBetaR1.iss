@@ -25,6 +25,7 @@ OutputBaseFilename=LuminaDesktopBetaR1-Setup
 Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern
+SetupLogging=yes
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -45,5 +46,9 @@ Name: "{group}\Lumina Studio"; Filename: "{app}\bin\lumina.cmd"; Parameters: "st
 Name: "{group}\Lumina Doctor"; Filename: "{app}\bin\lumina.cmd"; Parameters: "doctor"
 
 [Run]
+Filename: "{cmd}"; Parameters: "/d /c if not exist ""{app}\app\EthereonLabs\.lumina_state"" mklink /J ""{app}\app\EthereonLabs\.lumina_state"" ""{app}\state"""; Flags: runhidden waituntilterminated
 Filename: "{app}\bin\lumina.cmd"; Parameters: "doctor --ensure-state"; Flags: runhidden waituntilterminated
 Filename: "{app}\bin\lumina-bridge.cmd"; Description: "Open Lumina Bridge"; Flags: nowait postinstall skipifsilent
+
+[UninstallRun]
+Filename: "{cmd}"; Parameters: "/d /c if exist ""{app}\app\EthereonLabs\.lumina_state"" rmdir ""{app}\app\EthereonLabs\.lumina_state"""; Flags: runhidden waituntilterminated
