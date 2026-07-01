@@ -1,31 +1,44 @@
 {
   "contract_id": "lumina-windows-host-contract-r1",
-  "status": "developer_preview",
+  "status": "developer_preview_bundled_runtime",
   "target": "Windows 11 user-local desktop host",
-  "minimum_python": "3.11",
+  "minimum_supported_python": "3.11",
+  "bundled_runtime": {
+    "available": true,
+    "source_registry": "python_runtime_source_r1.json",
+    "release_builder": "build_lumina_windows_release_r1.ps1",
+    "installer": "install_lumina_windows_bundled_r1.ps1",
+    "requires_system_python": false
+  },
   "installation_model": {
     "scope": "current_user",
     "application_root": "%LOCALAPPDATA%\\Lumina\\app\\EthereonLabs",
+    "runtime_root": "%LOCALAPPDATA%\\Lumina\\runtime\\python",
     "state_root": "%LOCALAPPDATA%\\Lumina\\state\\ship_of_ethereon_v2",
     "command_root": "%LOCALAPPDATA%\\Lumina\\bin",
     "requires_administrator": false,
-    "bundles_python": false
+    "state_survives_application_replacement": true
   },
-  "first_increment": [
+  "validated_increments": [
     "platform-aware state-root contract",
     "PowerShell user-local installation scaffold",
     "Windows command launchers",
-    "clean-host installation verifier",
-    "Windows GitHub Actions sea trial",
-    "state-preserving reinstall and uninstall checks"
+    "Windows GitHub Actions host trial",
+    "state-preserving application replacement",
+    "pinned embedded Python source",
+    "bundled-runtime release archive builder",
+    "bundled-runtime installation trial",
+    "release archive SHA-256 receipt"
   ],
   "not_yet_complete": [
     "signed graphical installer",
-    "bundled Python runtime",
-    "Start Menu visual identity",
+    "production Start Menu icons and metadata",
     "automatic update channel",
+    "repair and removal workflow",
+    "backup and restore surface",
     "production code signing",
-    "end-user support diagnostics"
+    "end-user support diagnostics",
+    "clean physical-PC release receipt"
   ],
   "authority_boundary": "Windows host packaging installs and launches Lumina; it does not change runtime governance, canon authority, mode legality, or continuity claims."
 }
