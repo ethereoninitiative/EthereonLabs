@@ -107,6 +107,8 @@ These layers are advisory. They do not own mode legality, mutation permission, c
 |---|---|
 | Resonant Manifold model | `runtime/resonant_manifold_r1.py`, `runtime/resonant_manifold_registry_r1.json` |
 | Resonant Field Reveal | `runtime/resonant_field_reveal_r1.py`, `runtime/resonant_field_reveal_registry_r1.json`, `docs/Resonant_Field_Reveal_R1.md` |
+| Committed field sample | `artifacts/resonant_field_reveal/sample_0001/`, `runtime/resonant_field_reveal_sample_r1.py`, `docs/Resonant_Field_Reveal_Sample_0001.md` |
+| Luminous Threads lineage | `docs/Luminous_Threads_Continuity_Lineage_R1.md` |
 | Living Framework Chamber | `runtime/living_framework_chamber_r1.py`, `runtime/living_framework_registry_r1.json` |
 | Living Framework ignition | `runtime/living_framework_ignition_r1.py` |
 | Chamber and ignition docs | `docs/Lumina_Living_Framework_Chamber_R1.md`, `docs/Lumina_Living_Framework_Ignition_R1.md` |
@@ -129,10 +131,11 @@ These are bounded computational and interpretive experiments. They do not gain r
 | Local command entry | `bin/lumina` |
 | Installer and doctor | `install/install_lumina.sh`, `install/lumina_doctor.py` |
 | Observer service | `services/lumina_observer_service.py` |
-| Read-only Bridge position surface | `bin/lumina-bridge`, `studio/lumina_bridge_state_r1.py`, `studio/lumina_bridge_server_r1.py` |
+| Read-only Bridge R2 position and field surface | `bin/lumina-bridge`, `studio/lumina_bridge_state_r1.py`, `studio/lumina_bridge_field_r1.py`, `studio/lumina_bridge_server_r2.py`, `docs/Lumina_Bridge_R1.md` |
+| Historical Bridge R1 server | `studio/lumina_bridge_server_r1.py` |
 | Studio CLI/server/state browser | `studio/lumina_cli.py`, `studio/lumina_cli_psi42_v18.py`, `studio/lumina_studio_server.py`, `studio/lumina_state_browser.py` |
 
-Bridge orients. Studio requests explicit actions. Runtime governance remains authoritative.
+Bridge witnesses and orients. Studio requests explicit actions. Runtime governance remains authoritative.
 
 ## Psi-42 and quantum-adjacent boundaries
 
@@ -153,6 +156,7 @@ Psi-42 is an instrument. It does not own governance, canon, runtime law, consent
 | Core runtime / governance / canon | `runtime/sea_trials_set_one_r1_merged.py` |
 | Resonant Manifold | `runtime/sea_trials_resonant_manifold_r1.py` |
 | Resonant Field Reveal | `runtime/sea_trials_resonant_field_reveal_r1.py` |
+| Committed field reproducibility | `runtime/sea_trials_resonant_field_reveal_sample_r1.py` |
 | Living Framework Chamber | `runtime/sea_trials_living_framework_chamber_r1.py` |
 | Living Framework ignition | `runtime/sea_trials_living_framework_ignition_r1.py` |
 | Self-guidance | `runtime/sea_trials_lumina_self_guidance_r1.py` |
@@ -160,7 +164,8 @@ Psi-42 is an instrument. It does not own governance, canon, runtime law, consent
 | Meaning Metabolism standalone layer | `sea_trials_lumina_meaning_metabolism_r1.py` |
 | Orchestration continuity | `sea_trials_lumina_orchestration_continuity_r1.py` |
 | Studio | `sea_trials_lumina_studio_v0_1.py` |
-| Bridge R1 | `sea_trials_lumina_bridge_r1.py` |
+| Bridge position surface | `sea_trials_lumina_bridge_r1.py` |
+| Bridge Field Viewer | `sea_trials_lumina_bridge_field_r1.py` |
 
 ## Maintenance rule
 
