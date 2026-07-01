@@ -5,6 +5,8 @@ on:
     paths:
       - "*.html"
       - "assets/js/site-navigation-data.js"
+      - "tools/site_navigation_contract.py"
+      - "tools/canonicalize_site_headers.py"
       - "tools/audit_site_headers.py"
       - ".github/workflows/site-header-audit.yml"
   workflow_dispatch:
