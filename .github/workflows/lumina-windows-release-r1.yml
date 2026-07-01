@@ -1,0 +1,75 @@
+name: Lumina Windows Release R1
+
+on:
+  pull_request:
+    paths:
+      - "deploy/windows_desktop_r1/**"
+      - ".github/workflows/lumina-windows-release-r1.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-release:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build release archive
+        shell: pwsh
+        run: |
+          $out = Join-Path $env:RUNNER_TEMP "lumina-release"
+          ./deploy/windows_desktop_r1/build_lumina_windows_release_r1.ps1 -SourceRoot $pwd -OutputRoot $out
+          "LUMINA_RELEASE_ROOT=$out" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Install release with packaged Python
+        shell: pwsh
+        run: |
+          $diagnostic = Join-Path $env:RUNNER_TEMP "lumina-release-diagnostics.txt"
+          try {
+            $archive = Join-Path $env:LUMINA_RELEASE_ROOT "LuminaDesktopBetaR1-windows-x64.zip"
+            $extract = Join-Path $env:RUNNER_TEMP "lumina-extracted"
+            Expand-Archive -Path $archive -DestinationPath $extract -Force
+            $repo = Join-Path $extract "LuminaDesktopBetaR1\EthereonLabs"
+            $install = Join-Path $env:RUNNER_TEMP "LuminaBundledInstall"
+            & (Join-Path $repo "deploy\windows_desktop_r1\install_lumina_windows_bundled_r1.ps1") -SourceRoot $repo -InstallRoot $install -SkipShortcuts -Force
+            "LUMINA_BUNDLED_INSTALL=$install" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          } catch {
+            $_ | Format-List * -Force | Out-String | Set-Content -Path $diagnostic -Encoding utf8
+            Get-Content $diagnostic
+            throw
+          }
+
+      - name: Verify installed commands
+        shell: pwsh
+        run: |
+          $receipt = Get-Content (Join-Path $env:LUMINA_BUNDLED_INSTALL "receipts\windows_install_receipt_r1.json") -Raw | ConvertFrom-Json
+          if (-not $receipt.python_bundled) { throw "Packaged Python was not selected." }
+          $lumina = Join-Path $env:LUMINA_BUNDLED_INSTALL "bin\lumina.cmd"
+          $bridge = Join-Path $env:LUMINA_BUNDLED_INSTALL "bin\lumina-bridge.cmd"
+          & $lumina doctor --json
+          & $lumina project create "Release Project" --open --json
+          & $lumina session create "Release Session" --open --json
+          & $bridge --help
+
+      - name: Verify release receipt
+        shell: pwsh
+        run: |
+          $path = Join-Path $env:LUMINA_RELEASE_ROOT "LuminaDesktopBetaR1-windows-x64-receipt.json"
+          $receipt = Get-Content $path -Raw | ConvertFrom-Json
+          $archive = Join-Path $env:LUMINA_RELEASE_ROOT $receipt.archive_name
+          $actual = (Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($actual -ne $receipt.archive_sha256) { throw "Archive receipt mismatch." }
+          if (-not $receipt.bundles_python) { throw "Release did not record packaged Python." }
+
+      - name: Upload failure diagnostic
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lumina-windows-release-diagnostic
+          path: ${{ runner.temp }}/lumina-release-diagnostics.txt
+          if-no-files-found: ignore
+          retention-days: 3
