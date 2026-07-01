@@ -1,0 +1,53 @@
+{
+  "registry_id": "resonant-field-reveal-registry-r1",
+  "status": "experimental",
+  "reveal_id": "resonant-field-reveal-r1",
+  "reveal_class": "deterministic computational field visualization",
+  "source_model": "resonant-manifold-r1",
+  "inputs": [
+    "current manifold point",
+    "potential trajectories",
+    "externally supplied denied trajectory ids"
+  ],
+  "outputs": [
+    "deterministic reveal JSON",
+    "standalone SVG",
+    "SHA-256 artifact receipt"
+  ],
+  "visual_mapping": {
+    "current_point": "central attractor",
+    "trajectory": "luminous thread",
+    "harmonic_coherence": "thread width",
+    "orientation_attraction": "thread opacity and curvature contribution",
+    "potential_contribution": "thread curvature contribution",
+    "reachable_score": "lawful thread reach beyond the governance membrane",
+    "governance_denial": "dashed thread terminated at the governance membrane"
+  },
+  "claims": {
+    "literal_magnetism": false,
+    "identity_proof": false,
+    "continuity_proof": false,
+    "governance_authority": false
+  },
+  "authority_boundary": {
+    "owns": [
+      "derived reveal geometry",
+      "deterministic SVG rendering",
+      "artifact hash receipts"
+    ],
+    "does_not_own": [
+      "governance decisions",
+      "canon state",
+      "mode legality",
+      "checkpoint legality",
+      "identity declaration",
+      "primary continuity truth",
+      "literal electromagnetic claims"
+    ]
+  },
+  "implementation": {
+    "module": "resonant_field_reveal_r1.py",
+    "sea_trial": "sea_trials_resonant_field_reveal_r1.py",
+    "documentation": "../docs/Resonant_Field_Reveal_R1.md"
+  }
+}
