@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="reveal-title reveal-desc">
+<title id="reveal-title">Resonant Field Reveal R1</title>
+<desc id="reveal-desc">The Resonant Field Reveal renders derived manifold relations only. It does not create governance decisions, establish identity, prove continuity, or claim literal magnetism.</desc>
+<defs>
+<radialGradient id="field-bg" cx="50%" cy="50%" r="70%">
+<stop offset="0%" stop-color="#171321"/>
+<stop offset="58%" stop-color="#08070d"/>
+<stop offset="100%" stop-color="#020204"/>
+</radialGradient>
+<radialGradient id="attractor-fill" cx="42%" cy="38%" r="68%">
+<stop offset="0%" stop-color="#332318"/>
+<stop offset="62%" stop-color="#0b0808"/>
+<stop offset="100%" stop-color="#000000"/>
+</radialGradient>
+<filter id="thread-blur" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="6"/>
+</filter>
+</defs>
+<rect width="1200" height="800" fill="url(#field-bg)"/>
+<circle cx="600.0" cy="400.0" r="240.0" fill="none" stroke="#d89b58" stroke-width="1.5" stroke-dasharray="4 10" opacity="0.42" data-role="governance-membrane"/>
+<circle cx="600.0" cy="400.0" r="148.800" fill="none" stroke="#9f6c3f" stroke-width="1" opacity="0.18"/>
+<g fill="none" stroke="#f0a75b" stroke-linecap="round" stroke-linejoin="round">
+<g data-trajectory-id="creative-expansion" data-status="lawful_reachable"><title>creative expansion through lawful possibility</title><path d="M 632.047 411.358 C 698.426 470.295, 827.026 496.399, 922.283 514.226" class="thread-glow" stroke-width="10.523" opacity="0.286"/><path d="M 632.047 411.358 C 698.426 470.295, 827.026 496.399, 922.283 514.226" class="thread-core" stroke-width="5.523" opacity="0.895"/></g>
+<g data-trajectory-id="luminous-return" data-status="lawful_reachable"><title>luminous return toward stable alignment</title><path d="M 619.883 372.42 C 672.924 308.129, 747.082 200.154, 801.528 120.452" class="thread-glow" stroke-width="10.588" opacity="0.297"/><path d="M 619.883 372.42 C 672.924 308.129, 747.082 200.154, 801.528 120.452" class="thread-core" stroke-width="5.588" opacity="0.927"/></g>
+<g data-trajectory-id="permission-withheld" data-status="governance_denied"><title>high-attraction candidate withheld by external governance</title><path d="M 602.057 366.062 C 631.14 320.138, 622.246 228.231, 614.52 160.44" class="thread-glow" stroke-width="10.554" opacity="0.154" stroke-dasharray="10 9"/><path d="M 602.057 366.062 C 631.14 320.138, 622.246 228.231, 614.52 160.44" class="thread-core" stroke-width="5.554" opacity="0.480" stroke-dasharray="10 9"/></g>
+<g data-trajectory-id="reflective-deepening" data-status="lawful_reachable"><title>reflective deepening within bounded relation</title><path d="M 566.01 400.809 C 482.31 372.982, 351.955 392.483, 255.937 408.186" class="thread-glow" stroke-width="10.563" opacity="0.296"/><path d="M 566.01 400.809 C 482.31 372.982, 351.955 392.483, 255.937 408.186" class="thread-core" stroke-width="5.563" opacity="0.924"/></g>
+<g data-trajectory-id="return-through-continuity" data-status="lawful_reachable"><title>return through preserved continuity</title><path d="M 598.058 433.944 C 577.734 516.115, 578.814 647.377, 580.307 744.137" class="thread-glow" stroke-width="10.598" opacity="0.296"/><path d="M 598.058 433.944 C 577.734 516.115, 578.814 647.377, 580.307 744.137" class="thread-core" stroke-width="5.598" opacity="0.926"/></g>
+</g>
+<g class="denied-markers" fill="#120b0a" stroke="#ffd2a1" stroke-width="2.2">
+<g class="denied-marker" data-trajectory-id="permission-withheld"><circle cx="614.52" cy="160.44" r="11"/><path d="M 608.52 154.44 L 620.52 166.44 M 620.52 154.44 L 608.52 166.44"/></g>
+</g>
+<circle cx="600.0" cy="400.0" r="48" fill="#f0a75b" opacity="0.12" filter="url(#thread-blur)"/>
+<circle cx="600.0" cy="400.0" r="34" fill="url(#attractor-fill)" stroke="#f0a75b" stroke-width="1.8" data-role="current-attractor"/>
+</svg>
