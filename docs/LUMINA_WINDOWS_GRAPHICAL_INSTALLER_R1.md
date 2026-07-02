@@ -19,13 +19,7 @@ The setup executable installs Lumina, the pinned embedded Python runtime, comman
 
 ## Installed surfaces
 
-The installer creates Start Menu entries for:
-
-- Lumina Bridge
-- Lumina Studio
-- Lumina Doctor
-
-An interactive installation offers to open the read-only Bridge after setup.
+The installer creates Start Menu entries for Lumina Bridge, Lumina Studio, and Lumina Doctor. An interactive installation offers to open the read-only Bridge after setup.
 
 ## State preservation
 
@@ -43,13 +37,13 @@ Continuity state lives beneath:
 %LOCALAPPDATA%\Lumina\state\ship_of_ethereon_v2
 ```
 
-The installer upgrades application files in place without deleting state. The default uninstaller removes application files, the embedded runtime, launchers, and Start Menu entries while preserving the state tree.
+The hosted sea trial proves that an in-place upgrade preserves the continuity marker, active project, and Harbor session.
+
+The setup definition also marks the state tree as persistent during normal application removal. That removal path is configured but not yet covered by the automated sea trial. The build receipt records this honestly with an explicit contract field and `uninstall_validated: false`.
 
 A directory junction preserves compatibility with components that still resolve the historical repository-local `.lumina_state` path.
 
 ## Build
-
-Install the Inno Setup compiler, build the bundled release payload, then compile the setup package:
 
 ```powershell
 $Output = "$env:TEMP\lumina-installer"
@@ -66,7 +60,7 @@ python .\deploy\windows_desktop_r1\build_lumina_windows_installer_r1.py `
 
 ## Continuous sea trial
 
-`.github/workflows/lumina-windows-installer-r1.yml` performs the hosted sequence:
+`.github/workflows/lumina-windows-installer-r1.yml` proves:
 
 ```text
 build bundled release payload
@@ -78,8 +72,6 @@ build bundled release payload
   -> write continuity marker
   -> upgrade in place
   -> prove project, session, and marker return
-  -> uninstall application
-  -> prove continuity state remains
   -> verify setup SHA-256 receipt
 ```
 
@@ -93,12 +85,12 @@ Code signing requires a separate publisher identity and signing credential decis
 
 ## Authority boundary
 
-The installer owns desktop file placement, launchers, upgrade behavior, removal behavior, and packaging receipts.
+The installer owns desktop file placement, launchers, upgrade behavior, removal configuration, and packaging receipts.
 
 It does not own runtime governance, mode legality, capability authority, canon promotion, identity declaration, or primary continuity truth.
 
 ## Next threshold
 
-After hosted installer validation, the remaining technical lane is first-run configuration, repair, backup and restore, release signing, and a clean physical-PC receipt.
+The next technical gates are automated removal verification, first-run configuration, repair, backup and restore, release signing, and a clean physical-PC receipt.
 
 > The door may become simple without making the vessel simplistic.
