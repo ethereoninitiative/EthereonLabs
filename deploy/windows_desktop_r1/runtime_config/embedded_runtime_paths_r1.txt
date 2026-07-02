@@ -1,0 +1,6 @@
+python313.zip
+.
+..\..\app\EthereonLabs\LuminaOS\bootstrap\Ship_of_Ethereon_V2
+..\..\app\EthereonLabs\LuminaOS\bootstrap\Ship_of_Ethereon_V2\runtime
+..\..\app\EthereonLabs\LuminaOS\bootstrap\Ship_of_Ethereon_V2\install
+..\..\app\EthereonLabs\LuminaOS\bootstrap\Ship_of_Ethereon_V2\studio
