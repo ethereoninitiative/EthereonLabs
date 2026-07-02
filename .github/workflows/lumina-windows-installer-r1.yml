@@ -1,0 +1,83 @@
+name: Lumina Windows Installer R1
+
+on:
+  pull_request:
+    paths:
+      - "deploy/windows_desktop_r1/**"
+      - "docs/LUMINA_WINDOWS_GRAPHICAL_INSTALLER_R1.md"
+      - ".github/workflows/lumina-windows-installer-r1.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-install-upgrade-remove:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Inno Setup compiler
+        shell: pwsh
+        run: |
+          winget install --id JRSoftware.InnoSetup -e --silent --accept-source-agreements --accept-package-agreements
+          $iscc = @(
+            (Join-Path ${env:ProgramFiles(x86)} "Inno Setup 6\ISCC.exe"),
+            (Join-Path $env:ProgramFiles "Inno Setup 6\ISCC.exe"),
+            (Join-Path ${env:ProgramFiles(x86)} "Inno Setup 7\ISCC.exe"),
+            (Join-Path $env:ProgramFiles "Inno Setup 7\ISCC.exe")
+          ) | Where-Object { $_ -and (Test-Path $_ -PathType Leaf) } | Select-Object -First 1
+          if (-not $iscc) { throw "Inno Setup compiler was not found." }
+          "LUMINA_ISCC=$iscc" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Build bundled release payload
+        shell: pwsh
+        run: |
+          $out = Join-Path $env:RUNNER_TEMP "lumina-installer"
+          ./deploy/windows_desktop_r1/build_lumina_windows_release_r1.ps1 -SourceRoot $pwd -OutputRoot $out
+          "LUMINA_INSTALLER_ROOT=$out" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Compile setup executable
+        shell: pwsh
+        run: |
+          $payload = Join-Path $env:LUMINA_INSTALLER_ROOT "work\LuminaDesktopBetaR1"
+          python deploy/windows_desktop_r1/build_lumina_windows_installer_r1.py `
+            --source-root $pwd `
+            --payload-root $payload `
+            --output-root $env:LUMINA_INSTALLER_ROOT `
+            --iscc $env:LUMINA_ISCC
+
+      - name: Run setup sea trial
+        shell: pwsh
+        run: |
+          python deploy/windows_desktop_r1/verify_lumina_desktop_setup_r1.py `
+            --setup (Join-Path $env:LUMINA_INSTALLER_ROOT "LuminaDesktopBetaR1-Setup.exe") `
+            --receipt (Join-Path $env:LUMINA_INSTALLER_ROOT "LuminaDesktopBetaR1-Setup-receipt.json")
+
+      - name: Upload diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: LuminaDesktopBetaR1-installer-diagnostics
+          path: |
+            ${{ runner.temp }}/lumina-install.log
+            ${{ runner.temp }}/lumina-upgrade.log
+          if-no-files-found: ignore
+          retention-days: 3
+
+      - name: Upload setup artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: LuminaDesktopBetaR1-Setup
+          path: |
+            ${{ runner.temp }}/lumina-installer/LuminaDesktopBetaR1-Setup.exe
+            ${{ runner.temp }}/lumina-installer/LuminaDesktopBetaR1-Setup-receipt.json
+          if-no-files-found: error
+          retention-days: 14
