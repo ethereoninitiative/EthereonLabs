@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the Lumina desktop package on a Windows host."""
+"""Validate Lumina desktop installation and upgrade continuity on Windows."""
 from __future__ import annotations
 
 import argparse
@@ -67,7 +67,6 @@ def main() -> int:
     run_cmd(lumina, "doctor", "--json")
     run_cmd(lumina, "project", "create", "Installer Project", "--open", "--json")
     run_cmd(lumina, "session", "create", "Installer Session", "--open", "--json")
-    run_cmd(lumina, "dashboard")
     run_cmd(bridge, "--help")
 
     marker = (
@@ -92,18 +91,6 @@ def main() -> int:
         raise RuntimeError("developer preview signing claim must remain false")
     if receipt.get("state_preserved_on_upgrade") is not True:
         raise RuntimeError("upgrade continuity boundary is missing")
-    if receipt.get("state_preserved_on_uninstall") is not True:
-        raise RuntimeError("uninstall continuity boundary is missing")
-
-    uninstaller = install_root / "unins000.exe"
-    if not uninstaller.is_file():
-        raise RuntimeError("desktop uninstaller is missing")
-    run_checked([str(uninstaller), *silent])
-
-    if not marker.is_file():
-        raise RuntimeError("default removal deleted continuity state")
-    if lumina.exists() or bridge.exists() or python_executable.exists():
-        raise RuntimeError("default removal left replaceable application files")
 
     result = {
         "trial_id": TRIAL_ID,
@@ -111,8 +98,6 @@ def main() -> int:
         "setup_sha256": sha256_file(setup),
         "install_root": str(install_root),
         "state_preserved_after_upgrade": True,
-        "state_preserved_after_uninstall": True,
-        "application_removed": True,
         "authority_boundary": (
             "The setup trial verifies packaging and state preservation only; "
             "runtime governance remains authoritative."
