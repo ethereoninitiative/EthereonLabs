@@ -6,6 +6,13 @@ on:
       - "deploy/windows_desktop_r1/**"
       - "docs/LUMINA_WINDOWS_GRAPHICAL_INSTALLER_R1.md"
       - ".github/workflows/lumina-windows-installer-r1.yml"
+  push:
+    branches:
+      - "lumina-graphical-installer-r1c"
+    paths:
+      - "deploy/windows_desktop_r1/**"
+      - "docs/LUMINA_WINDOWS_GRAPHICAL_INSTALLER_R1.md"
+      - ".github/workflows/lumina-windows-installer-r1.yml"
   workflow_dispatch:
 
 permissions:
