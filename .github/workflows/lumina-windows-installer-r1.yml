@@ -19,7 +19,7 @@ permissions:
   contents: read
 
 jobs:
-  build-install-upgrade-remove:
+  build-install-upgrade:
     runs-on: windows-latest
     timeout-minutes: 30
     steps:
