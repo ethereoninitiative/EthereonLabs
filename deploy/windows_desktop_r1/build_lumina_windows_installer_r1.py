@@ -91,7 +91,8 @@ def main() -> int:
         "current_user_install": True,
         "signed": False,
         "state_preserved_on_upgrade": True,
-        "state_preserved_on_uninstall": True,
+        "state_preserved_on_uninstall_contract": True,
+        "uninstall_validated": False,
         "authority_boundary": (
             "Desktop packaging places and launches Lumina; it does not alter "
             "runtime governance, canon, or continuity truth."
