@@ -8,6 +8,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import traceback
 
 
 TRIAL_ID = "lumina-desktop-setup-r1"
@@ -122,4 +123,14 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    try:
+        raise SystemExit(main())
+    except SystemExit:
+        raise
+    except Exception:
+        diagnostic_root = Path(os.environ.get("RUNNER_TEMP", Path.cwd()))
+        diagnostic_path = diagnostic_root / "lumina-upgrade.log"
+        with diagnostic_path.open("a", encoding="utf-8") as handle:
+            handle.write("\n--- Lumina setup sea-trial traceback ---\n")
+            handle.write(traceback.format_exc())
+        raise
