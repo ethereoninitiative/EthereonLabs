@@ -54,6 +54,20 @@ Historical framing:
 
 Both frames orient architecture and interface language. Neither creates governance law.
 
+## Current host and distribution forms
+
+Lumina now has three distinct implementation forms that must not be collapsed into one maturity claim:
+
+- **Repo-native local host** — the primary governed development and operator path under `LuminaOS/bootstrap/Ship_of_Ethereon_V2/`
+- **Ubuntu Server appliance scaffold** — a Linux-resident governed service stack under `deploy/ubuntu_server_lts/`
+- **Lumina Desktop Beta R1** — an installable unsigned Windows developer preview under `deploy/windows_desktop_r1/`
+
+The Windows preview bundles its own Python runtime, provides Bridge, Studio, and Doctor launchers, and has hosted upgrade-continuity validation. It is not yet a signed, ordinary-user public release. Packaging and installation do not create runtime authority.
+
+Machine-readable lane status and evidence relationships are recorded in:
+
+- `docs/ACTIVE_SURFACE_REGISTRY_R1.json`
+
 ## Canonical start path
 
 Begin here:
@@ -156,6 +170,10 @@ models advisory assimilation between reflection and future guidance. It has a de
 
 Committed canon evidence and ephemeral Observation receipts are different scopes. Observation may report an empty local state without overriding established committed governance or canon truth.
 
+Repository-wide surface and generated-artifact reconciliation is handled separately by:
+
+- `scripts/repository_truth_reconciliation_gate_r1.py`
+
 ### Advisory adapters and experiments
 
 - `runtime/lumina_self_guidance_steward_r1.py`
@@ -209,9 +227,11 @@ It is the correct place to start when the task concerns:
 5. **Committed canon/governance evidence is protected from empty ephemeral Observation state.**
 6. **Reflection and self-guidance are available through explicit adapter paths, not silently present in every run.**
 7. **Meaning Metabolism is a standalone validated advisory experiment and is not currently wired into active host execution.**
-8. **Chamber is a parallel public/app lane, not the runtime substrate.**
-9. **Resonant Manifold and Living Framework work remain bounded experiments.**
-10. **Orbital, village, maritime, harmonic, and symbolic language may orient the work but does not create runtime authority.**
+8. **The Windows graphical installer is an installable unsigned developer preview, not a signed ordinary-user public release.**
+9. **The Ubuntu lane is a governed appliance scaffold, not a custom kernel or distro.**
+10. **Chamber is a parallel public/app lane, not the runtime substrate.**
+11. **Resonant Manifold and Living Framework work remain bounded experiments.**
+12. **Orbital, village, maritime, harmonic, and symbolic language may orient the work but does not create runtime authority.**
 
 ## Parallel lanes in this repository
 
@@ -223,6 +243,16 @@ It is the correct place to start when the task concerns:
 
 - `deploy/ubuntu_server_lts/`
 - `docs/DEPLOYMENT_*`
+
+### Lumina Windows desktop preview
+
+- `deploy/windows_desktop_r1/`
+- `docs/LUMINA_WINDOWS_GRAPHICAL_INSTALLER_R1.md`
+
+### Active surface truth registry
+
+- `docs/ACTIVE_SURFACE_REGISTRY_R1.json`
+- `scripts/repository_truth_reconciliation_gate_r1.py`
 
 ### Ship of Ethereon Psi Class staging
 
@@ -242,13 +272,14 @@ It is the correct place to start when the task concerns:
 ## Recommended navigation order
 
 1. Read this file.
-2. Read `CURRENT_OPERATING_MAP.md` and `LuminaOS/bootstrap/Ship_of_Ethereon_V2/ACTIVE_RUNTIME_INDEX.md`.
+2. Read `CURRENT_OPERATING_MAP.md`, `docs/ACTIVE_SURFACE_REGISTRY_R1.json`, and `LuminaOS/bootstrap/Ship_of_Ethereon_V2/ACTIVE_RUNTIME_INDEX.md`.
 3. Run `python install/lumina_doctor.py --ensure-state` from the bootstrap directory.
 4. Open the read-only Bridge with `python bin/lumina-bridge`.
 5. Run one ordinary governed cycle with `python bin/lumina run "Review Lumina OS progress."`.
 6. Inspect `bin/lumina`, `studio/lumina_cli_psi42_v18.py`, `runtime/runtime_runner_psi42_v18_adapter_r1.py`, and `runtime/runtime_runner_r1_merged.py` to understand the default path.
 7. Inspect the runtime-truth projector, reconciliation gate, and current public receipt.
-8. Only then inspect optional advisory adapters, Living Framework experiments, Chamber, and research lanes.
+8. Inspect the Ubuntu and Windows distribution lanes as separate host forms rather than runtime authority.
+9. Only then inspect optional advisory adapters, Living Framework experiments, Chamber, and research lanes.
 
 ## Assistant note
 
@@ -257,6 +288,7 @@ When describing Lumina, distinguish:
 - what the default host entrypoint executes,
 - what an explicit adapter executes,
 - what a standalone experiment validates,
+- what a host or installer packages,
 - and what documentation expresses as future direction.
 
-Executable architecture defines current truth.
+Executable architecture, validated distribution behavior, and reproducible artifacts define current truth.
