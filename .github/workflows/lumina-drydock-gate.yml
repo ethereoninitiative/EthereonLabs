@@ -4,11 +4,31 @@ on:
   pull_request:
     paths:
       - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/**"
+      - "LuminaOS/adapters/harmonic_reflection_adapter/examples/**"
+      - "deploy/ubuntu_server_lts/**"
+      - "deploy/windows_desktop_r1/**"
+      - "docs/ACTIVE_SURFACE_REGISTRY_R1.json"
+      - "docs/ARTIFACT_TRUTH_CONTRACT.md"
+      - "docs/LUMINA_WINDOWS_*.md"
+      - "CURRENT_OPERATING_MAP.md"
+      - "START_HERE_LUMINA_OS.md"
+      - "lumina.html"
+      - "scripts/repository_truth_reconciliation_gate_r1.py"
       - ".github/workflows/lumina-drydock-gate.yml"
   push:
     branches: [main]
     paths:
       - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/**"
+      - "LuminaOS/adapters/harmonic_reflection_adapter/examples/**"
+      - "deploy/ubuntu_server_lts/**"
+      - "deploy/windows_desktop_r1/**"
+      - "docs/ACTIVE_SURFACE_REGISTRY_R1.json"
+      - "docs/ARTIFACT_TRUTH_CONTRACT.md"
+      - "docs/LUMINA_WINDOWS_*.md"
+      - "CURRENT_OPERATING_MAP.md"
+      - "START_HERE_LUMINA_OS.md"
+      - "lumina.html"
+      - "scripts/repository_truth_reconciliation_gate_r1.py"
       - ".github/workflows/lumina-drydock-gate.yml"
 
 permissions:
@@ -31,7 +51,10 @@ jobs:
           python-version: "3.11"
 
       - name: Compile Lumina Python
-        run: python -m compileall -q LuminaOS/bootstrap/Ship_of_Ethereon_V2
+        run: python -m compileall -q LuminaOS/bootstrap/Ship_of_Ethereon_V2 scripts/repository_truth_reconciliation_gate_r1.py
+
+      - name: Reconcile repository truth surfaces
+        run: python scripts/repository_truth_reconciliation_gate_r1.py
 
       - name: Host alignment trial
         working-directory: LuminaOS/bootstrap/Ship_of_Ethereon_V2/install
