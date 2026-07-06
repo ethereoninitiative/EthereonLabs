@@ -75,7 +75,22 @@
       "validation_paths": [
         ".github/workflows/lumina-windows-installer-r1.yml"
       ],
-      "authority_boundary": "Owns desktop packaging, placement, launchers, upgrade behavior, and build receipts. It does not alter runtime governance, canon, capability authority, identity, or primary continuity truth."
+      "lifecycle_receipt": {
+        "artifact_name": "LuminaDesktopBetaR1-Setup-lifecycle-receipt.json",
+        "emitted_by": "deploy/windows_desktop_r1/verify_lumina_desktop_setup_r1.py",
+        "required_fields": [
+          "install_validated",
+          "upgrade_validated",
+          "uninstall_validated",
+          "state_preserved_on_upgrade",
+          "state_preserved_on_uninstall",
+          "signed",
+          "installer_sha256",
+          "authority_boundary"
+        ],
+        "truth_scope": "Hosted Windows installer lifecycle evidence only; it is not a signed release, public-readiness claim, SmartScreen claim, runtime governance claim, canon claim, mode-legality claim, capability-authority claim, identity claim, or primary continuity claim."
+      },
+      "authority_boundary": "Owns desktop packaging, placement, launchers, upgrade/removal behavior, and installer lifecycle receipts. It does not alter runtime governance, canon, capability authority, identity, or primary continuity truth."
     },
     {
       "surface_id": "chamber_public_surface",
