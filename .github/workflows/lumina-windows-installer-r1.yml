@@ -5,13 +5,15 @@ on:
     paths:
       - "deploy/windows_desktop_r1/**"
       - "docs/LUMINA_WINDOWS_GRAPHICAL_INSTALLER_R1.md"
+      - "docs/ACTIVE_SURFACE_REGISTRY_R1.json"
       - ".github/workflows/lumina-windows-installer-r1.yml"
   push:
     branches:
-      - "lumina-graphical-installer-r1c"
+      - "main"
     paths:
       - "deploy/windows_desktop_r1/**"
       - "docs/LUMINA_WINDOWS_GRAPHICAL_INSTALLER_R1.md"
+      - "docs/ACTIVE_SURFACE_REGISTRY_R1.json"
       - ".github/workflows/lumina-windows-installer-r1.yml"
   workflow_dispatch:
 
@@ -66,7 +68,8 @@ jobs:
         run: |
           python deploy/windows_desktop_r1/verify_lumina_desktop_setup_r1.py `
             --setup (Join-Path $env:LUMINA_INSTALLER_ROOT "LuminaDesktopBetaR1-Setup.exe") `
-            --receipt (Join-Path $env:LUMINA_INSTALLER_ROOT "LuminaDesktopBetaR1-Setup-receipt.json")
+            --receipt (Join-Path $env:LUMINA_INSTALLER_ROOT "LuminaDesktopBetaR1-Setup-receipt.json") `
+            --lifecycle-receipt (Join-Path $env:LUMINA_INSTALLER_ROOT "LuminaDesktopBetaR1-Setup-lifecycle-receipt.json")
 
       - name: Upload diagnostics
         if: failure()
@@ -76,6 +79,9 @@ jobs:
           path: |
             ${{ runner.temp }}/lumina-install.log
             ${{ runner.temp }}/lumina-upgrade.log
+            ${{ runner.temp }}/lumina-uninstall.log
+            ${{ runner.temp }}/lumina-lifecycle.log
+            ${{ runner.temp }}/lumina-installer/LuminaDesktopBetaR1-Setup-lifecycle-receipt.json
           if-no-files-found: ignore
           retention-days: 3
 
@@ -86,5 +92,6 @@ jobs:
           path: |
             ${{ runner.temp }}/lumina-installer/LuminaDesktopBetaR1-Setup.exe
             ${{ runner.temp }}/lumina-installer/LuminaDesktopBetaR1-Setup-receipt.json
+            ${{ runner.temp }}/lumina-installer/LuminaDesktopBetaR1-Setup-lifecycle-receipt.json
           if-no-files-found: error
           retention-days: 14
