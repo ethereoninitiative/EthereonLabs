@@ -73,14 +73,17 @@
         "docs/LUMINA_WINDOWS_GRAPHICAL_INSTALLER_R1.md"
       ],
       "validation_paths": [
-        ".github/workflows/lumina-windows-installer-r1.yml"
+        ".github/workflows/lumina-windows-installer-r1.yml",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_windows_return_host_path_budget_r1.py"
       ],
       "lifecycle_receipt": {
         "artifact_name": "LuminaDesktopBetaR1-Setup-lifecycle-receipt.json",
         "emitted_by": "deploy/windows_desktop_r1/verify_lumina_desktop_setup_r1.py",
         "required_fields": [
           "install_validated",
+          "studio_cycle_validated",
           "upgrade_validated",
+          "studio_upgrade_cycle_validated",
           "uninstall_validated",
           "state_preserved_on_upgrade",
           "state_preserved_on_uninstall",
@@ -88,7 +91,19 @@
           "installer_sha256",
           "authority_boundary"
         ],
-        "truth_scope": "Hosted Windows installer lifecycle evidence only; it is not a signed release, public-readiness claim, SmartScreen claim, runtime governance claim, canon claim, mode-legality claim, capability-authority claim, identity claim, or primary continuity claim."
+        "truth_scope": "Hosted Windows installer lifecycle evidence, including installed governed Studio cycles before and after upgrade. It is not a signed release, public-readiness claim, SmartScreen claim, physical-PC repair-retest claim, runtime governance claim, canon claim, mode-legality claim, capability-authority claim, identity claim, or primary continuity claim."
+      },
+      "physical_trial_status": {
+        "status": "repair-awaiting-retest",
+        "verified": [
+          "Bridge R2 launched on physical Windows 11 hardware",
+          "Studio v0.3.2 launched on physical Windows 11 hardware",
+          "read-only state and governance APIs responded",
+          "governed cycle reached capability exposure"
+        ],
+        "finding": "The first physical cycle exposed an unbounded return/host artifact path and stopped before checkpoint and final receipt.",
+        "repair": "Merged bounded storage-path repair with installed-runtime and upgrade-cycle CI coverage.",
+        "remaining_gate": "Run the repaired installer over the original physical installation and require the default Studio cycle to complete with checkpoint and final receipt."
       },
       "authority_boundary": "Owns desktop packaging, placement, launchers, upgrade/removal behavior, and installer lifecycle receipts. It does not alter runtime governance, canon, capability authority, identity, or primary continuity truth."
     },
@@ -159,10 +174,16 @@
       "status": "public-claim-surface",
       "default_wiring": false,
       "paths": [
-        "lumina.html"
+        "index.html",
+        "lumina.html",
+        "how-lumina-works.html",
+        "build.html",
+        "continuity.html",
+        "updates.html",
+        "sitemap.xml"
       ],
       "validation_paths": [],
-      "authority_boundary": "Communicates current project status. It must remain subordinate to executable behavior, registries, validation receipts, and distribution evidence."
+      "authority_boundary": "Communicates current project status and plain-language architecture. It must remain subordinate to executable behavior, registries, validation receipts, and distribution evidence."
     }
   ],
   "claim_markers": {
@@ -178,7 +199,20 @@
     ],
     "lumina.html": [
       "installable unsigned Windows developer preview",
-      "signed, ordinary-user public release"
+      "signed, ordinary-user public release",
+      "Physical Windows sea trial"
+    ],
+    "how-lumina-works.html": [
+      "Return → govern → witness → correlate → record.",
+      "Bridge orients",
+      "Studio requests",
+      "Runtime governs",
+      "Receipts record",
+      "Continuity without overclaiming"
+    ],
+    "updates.html": [
+      "First physical Windows sea trial reached the governed runtime",
+      "Installer CI now executes real governed Studio cycles"
     ],
     "docs/ARTIFACT_TRUTH_CONTRACT.md": [
       "ACTIVE_SURFACE_REGISTRY_R1.json",
