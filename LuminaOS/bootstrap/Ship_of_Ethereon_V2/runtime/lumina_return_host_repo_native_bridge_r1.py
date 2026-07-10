@@ -1,6 +1,10 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
+from hashlib import sha256
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+import json
 
 try:
     from .project_return_repo_native_r1 import ProjectReturnStore
@@ -10,16 +14,57 @@ except Exception:
     from workspace_host_repo_native_r1 import WorkspaceHostStore
 
 
+PATH_BUDGET = 240
+RESERVED_CHILD_PATH = 96
+COMPACT_NAMESPACE = "return_host"
+
+
+def _digest_token(value: str, length: int = 16) -> str:
+    return sha256(value.encode("utf-8")).hexdigest()[:length]
+
+
+def bounded_storage_root(base_dir: str | Path) -> Path:
+    """Return a deterministic physical root with room for child artifacts.
+
+    Runtime callers may supply a semantically useful namespace containing full
+    session IDs and action labels. Those values remain in receipts, but when the
+    projected child path would exceed the portable budget the physical storage
+    root is compacted beneath the runtime owner directory.
+    """
+
+    requested = Path(base_dir)
+    if len(str(requested)) + RESERVED_CHILD_PATH <= PATH_BUDGET:
+        return requested
+
+    anchor = requested
+    while anchor.parent != anchor and anchor.name != "lumina_return_host_artifacts":
+        anchor = anchor.parent
+    owner_root = anchor.parent if anchor.name == "lumina_return_host_artifacts" else requested.parent
+    return owner_root / COMPACT_NAMESPACE / _digest_token(str(requested))
+
+
+def _checkpoint_storage_label(label: str) -> str:
+    return f"checkpoint-{_digest_token(label)}"
+
+
 @dataclass
 class HostSnapshot:
     snapshot_id: str
 
 
 class ContinuityRestoreStore:
-    """Compatibility bridge that presents the older spike-facing API over the repo-native project return store."""
+    """Compatibility bridge over the repo-native project return store.
+
+    Full semantic identifiers remain inside JSON payloads. Physical storage may
+    use a compact deterministic root and compact checkpoint filename so an
+    installed Windows prefix cannot exhaust the filesystem path budget.
+    """
 
     def __init__(self, base_dir: str | Path):
-        self._store = ProjectReturnStore(base_dir)
+        self.requested_base_dir = Path(base_dir)
+        self.storage_base_dir = bounded_storage_root(self.requested_base_dir)
+        self.storage_root_compacted = self.storage_base_dir != self.requested_base_dir
+        self._store = ProjectReturnStore(self.storage_base_dir)
 
     def create_session(
         self,
@@ -42,17 +87,41 @@ class ContinuityRestoreStore:
         self._store.save_session(session)
 
     def write_checkpoint(self, session_id: str, label: str):
-        return self._store.write_checkpoint(session_id, label)
+        storage_label = _checkpoint_storage_label(label)
+        path = self._store.write_checkpoint(session_id, storage_label)
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        payload["checkpoint_label"] = label
+        payload["storage_label"] = storage_label
+        path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+        return path
 
     def project_return_payload(self, project_id: str) -> dict:
-        return self._store.project_return_payload(project_id)
+        payload = self._store.project_return_payload(project_id)
+        local_host_bundle = self.storage_base_dir / "host_bundles" / f"{WorkspaceHostStore._safe_slug(project_id)}.json"
+        if local_host_bundle.exists():
+            host_bundle = json.loads(local_host_bundle.read_text(encoding="utf-8"))
+            payload["host_bundle"] = host_bundle
+            payload["return_strategy"] = "checkpoint_plus_host"
+            latest_restore = payload.get("latest_restore")
+            if isinstance(latest_restore, dict):
+                latest_restore["linked_host_bundle"] = str(local_host_bundle)
+        payload["storage"] = {
+            "requested_base_dir": str(self.requested_base_dir),
+            "storage_base_dir": str(self.storage_base_dir),
+            "storage_root_compacted": self.storage_root_compacted,
+            "path_budget": PATH_BUDGET,
+        }
+        return payload
 
 
 class LuminaWorkspaceHost:
-    """Compatibility bridge that presents the older spike-facing host API over the repo-native workspace host store."""
+    """Compatibility bridge over the repo-native workspace host store."""
 
     def __init__(self, base_dir: str | Path):
-        self._store = WorkspaceHostStore(base_dir)
+        self.requested_base_dir = Path(base_dir)
+        self.storage_base_dir = bounded_storage_root(self.requested_base_dir)
+        self.storage_root_compacted = self.storage_base_dir != self.requested_base_dir
+        self._store = WorkspaceHostStore(self.storage_base_dir)
 
     def create_host_session(
         self,
@@ -159,4 +228,11 @@ class LuminaWorkspaceHost:
     def emit_host_bundle(self, project_id: str) -> dict:
         path = self._store._bundle_path(project_id)
         with path.open("r", encoding="utf-8") as f:
-            return __import__("json").load(f)
+            payload = json.load(f)
+        payload["storage"] = {
+            "requested_base_dir": str(self.requested_base_dir),
+            "storage_base_dir": str(self.storage_base_dir),
+            "storage_root_compacted": self.storage_root_compacted,
+            "path_budget": PATH_BUDGET,
+        }
+        return payload
