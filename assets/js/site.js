@@ -59,10 +59,36 @@ const installDrydockStyles = () => {
       flex-wrap: wrap;
       gap: 0.45rem;
     }
+    .header-how-link {
+      color: var(--text);
+      text-decoration: none;
+      white-space: nowrap;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.42rem 0.72rem;
+      border-radius: 999px;
+      border: 1px solid rgba(126,240,209,0.28);
+      background: rgba(126,240,209,0.07);
+      box-shadow: inset 0 0 0 1px rgba(138,164,255,0.06);
+      transition: transform 160ms ease, box-shadow 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+    .header-how-link:hover,
+    .header-how-link[aria-current="page"] {
+      transform: translateY(-1px);
+      border-color: rgba(126,240,209,0.55);
+      background: rgba(126,240,209,0.12);
+      box-shadow: 0 0 18px rgba(126,240,209,0.10);
+    }
     @media (max-width: 760px) {
       .footer-year { justify-self: start; font-size: 0.78rem; }
       .footer-brand-link { font-size: 0.78rem; letter-spacing: 0.09em; }
       .footer-tagline { font-size: 0.78rem; line-height: 1.42; max-width: 32ch; }
+      .header-how-link { font-size: 0.72rem; padding: 0.38rem 0.58rem; }
     }
   `;
   document.head.appendChild(style);
@@ -86,8 +112,26 @@ const enhancePrimaryNav = () => {
   });
 };
 
+const enhanceHeaderActions = () => {
+  const current = normalizePath(window.location.href);
+  document.querySelectorAll('.site-header .header-actions').forEach((actions) => {
+    if (actions.querySelector('[data-how-lumina-link]')) return;
+    const link = document.createElement('a');
+    link.href = 'how-lumina-works.html';
+    link.className = 'header-how-link ping-target';
+    link.setAttribute('data-how-lumina-link', '');
+    link.setAttribute('aria-label', 'How Lumina actually works');
+    link.textContent = 'How it works';
+    if (current === 'how-lumina-works.html') link.setAttribute('aria-current', 'page');
+    const soundButton = actions.querySelector('[data-sound-toggle]');
+    if (soundButton) actions.insertBefore(link, soundButton);
+    else actions.appendChild(link);
+  });
+};
+
 const secondaryFooterLinks = () => {
   const fallbackFooterLinks = [
+    ['how-lumina-works.html', 'How Lumina works'],
     ['principles.html', 'Principles'],
     ['realm.html', 'Realm'],
     ['lumina-dashboard.html', 'Dashboard'],
@@ -191,6 +235,7 @@ const enhanceSite = () => {
   installDrydockStyles();
   loadBrandSigil();
   enhancePrimaryNav();
+  enhanceHeaderActions();
   normalizeLegacyExploreLabels();
   enhanceFooter();
 
