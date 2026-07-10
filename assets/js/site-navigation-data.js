@@ -13,6 +13,7 @@ window.ETHEREON_SITE_NAVIGATION = {
     ['explore.html', 'Research']
   ],
   secondaryFooter: [
+    ['how-lumina-works.html', 'How Lumina works'],
     ['principles.html', 'Principles'],
     ['realm.html', 'Realm'],
     ['lumina-dashboard.html', 'Dashboard'],
