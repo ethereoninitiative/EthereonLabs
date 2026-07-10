@@ -13,13 +13,16 @@ import traceback
 
 TRIAL_ID = "lumina-desktop-setup-lifecycle-r1"
 AUTHORITY_BOUNDARY = (
-    "The setup lifecycle trial verifies Windows desktop packaging, upgrade, "
-    "uninstall, and state preservation only; it does not alter runtime "
-    "governance, canon, mode legality, capability authority, identity, or "
-    "primary continuity truth."
+    "The setup lifecycle trial verifies Windows desktop packaging, installed "
+    "Studio execution, upgrade, uninstall, and state preservation only; it does "
+    "not alter runtime governance, canon, mode legality, capability authority, "
+    "identity, or primary continuity truth."
 )
 CONTINUITY_MARKER_TEXT = "continuity-held"
 LAUNCHABLE_SUFFIXES = {".bat", ".cmd", ".exe", ".ps1", ".py"}
+STUDIO_PROMPT = "Review Lumina OS progress and produce the next governed action receipt."
+STUDIO_PROJECT_ID = "lumina-os"
+STUDIO_ACTION = "studio_runtime_cycle_v0_3_2"
 
 
 def run_checked(command: list[str]) -> None:
@@ -28,6 +31,30 @@ def run_checked(command: list[str]) -> None:
         raise RuntimeError(
             f"command failed with exit code {completed.returncode}: {command[0]}"
         )
+
+
+def run_json_checked(command: list[str]) -> dict[str, object]:
+    completed = subprocess.run(
+        command,
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+    if completed.returncode:
+        detail = completed.stderr.strip() or completed.stdout.strip()
+        raise RuntimeError(
+            f"command failed with exit code {completed.returncode}: {command[0]}: {detail}"
+        )
+    try:
+        payload = json.loads(completed.stdout)
+    except Exception as exc:
+        raise RuntimeError(
+            f"command did not emit a JSON object: {command[0]}: {completed.stdout[-1200:]}"
+        ) from exc
+    if not isinstance(payload, dict):
+        raise RuntimeError(f"command emitted non-object JSON: {command[0]}")
+    return payload
 
 
 def run_cmd(path: Path, *arguments: str) -> None:
@@ -80,6 +107,73 @@ def assert_marker_text(marker: Path, failure: str) -> None:
         raise RuntimeError(failure)
     if marker.read_text(encoding="utf-8").strip() != CONTINUITY_MARKER_TEXT:
         raise RuntimeError(failure)
+
+
+def validate_installed_studio_cycle(
+    *,
+    python_executable: Path,
+    app_payload_root: Path,
+    action: str,
+) -> dict[str, object]:
+    studio_cli = (
+        app_payload_root
+        / "LuminaOS"
+        / "bootstrap"
+        / "Ship_of_Ethereon_V2"
+        / "studio"
+        / "lumina_cli.py"
+    )
+    if not studio_cli.is_file():
+        raise RuntimeError(f"installed Studio CLI is missing: {studio_cli}")
+
+    receipt = run_json_checked(
+        [
+            str(python_executable),
+            str(studio_cli),
+            STUDIO_PROMPT,
+            "--current-mode",
+            "Continuity",
+            "--target-mode",
+            "Observation",
+            "--action-type",
+            "audit",
+            "--action",
+            action,
+            "--project-id",
+            STUDIO_PROJECT_ID,
+            "--focus",
+            "continuity",
+            "--depth",
+            "structural",
+            "--intent",
+            "verify",
+            "--receipt-json",
+        ]
+    )
+
+    if receipt.get("halted") is not False:
+        raise RuntimeError(f"installed Studio cycle halted: {receipt.get('halt_reason')}")
+    if receipt.get("governance_chain_valid") is not True:
+        raise RuntimeError("installed Studio cycle did not return a valid governance chain")
+    if receipt.get("lumina_project_id") != STUDIO_PROJECT_ID:
+        raise RuntimeError("installed Studio cycle did not preserve the requested project ID")
+
+    checkpoint_path = Path(str(receipt.get("checkpoint_path", "")))
+    log_path = Path(str(receipt.get("log_path", "")))
+    if not checkpoint_path.is_file():
+        raise RuntimeError(f"installed Studio cycle checkpoint is missing: {checkpoint_path}")
+    if not log_path.is_file():
+        raise RuntimeError(f"installed Studio cycle receipt is missing: {log_path}")
+
+    capabilities = set(receipt.get("exposed_capability_ids") or [])
+    required_capabilities = {"continuity_restore_store", "lumina_workspace_host"}
+    if not required_capabilities.issubset(capabilities):
+        raise RuntimeError(
+            "installed Studio cycle did not expose the return/host capabilities: "
+            + ", ".join(sorted(required_capabilities - capabilities))
+        )
+
+    return receipt
 
 
 def assert_replaceable_machinery_removed_or_inactive(install_root: Path) -> None:
@@ -157,11 +251,14 @@ def main() -> int:
         "trial_id": TRIAL_ID,
         "passed": False,
         "install_validated": False,
+        "studio_cycle_validated": False,
         "upgrade_validated": False,
+        "studio_upgrade_cycle_validated": False,
         "uninstall_validated": False,
         "state_preserved_on_upgrade": False,
         "state_preserved_on_uninstall": False,
         "replaceable_machinery_removed_or_inactive": False,
+        "studio_cycle_receipts": {},
         "signed": None,
         "installer_sha256": installer_sha256,
         "install_root": str(install_root),
@@ -193,6 +290,7 @@ def main() -> int:
         lumina = install_root / "bin" / "lumina.cmd"
         bridge = install_root / "bin" / "lumina-bridge.cmd"
         python_executable = install_root / "runtime" / "python" / "python.exe"
+        app_payload_root = install_root / "app" / "EthereonLabs"
         if not lumina.is_file() or not bridge.is_file() or not python_executable.is_file():
             raise RuntimeError("required installed launch surfaces are missing")
 
@@ -201,6 +299,14 @@ def main() -> int:
         run_cmd(lumina, "session", "create", "Installer Session", "--open", "--json")
         run_cmd(bridge, "--help")
         lifecycle_receipt["install_validated"] = True
+
+        install_studio_receipt = validate_installed_studio_cycle(
+            python_executable=python_executable,
+            app_payload_root=app_payload_root,
+            action=STUDIO_ACTION,
+        )
+        lifecycle_receipt["studio_cycle_receipts"]["install"] = install_studio_receipt
+        lifecycle_receipt["studio_cycle_validated"] = True
 
         marker = (
             install_root
@@ -217,6 +323,14 @@ def main() -> int:
         run_cmd(lumina, "project", "active", "--json")
         run_cmd(lumina, "session", "active", "--json")
         lifecycle_receipt["upgrade_validated"] = True
+
+        upgrade_studio_receipt = validate_installed_studio_cycle(
+            python_executable=python_executable,
+            app_payload_root=app_payload_root,
+            action=f"{STUDIO_ACTION}_upgrade",
+        )
+        lifecycle_receipt["studio_cycle_receipts"]["upgrade"] = upgrade_studio_receipt
+        lifecycle_receipt["studio_upgrade_cycle_validated"] = True
 
         uninstaller = find_inno_uninstaller(install_root)
         run_checked([str(uninstaller), *silent, f"/LOG={uninstall_log}"])
