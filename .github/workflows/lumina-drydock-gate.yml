@@ -64,6 +64,8 @@ jobs:
         working-directory: LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime
         run: |
           python sea_trials_set_one_r1_merged.py
+          python sea_trials_lumina_return_host_r1.py
+          python sea_trials_windows_return_host_path_budget_r1.py
           python sea_trials_resonant_manifold_r1.py
           python sea_trials_resonant_field_reveal_r1.py
           python sea_trials_resonant_field_reveal_sample_r1.py
