@@ -3,6 +3,7 @@ name: Lumina Windows Installer R1
 on:
   pull_request:
     paths:
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/**"
       - "deploy/windows_desktop_r1/**"
       - "docs/LUMINA_WINDOWS_GRAPHICAL_INSTALLER_R1.md"
       - "docs/ACTIVE_SURFACE_REGISTRY_R1.json"
@@ -11,6 +12,7 @@ on:
     branches:
       - "main"
     paths:
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/**"
       - "deploy/windows_desktop_r1/**"
       - "docs/LUMINA_WINDOWS_GRAPHICAL_INSTALLER_R1.md"
       - "docs/ACTIVE_SURFACE_REGISTRY_R1.json"
