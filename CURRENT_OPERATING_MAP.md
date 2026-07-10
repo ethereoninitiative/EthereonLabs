@@ -16,6 +16,7 @@ This file gives a fast map of the current EthereonLabs lanes.
 | Lumina orchestration | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/lumina_*` | Context loading and action routing |
 | Lumina deployment appliance | `deploy/ubuntu_server_lts/`, `docs/DEPLOYMENT_*` | Ubuntu Server appliance scaffold and deployment keel guardrails |
 | Lumina Windows desktop preview | `deploy/windows_desktop_r1/`, `docs/LUMINA_WINDOWS_*` | Unsigned Windows 11 developer-preview distribution with embedded runtime and upgrade-continuity validation |
+| Public Lumina mechanism explainer | `how-lumina-works.html` | Plain-language path from operator request through governed cycle, checkpoint, and receipt |
 | Active surface truth registry | `docs/ACTIVE_SURFACE_REGISTRY_R1.json`, `scripts/repository_truth_reconciliation_gate_r1.py` | Machine-readable lane status and executable cross-surface drift detection |
 | Advisory reflection and self-guidance adapters | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/runtime_runner_self_guided_bridge_r1.py`, `runtime/runtime_runner_reflective_self_guided_bridge_r1.py` | Explicit optional adapters layered around governed return/host cycles |
 | Meaning Metabolism experiment | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/lumina_meaning_metabolism_layer_r1.py` | Standalone advisory assimilation layer; validated but not wired into the default host entrypoint |
@@ -46,6 +47,8 @@ return -> govern -> witness -> correlate -> record
 ```
 
 This path is implemented through `bin/lumina`, `studio/lumina_cli_psi42_v18.py`, `runtime/runtime_runner_psi42_v18_adapter_r1.py`, and the core `runtime/runtime_runner_r1_merged.py`.
+
+The public explanation of this mechanism is `how-lumina-works.html`. That page communicates the runtime shape but does not create runtime authority.
 
 ## Optional advisory adapter path
 
@@ -93,6 +96,7 @@ verified release payload -> unsigned installer -> local state-preserving launch 
 
 - New human reader: `START_HERE_HUMANS.md`
 - Lumina OS work: `START_HERE_LUMINA_OS.md`
+- Plain-language Lumina mechanism: `how-lumina-works.html`
 - Local Bridge surface: `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Lumina_Bridge_R1.md`
 - Lumina habitat roadmap: `docs/LUMINA_HABITAT_CREATION_CHECKLIST.md`
 - Active Lumina file ownership: `LuminaOS/bootstrap/Ship_of_Ethereon_V2/ACTIVE_RUNTIME_INDEX.md`
@@ -114,6 +118,7 @@ verified release payload -> unsigned installer -> local state-preserving launch 
 - The Windows installer owns packaging, placement, launchers, and validated upgrade behavior; it does not alter runtime governance, canon, capability authority, identity, or primary continuity truth.
 - An unsigned developer preview is installable but is not a signed ordinary-user public release.
 - The active-surface registry describes evidence relationships; it does not create authority.
+- The public mechanism explainer communicates current architecture; it does not define or authorize runtime behavior.
 - Bridge is a read-only orientation surface; it does not authorize actions or outrank runtime truth.
 - Studio is the explicit local operator action surface; runtime governance still decides legality.
 - Reflection and self-guidance are advisory and adapter-scoped unless a future validated change deliberately promotes their wiring.
