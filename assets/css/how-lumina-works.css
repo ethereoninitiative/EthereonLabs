@@ -1,0 +1,140 @@
+.cycle-section {
+  scroll-margin-top: 7rem;
+  padding-top: 1.8rem;
+}
+
+.cycle-intro {
+  margin-bottom: 1.75rem;
+}
+
+.cycle-intro .section-copy {
+  margin-bottom: 0;
+}
+
+.cycle-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cycle-stage {
+  position: relative;
+  min-height: 100%;
+  padding: 1.55rem 1.6rem 1.65rem;
+  border-color: rgba(140, 170, 255, 0.16);
+  box-shadow: 0 18px 52px rgba(0, 0, 0, 0.28);
+  overflow: hidden;
+}
+
+.cycle-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(125deg, rgba(126, 240, 209, 0.035), transparent 42%);
+  opacity: 0.8;
+}
+
+.cycle-stage h3 {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.72rem;
+  margin-bottom: 0.9rem;
+  font-size: clamp(1.2rem, 2vw, 1.38rem);
+  line-height: 1.18;
+  letter-spacing: -0.015em;
+}
+
+.cycle-stage h3::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 0.52rem;
+  height: 0.52rem;
+  border-radius: 999px;
+  background: var(--accent-2);
+  box-shadow: 0 0 14px rgba(126, 240, 209, 0.46);
+}
+
+.cycle-stage p {
+  position: relative;
+  z-index: 1;
+  max-width: 56ch;
+  font-size: 1rem;
+  line-height: 1.78;
+}
+
+.cycle-stage:hover {
+  transform: translateY(-1px);
+  border-color: rgba(126, 240, 209, 0.24);
+  box-shadow: 0 22px 58px rgba(0, 0, 0, 0.32), 0 0 22px rgba(126, 240, 209, 0.04);
+}
+
+@media (max-width: 980px) {
+  .cycle-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .cycle-section {
+    scroll-margin-top: 13rem;
+    padding-top: 2rem;
+    padding-bottom: 3.35rem;
+  }
+
+  .cycle-intro {
+    margin-bottom: 1.35rem;
+  }
+
+  .cycle-intro h2 {
+    line-height: 1.08;
+  }
+
+  .cycle-intro .section-copy {
+    margin-top: 0.8rem;
+    font-size: 0.98rem;
+    line-height: 1.68;
+  }
+
+  .cycle-grid {
+    gap: 1rem;
+  }
+
+  .cycle-stage {
+    padding: 1.35rem 1.25rem 1.45rem;
+    border-radius: 24px;
+    box-shadow: 0 14px 38px rgba(0, 0, 0, 0.24);
+  }
+
+  .cycle-stage h3 {
+    gap: 0.68rem;
+    margin-bottom: 0.78rem;
+    font-size: 1.27rem;
+    line-height: 1.2;
+  }
+
+  .cycle-stage h3::before {
+    width: 0.46rem;
+    height: 0.46rem;
+  }
+
+  .cycle-stage p {
+    font-size: 1rem;
+    line-height: 1.74;
+  }
+
+  .cycle-stage:hover {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cycle-stage {
+    transition: none;
+  }
+}
