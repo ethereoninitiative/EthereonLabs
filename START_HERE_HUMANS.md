@@ -63,6 +63,14 @@ Start with:
 
 These are simulations and figure generators. They are exploratory, not authoritative.
 
+### If you want a cross-domain continuity analogy
+
+Start with:
+
+- `docs/BIOLOGICAL_CONTINUITY_NOT_GENETIC_SAMENESS_R1.md`
+
+This note uses biological continuity to clarify distinctions among inherited substrate, governed expression, accumulated state, lineage, and enacted identity. It is conceptual research—not runtime authority, medical genetics, or proof of observer continuity.
+
 ### If you want to understand the project evolution
 
 Start with:
@@ -91,6 +99,7 @@ Different parts of the repository serve different purposes.
 - Receipts = inspectable evidence of what happened
 - Chamber = public and consent-oriented interface lane
 - RSE = research
+- Biological continuity note = cross-domain conceptual analogy
 - Ψ Class = restructuring and staging path
 
 The shortest runtime sequence is:
