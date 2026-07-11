@@ -1,6 +1,7 @@
 name: Lumina DryDock Gate
 
 on:
+  workflow_dispatch:
   pull_request:
     paths:
       - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/**"
