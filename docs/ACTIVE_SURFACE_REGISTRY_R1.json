@@ -178,7 +178,10 @@
         "lumina.html",
         "how-lumina-works.html",
         "build.html",
+        "prototype.html",
+        "roadmap.html",
         "continuity.html",
+        "faq.html",
         "updates.html",
         "sitemap.xml"
       ],
@@ -209,6 +212,24 @@
       "Runtime governs",
       "Receipts record",
       "Continuity without overclaiming"
+    ],
+    "prototype.html": [
+      "unsigned Windows developer preview now packages those local surfaces with the embedded runtime",
+      "Bridge orients. Studio requests. Runtime governance decides legality. Receipts record what happened. Canon preserves promoted lineage.",
+      "The repaired package now awaits confirmation on the original physical machine.",
+      "No proof of consciousness, identity, or observer continuity"
+    ],
+    "roadmap.html": [
+      "installable unsigned Windows preview",
+      "Bridge witnesses, Studio requests, runtime governs, receipts record, and canon preserves promoted lineage.",
+      "Retest the repaired physical-PC path",
+      "Validate the Ubuntu appliance",
+      "Create a Linux installation image"
+    ],
+    "faq.html": [
+      "the repaired package still awaits confirmation on the original machine",
+      "an Ubuntu Server appliance scaffold exists, but it is not yet a complete desktop operating environment, custom Linux distribution, or kernel-level operating system",
+      "It does not claim metaphysical identity, consciousness, sovereignty, or observer continuity."
     ],
     "updates.html": [
       "First physical Windows sea trial reached the governed runtime",
