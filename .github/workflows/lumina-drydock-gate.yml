@@ -13,7 +13,8 @@ on:
       - "docs/LUMINA_WINDOWS_*.md"
       - "CURRENT_OPERATING_MAP.md"
       - "START_HERE_LUMINA_OS.md"
-      - "lumina.html"
+      - "*.html"
+      - "sitemap.xml"
       - "scripts/repository_truth_reconciliation_gate_r1.py"
       - ".github/workflows/lumina-drydock-gate.yml"
   push:
@@ -28,7 +29,8 @@ on:
       - "docs/LUMINA_WINDOWS_*.md"
       - "CURRENT_OPERATING_MAP.md"
       - "START_HERE_LUMINA_OS.md"
-      - "lumina.html"
+      - "*.html"
+      - "sitemap.xml"
       - "scripts/repository_truth_reconciliation_gate_r1.py"
       - ".github/workflows/lumina-drydock-gate.yml"
 
