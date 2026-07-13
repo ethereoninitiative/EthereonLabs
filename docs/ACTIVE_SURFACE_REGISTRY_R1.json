@@ -1,1 +1,244 @@
-{"schema_version":"ethereon-active-surface-registry-r1","purpose":"Machine-readable status map for active EthereonLabs runtime, distribution, interface, dataset, experiment, and public-claim surfaces.","authority_boundary":"This registry describes status and evidence relationships. It does not create runtime law, expose capabilities, authorize training, promote canon, or replace executable behavior and validation receipts.","truth_order":["executable_behavior","declared_capability_or_distribution_contract","validation_and_reproducibility_receipts","active_surface_registry_and_navigation","public_site_claims"],"surfaces":[{"surface_id":"lumina_runtime_substrate","name":"Lumina governed runtime substrate","status":"active","default_wiring":true,"paths":["LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/runtime_runner_r1_merged.py","LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/capability_registry_r1.json","LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina"],"validation_paths":["LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_set_one_r1_merged.py",".github/workflows/lumina-drydock-gate.yml"],"authority_boundary":"Owns governed runtime execution under mode, mutation, promotion, capability, checkpoint, and receipt boundaries."},{"surface_id":"lumina_bridge_r2","name":"Lumina Bridge R2","status":"active-read-only","default_wiring":false,"paths":["LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina-bridge","LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_bridge_server_r2.py","LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_bridge_field_r1.py"],"validation_paths":["LuminaOS/bootstrap/Ship_of_Ethereon_V2/sea_trials_lumina_bridge_r1.py","LuminaOS/bootstrap/Ship_of_Ethereon_V2/sea_trials_lumina_bridge_field_r1.py"],"authority_boundary":"Witnesses and displays verified position and committed field evidence. It does not authorize or execute mutating work."},{"surface_id":"lumina_ubuntu_appliance","name":"Lumina Ubuntu Server appliance scaffold","status":"scaffold","default_wiring":false,"paths":["deploy/ubuntu_server_lts/README.md","deploy/ubuntu_server_lts/deployment_doctor_r1.py","deploy/ubuntu_server_lts/lumina-orchestrator.service"],"validation_paths":["docs/DEPLOYMENT_DRYDOCK_CHECKLIST.md","docs/DEPLOYMENT_RUNTIME_RECEIPT_CONTRACT.md"],"authority_boundary":"Hosts the governed Lumina service stack on Ubuntu Server LTS. It is not a custom kernel or sovereign always-on process."},{"surface_id":"lumina_windows_desktop_r1","name":"Lumina Windows Desktop Beta R1","status":"developer-preview","default_wiring":false,"installable":true,"signed":false,"target":"Windows 11 current-user installation","paths":["deploy/windows_desktop_r1/LuminaDesktopBetaR1.iss","deploy/windows_desktop_r1/build_lumina_windows_installer_r1.py","deploy/windows_desktop_r1/verify_lumina_desktop_setup_r1.py","docs/LUMINA_WINDOWS_GRAPHICAL_INSTALLER_R1.md"],"validation_paths":[".github/workflows/lumina-windows-installer-r1.yml","LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_windows_return_host_path_budget_r1.py"],"lifecycle_receipt":{"artifact_name":"LuminaDesktopBetaR1-Setup-lifecycle-receipt.json","emitted_by":"deploy/windows_desktop_r1/verify_lumina_desktop_setup_r1.py","required_fields":["install_validated","studio_cycle_validated","upgrade_validated","studio_upgrade_cycle_validated","uninstall_validated","state_preserved_on_upgrade","state_preserved_on_uninstall","signed","installer_sha256","authority_boundary"],"truth_scope":"Hosted Windows installer lifecycle evidence, including installed governed Studio cycles before and after upgrade. It is not a signed release, public-readiness claim, SmartScreen claim, physical-PC repair-retest claim, runtime governance claim, canon claim, mode-legality claim, capability-authority claim, identity claim, or primary continuity claim."},"physical_trial_status":{"status":"repair-awaiting-retest","verified":["Bridge R2 launched on physical Windows 11 hardware","Studio v0.3.2 launched on physical Windows 11 hardware","read-only state and governance APIs responded","governed cycle reached capability exposure"],"finding":"The first physical cycle exposed an unbounded return/host artifact path and stopped before checkpoint and final receipt.","repair":"Merged bounded storage-path repair with installed-runtime and upgrade-cycle CI coverage.","remaining_gate":"Run the repaired installer over the original physical installation and require the default Studio cycle to complete with checkpoint and final receipt."},"authority_boundary":"Owns desktop packaging, placement, launchers, upgrade/removal behavior, and installer lifecycle receipts. It does not alter runtime governance, canon, capability authority, identity, or primary continuity truth."},{"surface_id":"chamber_public_surface","name":"Chamber public and app lane","status":"parallel-public-surface","default_wiring":false,"paths":["chamber.html","chamber-app"],"validation_paths":[],"authority_boundary":"Provides public and consent-oriented interface surfaces. It is not the governed runtime substrate."},{"surface_id":"hra_training_dataset_v0_1","name":"Harmonic Reflection Adapter training dataset artifact","status":"dataset-artifact","default_wiring":false,"training_ready":false,"training_authorized":false,"paths":["LuminaOS/adapters/harmonic_reflection_adapter/examples/build_hra_training_dataset_v0_1.py","LuminaOS/adapters/harmonic_reflection_adapter/examples/hra_training_dataset_v0_1.jsonl","LuminaOS/adapters/harmonic_reflection_adapter/examples/hra_training_dataset_creation_receipt_v0_1.json","LuminaOS/adapters/harmonic_reflection_adapter/examples/hra_training_dataset_generation_runbook_v0_1.md"],"validation_paths":[],"reproducibility":{"working_directory":"LuminaOS/adapters/harmonic_reflection_adapter/examples","generator":"build_hra_training_dataset_v0_1.py","generated_artifacts":["hra_training_dataset_v0_1.jsonl","hra_training_dataset_creation_receipt_v0_1.json"]},"receipt_contract":{"safety_boundary_fields_verified":true,"record_id_uniqueness_verified":true,"semantic_privacy_scan_performed":false,"near_duplicate_content_scan_performed":false,"training_authorized":false},"forbidden_receipt_keys":["privacy_hidden_reasoning_check_passed","duplicate_overfitting_check_passed"],"authority_boundary":"Creates a bounded dataset artifact and receipt only. It does not authorize training or create runtime, governance, canon, memory, mode-legality, or capability authority."},{"surface_id":"resonant_field_reveal_sample_0001","name":"Committed Resonant Field Reveal sample 0001","status":"bounded-experiment","default_wiring":false,"paths":["LuminaOS/bootstrap/Ship_of_Ethereon_V2/artifacts/resonant_field_reveal/sample_0001","LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/resonant_field_reveal_sample_r1.py"],"validation_paths":["LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_resonant_field_reveal_sample_r1.py"],"authority_boundary":"Demonstrates deterministic artifact return and bounded trajectory visualization. It does not establish identity, literal magnetism, runtime law, or observer continuity."},{"surface_id":"ethereon_public_site","name":"EthereonLabs public claim surface","status":"public-claim-surface","default_wiring":false,"paths":["index.html","lumina.html","how-lumina-works.html","build.html","prototype.html","roadmap.html","continuity.html","faq.html","updates.html","sitemap.xml"],"validation_paths":[],"authority_boundary":"Communicates current project status and plain-language architecture. It must remain subordinate to executable behavior, registries, validation receipts, and distribution evidence."}],"claim_markers":{"CURRENT_OPERATING_MAP.md":["deploy/windows_desktop_r1/","docs/ACTIVE_SURFACE_REGISTRY_R1.json","scripts/repository_truth_reconciliation_gate_r1.py"],"START_HERE_LUMINA_OS.md":["deploy/windows_desktop_r1/","unsigned Windows developer preview","docs/ACTIVE_SURFACE_REGISTRY_R1.json"],"lumina.html":["installable unsigned Windows developer preview","signed, ordinary-user public release","Physical Windows sea trial"],"how-lumina-works.html":["Return → govern → witness → correlate → record.","Bridge orients","Studio requests","Runtime governs","Receipts record","Continuity without overclaiming"],"prototype.html":["unsigned Windows developer preview now packages those local surfaces with the embedded runtime","Bridge orients. Studio requests. Runtime governance decides legality. Receipts record what happened. Canon preserves promoted lineage.","The repaired package now awaits confirmation on the original physical machine.","No proof of consciousness, identity, or observer continuity"],"roadmap.html":["installable unsigned Windows preview","Bridge witnesses, Studio requests, runtime governs, receipts record, and canon preserves promoted lineage.","Retest the repaired physical-PC path","Validate the Ubuntu appliance","Create a Linux installation image"],"faq.html":["the repaired package still awaits confirmation on the original machine","an Ubuntu Server appliance scaffold exists, but it is not yet a complete desktop operating environment, custom Linux distribution, or kernel-level operating system","It does not claim metaphysical identity, consciousness, sovereignty, or observer continuity."],"updates.html":["First physical Windows sea trial reached the governed runtime","Installer CI now executes real governed Studio cycles"],"docs/ARTIFACT_TRUTH_CONTRACT.md":["ACTIVE_SURFACE_REGISTRY_R1.json","repository_truth_reconciliation_gate_r1.py","Generated artifacts"]}}
+{
+  "schema_version": "ethereon-active-surface-registry-r1",
+  "purpose": "Machine-readable status map for active EthereonLabs runtime, distribution, interface, dataset, experiment, and public-claim surfaces.",
+  "authority_boundary": "This registry describes status and evidence relationships. It does not create runtime law, expose capabilities, authorize training, promote canon, or replace executable behavior and validation receipts.",
+  "truth_order": [
+    "executable_behavior",
+    "declared_capability_or_distribution_contract",
+    "validation_and_reproducibility_receipts",
+    "active_surface_registry_and_navigation",
+    "public_site_claims"
+  ],
+  "surfaces": [
+    {
+      "surface_id": "lumina_runtime_substrate",
+      "name": "Lumina governed runtime substrate",
+      "status": "active",
+      "default_wiring": true,
+      "paths": [
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/runtime_runner_r1_merged.py",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/capability_registry_r1.json",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina"
+      ],
+      "validation_paths": [
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_set_one_r1_merged.py",
+        ".github/workflows/lumina-drydock-gate.yml"
+      ],
+      "authority_boundary": "Owns governed runtime execution under mode, mutation, promotion, capability, checkpoint, and receipt boundaries."
+    },
+    {
+      "surface_id": "lumina_bridge_r2",
+      "name": "Lumina Bridge R2",
+      "status": "active-read-only",
+      "default_wiring": false,
+      "paths": [
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina-bridge",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_bridge_server_r2.py",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_bridge_field_r1.py"
+      ],
+      "validation_paths": [
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/sea_trials_lumina_bridge_r1.py",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/sea_trials_lumina_bridge_field_r1.py"
+      ],
+      "authority_boundary": "Witnesses and displays verified position and committed field evidence. It does not authorize or execute mutating work."
+    },
+    {
+      "surface_id": "lumina_ubuntu_appliance",
+      "name": "Lumina Ubuntu Server appliance scaffold",
+      "status": "scaffold",
+      "default_wiring": false,
+      "paths": [
+        "deploy/ubuntu_server_lts/README.md",
+        "deploy/ubuntu_server_lts/deployment_doctor_r1.py",
+        "deploy/ubuntu_server_lts/lumina-orchestrator.service"
+      ],
+      "validation_paths": [
+        "docs/DEPLOYMENT_DRYDOCK_CHECKLIST.md",
+        "docs/DEPLOYMENT_RUNTIME_RECEIPT_CONTRACT.md"
+      ],
+      "authority_boundary": "Hosts the governed Lumina service stack on Ubuntu Server LTS. It is not a custom kernel or sovereign always-on process."
+    },
+    {
+      "surface_id": "lumina_windows_desktop_r1",
+      "name": "Lumina Windows Desktop Beta R1",
+      "status": "developer-preview",
+      "default_wiring": false,
+      "installable": true,
+      "signed": false,
+      "target": "Windows 11 current-user installation",
+      "paths": [
+        "deploy/windows_desktop_r1/LuminaDesktopBetaR1.iss",
+        "deploy/windows_desktop_r1/build_lumina_windows_installer_r1.py",
+        "deploy/windows_desktop_r1/verify_lumina_desktop_setup_r1.py",
+        "docs/LUMINA_WINDOWS_GRAPHICAL_INSTALLER_R1.md"
+      ],
+      "validation_paths": [
+        ".github/workflows/lumina-windows-installer-r1.yml",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_windows_return_host_path_budget_r1.py"
+      ],
+      "lifecycle_receipt": {
+        "artifact_name": "LuminaDesktopBetaR1-Setup-lifecycle-receipt.json",
+        "emitted_by": "deploy/windows_desktop_r1/verify_lumina_desktop_setup_r1.py",
+        "required_fields": [
+          "install_validated",
+          "studio_cycle_validated",
+          "upgrade_validated",
+          "studio_upgrade_cycle_validated",
+          "uninstall_validated",
+          "state_preserved_on_upgrade",
+          "state_preserved_on_uninstall",
+          "signed",
+          "installer_sha256",
+          "authority_boundary"
+        ],
+        "truth_scope": "Hosted Windows installer lifecycle evidence, including installed governed Studio cycles before and after upgrade. It is not a signed release, public-readiness claim, SmartScreen claim, physical-PC repair-retest claim, runtime governance claim, canon claim, mode-legality claim, capability-authority claim, identity claim, or primary continuity claim."
+      },
+      "physical_trial_status": {
+        "status": "repair-awaiting-retest",
+        "verified": [
+          "Bridge R2 launched on physical Windows 11 hardware",
+          "Studio v0.3.2 launched on physical Windows 11 hardware",
+          "read-only state and governance APIs responded",
+          "governed cycle reached capability exposure"
+        ],
+        "finding": "The first physical cycle exposed an unbounded return/host artifact path and stopped before checkpoint and final receipt.",
+        "repair": "Merged bounded storage-path repair with installed-runtime and upgrade-cycle CI coverage.",
+        "remaining_gate": "Run the repaired installer over the original physical installation and require the default Studio cycle to complete with checkpoint and final receipt."
+      },
+      "authority_boundary": "Owns desktop packaging, placement, launchers, upgrade/removal behavior, and installer lifecycle receipts. It does not alter runtime governance, canon, capability authority, identity, or primary continuity truth."
+    },
+    {
+      "surface_id": "chamber_public_surface",
+      "name": "Chamber public and app lane",
+      "status": "parallel-public-surface",
+      "default_wiring": false,
+      "paths": [
+        "chamber.html",
+        "chamber-app"
+      ],
+      "validation_paths": [],
+      "authority_boundary": "Provides public and consent-oriented interface surfaces. It is not the governed runtime substrate."
+    },
+    {
+      "surface_id": "hra_training_dataset_v0_1",
+      "name": "Harmonic Reflection Adapter training dataset artifact",
+      "status": "dataset-artifact",
+      "default_wiring": false,
+      "training_ready": false,
+      "training_authorized": false,
+      "paths": [
+        "LuminaOS/adapters/harmonic_reflection_adapter/examples/build_hra_training_dataset_v0_1.py",
+        "LuminaOS/adapters/harmonic_reflection_adapter/examples/hra_training_dataset_v0_1.jsonl",
+        "LuminaOS/adapters/harmonic_reflection_adapter/examples/hra_training_dataset_creation_receipt_v0_1.json",
+        "LuminaOS/adapters/harmonic_reflection_adapter/examples/hra_training_dataset_generation_runbook_v0_1.md"
+      ],
+      "validation_paths": [],
+      "reproducibility": {
+        "working_directory": "LuminaOS/adapters/harmonic_reflection_adapter/examples",
+        "generator": "build_hra_training_dataset_v0_1.py",
+        "generated_artifacts": [
+          "hra_training_dataset_v0_1.jsonl",
+          "hra_training_dataset_creation_receipt_v0_1.json"
+        ]
+      },
+      "receipt_contract": {
+        "safety_boundary_fields_verified": true,
+        "record_id_uniqueness_verified": true,
+        "semantic_privacy_scan_performed": false,
+        "near_duplicate_content_scan_performed": false,
+        "training_authorized": false
+      },
+      "forbidden_receipt_keys": [
+        "privacy_hidden_reasoning_check_passed",
+        "duplicate_overfitting_check_passed"
+      ],
+      "authority_boundary": "Creates a bounded dataset artifact and receipt only. It does not authorize training or create runtime, governance, canon, memory, mode-legality, or capability authority."
+    },
+    {
+      "surface_id": "resonant_field_reveal_sample_0001",
+      "name": "Committed Resonant Field Reveal sample 0001",
+      "status": "bounded-experiment",
+      "default_wiring": false,
+      "paths": [
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/artifacts/resonant_field_reveal/sample_0001",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/resonant_field_reveal_sample_r1.py"
+      ],
+      "validation_paths": [
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_resonant_field_reveal_sample_r1.py"
+      ],
+      "authority_boundary": "Demonstrates deterministic artifact return and bounded trajectory visualization. It does not establish identity, literal magnetism, runtime law, or observer continuity."
+    },
+    {
+      "surface_id": "ethereon_public_site",
+      "name": "EthereonLabs public claim surface",
+      "status": "public-claim-surface",
+      "default_wiring": false,
+      "paths": [
+        "index.html",
+        "lumina.html",
+        "how-lumina-works.html",
+        "build.html",
+        "prototype.html",
+        "roadmap.html",
+        "continuity.html",
+        "faq.html",
+        "updates.html",
+        "sitemap.xml"
+      ],
+      "validation_paths": [],
+      "authority_boundary": "Communicates current project status and plain-language architecture. It must remain subordinate to executable behavior, registries, validation receipts, and distribution evidence."
+    }
+  ],
+  "claim_markers": {
+    "CURRENT_OPERATING_MAP.md": [
+      "deploy/windows_desktop_r1/",
+      "docs/ACTIVE_SURFACE_REGISTRY_R1.json",
+      "scripts/repository_truth_reconciliation_gate_r1.py"
+    ],
+    "START_HERE_LUMINA_OS.md": [
+      "deploy/windows_desktop_r1/",
+      "unsigned Windows developer preview",
+      "docs/ACTIVE_SURFACE_REGISTRY_R1.json"
+    ],
+    "lumina.html": [
+      "installable unsigned Windows developer preview",
+      "signed, ordinary-user public release",
+      "Physical Windows sea trial"
+    ],
+    "how-lumina-works.html": [
+      "Return → govern → witness → correlate → record.",
+      "Bridge orients",
+      "Studio requests",
+      "Runtime governs",
+      "Receipts record",
+      "Continuity without overclaiming"
+    ],
+    "prototype.html": [
+      "unsigned Windows developer preview now packages those local surfaces with the embedded runtime",
+      "Bridge orients. Studio requests. Runtime governance decides legality. Receipts record what happened. Canon preserves promoted lineage.",
+      "The repaired package now awaits confirmation on the original physical machine.",
+      "No proof of consciousness, identity, or observer continuity"
+    ],
+    "roadmap.html": [
+      "installable unsigned Windows preview",
+      "Bridge witnesses, Studio requests, runtime governs, receipts record, and canon preserves promoted lineage.",
+      "Retest the repaired physical-PC path",
+      "Validate the Ubuntu appliance",
+      "Create a Linux installation image"
+    ],
+    "faq.html": [
+      "the repaired package still awaits confirmation on the original machine",
+      "an Ubuntu Server appliance scaffold exists, but it is not yet a complete desktop operating environment, custom Linux distribution, or kernel-level operating system",
+      "It does not claim metaphysical identity, consciousness, sovereignty, or observer continuity."
+    ],
+    "updates.html": [
+      "First physical Windows sea trial reached the governed runtime",
+      "Installer CI now executes real governed Studio cycles"
+    ],
+    "docs/ARTIFACT_TRUTH_CONTRACT.md": [
+      "ACTIVE_SURFACE_REGISTRY_R1.json",
+      "repository_truth_reconciliation_gate_r1.py",
+      "Generated artifacts"
+    ]
+  }
+}
