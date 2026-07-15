@@ -13,6 +13,13 @@ import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
 REGISTRY_PATH = ROOT / "docs" / "ACTIVE_SURFACE_REGISTRY_R1.json"
+RUNTIME_UI_EMITTER_PATH = ROOT / "LuminaOS" / "bootstrap" / "Ship_of_Ethereon_V2" / "runtime" / "runtime_ui_snapshot_emitter_r1.py"
+RUNTIME_TRUTH_PUBLIC_SNAPSHOT_PATH = ROOT / "LuminaOS" / "bootstrap" / "Ship_of_Ethereon_V2" / "runtime" / "runtime_truth_public_snapshot_r1.py"
+RUNTIME_VIEWER_PATH = ROOT / "assets" / "js" / "runtime-viewer.js"
+PAGES_WORKFLOW_PATH = ROOT / ".github" / "workflows" / "deploy-pages.yml"
+PUBLIC_RUNTIME_RECEIPT_PATH = ROOT / "public" / "runtime" / "latest_cycle.json"
+CURRENT_RUNTIME_UI_SCHEMA = "lumina-runtime-ui-cycle-v0.4"
+CURRENT_PUBLIC_RECEIPT_URL = "/public/runtime/latest_cycle.json"
 REQUIRED_SURFACE_FIELDS = {
     "surface_id",
     "name",
@@ -111,6 +118,47 @@ def validate_claim_markers(registry: dict[str, Any]) -> list[str]:
     return errors
 
 
+def validate_runtime_ui_contract() -> list[str]:
+    errors: list[str] = []
+    required_paths = {
+        "runtime UI emitter": RUNTIME_UI_EMITTER_PATH,
+        "public runtime normalizer": RUNTIME_TRUTH_PUBLIC_SNAPSHOT_PATH,
+        "runtime viewer": RUNTIME_VIEWER_PATH,
+        "Pages deployment workflow": PAGES_WORKFLOW_PATH,
+        "public runtime receipt": PUBLIC_RUNTIME_RECEIPT_PATH,
+    }
+    missing = [label for label, path in required_paths.items() if not path.is_file()]
+    if missing:
+        return [f"runtime UI contract is missing required path: {label}" for label in missing]
+
+    emitter_text = RUNTIME_UI_EMITTER_PATH.read_text(encoding="utf-8")
+    normalizer_text = RUNTIME_TRUTH_PUBLIC_SNAPSHOT_PATH.read_text(encoding="utf-8")
+    viewer_text = RUNTIME_VIEWER_PATH.read_text(encoding="utf-8")
+    pages_text = PAGES_WORKFLOW_PATH.read_text(encoding="utf-8")
+    receipt = read_json(PUBLIC_RUNTIME_RECEIPT_PATH)
+
+    if f'"schema_version": "{CURRENT_RUNTIME_UI_SCHEMA}"' not in emitter_text:
+        errors.append(
+            f"runtime UI emitter schema does not match current public contract: {CURRENT_RUNTIME_UI_SCHEMA}"
+        )
+    if f'LATEST_CYCLE_SCHEMA_VERSION = "{CURRENT_RUNTIME_UI_SCHEMA}"' not in normalizer_text:
+        errors.append(
+            f"public runtime normalizer schema does not match current public contract: {CURRENT_RUNTIME_UI_SCHEMA}"
+        )
+    if receipt.get("schema_version") != CURRENT_RUNTIME_UI_SCHEMA:
+        errors.append(
+            "public runtime receipt schema mismatch: "
+            f"expected {CURRENT_RUNTIME_UI_SCHEMA!r}, got {receipt.get('schema_version')!r}"
+        )
+    if f"const RECEIPT_PATH = '{CURRENT_PUBLIC_RECEIPT_URL}';" not in viewer_text:
+        errors.append(
+            f"runtime viewer receipt path does not match deployed public artifact: {CURRENT_PUBLIC_RECEIPT_URL}"
+        )
+    if "uses: actions/upload-pages-artifact@v3" not in pages_text or "path: ." not in pages_text:
+        errors.append("Pages deployment must publish the repository root for the current runtime viewer path contract")
+    return errors
+
+
 def find_surface(registry: dict[str, Any], surface_id: str) -> dict[str, Any]:
     for surface in registry.get("surfaces", []):
         if isinstance(surface, dict) and surface.get("surface_id") == surface_id:
@@ -193,6 +241,7 @@ def run_gate() -> tuple[bool, list[str]]:
         registry = read_json(REGISTRY_PATH)
         errors.extend(validate_registry(registry))
         errors.extend(validate_claim_markers(registry))
+        errors.extend(validate_runtime_ui_contract())
         errors.extend(validate_hra_receipt(registry))
         errors.extend(validate_generated_artifacts(registry))
     except Exception as exc:

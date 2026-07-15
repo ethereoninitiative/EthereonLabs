@@ -87,7 +87,7 @@ def build_ui_snapshot(result: Dict[str, Any]) -> Dict[str, Any]:
     ]
     halted = bool(result.get("halted", False))
     return {
-        "schema_version": "lumina-runtime-ui-cycle-v0.3",
+        "schema_version": "lumina-runtime-ui-cycle-v0.4",
         "timestamp": result.get("created_at"),
         "run_id": result.get("run_id"),
         "requested_action": result.get("requested_action"),
