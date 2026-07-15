@@ -157,8 +157,20 @@ class EthereonicLayerRegistry:
                 artifact_type="identity_framework",
                 summary="Primary identity and cognitive-pattern framework for the Ethereonic layer.",
                 tags=["identity", "continuity-style", "harmonic-cognition"],
+                file_refs=[
+                    "LuminaOS/bootstrap/Ship_of_Ethereon_V2/origins/Minerva_Framework_v18_1_Ancestral.md",
+                    "docs/origin/SSC_Lineage_Provenance.md",
+                    "metadata/origin_signature_ssc_r1.json",
+                ],
                 metadata={
                     "role": "organizing_intelligence",
+                    "origin_signature": {
+                        "seal": "SSC",
+                        "role": "lineage_marker",
+                        "authority": "symbolic_provenance_only",
+                        "descends_from": "Minerva Framework v18.1",
+                        "operational_effect": "none",
+                    },
                     "notes": "Recognized identity framework only; does not own canon, governance, or session law.",
                 },
             ),
