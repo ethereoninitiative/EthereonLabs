@@ -47,7 +47,9 @@ This path performs bounded project return / host work, governed runtime executio
 | Input ambiguity and correction safety | `runtime/input_integrity_layer_r1.py` |
 | Governance integrity chain | `runtime/governance_integrity_r1.py` |
 | Canon lineage | `runtime/canon_lineage_store_r1.py` |
-| Ethereonic overlay boundary | `runtime/ethereonic_layer_r1.py`, `runtime/ethereonic_layer_registry_r1.json` |
+| Ethereonic overlay boundary and generated registry state | `runtime/ethereonic_layer_r1.py`; generated at `<runner base_dir>/ethereonic_layer_registry_r1.json` |
+
+The Ethereonic registry JSON is runtime-generated state, not a committed source file beside the module. Its generated location follows the active runner or test `base_dir`.
 
 ## Runtime truth and canon evidence
 
@@ -154,6 +156,7 @@ Psi-42 is an instrument. It does not own governance, canon, runtime law, consent
 | Validation target | Primary file |
 |---|---|
 | Core runtime / governance / canon | `runtime/sea_trials_set_one_r1_merged.py` |
+| Ethereonic lineage visibility | `runtime/sea_trials_ethereonic_lineage_visibility_r1.py` |
 | Resonant Manifold | `runtime/sea_trials_resonant_manifold_r1.py` |
 | Resonant Field Reveal | `runtime/sea_trials_resonant_field_reveal_r1.py` |
 | Committed field reproducibility | `runtime/sea_trials_resonant_field_reveal_sample_r1.py` |
