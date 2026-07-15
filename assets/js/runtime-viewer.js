@@ -1,5 +1,5 @@
 (function(){
-  const RECEIPT_PATH = '/runtime/latest_cycle.json';
+  const RECEIPT_PATH = '/public/runtime/latest_cycle.json';
   const POLL_INTERVAL_MS = 3000;
 
   function byId(id){
