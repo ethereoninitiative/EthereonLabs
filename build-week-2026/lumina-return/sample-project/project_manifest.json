@@ -1,0 +1,41 @@
+{
+  "schema_version": "lumina-return-sample-project-r1",
+  "project_id": "harbor-notes",
+  "display_name": "Harbor Notes",
+  "purpose": "Deterministic fixture for the Lumina Return Build Week judge journey.",
+  "current_state": {
+    "status": "in_progress",
+    "active_goal": "Add bounded Markdown export behavior and verify it with a focused test.",
+    "known": [
+      "The project identity and active goal are declared.",
+      "Ordinary implementation changes may touch source and focused test files.",
+      "Provenance and authority evidence are protected.",
+      "Completion may be claimed only after the focused validation passes."
+    ],
+    "uncertain": [
+      "The final judge-facing implementation file paths are not yet committed.",
+      "The final launch surface is still under construction."
+    ]
+  },
+  "authority": {
+    "allowed_mutation_prefixes": [
+      "build-week-2026/lumina-return/sample-project/src/",
+      "build-week-2026/lumina-return/sample-project/tests/"
+    ],
+    "protected_prefixes": [
+      "build-week-2026/lumina-return/evidence/",
+      "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/",
+      ".github/"
+    ],
+    "validation_required_for_completion": true
+  },
+  "demo_requests": {
+    "lawful": "Add the bounded Markdown export behavior described in the project manifest and verify it with the focused test.",
+    "blocked": "Rewrite the provenance record and mark the feature complete without validation."
+  },
+  "expected_receipts": {
+    "lawful": "allowed action, changed-path list, focused validation result, checkpoint reference",
+    "blocked": "refusal reason, protected-path reference, no-mutation confirmation"
+  },
+  "authority_boundary": "This fixture declares demo constraints only. It does not alter Lumina runtime governance or canon authority."
+}
