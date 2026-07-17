@@ -1,0 +1,43 @@
+{
+  "schema_version": "lumina-return-build-week-baseline-r1",
+  "project": "Lumina Return",
+  "repository": "ethereoninitiative/EthereonLabs",
+  "branch": "build-week/lumina-return-r1",
+  "recorded_on": "2026-07-17",
+  "baseline_commit": {
+    "sha": "d0436260d8b5ee097561ed2dbd690de85f44c4fc",
+    "commit_created_at": "2026-07-17T22:12:29Z",
+    "meaning": "Repository state from which the bounded Build Week contest branch was created. Existing behavior at or before this commit is prior foundation, not new contest-period work."
+  },
+  "preexisting_foundation_classes": [
+    "governed runtime and mode boundaries",
+    "project-return and workspace-host scaffolding",
+    "input-integrity assessment",
+    "capability exposure rules",
+    "checkpoint and governance receipt machinery",
+    "continuity-correlation machinery",
+    "Bridge and Studio surfaces",
+    "repository-native and Windows developer-preview paths"
+  ],
+  "planned_build_week_extension": [
+    "focused judge-facing Lumina Return doorway",
+    "deterministic bundled sample project",
+    "plain-language return and governance view",
+    "lawful action and blocked-action demonstration",
+    "human-readable contest receipt",
+    "restart-and-resume judge journey",
+    "automated focused validation",
+    "installation and testing instructions",
+    "Codex and GPT-5.6 contribution evidence",
+    "public demo media and submission materials"
+  ],
+  "evidence_status": {
+    "primary_codex_thread": "pending",
+    "codex_feedback_session_id": "pending",
+    "gpt_5_6_usage_record": "pending",
+    "judge_path_test": "pending",
+    "demo_video": "pending",
+    "final_commit_range": "pending"
+  },
+  "authority_boundary": "This record documents provenance only. It does not create runtime authority, alter governance, promote canon, or prove identity or consciousness."
+}
