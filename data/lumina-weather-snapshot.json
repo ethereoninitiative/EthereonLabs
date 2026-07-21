@@ -1,6 +1,6 @@
 {
   "schema_version": "lumina_weather_snapshot_r1",
-  "generated_at_utc": "2026-07-21T12:20:55.488271+00:00",
+  "generated_at_utc": "2026-07-21T14:32:07.879768+00:00",
   "source": "generated from bundled sample metrics fallback",
   "authority_boundary": "generated display data only; does not authorize action, alter governance, alter canon lineage, change mode legality, expose capabilities, or execute tools",
   "system_mood": {
