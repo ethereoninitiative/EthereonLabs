@@ -57,9 +57,8 @@ except Exception:
 
 
 def infer_repo_root(explicit_repo_path: Optional[str | Path] = None) -> Optional[Path]:
-    if explicit_repo_path:
-        candidate = Path(explicit_repo_path).resolve()
-        return candidate if candidate.exists() else None
+    if explicit_repo_path is not None:
+        return Path(explicit_repo_path).expanduser().resolve()
     if _repo_root_helper is not None:
         try:
             candidate = Path(_repo_root_helper()).resolve()
@@ -398,12 +397,76 @@ class ContextBundle:
         return asdict(self)
 
 
-def _run_git(args: List[str], cwd: Path) -> Optional[str]:
+@dataclass(frozen=True)
+class GitCommandResult:
+    ok: bool
+    stdout: str = ""
+    stderr: str = ""
+    returncode: Optional[int] = None
+    error_type: Optional[str] = None
+
+
+def _bounded_git_text(value: Any, max_length: int = 400) -> str:
+    compact = " ".join(str(value or "").split())
+    if len(compact) <= max_length:
+        return compact
+    return compact[: max_length - 3] + "..."
+
+
+def _run_git_checked(args: List[str], cwd: Path) -> GitCommandResult:
     try:
-        proc = subprocess.run(["git", *args], cwd=str(cwd), capture_output=True, text=True, check=True)
-        return proc.stdout.strip()
-    except Exception:
-        return None
+        proc = subprocess.run(
+            ["git", *args],
+            cwd=str(cwd),
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    except Exception as exc:
+        return GitCommandResult(
+            ok=False,
+            stderr=_bounded_git_text(exc),
+            returncode=None,
+            error_type=type(exc).__name__,
+        )
+    if proc.returncode != 0:
+        return GitCommandResult(
+            ok=False,
+            stdout=proc.stdout.strip(),
+            stderr=_bounded_git_text(proc.stderr),
+            returncode=proc.returncode,
+            error_type="GitCommandError",
+        )
+    return GitCommandResult(
+        ok=True,
+        stdout=proc.stdout.strip(),
+        stderr=_bounded_git_text(proc.stderr),
+        returncode=proc.returncode,
+        error_type=None,
+    )
+
+
+def _run_git(args: List[str], cwd: Path) -> Optional[str]:
+    result = _run_git_checked(args, cwd)
+    return result.stdout if result.ok else None
+
+
+def _git_validation_error(
+    code: str,
+    message: str,
+    *,
+    command: Optional[List[str]] = None,
+    result: Optional[GitCommandResult] = None,
+) -> Dict[str, Any]:
+    payload: Dict[str, Any] = {"code": code, "message": message}
+    if command:
+        payload["command"] = "git " + " ".join(command)
+    if result is not None:
+        payload["returncode"] = result.returncode
+        payload["error_type"] = result.error_type
+        if result.stderr:
+            payload["stderr"] = result.stderr
+    return payload
 
 
 class ContextBundleBuilder:
@@ -520,18 +583,75 @@ class ContextBundleBuilder:
         return path
 
     def _collect_structural_context(self, repo_path: Optional[Path]) -> Dict[str, Any]:
-        if not repo_path or not repo_path.exists():
-            return {"repo_available": False}
-        branch = _run_git(["rev-parse", "--abbrev-ref", "HEAD"], repo_path)
-        status = _run_git(["status", "--short"], repo_path)
-        commits = _run_git(["log", "--oneline", "-5"], repo_path)
+        runtime_root = infer_runtime_root()
+        unavailable: Dict[str, Any] = {
+            "repo_available": False,
+            "repo_path": str(repo_path) if repo_path is not None else None,
+            "runtime_root": str(runtime_root) if runtime_root is not None else None,
+        }
+        if repo_path is None:
+            unavailable["repo_validation_error"] = _git_validation_error(
+                "repo_path_unavailable",
+                "No repository path could be resolved.",
+            )
+            return unavailable
+        if not repo_path.exists():
+            unavailable["repo_validation_error"] = _git_validation_error(
+                "repo_path_missing",
+                "The requested repository path does not exist.",
+            )
+            return unavailable
+        if not repo_path.is_dir():
+            unavailable["repo_validation_error"] = _git_validation_error(
+                "repo_path_not_directory",
+                "The requested repository path is not a directory.",
+            )
+            return unavailable
+
+        worktree_command = ["rev-parse", "--is-inside-work-tree"]
+        worktree = _run_git_checked(worktree_command, repo_path)
+        if not worktree.ok:
+            unavailable["repo_validation_error"] = _git_validation_error(
+                "git_worktree_validation_failed",
+                "The repository path could not be validated as a Git worktree.",
+                command=worktree_command,
+                result=worktree,
+            )
+            return unavailable
+        if worktree.stdout.strip().lower() != "true":
+            unavailable["repo_validation_error"] = _git_validation_error(
+                "not_git_worktree",
+                "The repository path is not inside a Git worktree.",
+                command=worktree_command,
+                result=worktree,
+            )
+            return unavailable
+
+        commands = {
+            "current_branch": ["rev-parse", "--abbrev-ref", "HEAD"],
+            "changed_files": ["status", "--short"],
+            "recent_commits": ["log", "--oneline", "-5"],
+        }
+        results: Dict[str, GitCommandResult] = {}
+        for field_name, command in commands.items():
+            result = _run_git_checked(command, repo_path)
+            if not result.ok:
+                unavailable["repo_validation_error"] = _git_validation_error(
+                    "git_command_failed",
+                    f"Git inspection failed while collecting {field_name}.",
+                    command=command,
+                    result=result,
+                )
+                return unavailable
+            results[field_name] = result
+
         return {
             "repo_available": True,
             "repo_path": str(repo_path),
-            "runtime_root": str(infer_runtime_root()) if infer_runtime_root() is not None else None,
-            "current_branch": branch,
-            "changed_files": status.splitlines() if status else [],
-            "recent_commits": commits.splitlines() if commits else [],
+            "runtime_root": str(runtime_root) if runtime_root is not None else None,
+            "current_branch": results["current_branch"].stdout,
+            "changed_files": results["changed_files"].stdout.splitlines(),
+            "recent_commits": results["recent_commits"].stdout.splitlines(),
         }
 
 

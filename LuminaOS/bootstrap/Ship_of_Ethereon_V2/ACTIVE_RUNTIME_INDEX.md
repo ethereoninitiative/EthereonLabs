@@ -51,6 +51,8 @@ This path performs bounded project return / host work, governed runtime executio
 
 The Ethereonic registry JSON is runtime-generated state, not a committed source file beside the module. Its generated location follows the active runner or test `base_dir`.
 
+Structural repository context validates the Git worktree before reporting branch, status, or history. Failed inspection is reported as bounded unavailable state and may not become an apparently clean repository snapshot.
+
 ## Runtime truth and canon evidence
 
 | Responsibility | Primary files |
@@ -156,6 +158,7 @@ Psi-42 is an instrument. It does not own governance, canon, runtime law, consent
 | Validation target | Primary file |
 |---|---|
 | Core runtime / governance / canon | `runtime/sea_trials_set_one_r1_merged.py` |
+| Structural repository-context truth | `runtime/sea_trials_context_bundle_repo_truth_r1.py` |
 | Ethereonic lineage visibility | `runtime/sea_trials_ethereonic_lineage_visibility_r1.py` |
 | Resonant Manifold | `runtime/sea_trials_resonant_manifold_r1.py` |
 | Resonant Field Reveal | `runtime/sea_trials_resonant_field_reveal_r1.py` |
@@ -167,6 +170,7 @@ Psi-42 is an instrument. It does not own governance, canon, runtime law, consent
 | Meaning Metabolism standalone layer | `sea_trials_lumina_meaning_metabolism_r1.py` |
 | Orchestration continuity | `sea_trials_lumina_orchestration_continuity_r1.py` |
 | Studio | `sea_trials_lumina_studio_v0_1.py` |
+| Studio bounded diagnostics | `sea_trials_lumina_studio_diagnostics_r1.py` |
 | Bridge position surface | `sea_trials_lumina_bridge_r1.py` |
 | Bridge Field Viewer | `sea_trials_lumina_bridge_field_r1.py` |
 

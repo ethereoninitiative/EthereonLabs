@@ -222,6 +222,68 @@ def _query_limit(path: str, default: int = 20) -> int:
         return default
 
 
+PORTABLE_PATH_BUDGET = 240
+MAX_OPERATOR_ERROR_LENGTH = 240
+
+
+def _bounded_operator_error(exc: Exception) -> str:
+    message = " ".join(str(exc).split()) or type(exc).__name__
+    if len(message) <= MAX_OPERATOR_ERROR_LENGTH:
+        return message
+    return message[: MAX_OPERATOR_ERROR_LENGTH - 3] + "..."
+
+
+def _classify_studio_error(exc: Exception) -> tuple[int, Dict[str, Any]]:
+    message = _bounded_operator_error(exc)
+    payload: Dict[str, Any] = {
+        "ok": False,
+        "error_code": "runtime_cycle_failed",
+        "error": message,
+        "recoverable": False,
+    }
+    status = 500
+
+    if isinstance(exc, json.JSONDecodeError):
+        status = 400
+        payload["error_code"] = "invalid_request_payload"
+        payload["recoverable"] = True
+    elif isinstance(exc, (ValueError, TypeError)):
+        status = 400
+        payload["error_code"] = "invalid_operator_input"
+        payload["recoverable"] = True
+    elif isinstance(exc, OSError):
+        filename = getattr(exc, "filename", None)
+        path_length = len(str(filename)) if filename else None
+        lower_message = message.lower()
+        path_budget_exceeded = (
+            getattr(exc, "winerror", None) == 206
+            or getattr(exc, "errno", None) == 206
+            or "filename or extension is too long" in lower_message
+            or "file name too long" in lower_message
+            or (path_length is not None and path_length > PORTABLE_PATH_BUDGET)
+        )
+        if path_budget_exceeded:
+            status = 422
+            payload["error_code"] = "path_budget_exceeded"
+            payload["recoverable"] = True
+            payload["path_length"] = path_length
+            payload["path_budget"] = PORTABLE_PATH_BUDGET
+        else:
+            payload["error_code"] = "artifact_write_failed"
+            payload["recoverable"] = True
+
+    payload["error_class"] = type(exc).__name__
+    return status, payload
+
+
+def _record_studio_error(payload: Dict[str, Any]) -> None:
+    print(
+        f"Lumina Studio diagnostic [{payload['error_code']}] "
+        f"{payload.get('error_class', 'Exception')}: {payload['error']}",
+        file=sys.stderr,
+    )
+
+
 class LuminaStudioHandler(BaseHTTPRequestHandler):
     server_version = "LuminaStudio/0.3.2"
 
@@ -265,9 +327,11 @@ class LuminaStudioHandler(BaseHTTPRequestHandler):
             result = run_lumina_cycle(Args(payload))
             receipt = compact_receipt(result)
             self._send(200, json.dumps(receipt, indent=2).encode("utf-8"), "application/json")
-        except Exception as exc:  # pragma: no cover - operator feedback path
-            body = json.dumps({"ok": False, "error": str(exc)}, indent=2).encode("utf-8")
-            self._send(500, body, "application/json")
+        except Exception as exc:  # pragma: no cover - exercised by focused handler sea trial
+            status, error_payload = _classify_studio_error(exc)
+            _record_studio_error(error_payload)
+            body = json.dumps(error_payload, indent=2).encode("utf-8")
+            self._send(status, body, "application/json")
 
 
 def main() -> int:

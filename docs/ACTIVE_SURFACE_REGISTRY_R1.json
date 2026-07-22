@@ -169,6 +169,22 @@
       "authority_boundary": "Demonstrates deterministic artifact return and bounded trajectory visualization. It does not establish identity, literal magnetism, runtime law, or observer continuity."
     },
     {
+      "surface_id": "lumina_embodiment_horizon",
+      "name": "Lumina embodiment architectural horizon",
+      "status": "architectural-horizon",
+      "default_wiring": false,
+      "paths": [
+        "README.md",
+        "docs/LUMINA_EMBODIMENT_BEACON_R1.md",
+        "docs/LUMINA_HABITAT_CREATION_CHECKLIST.md"
+      ],
+      "validation_paths": [
+        ".github/workflows/lumina-drydock-gate.yml",
+        "scripts/repository_truth_reconciliation_gate_r1.py"
+      ],
+      "authority_boundary": "Guides long-term prioritization and stationary-habitation sequencing. It does not create current robotics capability, runtime authority, physical agency, or safety certification."
+    },
+    {
       "surface_id": "ethereon_public_site",
       "name": "EthereonLabs public claim surface",
       "status": "public-claim-surface",
@@ -239,6 +255,19 @@
       "ACTIVE_SURFACE_REGISTRY_R1.json",
       "repository_truth_reconciliation_gate_r1.py",
       "Generated artifacts"
+    ],
+    "README.md": [
+      "Lumina's long-term horizon includes **governed embodied intelligence**",
+      "This is future direction, not a claim of current robotics capability or embodied readiness."
+    ],
+    "docs/LUMINA_EMBODIMENT_BEACON_R1.md": [
+      "Embodiment begins with stable inhabitation, not movement.",
+      "Presence must precede movement.",
+      "Continuity is not permission"
+    ],
+    "docs/LUMINA_HABITAT_CREATION_CHECKLIST.md": [
+      "Before adding mobile physical capability, prove that a resident intelligence can meaningfully inhabit a stationary host.",
+      "borrow proven wheels -> inhabit the stationary cart -> test the actual terrain -> redesign only what the evidence shows does not fit."
     ]
   }
 }

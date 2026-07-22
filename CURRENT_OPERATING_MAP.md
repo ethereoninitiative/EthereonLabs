@@ -114,6 +114,7 @@ verified release payload -> unsigned installer -> local state-preserving launch 
 ## Boundary reminders
 
 - Runtime work belongs in the Lumina OS substrate lane.
+- Structural repository inspection must fail closed: an invalid or unverifiable Git worktree may not be rendered as a clean repository.
 - Deployment appliance work must preserve a host/environment boundary before Chamber queue items become runtime work.
 - The Windows installer owns packaging, placement, launchers, and validated upgrade behavior; it does not alter runtime governance, canon, capability authority, identity, or primary continuity truth.
 - An unsigned developer preview is installable but is not a signed ordinary-user public release.
