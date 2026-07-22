@@ -28,6 +28,14 @@ Canonical framing:
 
 This framing guides architecture, navigation, and product language. It is not runtime governance law.
 
+## Long-term Architectural Horizon
+
+Lumina's long-term horizon includes **governed embodied intelligence**: a persistent intelligence habitat that may eventually extend perception and lawful action into a physical robotic system while deterministic safety, human override, and actuator limits remain independently authoritative.
+
+This is future direction, not a claim of current robotics capability or embodied readiness.
+
+- `docs/LUMINA_EMBODIMENT_BEACON_R1.md`
+
 ## Lumina Lisp Layer
 
 Structured symbolic snapshots of system state, intent, and reflection.
