@@ -1,0 +1,47 @@
+name: Apply DryDock truth-channel hardening
+
+on:
+  push:
+    branches:
+      - agent/drydock-truth-channel-hardening-r1
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONUNBUFFERED: "1"
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/drydock-truth-channel-hardening-r1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Apply bounded transformation
+        run: python scripts/apply_drydock_truth_channel_hardening_r1.py
+
+      - name: Validate transformed branch
+        run: |
+          git diff --check
+          python -m compileall -q LuminaOS/bootstrap/Ship_of_Ethereon_V2 scripts/repository_truth_reconciliation_gate_r1.py
+          python LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_context_bundle_repo_truth_r1.py
+          python LuminaOS/bootstrap/Ship_of_Ethereon_V2/sea_trials_lumina_studio_diagnostics_r1.py
+          python scripts/repository_truth_reconciliation_gate_r1.py
+
+      - name: Commit transformed files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Harden Lumina truth and diagnostics"
+          git push origin HEAD:agent/drydock-truth-channel-hardening-r1
