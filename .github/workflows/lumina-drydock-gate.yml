@@ -60,35 +60,10 @@ jobs:
         if: github.event_name == 'pull_request' && github.actor != 'github-actions[bot]'
         run: |
           python scripts/apply_drydock_truth_channel_hardening_r1.py
-          python - <<'PY'
-          from pathlib import Path
-
-          path = Path('.github/workflows/lumina-drydock-gate.yml')
-          lines = path.read_text(encoding='utf-8').splitlines(keepends=True)
-          output = []
-          skipping = False
-          markers = {
-              '# TEMP_APPLY_BEGIN': True,
-              '# TEMP_APPLY_END': False,
-              '# TEMP_COMMIT_BEGIN': True,
-              '# TEMP_COMMIT_END': False,
-          }
-          for line in lines:
-              stripped = line.strip()
-              if stripped in markers:
-                  skipping = markers[stripped]
-                  continue
-              if not skipping:
-                  output.append(line)
-          text = ''.join(output)
-          text = text.replace('permissions:\n  contents: write\n', 'permissions:\n  contents: read\n', 1)
-          text = text.replace(
-              '      - name: Checkout\n        uses: actions/checkout@v4\n        with:\n          ref: ${{ github.head_ref || github.ref_name }}\n',
-              '      - name: Checkout\n        uses: actions/checkout@v4\n',
-              1,
-          )
-          path.write_text(text, encoding='utf-8')
-          PY
+          git checkout HEAD -- \
+            .github/workflows/lumina-drydock-gate.yml \
+            .github/workflows/agent-drydock-hardening-apply.yml \
+            scripts/apply_drydock_truth_channel_hardening_r1.py
       # TEMP_APPLY_END
 
       - name: Compile Lumina Python
@@ -96,6 +71,11 @@ jobs:
 
       - name: Reconcile repository truth surfaces
         run: python scripts/repository_truth_reconciliation_gate_r1.py
+
+      - name: Focused truth-channel sea trials
+        run: |
+          python LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_context_bundle_repo_truth_r1.py
+          python LuminaOS/bootstrap/Ship_of_Ethereon_V2/sea_trials_lumina_studio_diagnostics_r1.py
 
       - name: Host alignment trial
         working-directory: LuminaOS/bootstrap/Ship_of_Ethereon_V2/install
@@ -141,12 +121,19 @@ jobs:
           fi
 
       # TEMP_COMMIT_BEGIN
-      - name: Commit transformed branch
+      - name: Commit bounded transformed files
         if: github.event_name == 'pull_request' && github.actor != 'github-actions[bot]'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
+          git add \
+            CURRENT_OPERATING_MAP.md \
+            LuminaOS/bootstrap/Ship_of_Ethereon_V2/ACTIVE_RUNTIME_INDEX.md \
+            LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/runtime_spine_r1.py \
+            LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_context_bundle_repo_truth_r1.py \
+            LuminaOS/bootstrap/Ship_of_Ethereon_V2/sea_trials_lumina_studio_diagnostics_r1.py \
+            LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_studio_server.py \
+            docs/ACTIVE_SURFACE_REGISTRY_R1.json
           git commit -m "Harden Lumina truth and diagnostics"
           git push origin HEAD:${{ github.head_ref }}
       # TEMP_COMMIT_END
