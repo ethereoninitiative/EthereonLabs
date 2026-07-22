@@ -75,6 +75,7 @@ jobs:
           python sea_trials_set_one_r1_merged.py
           python sea_trials_context_bundle_repo_truth_r1.py
           python sea_trials_lumina_return_host_r1.py
+          python sea_trials_stationary_habitation_cold_return_r1.py
           python sea_trials_windows_return_host_path_budget_r1.py
           python sea_trials_resonant_manifold_r1.py
           python sea_trials_resonant_field_reveal_r1.py
