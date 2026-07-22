@@ -163,6 +163,19 @@ This checklist is intentionally editable. It should remain practical enough that
 - [ ] User can reopen the app.
 - [ ] User can resume without re-explaining the entire project.
 
+### 5.4 Stationary habitation gate
+
+Before adding mobile physical capability, prove that a resident intelligence can meaningfully inhabit a stationary host.
+
+- [ ] Lumina can close, restart, and return without losing project orientation.
+- [ ] Preserved memory remains attributable, inspectable, and bounded by provenance.
+- [ ] Unfinished intention survives without becoming automatic permission.
+- [ ] Bounded reflection and self-guidance do not silently mutate authority.
+- [ ] Capabilities can be explicitly exposed, revoked, and audited.
+- [ ] Shutdown, interruption, restart, and recovery preserve continuity truth.
+- [ ] The resident intelligence can remain coherently oriented on a laptop, desktop, server, or comparable stationary host before any locomotion milestone is pursued.
+- [ ] Treat visible movement as an extension of demonstrated inhabitation, not as evidence that inhabitation already exists.
+
 ---
 
 ## 6. Choose the first technical stack
@@ -199,6 +212,13 @@ This checklist is intentionally editable. It should remain practical enough that
 - [ ] Package macOS app.
 - [ ] Package Linux AppImage or deb.
 - [ ] Package Windows installer.
+
+### 6.6 Reuse before redesign
+
+- [ ] Use established operating systems, storage systems, model interfaces, middleware, drivers, safety controllers, and hardware where they satisfy the required boundary.
+- [ ] Concentrate original engineering effort on Lumina's distinct contribution: governed continuity, inspectable memory, identity persistence, capability authority, lawful self-direction, recovery, relationship, and vessel portability.
+- [ ] Require tested evidence of an architectural mismatch before replacing a proven underlying component.
+- [ ] Preserve the sequence: borrow proven wheels -> inhabit the stationary cart -> test the actual terrain -> redesign only what the evidence shows does not fit.
 
 ---
 
