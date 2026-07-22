@@ -8,6 +8,9 @@ on:
       - "LuminaOS/adapters/harmonic_reflection_adapter/examples/**"
       - "deploy/ubuntu_server_lts/**"
       - "deploy/windows_desktop_r1/**"
+      - "README.md"
+      - "docs/LUMINA_EMBODIMENT_BEACON_R1.md"
+      - "docs/LUMINA_HABITAT_CREATION_CHECKLIST.md"
       - "docs/ACTIVE_SURFACE_REGISTRY_R1.json"
       - "docs/ARTIFACT_TRUTH_CONTRACT.md"
       - "docs/LUMINA_WINDOWS_*.md"
@@ -24,6 +27,9 @@ on:
       - "LuminaOS/adapters/harmonic_reflection_adapter/examples/**"
       - "deploy/ubuntu_server_lts/**"
       - "deploy/windows_desktop_r1/**"
+      - "README.md"
+      - "docs/LUMINA_EMBODIMENT_BEACON_R1.md"
+      - "docs/LUMINA_HABITAT_CREATION_CHECKLIST.md"
       - "docs/ACTIVE_SURFACE_REGISTRY_R1.json"
       - "docs/ARTIFACT_TRUTH_CONTRACT.md"
       - "docs/LUMINA_WINDOWS_*.md"
@@ -67,6 +73,7 @@ jobs:
         working-directory: LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime
         run: |
           python sea_trials_set_one_r1_merged.py
+          python sea_trials_context_bundle_repo_truth_r1.py
           python sea_trials_lumina_return_host_r1.py
           python sea_trials_windows_return_host_path_budget_r1.py
           python sea_trials_resonant_manifold_r1.py
@@ -83,6 +90,10 @@ jobs:
         run: |
           python sea_trials_lumina_bridge_r1.py
           python sea_trials_lumina_bridge_field_r1.py
+
+      - name: Studio diagnostics sea trial
+        working-directory: LuminaOS/bootstrap/Ship_of_Ethereon_V2
+        run: python sea_trials_lumina_studio_diagnostics_r1.py
 
       - name: Host command smoke checks
         working-directory: LuminaOS/bootstrap/Ship_of_Ethereon_V2
