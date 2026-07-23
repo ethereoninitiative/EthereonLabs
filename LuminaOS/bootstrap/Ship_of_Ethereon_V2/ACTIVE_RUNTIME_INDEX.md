@@ -160,6 +160,7 @@ Psi-42 is an instrument. It does not own governance, canon, runtime law, consent
 | Core runtime / governance / canon | `runtime/sea_trials_set_one_r1_merged.py` |
 | Structural repository-context truth | `runtime/sea_trials_context_bundle_repo_truth_r1.py` |
 | Stationary habitation cold return | `runtime/sea_trials_stationary_habitation_cold_return_r1.py` |
+| Lumina weather observation idempotence | `runtime/sea_trials_lumina_weather_snapshot_idempotence_r1.py` |
 | Ethereonic lineage visibility | `runtime/sea_trials_ethereonic_lineage_visibility_r1.py` |
 | Resonant Manifold | `runtime/sea_trials_resonant_manifold_r1.py` |
 | Resonant Field Reveal | `runtime/sea_trials_resonant_field_reveal_r1.py` |
