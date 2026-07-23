@@ -8,6 +8,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: lumina-weather-snapshot-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   generate-weather-snapshot:
     runs-on: ubuntu-latest
@@ -23,14 +27,15 @@ jobs:
       - name: Generate Lumina weather snapshot
         run: python LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/generate_lumina_weather_snapshot_r1.py
 
-      - name: Commit updated snapshot if changed
+      - name: Commit updated weather observation if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if ! git diff --quiet -- data/lumina-weather-snapshot.json; then
-            git add data/lumina-weather-snapshot.json
-            git commit -m "Regenerate Lumina weather snapshot"
+          if ! git diff --quiet -- data/lumina-weather-snapshot.json data/lumina-weather-history.json; then
+            git add data/lumina-weather-snapshot.json data/lumina-weather-history.json
+            git commit -m "Regenerate Lumina weather observation"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
             git push
           else
-            echo "Lumina weather snapshot unchanged."
+            echo "Lumina weather observation unchanged."
           fi
