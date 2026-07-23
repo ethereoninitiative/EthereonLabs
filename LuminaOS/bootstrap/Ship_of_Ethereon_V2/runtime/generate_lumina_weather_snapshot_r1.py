@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 import argparse
+import hashlib
 import json
 
 try:
@@ -22,6 +23,32 @@ SAMPLE_METRIC_SETS: Dict[str, Dict[str, Any]] = {
     "blend": {"lock": 0.55, "presence": 0.44, "coherence": 0.53, "CRS": 0.47, "AGR": 0.06, "RF": 0.86, "drift_index": 0.37},
 }
 RISK_SCORES = {"low": 1.0, "moderate": 0.65, "high": 0.25}
+VOLATILE_SNAPSHOT_KEYS = {"generated_at_utc"}
+
+
+def _snapshot_observation_payload(snapshot: Dict[str, Any]) -> Dict[str, Any]:
+    return {key: value for key, value in snapshot.items() if key not in VOLATILE_SNAPSHOT_KEYS}
+
+
+def _observation_fingerprint(snapshot: Dict[str, Any]) -> str:
+    canonical = json.dumps(
+        _snapshot_observation_payload(snapshot),
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+    )
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+
+def _load_json_dict(path: Path) -> Optional[Dict[str, Any]]:
+    if not path.exists():
+        return None
+    try:
+        with path.open("r", encoding="utf-8") as f:
+            payload = json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return None
+    return payload if isinstance(payload, dict) else None
 
 def _display_harmonic(annotation: Dict[str, Any]) -> str:
     freq = str(annotation.get("dominant_frequency", "432+528"))
@@ -78,7 +105,7 @@ def build_snapshot(metric_sets: Optional[Dict[str, Dict[str, Any]]] = None, *, s
 def _compact_history_entry(snapshot: Dict[str, Any]) -> Dict[str, Any]:
     states = snapshot.get("states", {})
     primary = states.get("repair") or (next(iter(states.values()), {}) if states else {})
-    return {"generated_at_utc": snapshot.get("generated_at_utc"), "source": snapshot.get("source"), "primary_weather_state": primary.get("weather_state"), "primary_harmonic": primary.get("harmonic"), "primary_stance": primary.get("stance"), "primary_risk": primary.get("risk"), "primary_summary": primary.get("summary"), "system_mood": snapshot.get("system_mood")}
+    return {"generated_at_utc": snapshot.get("generated_at_utc"), "observation_fingerprint": _observation_fingerprint(snapshot), "source": snapshot.get("source"), "primary_weather_state": primary.get("weather_state"), "primary_harmonic": primary.get("harmonic"), "primary_stance": primary.get("stance"), "primary_risk": primary.get("risk"), "primary_summary": primary.get("summary"), "system_mood": snapshot.get("system_mood")}
 
 def analyze_history(entries: List[Dict[str, Any]]) -> Dict[str, Any]:
     recent = entries[-12:]
@@ -112,7 +139,9 @@ def update_history(history_path: str | Path, snapshot: Dict[str, Any], *, max_en
                 entries = list(existing["entries"])
         except Exception:
             entries = []
-    entries.append(_compact_history_entry(snapshot))
+    next_entry = _compact_history_entry(snapshot)
+    if not entries or entries[-1].get("observation_fingerprint") != next_entry["observation_fingerprint"]:
+        entries.append(next_entry)
     entries = entries[-max_entries:]
     analysis = analyze_history(entries)
     latest = entries[-1] if entries else {}
@@ -128,6 +157,11 @@ def write_snapshot(output_path: str | Path, *, metrics_input: Optional[str | Pat
     metric_sets = _load_runtime_metric_sets(metrics_input)
     source = f"generated from runtime metrics input: {metrics_input}" if metric_sets else "generated from bundled sample metrics fallback"
     payload = build_snapshot(metric_sets, source_label=source)
+    existing = _load_json_dict(path)
+    if existing is not None and _observation_fingerprint(existing) == _observation_fingerprint(payload):
+        if history_output and _load_json_dict(Path(history_output)) is None:
+            update_history(history_output, existing)
+        return path
     with path.open("w", encoding="utf-8") as f:
         json.dump(payload, f, indent=2)
         f.write("\n")

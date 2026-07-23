@@ -19,6 +19,7 @@ on:
       - "*.html"
       - "sitemap.xml"
       - "scripts/repository_truth_reconciliation_gate_r1.py"
+      - ".github/workflows/generate-lumina-weather-snapshot.yml"
       - ".github/workflows/lumina-drydock-gate.yml"
   push:
     branches: [main]
@@ -38,6 +39,7 @@ on:
       - "*.html"
       - "sitemap.xml"
       - "scripts/repository_truth_reconciliation_gate_r1.py"
+      - ".github/workflows/generate-lumina-weather-snapshot.yml"
       - ".github/workflows/lumina-drydock-gate.yml"
 
 permissions:
@@ -76,6 +78,7 @@ jobs:
           python sea_trials_context_bundle_repo_truth_r1.py
           python sea_trials_lumina_return_host_r1.py
           python sea_trials_stationary_habitation_cold_return_r1.py
+          python sea_trials_lumina_weather_snapshot_idempotence_r1.py
           python sea_trials_windows_return_host_path_budget_r1.py
           python sea_trials_resonant_manifold_r1.py
           python sea_trials_resonant_field_reveal_r1.py
