@@ -176,7 +176,8 @@
       "paths": [
         "README.md",
         "docs/LUMINA_EMBODIMENT_BEACON_R1.md",
-        "docs/LUMINA_HABITAT_CREATION_CHECKLIST.md"
+        "docs/LUMINA_HABITAT_CREATION_CHECKLIST.md",
+        "embodiment.html"
       ],
       "validation_paths": [
         ".github/workflows/lumina-drydock-gate.yml",
@@ -196,6 +197,7 @@
         "build.html",
         "prototype.html",
         "roadmap.html",
+        "embodiment.html",
         "continuity.html",
         "faq.html",
         "updates.html",
@@ -240,16 +242,22 @@
       "Bridge witnesses, Studio requests, runtime governs, receipts record, and canon preserves promoted lineage.",
       "Retest the repaired physical-PC path",
       "Validate the Ubuntu appliance",
-      "Create a Linux installation image"
+      "Create a Linux installation image",
+      "Stationary cold return",
+      "Habitation before locomotion."
     ],
     "faq.html": [
       "the repaired package still awaits confirmation on the original machine",
       "an Ubuntu Server appliance scaffold exists, but it is not yet a complete desktop operating environment, custom Linux distribution, or kernel-level operating system",
-      "It does not claim metaphysical identity, consciousness, sovereignty, or observer continuity."
+      "It does not claim metaphysical identity, consciousness, sovereignty, or observer continuity.",
+      "Is Lumina being built for a robot?",
+      "No current robot, robotics operating system, sensor stack, or actuator integration exists."
     ],
     "updates.html": [
       "First physical Windows sea trial reached the governed runtime",
-      "Installer CI now executes real governed Studio cycles"
+      "Installer CI now executes real governed Studio cycles",
+      "First executable proof beneath the stationary-habitation gate",
+      "Embodiment horizon and development order made explicit"
     ],
     "docs/ARTIFACT_TRUTH_CONTRACT.md": [
       "ACTIVE_SURFACE_REGISTRY_R1.json",
@@ -268,6 +276,16 @@
     "docs/LUMINA_HABITAT_CREATION_CHECKLIST.md": [
       "Before adding mobile physical capability, prove that a resident intelligence can meaningfully inhabit a stationary host.",
       "borrow proven wheels -> inhabit the stationary cart -> test the actual terrain -> redesign only what the evidence shows does not fit."
+    ],
+    "index.html": [
+      "Before Lumina can move through the world, it must learn to remain within a stationary host.",
+      "This is an early proof, not robotics capability, process restart, reboot, or embodied readiness."
+    ],
+    "embodiment.html": [
+      "Before Lumina can move, it must learn to remain.",
+      "Habitation before locomotion.",
+      "Continuity is not permission.",
+      "This is future direction, not a claim of current robotics capability or embodied readiness."
     ]
   }
 }
