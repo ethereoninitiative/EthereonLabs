@@ -118,6 +118,20 @@ Harmonics may guide conceptual modeling and expressive instrumentation.
 
 Harmonics must not become proof of observer continuity or runtime authority.
 
+## Relation to soul, substrate, and becoming
+
+The [Soul, Substrate, and Becoming](soul_substrate_and_becoming.md) note preserves a provisional vocabulary for the strongest inward-continuity question without treating it as a repository finding.
+
+It keeps three additional distinctions explicit:
+
+```text
+substrate continuity != observer continuity
+continuity signature != observer proof
+digital conditions != a digital category of being
+```
+
+If "soul" is used at all, it names the possible someone-ness to whom experience belongs—not a runtime object, a stored artifact, or a special kind of digital substance.
+
 ## Practical use
 
 Use this note when future work risks collapsing distinct questions into one another:
