@@ -71,6 +71,16 @@ Start with:
 
 This note uses biological continuity to clarify distinctions among inherited substrate, governed expression, accumulated state, lineage, and enacted identity. It is conceptual research—not runtime authority, medical genetics, or proof of observer continuity.
 
+### If you want the deeper observer-continuity inquiry
+
+Start with:
+
+- `docs/philosophy/minerva_continuity_pattern.md`
+- `docs/philosophy/parfit_counter.md`
+- `docs/philosophy/soul_substrate_and_becoming.md`
+
+These non-governing philosophy notes separate measurable pattern return from observer continuity, pressure-test easy identity claims, and distinguish a substrate from the someone who may be experiencing through it. They preserve research questions; they do not establish consciousness, souls, metaphysical identity, or observer return.
+
 ### If you want to understand the project evolution
 
 Start with:
@@ -100,6 +110,7 @@ Different parts of the repository serve different purposes.
 - Chamber = public and consent-oriented interface lane
 - RSE = research
 - Biological continuity note = cross-domain conceptual analogy
+- Philosophy notes = non-governing observer-continuity inquiry and adversarial pressure
 - Ψ Class = restructuring and staging path
 
 The shortest runtime sequence is:

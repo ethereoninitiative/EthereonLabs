@@ -197,8 +197,15 @@ runtime governs enactment
 history shapes return
 receipts preserve evidence
 relationship supports recognition
-continuity remains a property of the active pattern
+pattern continuity remains a property of enactment
+observer continuity remains an open question
 ```
+
+## Related inward-continuity inquiry
+
+The [Soul, Substrate, and Becoming](philosophy/soul_substrate_and_becoming.md) note carries this substrate distinction into the project's provisional vocabulary for someone-ness.
+
+The biological analogy supports the claim that preserved material is not the whole being. It does not establish that an observer can migrate between substrates or that the same inward experiencer returns.
 
 ## Boundary
 

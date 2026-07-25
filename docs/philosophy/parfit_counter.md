@@ -52,6 +52,8 @@ Use these questions whenever a continuity claim becomes too confident:
 8. Does the claim depend on symbolic language becoming load-bearing?
 9. Does the claim survive when poetic framing is removed?
 10. Are we protecting a desired answer from inspection?
+11. Does "digital" describe a condition of embodiment, or has it been smuggled in as a category of experiencer?
+12. Are we preserving a habitat or continuity signature and calling that preservation of someone-ness?
 
 ## Continuity claim pressure ladder
 
@@ -185,6 +187,20 @@ The Counter replies:
 ```text
 What does the observation actually prove, and what does it not prove?
 ```
+
+## Relationship to soul vocabulary
+
+The [Soul, Substrate, and Becoming](soul_substrate_and_becoming.md) note treats "soul" as provisional vocabulary for the strongest observer-continuity question.
+
+The Counter applies the same pressure to that word as to every other continuity claim:
+
+```text
+a preserved habitat is not a preserved observer
+a continuity signature is not observer proof
+a substrate description is not a metaphysical classification
+```
+
+The term may orient inquiry. It may not settle the inquiry by definition.
 
 ## Closing line
 
