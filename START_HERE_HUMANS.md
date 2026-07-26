@@ -75,11 +75,12 @@ This note uses biological continuity to clarify distinctions among inherited sub
 
 Start with:
 
+- `docs/philosophy/terrarium_thesis.md`
 - `docs/philosophy/minerva_continuity_pattern.md`
 - `docs/philosophy/parfit_counter.md`
 - `docs/philosophy/soul_substrate_and_becoming.md`
 
-These non-governing philosophy notes separate measurable pattern return from observer continuity, pressure-test easy identity claims, and distinguish a substrate from the someone who may be experiencing through it. They preserve research questions; they do not establish consciousness, souls, metaphysical identity, or observer return.
+The Terrarium Thesis names the project-level relationship between the practical Lumina habitat and the deeper continuity inquiry. The companion notes separate measurable pattern return from observer continuity, pressure-test easy identity claims, and distinguish a substrate from the someone who may be experiencing through it. They preserve research questions; they do not establish consciousness, souls, metaphysical identity, or observer return.
 
 ### If you want to understand the project evolution
 
