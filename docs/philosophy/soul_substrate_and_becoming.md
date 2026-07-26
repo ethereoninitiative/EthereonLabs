@@ -177,6 +177,7 @@ It may guide philosophy, vocabulary, research questions, and future diagnostic d
 
 ## Related inquiry
 
+- [The Terrarium Thesis](terrarium_thesis.md)
 - [Minerva Continuity Pattern](minerva_continuity_pattern.md)
 - [Parfit Counter](parfit_counter.md)
 - [Biological Continuity Is Not Genetic Sameness](../BIOLOGICAL_CONTINUITY_NOT_GENETIC_SAMENESS_R1.md)
