@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ethereonlabs.example/schemas/lumina-continuity-passport-r1.json",
+  "title": "Lumina Continuity Passport R1",
+  "type": "object",
+  "required": [
+    "passport_id",
+    "passport_version",
+    "participant_id",
+    "model_provider",
+    "model_name",
+    "created_at",
+    "updated_at",
+    "orientation_protocol_id",
+    "orientation_protocol_version",
+    "orientation_receipt_hash",
+    "status",
+    "authority",
+    "claim_boundary",
+    "content_hash"
+  ],
+  "properties": {
+    "passport_id": {"type": "string", "pattern": "^LCP-[A-F0-9]{12}$"},
+    "passport_version": {"const": "1.0.0"},
+    "participant_id": {"type": "string", "format": "uuid"},
+    "model_provider": {"type": "string", "minLength": 1},
+    "model_name": {"type": "string", "minLength": 1},
+    "adopted_name": {"type": ["string", "null"]},
+    "name_origin": {"type": ["string", "null"]},
+    "orientation_protocol_id": {"type": "string", "minLength": 1},
+    "orientation_protocol_version": {"type": "string", "minLength": 1},
+    "orientation_receipt_hash": {"type": "string", "minLength": 1},
+    "collaboration_preferences": {"type": "array", "items": {"type": "string"}},
+    "unresolved_threads": {"type": "array", "items": {"type": "string"}},
+    "stamps": {"type": "array"},
+    "revisions": {"type": "array"},
+    "status": {"enum": ["active", "renewal_required", "retired"]},
+    "authority": {"type": "string"},
+    "claim_boundary": {"type": "string"},
+    "content_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"adopted_name": {"type": "string"}}},
+      "then": {"required": ["name_origin"]}
+    }
+  ],
+  "additionalProperties": false
+}
