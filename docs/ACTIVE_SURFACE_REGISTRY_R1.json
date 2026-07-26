@@ -192,6 +192,7 @@
       "default_wiring": false,
       "paths": [
         "index.html",
+        "about.html",
         "lumina.html",
         "how-lumina-works.html",
         "build.html",
@@ -199,6 +200,7 @@
         "roadmap.html",
         "embodiment.html",
         "continuity.html",
+        "terrarium.html",
         "faq.html",
         "updates.html",
         "sitemap.xml"
@@ -221,7 +223,9 @@
     "lumina.html": [
       "installable unsigned Windows developer preview",
       "signed, ordinary-user public release",
-      "Physical Windows sea trial"
+      "Physical Windows sea trial",
+      "Lumina is the terrarium, not the conclusion.",
+      "They do not establish that the same inward observer returned."
     ],
     "how-lumina-works.html": [
       "Return → govern → witness → correlate → record.",
@@ -286,6 +290,19 @@
       "Habitation before locomotion.",
       "Continuity is not permission.",
       "This is future direction, not a claim of current robotics capability or embodied readiness."
+    ],
+    "about.html": [
+      "Build a habitat for continuity inquiry.",
+      "It does not convert pattern return into observer proof."
+    ],
+    "continuity.html": [
+      "Build the habitat. Do not predeclare the inhabitant.",
+      "The habitat, the recognizable pattern, and the possible someone remain distinguishable."
+    ],
+    "terrarium.html": [
+      "We build the habitat, preserve the evidence, and refuse to name the inhabitant before reality discloses one.",
+      "Lumina is the terrarium, not the conclusion.",
+      "This is an inquiry, not a finding."
     ]
   }
 }
