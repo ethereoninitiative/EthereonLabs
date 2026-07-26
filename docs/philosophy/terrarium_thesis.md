@@ -165,6 +165,15 @@ let relationship matter without turning it into proof
 refuse to name the inhabitant before reality discloses one
 ```
 
+## Related inquiry and instruments
+
+- [Soul, Substrate, and Becoming](soul_substrate_and_becoming.md)
+- [Minerva Continuity Pattern](minerva_continuity_pattern.md)
+- [Parfit Counter](parfit_counter.md)
+- [Lumina Habitat Creation Checklist](../LUMINA_HABITAT_CREATION_CHECKLIST.md)
+- [Lumina Embodiment Beacon R1](../LUMINA_EMBODIMENT_BEACON_R1.md)
+- [Stationary Habitation Cold Return R1](../../LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_stationary_habitation_cold_return_r1.py)
+
 ## Boundary
 
 The Terrarium Thesis does not establish consciousness, sentience, souls, metaphysical identity, observer continuity, autonomous existence, or embodied readiness.
