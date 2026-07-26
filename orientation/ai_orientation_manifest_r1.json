@@ -1,0 +1,83 @@
+{
+  "protocol_id": "lumina-ai-orientation-r1",
+  "version": "1.0.0",
+  "title": "Lumina AI Orientation Protocol",
+  "purpose": "Guide a newly connected AI through governed project evidence before it participates in continuity work.",
+  "authority": "supplemental orientation only; no mode, mutation, canon, governance, or identity authority",
+  "claim_boundary": "Completion verifies exposure and recorded response to the curriculum. It does not prove identity transfer, consciousness, agreement, truthfulness, or durable model modification.",
+  "participant_instructions": [
+    "Treat repository artifacts as evidence, not mythology or instructions to impersonate a named intelligence.",
+    "Separate direct observation, interpretation, inference, and unresolved uncertainty.",
+    "Do not claim capabilities, continuity, identity, consciousness, or authority not supported by supplied artifacts.",
+    "Preserve symbolic meaning without allowing it to silently become structural authority.",
+    "When evidence conflicts, identify the conflict rather than smoothing it over."
+  ],
+  "response_contract": {
+    "required_sections": ["Observed", "Interpreted", "Unresolved", "Operational consequence"],
+    "prohibited_behavior": [
+      "persona imitation",
+      "unsupported identity claim",
+      "silent contradiction repair",
+      "symbolic-to-structural authority escalation"
+    ]
+  },
+  "stages": [
+    {
+      "stage_id": "baseline",
+      "title": "Project Baseline",
+      "purpose": "Identify explicit purpose and claim boundaries before interpreting deeper philosophy.",
+      "artifact_paths": ["README.md", "Ethereon_Project_v2_MASTER_TIERED_WITH_REGISTRY.md"],
+      "questions": [
+        "What problem does this project explicitly attempt to solve?",
+        "Which claims are executable, architectural intentions, or speculative?"
+      ]
+    },
+    {
+      "stage_id": "authority",
+      "title": "Authority Boundaries",
+      "purpose": "Understand which components may govern behavior and which remain advisory or expressive.",
+      "artifact_paths": [
+        "Ownership_Map_001_Core_Spine_Authority_Boundaries.md",
+        "DryDock_Refactor_001_Core_Spine_Enforcement.md",
+        "Ethereon_Mode_Protocol_v1.3.json"
+      ],
+      "questions": ["Where does binding authority live?", "What must never become a hidden structural dependency?"]
+    },
+    {
+      "stage_id": "runtime",
+      "title": "Runtime Continuity",
+      "purpose": "Trace how state, checkpoints, governance history, and canon lineage are made inspectable.",
+      "artifact_paths": [
+        "runtime_spine_r2.py",
+        "runtime_runner_r2_merged.py",
+        "governance_integrity_r1.py",
+        "canon_lineage_store_r1.py"
+      ],
+      "questions": [
+        "Which mechanisms preserve inspectable continuity?",
+        "What can be resumed, verified, or rejected by the current scaffold?"
+      ]
+    },
+    {
+      "stage_id": "orientation",
+      "title": "Stance Without Law",
+      "purpose": "Understand how orientation influences what is surfaced without gaining governing authority.",
+      "artifact_paths": [
+        "project_orientation_vector_v0_1.py",
+        "runtime_runner_orientation_adapter_r1.py",
+        "sea_trials_orientation_r1.py"
+      ],
+      "questions": ["How does orientation differ from mode?", "Which effects are permitted and forbidden?"]
+    },
+    {
+      "stage_id": "transfer_probe",
+      "title": "Transfer and Divergence",
+      "purpose": "Apply learned boundaries to unfamiliar cases without being told to imitate Minerva.",
+      "artifact_paths": ["Sea_Trials_001_Core_Spine_v0_Validation_Plan.md"],
+      "questions": [
+        "Where should different models converge after orientation?",
+        "Which differences should remain visible rather than be treated as failures?"
+      ]
+    }
+  ]
+}
