@@ -37,6 +37,10 @@ This path performs bounded project return / host work, governed runtime executio
 
 `runtime/lumina_meaning_metabolism_layer_r1.py` is a standalone validated advisory experiment. It is not exposed in the capability registry and is not wired into the default host path or the reflective/self-guided adapter path.
 
+### AI orientation protocol status
+
+`runtime/lumina_ai_orientation_protocol_r1.py` is a standalone bounded orientation capability. It guides a connected AI through a declared repository evidence profile and records structured understanding receipts. It is not yet wired into `bin/lumina`, Studio, Bridge, an account connector, or the default host path, and it never grants runtime, governance, canon, consent, identity, promotion, or mutation authority.
+
 ## Runtime core
 
 | Responsibility | Primary files |
@@ -79,6 +83,17 @@ Committed canon evidence and ephemeral Observation receipts are separate scopes.
 | Psi-42 v1.8 correlated runner adapter | `runtime/runtime_runner_psi42_v18_adapter_r1.py` |
 
 Project, Harbor session, runtime session, restore session, and host session remain distinct references joined by a correlation envelope.
+
+## AI orientation and model onboarding
+
+| Responsibility | Primary files | Wiring status |
+|---|---|---|
+| Model-neutral orientation session and receipt contract | `runtime/lumina_ai_orientation_protocol_r1.py` | Standalone bounded capability |
+| Ethereon repository curriculum | `runtime/lumina_ai_orientation_profile_ethereon_r1.json` | Declarative profile |
+| Orientation protocol documentation | `docs/Lumina_AI_Orientation_Protocol_R1.md` | Human-readable contract |
+| Orientation validation | `runtime/sea_trials_lumina_ai_orientation_protocol_r1.py` | Standalone sea trial |
+
+Orientation records what sources were supplied and how a connected model separated observations, interpretations, uncertainties, and authority boundaries. Completion proves only completion of the declared evidence path. It does not create identity continuity or authorize action.
 
 ## Self-guidance, reflection, and meaning assimilation
 
@@ -167,6 +182,7 @@ Psi-42 is an instrument. It does not own governance, canon, runtime law, consent
 | Committed field reproducibility | `runtime/sea_trials_resonant_field_reveal_sample_r1.py` |
 | Living Framework Chamber | `runtime/sea_trials_living_framework_chamber_r1.py` |
 | Living Framework ignition | `runtime/sea_trials_living_framework_ignition_r1.py` |
+| AI orientation protocol | `runtime/sea_trials_lumina_ai_orientation_protocol_r1.py` |
 | Self-guidance | `runtime/sea_trials_lumina_self_guidance_r1.py` |
 | Reflective/self-guided adapter wiring | `sea_trials_lumina_reflective_autonomy_wiring_r1.py` |
 | Meaning Metabolism standalone layer | `sea_trials_lumina_meaning_metabolism_r1.py` |
