@@ -120,6 +120,20 @@
       "authority_boundary": "Provides public and consent-oriented interface surfaces. It is not the governed runtime substrate."
     },
     {
+      "surface_id": "lumina_harbor_holder",
+      "name": "Lumina Harbor holder surface",
+      "status": "holder-surface",
+      "default_wiring": false,
+      "paths": [
+        "app/README.md",
+        "app/index.html"
+      ],
+      "validation_paths": [
+        "scripts/repository_truth_reconciliation_gate_r1.py"
+      ],
+      "authority_boundary": "Presentation-only holder for the future app.ethereonlabs.com surface. It does not execute Lumina runtime actions, authenticate users, establish provider credentials, issue passports, create beacons, persist voyages, authorize governance, or alter canon."
+    },
+    {
       "surface_id": "hra_training_dataset_v0_1",
       "name": "Harmonic Reflection Adapter training dataset artifact",
       "status": "dataset-artifact",
@@ -303,6 +317,21 @@
       "We build the habitat, preserve the evidence, and refuse to name the inhabitant before reality discloses one.",
       "Lumina is the terrarium, not the conclusion.",
       "This is an inquiry, not a finding."
+    ],
+    "app/README.md": [
+      "No authentication",
+      "No provider credentials",
+      "No passport issuance",
+      "No beacon creation",
+      "No voyage persistence",
+      "This holder is presentation only."
+    ],
+    "app/index.html": [
+      "Harbor under construction",
+      "A forthcoming web-based threshold",
+      "First boarding sequence",
+      "The first inhabitable release will begin simply",
+      "holder surface R1"
     ]
   }
 }
