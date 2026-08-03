@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Dict, Iterable, Optional
 import argparse
+import hashlib
 import json
 
 
@@ -20,6 +21,18 @@ PUBLIC_SNAPSHOT_PATH = PUBLIC_RUNTIME_DIR / "latest_cycle.json"
 PUBLIC_HISTORY_DIR = PUBLIC_RUNTIME_DIR / "history"
 PUBLIC_HISTORY_INDEX = PUBLIC_HISTORY_DIR / "index.json"
 STATE_SNAPSHOT_PATH = REPO_ROOT / ".lumina_state" / "ship_of_ethereon_v2" / "runtime_outputs" / "latest_cycle.json"
+SEMANTIC_TOP_LEVEL_KEYS = (
+    "schema_version",
+    "requested_action",
+    "action_type",
+    "mode",
+    "status",
+    "canon",
+    "capabilities",
+    "authority_boundary",
+)
+SEMANTIC_GOVERNANCE_KEYS = ("transition", "mutation", "promotion", "chain_valid")
+VOLATILE_PROBE_KEYS = {"run_id", "pulse_id"}
 
 
 def _read_json(path: str | Path) -> Dict[str, Any]:
@@ -132,6 +145,75 @@ def build_ui_snapshot(result: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
+def runtime_snapshot_semantic_payload(snapshot: Dict[str, Any]) -> Dict[str, Any]:
+    """Return the stable observation represented by a public runtime receipt.
+
+    Timestamps, run identifiers, probe identifiers, history pointers, and runtime
+    truth projection fields are intentionally excluded. The observation cycle may
+    still write fresh local state, but tracked public evidence changes only when
+    this payload changes.
+    """
+
+    if not isinstance(snapshot, dict):
+        return {}
+    payload = {key: snapshot.get(key) for key in SEMANTIC_TOP_LEVEL_KEYS}
+    governance = snapshot.get("governance") if isinstance(snapshot.get("governance"), dict) else {}
+    payload["governance"] = {key: governance.get(key) for key in SEMANTIC_GOVERNANCE_KEYS}
+    probe = snapshot.get("probe") if isinstance(snapshot.get("probe"), dict) else {}
+    payload["probe"] = {key: value for key, value in probe.items() if key not in VOLATILE_PROBE_KEYS}
+    return payload
+
+
+def runtime_snapshot_semantic_fingerprint(snapshot: Dict[str, Any]) -> str:
+    canonical = json.dumps(
+        runtime_snapshot_semantic_payload(snapshot),
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+    )
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+
+def public_snapshot_semantically_changed(
+    snapshot: Dict[str, Any],
+    existing_path: str | Path = PUBLIC_SNAPSHOT_PATH,
+) -> bool:
+    path = Path(existing_path)
+    if not path.exists():
+        return True
+    try:
+        existing = _read_json(path)
+    except (OSError, json.JSONDecodeError, TypeError, ValueError):
+        return True
+    if not isinstance(existing, dict) or not existing:
+        return True
+    return runtime_snapshot_semantic_fingerprint(existing) != runtime_snapshot_semantic_fingerprint(snapshot)
+
+
+def snapshot_write_plan(
+    snapshot: Dict[str, Any],
+    *,
+    emit_public_snapshot: bool = True,
+    emit_state_snapshot: bool = True,
+    public_snapshot_path: str | Path = PUBLIC_SNAPSHOT_PATH,
+    state_snapshot_path: str | Path = STATE_SNAPSHOT_PATH,
+) -> Dict[str, Any]:
+    public_changed = bool(
+        emit_public_snapshot
+        and public_snapshot_semantically_changed(snapshot, existing_path=public_snapshot_path)
+    )
+    paths: list[Path] = []
+    if public_changed:
+        paths.append(Path(public_snapshot_path))
+    if emit_state_snapshot:
+        paths.append(Path(state_snapshot_path))
+    return {
+        "paths": paths,
+        "public_snapshot_changed": public_changed,
+        "semantic_fingerprint": runtime_snapshot_semantic_fingerprint(snapshot),
+    }
+
+
 def _archive_public_snapshot(snapshot: Dict[str, Any]) -> None:
     PUBLIC_HISTORY_DIR.mkdir(parents=True, exist_ok=True)
     run_id = snapshot.get("run_id") or "unknown-run"
@@ -183,13 +265,18 @@ def write_snapshot(snapshot: Dict[str, Any], paths: Iterable[str | Path]) -> Non
 def emit_from_result_file(result_path: str | Path, *, public: bool = True, state: bool = True) -> Dict[str, Any]:
     result = _read_json(result_path)
     snapshot = build_ui_snapshot(result)
-    paths = []
-    if public:
-        paths.append(PUBLIC_SNAPSHOT_PATH)
-    if state:
-        paths.append(STATE_SNAPSHOT_PATH)
-    write_snapshot(snapshot, paths)
-    return {"snapshot": snapshot, "paths": [str(p) for p in paths]}
+    plan = snapshot_write_plan(
+        snapshot,
+        emit_public_snapshot=public,
+        emit_state_snapshot=state,
+    )
+    write_snapshot(snapshot, plan["paths"])
+    return {
+        "snapshot": snapshot,
+        "paths": [str(p) for p in plan["paths"]],
+        "public_snapshot_changed": plan["public_snapshot_changed"],
+        "semantic_fingerprint": plan["semantic_fingerprint"],
+    }
 
 
 def parse_args() -> argparse.Namespace:
