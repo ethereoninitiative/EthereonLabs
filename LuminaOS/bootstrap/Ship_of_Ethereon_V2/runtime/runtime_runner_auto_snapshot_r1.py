@@ -1,17 +1,16 @@
 from __future__ import annotations
 
-from pathlib import Path
 from typing import Any, Dict, Optional
 import argparse
 import json
 
 try:
     from .runtime_runner_r1_merged import RuntimeRunner, VALID_ACTION_TYPES
-    from .runtime_ui_snapshot_emitter_r1 import build_ui_snapshot, write_snapshot, PUBLIC_SNAPSHOT_PATH, STATE_SNAPSHOT_PATH
+    from .runtime_ui_snapshot_emitter_r1 import build_ui_snapshot, snapshot_write_plan, write_snapshot
     from .runtime_truth_public_snapshot_r1 import build_public_runtime_truth_snapshot
 except Exception:
     from runtime_runner_r1_merged import RuntimeRunner, VALID_ACTION_TYPES
-    from runtime_ui_snapshot_emitter_r1 import build_ui_snapshot, write_snapshot, PUBLIC_SNAPSHOT_PATH, STATE_SNAPSHOT_PATH
+    from runtime_ui_snapshot_emitter_r1 import build_ui_snapshot, snapshot_write_plan, write_snapshot
     from runtime_truth_public_snapshot_r1 import build_public_runtime_truth_snapshot
 
 
@@ -19,28 +18,32 @@ class AutoSnapshotRuntimeRunner(RuntimeRunner):
     """RuntimeRunner wrapper that emits a Chamber-readable UI receipt after each cycle.
 
     The snapshot is display-only. It does not grant the Chamber authority to execute tools,
-    alter governance, mutate canon, expose capabilities, or change mode legality.
+    alter governance, mutate canon, expose capabilities, or change mode legality. Public
+    evidence is refreshed only when the semantic observation changes; local state may still
+    receive every completed cycle.
     """
 
     def run_cycle(self, *args: Any, emit_public_snapshot: bool = True, emit_state_snapshot: bool = True, **kwargs: Any):
         result = super().run_cycle(*args, **kwargs)
         payload = result.to_dict()
         snapshot = build_ui_snapshot(payload)
-        paths = []
-        if emit_public_snapshot:
-            paths.append(PUBLIC_SNAPSHOT_PATH)
-        if emit_state_snapshot:
-            paths.append(STATE_SNAPSHOT_PATH)
-        write_snapshot(snapshot, paths)
+        plan = snapshot_write_plan(
+            snapshot,
+            emit_public_snapshot=emit_public_snapshot,
+            emit_state_snapshot=emit_state_snapshot,
+        )
+        write_snapshot(snapshot, plan["paths"])
 
         runtime_truth_emitted = False
         runtime_truth_error = None
-        try:
-            build_public_runtime_truth_snapshot()
-            runtime_truth_emitted = True
-        except Exception as exc:
-            runtime_truth_error = str(exc)
+        if plan["public_snapshot_changed"]:
+            try:
+                build_public_runtime_truth_snapshot()
+                runtime_truth_emitted = True
+            except Exception as exc:
+                runtime_truth_error = str(exc)
 
+        payload["public_snapshot_changed"] = plan["public_snapshot_changed"]
         payload["runtime_truth_snapshot_emitted"] = runtime_truth_emitted
         payload["runtime_truth_snapshot_error"] = runtime_truth_error
         return result
