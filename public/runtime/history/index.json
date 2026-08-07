@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-08-07T07:40:58.370828+00:00",
+    "run_id": "run-d47a63fa-afb",
+    "status": "Stable",
+    "mode": "Observation",
+    "file": "/runtime/history/2026-08-07T07-40-58.370828_00-00_run-d47a63fa-afb.json",
+    "probe_instrument_version": "v1.8",
+    "hybrid_continuity_coherence": 0.7946
+  },
+  {
     "timestamp": "2026-08-07T03:17:35.726524+00:00",
     "run_id": "run-b8d20987-db6",
     "status": "Stable",
@@ -212,15 +221,6 @@
     "status": "Stable",
     "mode": "Observation",
     "file": "/runtime/history/2026-08-01T08-33-32.445826_00-00_run-af22f5e5-5f3.json",
-    "probe_instrument_version": "v1.8",
-    "hybrid_continuity_coherence": 0.7946
-  },
-  {
-    "timestamp": "2026-08-01T03:50:21.333003+00:00",
-    "run_id": "run-44680ca7-7cd",
-    "status": "Stable",
-    "mode": "Observation",
-    "file": "/runtime/history/2026-08-01T03-50-21.333003_00-00_run-44680ca7-7cd.json",
     "probe_instrument_version": "v1.8",
     "hybrid_continuity_coherence": 0.7946
   }
