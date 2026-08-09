@@ -42,3 +42,11 @@ The primary `ethereonlabs.com` site remains the public explanation layer. This s
 ## Authority boundary
 
 The Harbor surface records and displays local orientation state. It does not execute Lumina runtime actions, authorize governance, alter canon, issue authoritative passports, establish provider connections, or silently mutate GitHub.
+
+## Optional local Bridge witness
+
+The Harbor can optionally read the existing local Lumina Bridge at `http://127.0.0.1:8766/api/bridge`. This is a GET-only observation path. The browser restricts endpoints to loopback hosts, sends no credentials, and treats Bridge state as witness data rather than authority.
+
+Start the Bridge from the repository root with `python bin/lumina-bridge` inside `LuminaOS/bootstrap/Ship_of_Ethereon_V2/`. If it is unavailable, the Harbor remains usable in browser-local mode.
+
+See `docs/LUMINA_HARBOR_BRIDGE_WITNESS_R1.md` for the boundary and validation contract.

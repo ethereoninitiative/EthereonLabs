@@ -304,6 +304,7 @@ input:focus, textarea:focus { border-color: var(--glow); box-shadow: 0 0 0 3px r
 .welcome-card { grid-column: span 7; min-height: 220px; }
 .crew-card { grid-column: span 5; }
 .projects-card { grid-column: 1 / -1; }
+.bridge-card { grid-column: 1 / -1; }
 .receipt-card { grid-column: span 7; }
 .boundary-card { grid-column: span 5; }
 .card-head {
@@ -313,6 +314,8 @@ input:focus, textarea:focus { border-color: var(--glow); box-shadow: 0 0 0 3px r
   gap: 14px;
   margin-bottom: 18px;
 }
+.pill-good { color: var(--glow); border-color: rgba(141, 229, 208, 0.42); }
+.pill-muted { color: var(--muted); }
 .pill {
   display: inline-flex;
   align-items: center;

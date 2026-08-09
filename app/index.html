@@ -32,6 +32,7 @@
             <div class="actions">
               <button class="button primary" type="button" data-action="begin">Begin human orientation</button>
               <button id="return-button" class="button secondary hidden" type="button" data-action="return">Return to local Harbor</button>
+              <button class="button secondary" type="button" data-action="connect-bridge">Connect local Lumina</button>
               <a class="button secondary" href="https://ethereonlabs.com/how-lumina-works.html">Understand the mechanism</a>
             </div>
             <div class="truth-strip">
@@ -193,6 +194,28 @@
             <div id="project-list" class="list"></div>
           </article>
 
+
+          <article class="card bridge-card">
+            <div class="card-head">
+              <div>
+                <p class="kicker">Runtime witness</p>
+                <h3>Local Lumina Bridge</h3>
+              </div>
+              <span id="bridge-status" class="pill pill-muted">disconnected</span>
+            </div>
+            <p id="bridge-summary" class="card-copy">Optional read-only observation. Harbor remains fully usable without a local Bridge.</p>
+            <div class="field">
+              <label for="bridge-endpoint">Local Bridge endpoint</label>
+              <input id="bridge-endpoint" value="http://127.0.0.1:8766/api/bridge" inputmode="url" autocomplete="off">
+              <small>For safety, Harbor only connects to localhost, 127.0.0.1, or ::1. GET only. No credentials.</small>
+            </div>
+            <div id="bridge-witness" class="list" aria-live="polite"></div>
+            <div class="toolbar">
+              <button class="button primary" type="button" data-action="connect-bridge">Connect local Lumina</button>
+              <button class="button secondary" type="button" data-action="refresh-bridge">Refresh witness</button>
+            </div>
+          </article>
+
           <article class="card receipt-card">
             <div class="card-head">
               <div>
@@ -230,5 +253,6 @@
     </footer>
   </div>
   <script src="./harbor.js" defer></script>
+  <script src="./harbor-bridge.js" defer></script>
 </body>
 </html>
