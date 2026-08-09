@@ -38,9 +38,17 @@
       ],
       "validation_paths": [
         "LuminaOS/bootstrap/Ship_of_Ethereon_V2/sea_trials_lumina_bridge_r1.py",
-        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/sea_trials_lumina_bridge_field_r1.py"
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/sea_trials_lumina_bridge_field_r1.py",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/sea_trials_lumina_bridge_browser_boundary_r1.py"
       ],
-      "authority_boundary": "Witnesses and displays verified position and committed field evidence. It does not authorize or execute mutating work."
+      "authority_boundary": "Witnesses and displays verified position and committed field evidence. It does not authorize or execute mutating work.",
+      "cors_policy": {
+        "production_origin": "https://app.ethereonlabs.com",
+        "local_development": "http://localhost/*, http://127.0.0.1/*, http://[::1]/*",
+        "configuration": "LUMINA_BRIDGE_ALLOWED_ORIGINS",
+        "authentication": false,
+        "read_only": true
+      }
     },
     {
       "surface_id": "lumina_ubuntu_appliance",
@@ -128,17 +136,21 @@
         "app/index.html",
         "app/harbor.css",
         "app/harbor.js",
-        "app/README.md"
+        "app/README.md",
+        "app/harbor-bridge.js"
       ],
-      "validation_paths": [],
-      "authority_boundary": "Provides a browser-local human-facing orientation and return surface. It records draft participant and project state in local storage, but does not authenticate users, collect provider credentials, call a model, issue authoritative passports, create beacons, execute Lumina runtime actions, authorize governance, alter canon, persist remotely, or mutate GitHub.",
+      "validation_paths": [
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/sea_trials_lumina_bridge_browser_boundary_r1.py"
+      ],
+      "authority_boundary": "Provides browser-local human-facing orientation, return state, and optional read-only observation of a loopback Lumina Bridge. It does not authenticate users, collect provider credentials, call a model, issue authoritative passports, create beacons, execute Lumina runtime actions, authorize governance, alter canon, persist remotely, or mutate GitHub.",
       "prototype_scope": {
         "storage": "browser_local_storage",
         "remote_persistence": false,
         "authentication": false,
         "provider_connection": false,
         "model_execution": false,
-        "authority_granted": false
+        "authority_granted": false,
+        "local_bridge_read_only": true
       }
     },
     {
