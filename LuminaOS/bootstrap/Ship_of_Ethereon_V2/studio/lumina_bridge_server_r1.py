@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 import sys
@@ -176,6 +177,31 @@ HTML = r'''<!doctype html>
 </html>'''
 
 
+DEFAULT_CORS_ORIGINS = {"https://app.ethereonlabs.com"}
+LOCAL_CORS_HOSTS = {"localhost", "127.0.0.1", "::1", "[::1]"}
+
+
+def configured_cors_origins() -> set[str]:
+    configured = os.environ.get("LUMINA_BRIDGE_ALLOWED_ORIGINS", "")
+    origins = {
+        origin.strip()
+        for origin in configured.split(",")
+        if origin.strip()
+    }
+    return origins or set(DEFAULT_CORS_ORIGINS)
+
+
+def cors_origin_for(origin: str | None) -> str | None:
+    if not origin:
+        return None
+    if origin in configured_cors_origins():
+        return origin
+    parsed = urlparse(origin)
+    if parsed.scheme == "http" and parsed.hostname in LOCAL_CORS_HOSTS:
+        return origin
+    return None
+
+
 class LuminaBridgeHandler(BaseHTTPRequestHandler):
     server_version = "LuminaBridge/1.0"
 
@@ -184,8 +210,19 @@ class LuminaBridgeHandler(BaseHTTPRequestHandler):
         self.send_header("Content-Type", content_type)
         self.send_header("Content-Length", str(len(body)))
         self.send_header("Cache-Control", "no-store")
+        origin = cors_origin_for(self.headers.get("Origin"))
+        if origin:
+            self.send_header("Access-Control-Allow-Origin", origin)
+            self.send_header("Access-Control-Allow-Methods", "GET, OPTIONS")
+            self.send_header("Access-Control-Allow-Headers", "Accept, Content-Type")
+            self.send_header("Vary", "Origin")
+            if self.headers.get("Access-Control-Request-Private-Network") == "true":
+                self.send_header("Access-Control-Allow-Private-Network", "true")
         self.end_headers()
         self.wfile.write(body)
+
+    def do_OPTIONS(self) -> None:  # noqa: N802
+        self._send(204, b"", "text/plain; charset=utf-8")
 
     def do_GET(self) -> None:  # noqa: N802
         path = urlparse(self.path).path
