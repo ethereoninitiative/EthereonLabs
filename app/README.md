@@ -1,17 +1,35 @@
-# Lumina Harbor holder
+# Lumina Harbor local-first prototype
 
-This directory contains the first holder surface intended for `app.ethereonlabs.com`.
+This directory contains the first browser-facing Lumina Harbor surface intended for `app.ethereonlabs.com`.
 
 ## Current scope
 
-- Static, responsive holder page
+The R1 prototype implements one bounded, local-first loop:
+
+1. Human orientation
+2. Intelligence passport draft
+3. First project seed
+4. Harbor return state
+
+The browser stores participant labels, descriptive provider/model labels, project purpose, timestamps, and explicit non-authority boundaries in local storage. It can export that record as JSON.
+
+## Deliberate limits
+
 - No authentication
 - No provider credentials
-- No passport issuance
-- No beacon creation
-- No voyage persistence
+- No live model calls
+- No server persistence
+- No authoritative passport or identity issuance
+- No beacon authorization
+- No runtime, governance, canon, or GitHub mutation authority
 
-The page introduces the intended sequence without claiming that the application systems are already live.
+The page is now behaviorally useful, but it remains a human-facing shell around the governed Python runtime. It does not replace the runtime substrate or claim that an intelligence, identity, or consciousness has been proven continuous.
+
+## Files
+
+- `index.html` — Harbor first-loop interface
+- `harbor.css` — interface styling
+- `harbor.js` — local state, onboarding, return, export, and reset behavior
 
 ## Deployment intent
 
@@ -19,8 +37,8 @@ Deploy this directory as an independent static site with the publish directory s
 
 - `app.ethereonlabs.com`
 
-The primary `ethereonlabs.com` site remains the public explanation layer. This subdomain becomes the future Lumina Harbor application surface.
+The primary `ethereonlabs.com` site remains the public explanation layer. This subdomain is the first usable application surface.
 
 ## Authority boundary
 
-This holder is presentation only. It does not execute Lumina runtime actions, authorize governance, alter canon, issue passports, or establish provider connections.
+The Harbor surface records and displays local orientation state. It does not execute Lumina runtime actions, authorize governance, alter canon, issue authoritative passports, establish provider connections, or silently mutate GitHub.
