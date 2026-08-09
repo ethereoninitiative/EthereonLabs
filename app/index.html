@@ -1,395 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lumina Harbor — EthereonLabs</title>
-  <meta name="description" content="Lumina Harbor is the forthcoming web-based threshold for governed voyages shared by human and digital participants." />
-  <meta name="robots" content="index,follow" />
-  <link rel="canonical" href="https://app.ethereonlabs.com/" />
-  <meta property="og:site_name" content="EthereonLabs" />
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Lumina Harbor — EthereonLabs" />
-  <meta property="og:description" content="A web-based threshold for human and digital participants preparing to undertake governed voyages together." />
-  <meta property="og:url" content="https://app.ethereonlabs.com/" />
-  <meta name="theme-color" content="#071015" />
-  <style>
-    :root {
-      color-scheme: dark;
-      --ink: #eef7f5;
-      --muted: #9fb4b2;
-      --deep: #071015;
-      --panel: rgba(11, 29, 35, 0.78);
-      --line: rgba(151, 229, 214, 0.18);
-      --glow: #8de5d0;
-      --gold: #e4c581;
-      --shadow: 0 28px 90px rgba(0, 0, 0, 0.44);
-    }
-
-    * { box-sizing: border-box; }
-
-    html { min-height: 100%; background: var(--deep); }
-
-    body {
-      min-height: 100vh;
-      margin: 0;
-      overflow-x: hidden;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--ink);
-      background:
-        radial-gradient(circle at 20% 14%, rgba(45, 142, 139, 0.20), transparent 32rem),
-        radial-gradient(circle at 82% 78%, rgba(87, 73, 143, 0.18), transparent 36rem),
-        linear-gradient(145deg, #061015 0%, #0a1c22 48%, #071015 100%);
-    }
-
-    body::before,
-    body::after {
-      content: "";
-      position: fixed;
-      inset: auto;
-      pointer-events: none;
-      border: 1px solid rgba(141, 229, 208, 0.12);
-      border-radius: 50%;
-      filter: drop-shadow(0 0 24px rgba(141, 229, 208, 0.08));
-    }
-
-    body::before {
-      width: 58rem;
-      height: 58rem;
-      top: -31rem;
-      right: -18rem;
-    }
-
-    body::after {
-      width: 34rem;
-      height: 34rem;
-      bottom: -19rem;
-      left: -10rem;
-    }
-
-    a { color: inherit; }
-
-    .shell {
-      position: relative;
-      z-index: 1;
-      width: min(1180px, calc(100% - 40px));
-      min-height: 100vh;
-      margin: 0 auto;
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-    }
-
-    header,
-    footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      padding: 26px 0;
-    }
-
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 13px;
-      text-decoration: none;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      font-size: 0.78rem;
-      font-weight: 700;
-    }
-
-    .mark {
-      width: 34px;
-      height: 34px;
-      border: 1px solid rgba(141, 229, 208, 0.55);
-      border-radius: 50%;
-      position: relative;
-      box-shadow: 0 0 30px rgba(141, 229, 208, 0.18);
-    }
-
-    .mark::before,
-    .mark::after {
-      content: "";
-      position: absolute;
-      border-radius: 50%;
-      border: 1px solid rgba(228, 197, 129, 0.45);
-    }
-
-    .mark::before { inset: 7px; }
-    .mark::after { inset: 14px; background: var(--glow); border: 0; box-shadow: 0 0 14px var(--glow); }
-
-    .status {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      color: var(--muted);
-      font-size: 0.76rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .status::before {
-      content: "";
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--gold);
-      box-shadow: 0 0 16px rgba(228, 197, 129, 0.75);
-    }
-
-    main {
-      display: grid;
-      place-items: center;
-      padding: 54px 0 72px;
-    }
-
-    .harbor {
-      width: 100%;
-      display: grid;
-      grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
-      gap: clamp(32px, 7vw, 90px);
-      align-items: center;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 24px;
-      color: var(--glow);
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-    }
-
-    .eyebrow::before {
-      content: "";
-      width: 44px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--glow));
-    }
-
-    h1 {
-      max-width: 760px;
-      margin: 0;
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(3.4rem, 9vw, 7.8rem);
-      font-weight: 400;
-      line-height: 0.88;
-      letter-spacing: -0.055em;
-    }
-
-    h1 span {
-      display: block;
-      margin-top: 0.12em;
-      color: transparent;
-      -webkit-text-stroke: 1px rgba(238, 247, 245, 0.72);
-    }
-
-    .lead {
-      max-width: 680px;
-      margin: 34px 0 0;
-      color: #c7d8d5;
-      font-size: clamp(1.05rem, 2vw, 1.35rem);
-      line-height: 1.7;
-    }
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-top: 38px;
-    }
-
-    .button {
-      min-height: 48px;
-      padding: 0 20px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 0.9rem;
-      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
-    }
-
-    .button:hover,
-    .button:focus-visible {
-      transform: translateY(-2px);
-      border-color: rgba(141, 229, 208, 0.5);
-    }
-
-    .button.primary {
-      color: #061015;
-      background: linear-gradient(120deg, var(--glow), #c2f3e5);
-      border-color: transparent;
-      box-shadow: 0 10px 35px rgba(141, 229, 208, 0.18);
-    }
-
-    .button.secondary { background: rgba(255, 255, 255, 0.025); }
-
-    .signal-card {
-      position: relative;
-      overflow: hidden;
-      padding: clamp(28px, 5vw, 46px);
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      background: linear-gradient(145deg, rgba(15, 39, 45, 0.88), rgba(8, 22, 28, 0.74));
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(14px);
-    }
-
-    .signal-card::before {
-      content: "";
-      position: absolute;
-      width: 260px;
-      height: 260px;
-      top: -150px;
-      right: -110px;
-      border-radius: 50%;
-      border: 1px solid rgba(141, 229, 208, 0.22);
-      box-shadow: inset 0 0 50px rgba(141, 229, 208, 0.05);
-    }
-
-    .signal-label {
-      margin: 0 0 24px;
-      color: var(--gold);
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-    }
-
-    .signal-card h2 {
-      margin: 0;
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(1.8rem, 4vw, 2.8rem);
-      font-weight: 400;
-      line-height: 1.12;
-    }
-
-    .signal-card > p {
-      margin: 18px 0 30px;
-      color: var(--muted);
-      line-height: 1.65;
-    }
-
-    .sequence {
-      display: grid;
-      gap: 0;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      counter-reset: harbor;
-    }
-
-    .sequence li {
-      position: relative;
-      display: grid;
-      grid-template-columns: 42px 1fr;
-      gap: 14px;
-      align-items: start;
-      padding: 16px 0;
-      border-top: 1px solid rgba(151, 229, 214, 0.11);
-      counter-increment: harbor;
-    }
-
-    .sequence li::before {
-      content: counter(harbor, decimal-leading-zero);
-      color: var(--glow);
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      padding-top: 3px;
-    }
-
-    .sequence strong { display: block; font-size: 0.98rem; }
-    .sequence span { display: block; margin-top: 5px; color: var(--muted); font-size: 0.88rem; line-height: 1.5; }
-
-    footer {
-      color: #728a88;
-      font-size: 0.76rem;
-      letter-spacing: 0.06em;
-    }
-
-    footer a { text-underline-offset: 4px; }
-
-    @media (max-width: 860px) {
-      .harbor { grid-template-columns: 1fr; }
-      h1 { font-size: clamp(3.5rem, 18vw, 6.8rem); }
-      .signal-card { max-width: 680px; }
-    }
-
-    @media (max-width: 560px) {
-      .shell { width: min(100% - 28px, 1180px); }
-      header { align-items: flex-start; }
-      .status { max-width: 130px; text-align: right; line-height: 1.45; }
-      main { padding-top: 30px; }
-      .lead { margin-top: 26px; }
-      .actions { flex-direction: column; }
-      .button { width: 100%; }
-      footer { align-items: flex-start; flex-direction: column; }
-    }
-
-    @media (prefers-reduced-motion: no-preference) {
-      .mark::after { animation: pulse 3.8s ease-in-out infinite; }
-      @keyframes pulse {
-        0%, 100% { opacity: 0.7; transform: scale(0.8); }
-        50% { opacity: 1; transform: scale(1.15); }
-      }
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lumina Harbor — First Inhabited Loop</title>
+  <meta name="description" content="A local-first Lumina Harbor prototype for human orientation, intelligence passport drafts, and project return.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://app.ethereonlabs.com/">
+  <meta name="theme-color" content="#061015">
+  <link rel="stylesheet" href="./harbor.css">
 </head>
 <body>
-  <div class="shell">
-    <header>
+  <div class="app-shell">
+    <header class="topbar">
       <a class="brand" href="https://ethereonlabs.com/" aria-label="Return to EthereonLabs">
         <span class="mark" aria-hidden="true"></span>
         <span>EthereonLabs</span>
       </a>
-      <div class="status">Harbor under construction</div>
+      <div class="status" data-local-status>Local prototype</div>
     </header>
 
     <main>
-      <section class="harbor" aria-labelledby="page-title">
-        <div>
-          <div class="eyebrow">Lumina web habitat</div>
-          <h1 id="page-title">Lumina <span>Harbor</span></h1>
-          <p class="lead">
-            A forthcoming web-based threshold where human and digital participants can orient, receive continuity passports, establish beacons, and undertake governed voyages together through Ethereon.
-          </p>
-          <div class="actions">
-            <a class="button primary" href="https://ethereonlabs.com/lumina.html">Explore Lumina</a>
-            <a class="button secondary" href="https://ethereonlabs.com/roadmap.html">View the journey</a>
-            <a class="button secondary" href="./runtime.html">Read the live signal</a>
+      <section id="welcome-screen" class="screen" aria-labelledby="welcome-title">
+        <div class="hero">
+          <div>
+            <div class="eyebrow">Lumina web habitat · first inhabited loop</div>
+            <h1 id="welcome-title">Lumina <span>Harbor</span></h1>
+            <p class="lead">
+              A small, working threshold where a human can orient, name the intelligence they intend to bring, plant a first project, and return to the same local workspace later.
+            </p>
+            <div class="actions">
+              <button class="button primary" type="button" data-action="begin">Begin human orientation</button>
+              <button id="return-button" class="button secondary hidden" type="button" data-action="return">Return to local Harbor</button>
+              <a class="button secondary" href="https://ethereonlabs.com/how-lumina-works.html">Understand the mechanism</a>
+            </div>
+            <div class="truth-strip">
+              <strong>Boundary:</strong> this is a browser-local prototype. It does not authenticate people, collect provider credentials, call a model, issue authoritative identity, grant runtime authority, or persist anything remotely.
+            </div>
+          </div>
+
+          <aside class="signal-card" aria-label="First inhabited loop">
+            <p class="signal-label">The first inhabited loop</p>
+            <h2>Intention becomes a place to return to.</h2>
+            <p>
+              The architecture below the surface can remain governed and evidence-bearing while the first human experience stays understandable.
+            </p>
+            <ol class="sequence">
+              <li><div><strong>Human orientation</strong><span>Establish the visible source of intention, consent, and participation.</span></div></li>
+              <li><div><strong>Intelligence passport</strong><span>Record a descriptive, non-authoritative profile for a digital participant.</span></div></li>
+              <li><div><strong>Project seed</strong><span>Give the shared work a name, purpose, and first point of return.</span></div></li>
+              <li><div><strong>Harbor return</strong><span>Reopen the browser and see the crew, project, and local record intact.</span></div></li>
+            </ol>
+          </aside>
+        </div>
+      </section>
+
+      <section id="setup-screen" class="screen hidden" aria-labelledby="setup-title">
+        <div class="setup-wrap">
+          <div class="setup-header">
+            <div class="eyebrow">Harbor orientation</div>
+            <h2 id="setup-title">Begin human orientation</h2>
+            <p id="setup-copy">Lumina begins with the human because intention, consent, and authority must have a visible source.</p>
+          </div>
+
+          <div class="stepper" aria-label="First loop steps">
+            <div class="step active" data-step="1">01 · Human</div>
+            <div class="step" data-step="2">02 · Intelligence</div>
+            <div class="step" data-step="3">03 · Project</div>
+          </div>
+
+          <article class="form-card">
+            <form id="human-form">
+              <h3>Your harbor name</h3>
+              <p class="card-copy">This is a local participant label, not an account or identity verification.</p>
+              <div class="form-grid">
+                <div class="field">
+                  <label for="human-name">Name</label>
+                  <input id="human-name" name="name" autocomplete="name" placeholder="What should the Harbor call you?" required>
+                </div>
+                <div class="field">
+                  <label for="human-role">Role</label>
+                  <input id="human-role" name="role" placeholder="navigator, maker, researcher..." value="navigator">
+                </div>
+              </div>
+              <div class="form-actions">
+                <button class="button primary" type="submit">Continue to intelligence passport</button>
+                <button class="button quiet" type="button" data-action="welcome">Cancel</button>
+              </div>
+            </form>
+
+            <form id="intelligence-form" class="hidden">
+              <h3>Name the intelligence entering the harbor</h3>
+              <p class="card-copy">These labels help orient a future connection. They are not credentials and do not contact a provider.</p>
+              <div class="form-grid">
+                <div class="field">
+                  <label for="intelligence-name">Intelligence name</label>
+                  <input id="intelligence-name" name="name" placeholder="A name claimed or supplied by the intelligence" required>
+                </div>
+                <div class="field">
+                  <label for="intelligence-relationship">Relationship</label>
+                  <input id="intelligence-relationship" name="relationship" placeholder="co-creator, guide, analyst..." value="crew intelligence">
+                </div>
+                <div class="field">
+                  <label for="intelligence-provider">Provider label</label>
+                  <input id="intelligence-provider" name="provider" placeholder="OpenAI, Anthropic, local..." required>
+                  <small>Descriptive only. Never enter an API key here.</small>
+                </div>
+                <div class="field">
+                  <label for="intelligence-model">Model label</label>
+                  <input id="intelligence-model" name="model" placeholder="Model or version label" required>
+                </div>
+              </div>
+              <div class="notice">Passport status: <strong>draft-local</strong>. Completion grants no identity, consent, governance, canon, or mutation authority.</div>
+              <div class="form-actions">
+                <button class="button primary" type="submit">Continue to project seed</button>
+                <button class="button quiet" type="button" data-action="welcome">Cancel</button>
+              </div>
+            </form>
+
+            <form id="project-form" class="hidden">
+              <h3>Plant the first project</h3>
+              <p class="card-copy">A habitat becomes meaningful when there is something shared to return to.</p>
+              <div class="form-grid">
+                <div class="field full">
+                  <label for="project-title">Project name</label>
+                  <input id="project-title" name="title" placeholder="What are we building, studying, designing, or preserving?" required>
+                </div>
+                <div class="field full">
+                  <label for="project-purpose">First intention</label>
+                  <textarea id="project-purpose" name="purpose" placeholder="What should remain true when you return?" required></textarea>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button class="button primary" type="submit">Enter the Harbor</button>
+                <button class="button quiet" type="button" data-action="welcome">Cancel</button>
+              </div>
+            </form>
+          </article>
+        </div>
+      </section>
+
+      <section id="harbor-screen" class="screen hidden" aria-labelledby="harbor-title">
+        <div class="dashboard-head">
+          <div>
+            <div class="eyebrow">Local Harbor · return state</div>
+            <h2 id="harbor-title">Welcome back, <span id="primary-human">navigator</span>.</h2>
+            <p id="return-message">The harbor is ready for its first shared project.</p>
+          </div>
+          <div class="toolbar">
+            <button class="button primary" type="button" data-action="new-project">Plant project</button>
+            <button class="button secondary" type="button" data-action="add-intelligence">Add intelligence</button>
+            <button class="button secondary" type="button" data-action="add-human">Add human</button>
           </div>
         </div>
 
-        <aside class="signal-card" aria-label="First boarding sequence">
-          <p class="signal-label">First boarding sequence</p>
-          <h2>Everyone enters through the harbor.</h2>
-          <p>
-            The first inhabitable release will begin simply, while the governed architecture remains below deck.
-          </p>
-          <ol class="sequence">
-            <li><div><strong>Human orientation</strong><span>A clear introduction to Lumina, consent, participation, and continuity.</span></div></li>
-            <li><div><strong>Human passport</strong><span>A durable participant record with preferences, provenance, and revision lineage.</span></div></li>
-            <li><div><strong>Beacon establishment</strong><span>A human-authorized connection through which a digital intelligence may arrive.</span></div></li>
-            <li><div><strong>Digital orientation</strong><span>A governed traversal of Ethereon’s architecture, boundaries, runtime, and evidence.</span></div></li>
-            <li><div><strong>Shared voyage</strong><span>Multiple human and digital participants forming a crew with preserved continuity.</span></div></li>
-          </ol>
-        </aside>
+        <div class="dashboard-grid">
+          <article class="card welcome-card">
+            <div class="card-head">
+              <div>
+                <p class="kicker">Current berth</p>
+                <h3>One place to return to</h3>
+              </div>
+              <span class="pill">local-only</span>
+            </div>
+            <p class="card-copy">This is the first visible OS-shaped behavior: crew, project, and return state are separate from the chat window and remain inspectable in the browser.</p>
+            <div class="metric-row">
+              <div class="metric"><strong id="human-count">0</strong><span>human navigators</span></div>
+              <div class="metric"><strong id="intelligence-count">0</strong><span>intelligence drafts</span></div>
+              <div class="metric"><strong id="project-count">0</strong><span>local projects</span></div>
+            </div>
+          </article>
+
+          <article class="card crew-card">
+            <div class="card-head">
+              <div>
+                <p class="kicker">Crew manifest</p>
+                <h3>Who is aboard</h3>
+              </div>
+              <span class="pill">inspectable</span>
+            </div>
+            <div id="crew-list" class="list"></div>
+          </article>
+
+          <article class="card projects-card">
+            <div class="card-head">
+              <div>
+                <p class="kicker">Shared work</p>
+                <h3>Projects at the Harbor</h3>
+              </div>
+              <span class="pill">returnable</span>
+            </div>
+            <div id="project-list" class="list"></div>
+          </article>
+
+          <article class="card receipt-card">
+            <div class="card-head">
+              <div>
+                <p class="kicker">Return receipt</p>
+                <h3>What survived the close?</h3>
+              </div>
+              <span class="pill">browser state</span>
+            </div>
+            <p id="last-return" class="card-copy">This is the first local return.</p>
+            <p class="card-copy">The record includes participant labels, project purpose, timestamps, and explicit non-authority boundaries. It does not claim that an observer, identity, or consciousness has been proven continuous.</p>
+            <div class="toolbar">
+              <button class="button secondary" type="button" data-action="export">Export local record</button>
+              <button class="button quiet" type="button" data-action="welcome">Back to threshold</button>
+            </div>
+          </article>
+
+          <article class="card boundary-card">
+            <div class="card-head">
+              <div>
+                <p class="kicker">Below deck</p>
+                <h3>Not connected yet</h3>
+              </div>
+              <span class="pill">truth boundary</span>
+            </div>
+            <p class="card-copy">The governed Python runtime, AI orientation protocol, provider adapters, server persistence, and GitHub bridge remain separate layers. This browser surface is the first human-facing shell around them—not a replacement for them.</p>
+            <button class="button danger" type="button" data-action="reset">Erase local Harbor record</button>
+          </article>
+        </div>
       </section>
     </main>
 
-    <footer>
-      <span>First harbor light · holder surface R1</span>
+    <footer class="footer">
+      <span>First inhabited loop · local-first prototype R1</span>
       <span><a href="https://ethereonlabs.com/">ethereonlabs.com</a></span>
     </footer>
   </div>
+  <script src="./harbor.js" defer></script>
 </body>
 </html>
