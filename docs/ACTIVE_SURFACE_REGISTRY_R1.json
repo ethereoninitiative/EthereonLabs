@@ -121,17 +121,25 @@
     },
     {
       "surface_id": "lumina_harbor_holder",
-      "name": "Lumina Harbor holder surface",
-      "status": "holder-surface",
+      "name": "Lumina Harbor local-first prototype",
+      "status": "local-first-prototype",
       "default_wiring": false,
       "paths": [
-        "app/README.md",
-        "app/index.html"
+        "app/index.html",
+        "app/harbor.css",
+        "app/harbor.js",
+        "app/README.md"
       ],
-      "validation_paths": [
-        "scripts/repository_truth_reconciliation_gate_r1.py"
-      ],
-      "authority_boundary": "Presentation-only holder for the future app.ethereonlabs.com surface. It does not execute Lumina runtime actions, authenticate users, establish provider credentials, issue passports, create beacons, persist voyages, authorize governance, or alter canon."
+      "validation_paths": [],
+      "authority_boundary": "Provides a browser-local human-facing orientation and return surface. It records draft participant and project state in local storage, but does not authenticate users, collect provider credentials, call a model, issue authoritative passports, create beacons, execute Lumina runtime actions, authorize governance, alter canon, persist remotely, or mutate GitHub.",
+      "prototype_scope": {
+        "storage": "browser_local_storage",
+        "remote_persistence": false,
+        "authentication": false,
+        "provider_connection": false,
+        "model_execution": false,
+        "authority_granted": false
+      }
     },
     {
       "surface_id": "hra_training_dataset_v0_1",
