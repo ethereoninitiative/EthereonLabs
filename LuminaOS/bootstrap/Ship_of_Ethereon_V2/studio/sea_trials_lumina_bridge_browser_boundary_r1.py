@@ -13,9 +13,15 @@ from __future__ import annotations
 import json
 from http.client import HTTPConnection
 from http.server import ThreadingHTTPServer
+from pathlib import Path
 from threading import Thread
+import sys
 
-from studio.lumina_bridge_server_r1 import (
+STUDIO_ROOT = Path(__file__).resolve().parent
+if str(STUDIO_ROOT) not in sys.path:
+    sys.path.insert(0, str(STUDIO_ROOT))
+
+from lumina_bridge_server_r1 import (  # noqa: E402
     LuminaBridgeHandler,
     cors_origin_for,
 )
