@@ -341,17 +341,22 @@
     "app/README.md": [
       "No authentication",
       "No provider credentials",
-      "No passport issuance",
-      "No beacon creation",
-      "No voyage persistence",
-      "This holder is presentation only."
+      "No live model calls",
+      "No server persistence",
+      "No authoritative passport or identity issuance",
+      "No beacon authorization",
+      "The page is now behaviorally useful",
+      "does not execute Lumina runtime actions",
+      "does not replace the runtime substrate"
     ],
     "app/index.html": [
-      "Harbor under construction",
-      "A forthcoming web-based threshold",
-      "First boarding sequence",
-      "The first inhabitable release will begin simply",
-      "holder surface R1"
+      "First Inhabited Loop",
+      "a browser-local prototype",
+      "Connect local Lumina",
+      "Optional read-only observation.",
+      "GET only. No credentials.",
+      "The governed Python runtime",
+      "This browser surface is the first human-facing shell"
     ]
   }
 }
