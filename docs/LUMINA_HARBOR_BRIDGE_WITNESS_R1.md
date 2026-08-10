@@ -1,6 +1,7 @@
-# Lumina Harbor ↔ Bridge Runtime Witness R1
+# Lumina Harbor ↔ Bridge Runtime Witness
 
-**Status:** implementation contract
+**Status:** implementation contract  
+**Active implementation:** `LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_bridge_server_r2.py`
 **Scope:** optional read-only connection from the browser Harbor to a local Lumina Bridge.
 
 ## What this adds
@@ -50,6 +51,6 @@ Bridge and Harbor orient. Lumina Studio requests. The governed runtime decides.
 
 The browser boundary sea trial is:
 
-`LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/sea_trials_lumina_bridge_browser_boundary_r1.py`
+`LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/sea_trials_lumina_bridge_browser_boundary_r2.py`
 
 It verifies approved origins, localhost development, unknown-origin rejection, OPTIONS behavior, and POST rejection.

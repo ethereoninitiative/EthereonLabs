@@ -1,4 +1,4 @@
-"""Sea trial for the Lumina Bridge browser boundary.
+"""Sea trial for the active Lumina Bridge browser boundary.
 
 This trial verifies the narrow browser-facing contract:
 - approved origins receive CORS headers;
@@ -21,7 +21,7 @@ STUDIO_ROOT = Path(__file__).resolve().parent
 if str(STUDIO_ROOT) not in sys.path:
     sys.path.insert(0, str(STUDIO_ROOT))
 
-from lumina_bridge_server_r1 import (  # noqa: E402
+from lumina_bridge_server_r2 import (  # noqa: E402
     LuminaBridgeHandler,
     cors_origin_for,
 )
@@ -64,7 +64,8 @@ def run() -> dict[str, object]:
         assert boundary.status == 200
         assert boundary.getheader("Access-Control-Allow-Origin") == "https://app.ethereonlabs.com"
         payload = json.loads(boundary.read().decode("utf-8"))
-        assert "authority_boundary" in payload
+        assert "bridge_authority_boundary" in payload
+        assert "field_authority_boundary" in payload
 
         connection.request(
             "POST",
