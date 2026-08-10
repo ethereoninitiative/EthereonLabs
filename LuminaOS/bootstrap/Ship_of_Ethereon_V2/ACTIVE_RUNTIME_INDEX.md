@@ -150,7 +150,7 @@ These are bounded computational and interpretive experiments. They do not gain r
 | Local command entry | `bin/lumina` |
 | Installer and doctor | `install/install_lumina.sh`, `install/lumina_doctor.py` |
 | Observer service | `services/lumina_observer_service.py` |
-| Read-only Bridge R2 position and field surface | `bin/lumina-bridge`, `studio/lumina_bridge_state_r1.py`, `studio/lumina_bridge_field_r1.py`, `studio/lumina_bridge_server_r2.py`, `docs/Lumina_Bridge_R1.md` |
+| Read-only Bridge R2 position and field surface | `bin/lumina-bridge`, `studio/lumina_bridge_state_r1.py`, `studio/lumina_bridge_field_r1.py`, `studio/lumina_bridge_server_r2.py`, `docs/LUMINA_HARBOR_BRIDGE_WITNESS_R1.md` |
 | Historical Bridge R1 server | `studio/lumina_bridge_server_r1.py` |
 | Studio CLI/server/state browser | `studio/lumina_cli.py`, `studio/lumina_cli_psi42_v18.py`, `studio/lumina_studio_server.py`, `studio/lumina_state_browser.py` |
 
@@ -191,6 +191,7 @@ Psi-42 is an instrument. It does not own governance, canon, runtime law, consent
 | Studio bounded diagnostics | `sea_trials_lumina_studio_diagnostics_r1.py` |
 | Bridge position surface | `sea_trials_lumina_bridge_r1.py` |
 | Bridge Field Viewer | `sea_trials_lumina_bridge_field_r1.py` |
+| Bridge browser boundary | `studio/sea_trials_lumina_bridge_browser_boundary_r2.py` |
 
 ## Maintenance rule
 
