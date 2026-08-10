@@ -140,7 +140,7 @@
         "app/harbor-bridge.js"
       ],
       "validation_paths": [
-        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/sea_trials_lumina_bridge_browser_boundary_r1.py"
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/sea_trials_lumina_bridge_browser_boundary_r2.py"
       ],
       "authority_boundary": "Provides browser-local human-facing orientation, return state, and optional read-only observation of a loopback Lumina Bridge. It does not authenticate users, collect provider credentials, call a model, issue authoritative passports, create beacons, execute Lumina runtime actions, authorize governance, alter canon, persist remotely, or mutate GitHub.",
       "prototype_scope": {
