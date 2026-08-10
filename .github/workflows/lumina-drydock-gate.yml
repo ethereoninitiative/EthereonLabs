@@ -94,7 +94,7 @@ jobs:
         run: |
           python sea_trials_lumina_bridge_r1.py
           python sea_trials_lumina_bridge_field_r1.py
-          python studio/sea_trials_lumina_bridge_browser_boundary_r1.py
+          python studio/sea_trials_lumina_bridge_browser_boundary_r2.py
 
       - name: Studio diagnostics sea trial
         working-directory: LuminaOS/bootstrap/Ship_of_Ethereon_V2
