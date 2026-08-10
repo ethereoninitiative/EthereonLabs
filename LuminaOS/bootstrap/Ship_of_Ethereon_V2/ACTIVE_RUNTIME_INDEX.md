@@ -163,6 +163,7 @@ Bridge witnesses and orients. Studio requests explicit actions. Runtime governan
 | Psi-42 v1.6 signal transceiver | `runtime/psi42_transceiver_v1_6.py` |
 | Psi-42 v1.7 hybrid topology transceiver | `runtime/psi42_transceiver_v1_7.py` |
 | Psi-42 v1.8 doctrine-aligned diagnostics | `runtime/psi42_transceiver_v1_8.py` |
+| Psi-42 frequency-domain probe | `runtime/psi42_frequency_probe_r1.py` | Standalone bounded experiment
 | Quantum terminology boundary | `docs/Quantum_Concepts_Boundary_r1.md` |
 | Branch resolution model | `runtime/branch_resolution_model_r1.json` |
 
@@ -189,6 +190,7 @@ Psi-42 is an instrument. It does not own governance, canon, runtime law, consent
 | Orchestration continuity | `sea_trials_lumina_orchestration_continuity_r1.py` |
 | Studio | `sea_trials_lumina_studio_v0_1.py` |
 | Studio bounded diagnostics | `sea_trials_lumina_studio_diagnostics_r1.py` |
+| Psi-42 frequency-domain probe sea trial | `runtime/sea_trials_psi42_frequency_probe_r1.py` |
 | Bridge position surface | `sea_trials_lumina_bridge_r1.py` |
 | Bridge Field Viewer | `sea_trials_lumina_bridge_field_r1.py` |
 | Bridge browser boundary | `studio/sea_trials_lumina_bridge_browser_boundary_r2.py` |
