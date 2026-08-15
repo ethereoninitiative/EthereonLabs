@@ -1,8 +1,8 @@
 {
   "schema_version": "lumina-runtime-truth-public-snapshot-v0.2",
   "source_latest_cycle": "public/runtime/latest_cycle.json",
-  "latest_cycle_run_id": "run-f22355cf-c8c",
-  "latest_cycle_timestamp": "2026-08-14T19:13:35.332594+00:00",
+  "latest_cycle_run_id": "run-6a5f44c2-d34",
+  "latest_cycle_timestamp": "2026-08-15T01:49:16.870344+00:00",
   "mode": {
     "requested": "Continuity",
     "current": "Observation"
@@ -100,7 +100,7 @@
     "canon_lineage": "artifacts/runtime_truth/current/canon_lineage_0001.jsonl",
     "promotion_receipt": "artifacts/runtime_truth/current/promotion_receipt_0001.json",
     "post_promotion_verification": "artifacts/runtime_truth/current/post_promotion_verification_0001.json",
-    "history_receipt": "public/runtime/history/2026-08-14T19-13-35.332594_00-00_run-f22355cf-c8c.json"
+    "history_receipt": "public/runtime/history/2026-08-15T01-49-16.870344_00-00_run-6a5f44c2-d34.json"
   },
   "authority_boundary": "Public runtime truth summary only; does not authorize action, alter governance, mutate canon, change mode legality, expose capabilities, or execute tools."
 }
