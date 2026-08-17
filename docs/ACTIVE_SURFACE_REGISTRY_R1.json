@@ -239,7 +239,9 @@
         "updates.html",
         "sitemap.xml"
       ],
-      "validation_paths": [],
+      "validation_paths": [
+        "scripts/sea_trials_website_public_surface_r1.py"
+      ],
       "authority_boundary": "Communicates current project status and plain-language architecture. It must remain subordinate to executable behavior, registries, validation receipts, and distribution evidence."
     }
   ],
