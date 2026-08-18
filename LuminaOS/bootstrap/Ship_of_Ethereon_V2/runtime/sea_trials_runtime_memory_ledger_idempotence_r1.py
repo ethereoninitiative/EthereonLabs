@@ -157,6 +157,7 @@ def _actual_runner_idempotence_trial() -> Dict[str, Any]:
                 registry_path=Path(__file__).with_name("capability_registry_r1.json"),
             )
             first_result = _run_actual_observation_cycle(runner)
+            first_attempt_snapshot = emitter_module.build_ui_snapshot(first_result.to_dict())
             first_snapshot_bytes = public_path.read_bytes()
             first_history_index_bytes = history_index.read_bytes()
             first_history_files = sorted(
@@ -165,6 +166,7 @@ def _actual_runner_idempotence_trial() -> Dict[str, Any]:
             first_snapshot = _read_json(public_path)
 
             second_result = _run_actual_observation_cycle(runner)
+            second_attempt_snapshot = emitter_module.build_ui_snapshot(second_result.to_dict())
             second_snapshot_bytes = public_path.read_bytes()
             second_history_index_bytes = history_index.read_bytes()
             second_history_files = sorted(
@@ -178,11 +180,11 @@ def _actual_runner_idempotence_trial() -> Dict[str, Any]:
                     first_result.__class__.__name__ == second_result.__class__.__name__ == "RunnerResult"
                 ),
                 "actual_cycles_produce_distinct_run_ids": (
-                    first_snapshot.get("run_id") != second_snapshot.get("run_id")
+                    first_attempt_snapshot.get("run_id") != second_attempt_snapshot.get("run_id")
                 ),
                 "actual_cycles_share_semantic_fingerprint": (
-                    runtime_snapshot_semantic_fingerprint(first_snapshot)
-                    == runtime_snapshot_semantic_fingerprint(second_snapshot)
+                    runtime_snapshot_semantic_fingerprint(first_attempt_snapshot)
+                    == runtime_snapshot_semantic_fingerprint(second_attempt_snapshot)
                 ),
                 "first_cycle_writes_public_snapshot": bool(first_snapshot_bytes),
                 "first_cycle_creates_one_history_archive": len(first_history_files) == 1,
@@ -199,7 +201,7 @@ def _actual_runner_idempotence_trial() -> Dict[str, Any]:
                     second_history_files == first_history_files
                 ),
                 "second_cycle_updates_local_state": (
-                    second_state_snapshot.get("run_id") == second_snapshot.get("run_id")
+                    second_state_snapshot.get("run_id") == second_attempt_snapshot.get("run_id")
                 ),
                 "public_truth_projection_runs_only_for_first_change": (
                     len(truth_projection_calls) == 1
