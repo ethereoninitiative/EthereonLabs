@@ -25,6 +25,9 @@ ALLOWED_CONTEXTS = {
         "| Ethereum Labs | EthereonLabs |",
     ],
 }
+SKIP_PATHS = {
+    "scripts/ethereon_terminology_guard_r1.py",
+}
 SKIP_DIRECTORIES = {
     ".git",
     ".lumina_state",
@@ -49,13 +52,16 @@ SKIP_SUFFIXES = {
 }
 
 
-_PATTERN = re.compile(r"\\b(" + "|".join(re.escape(term) for term in FORBIDDEN_TERMS) + r")\\b")
+_PATTERN = re.compile(r"\b(" + "|".join(re.escape(term) for term in FORBIDDEN_TERMS) + r")\b", re.IGNORECASE)
 
 
 def repository_paths() -> list[Path]:
     paths: list[Path] = []
     for path in ROOT.rglob("*"):
         if path.is_dir():
+            continue
+        relative = path.relative_to(ROOT).as_posix()
+        if relative in SKIP_PATHS:
             continue
         relative_parts = set(path.relative_to(ROOT).parts)
         if relative_parts & SKIP_DIRECTORIES:
@@ -110,6 +116,7 @@ if __name__ == "__main__":
                 "status": "pass" if ok else "fail",
                 "forbidden_terms": FORBIDDEN_TERMS,
                 "allowed_contexts": ALLOWED_CONTEXTS,
+                "skipped_guard_paths": sorted(SKIP_PATHS),
                 "findings": findings,
             },
             indent=2,
