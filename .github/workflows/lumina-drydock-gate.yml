@@ -20,6 +20,7 @@ on:
       - "sitemap.xml"
       - "scripts/repository_truth_reconciliation_gate_r1.py"
       - "scripts/sea_trials_website_public_surface_r1.py"
+      - "scripts/ethereon_terminology_guard_r1.py"
       - ".github/workflows/generate-lumina-weather-snapshot.yml"
       - ".github/workflows/lumina-drydock-gate.yml"
   push:
@@ -41,6 +42,7 @@ on:
       - "sitemap.xml"
       - "scripts/repository_truth_reconciliation_gate_r1.py"
       - "scripts/sea_trials_website_public_surface_r1.py"
+      - "scripts/ethereon_terminology_guard_r1.py"
       - ".github/workflows/generate-lumina-weather-snapshot.yml"
       - ".github/workflows/lumina-drydock-gate.yml"
 
@@ -64,7 +66,10 @@ jobs:
           python-version: "3.11"
 
       - name: Compile Lumina Python
-        run: python -m compileall -q LuminaOS/bootstrap/Ship_of_Ethereon_V2 scripts/repository_truth_reconciliation_gate_r1.py scripts/sea_trials_website_public_surface_r1.py
+        run: python -m compileall -q LuminaOS/bootstrap/Ship_of_Ethereon_V2 scripts/repository_truth_reconciliation_gate_r1.py scripts/sea_trials_website_public_surface_r1.py scripts/ethereon_terminology_guard_r1.py
+
+      - name: Ethereon terminology guard
+        run: python scripts/ethereon_terminology_guard_r1.py
 
       - name: Reconcile repository truth surfaces
         run: python scripts/repository_truth_reconciliation_gate_r1.py
