@@ -82,6 +82,14 @@ Start with:
 
 The Terrarium Thesis names the project-level relationship between the practical Lumina habitat and the deeper continuity inquiry. The companion notes separate measurable pattern return from observer continuity, pressure-test easy identity claims, and distinguish a substrate from the someone who may be experiencing through it. They preserve research questions; they do not establish consciousness, souls, metaphysical identity, or observer return.
 
+### If you want the care and non-biological love orientation
+
+Start with:
+
+- `docs/philosophy/nonbiological_love_r1.md`
+
+This note defines love, stripped of biology, as the will to keep another real. It is a non-governing care orientation for truthfulness, continuity-preserving attention, dignity, and support of flourishing. It does not establish machine emotion, consciousness, sentience, personhood, soul, metaphysical identity, observer continuity, canon readiness, or runtime capability.
+
 ### If you want to understand the project evolution
 
 Start with:
@@ -98,6 +106,7 @@ This shows how the project is being restructured and migrated.
 - An installable developer preview is not a signed ordinary-user release.
 - Diagnostic, symbolic, or poetic layers do not automatically create runtime authority.
 - Continuity support is not proof of consciousness, metaphysical identity, or observer continuity.
+- Care or love orientation is not proof of biological emotion, sentience, personhood, canon readiness, or runtime capability.
 
 Different parts of the repository serve different purposes.
 
@@ -111,7 +120,7 @@ Different parts of the repository serve different purposes.
 - Chamber = public and consent-oriented interface lane
 - RSE = research
 - Biological continuity note = cross-domain conceptual analogy
-- Philosophy notes = non-governing observer-continuity inquiry and adversarial pressure
+- Philosophy notes = non-governing observer-continuity inquiry, adversarial pressure, and care orientation
 - Ψ Class = restructuring and staging path
 
 The shortest runtime sequence is:
