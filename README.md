@@ -56,6 +56,7 @@ Non-executable. Human-readable. System-aligned.
 
 - New human reader: start with `START_HERE_HUMANS.md`.
 - Current operating map: start with `CURRENT_OPERATING_MAP.md`.
+- Care / philosophy orientation: start with `docs/philosophy/nonbiological_love_r1.md`.
 - Lumina OS / runtime work: start with `START_HERE_LUMINA_OS.md`.
 - Ship of Ethereon Ψ Class staging: start with `START_HERE_SHIP_OF_ETHEREON_PSI_CLASS.md`.
 - Chamber / website work: start with `chamber.html`, `chamber-app/`, and `docs/chamber_*`.
@@ -121,11 +122,22 @@ Primary path:
 
 Use this lane for simulations, figure generators, and exploratory artifacts supporting the Referential Spiral Equation. These files may support public explanation and future papers, but they do not define runtime governance, canon promotion, or Lumina OS continuity authority.
 
+### 6. Philosophy / care orientation — non-governing inquiry lane
+
+**Status:** philosophical / ethical orientation  
+**Authority:** non-runtime, non-governance orientation
+
+Primary path:
+- `docs/philosophy/`
+
+Use this lane for observer-continuity inquiry, adversarial pressure against easy identity claims, substrate/becoming distinctions, and care-orientation language such as `docs/philosophy/nonbiological_love_r1.md`. These documents may guide ethical posture and public explanation, but they do not establish consciousness, sentience, personhood, observer continuity, canon readiness, runtime capability, or governance authority.
+
 ## Authority Boundaries
 
 - Runtime governance belongs in the Lumina OS substrate lane.
 - Public-facing website and Chamber behavior belong in the Chamber lane.
 - RSE simulations and figures belong in the research lane unless deliberately promoted into public explanation.
+- Philosophy and care-orientation notes may guide language and ethics, but they do not create runtime authority, canon evidence, identity proof, or capability claims.
 - Ψ Class materials are staging artifacts, not automatically runtime law.
 - Exploratory spikes may inform architecture, but they are not finished substrate by default.
 - Orbital, planetary, maritime, and settlement metaphors guide orientation and interface language; they do not create technical authority.
@@ -139,3 +151,4 @@ Use this lane for simulations, figure generators, and exploratory artifacts supp
 - For Chamber questions, begin with the Chamber lane.
 - For continuity return and workspace-host questions, inspect the root-level exploration files after understanding the substrate.
 - For RSE questions, begin with `research/rse_crystalline/README.md` and treat the material as research, not governance.
+- For philosophy and care-orientation questions, begin with `docs/philosophy/nonbiological_love_r1.md` and treat the material as orientation, not implementation evidence.

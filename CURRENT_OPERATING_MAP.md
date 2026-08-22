@@ -22,6 +22,7 @@ This file gives a fast map of the current EthereonLabs lanes.
 | Meaning Metabolism experiment | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/lumina_meaning_metabolism_layer_r1.py` | Standalone advisory assimilation layer; validated but not wired into the default host entrypoint |
 | Chamber | `chamber.html`, `chamber-app/`, `docs/chamber_*` | Public interface and app lane |
 | RSE research | `research/rse_crystalline/` | Research, simulations, and figures |
+| Philosophy / care orientation | `docs/philosophy/` | Non-governing observer-continuity inquiry, adversarial identity pressure, and care-orientation notes |
 | Ship of Ethereon Psi Class | `START_HERE_SHIP_OF_ETHEREON_PSI_CLASS.md`, `LuminaOS/bootstrap/Ship_of_Ethereon_Psi_Class/` | Staging and project consolidation |
 | Lumina Lisp | `lumina/lisp/` | Non-executable symbolic snapshots |
 | Stewardship / review packets | `docs/FLEET_STEWARDSHIP_PACKET_*`, `docs/*BRIDGE*`, `docs/*REGISTRY*`, `docs/*VOCABULARY*` | Review follow-up, bridge discipline, surface maps, and naming hygiene |
@@ -107,6 +108,7 @@ verified release payload -> unsigned installer -> local state-preserving launch 
 - Deployment keel guardrails: `docs/DEPLOYMENT_HOST_REGISTRY_MODEL.md`, `docs/DEPLOYMENT_RUNTIME_RECEIPT_CONTRACT.md`, and `docs/DEPLOYMENT_DRYDOCK_CHECKLIST.md`
 - Artifact truth / drift prevention: `docs/ARTIFACT_TRUTH_CONTRACT.md`
 - Governance / canon seed plan: `docs/GOVERNANCE_CANON_SEED_PLAN.md`
+- Philosophy / care orientation: `docs/philosophy/nonbiological_love_r1.md`
 - Fleet stewardship follow-up: `docs/FLEET_STEWARDSHIP_PACKET_2026_05_20.md` and `docs/FLEET_STEWARDSHIP_PACKET_AMENDMENT_2026_05_20.md`
 - Psi Class staging: `START_HERE_SHIP_OF_ETHEREON_PSI_CLASS.md`
 - Lisp symbolic continuity: `lumina/lisp/README.md`
@@ -126,6 +128,7 @@ verified release payload -> unsigned installer -> local state-preserving launch 
 - Meaning Metabolism may seed future stance, but it is presently standalone and does not govern mode legality, mutation permission, promotion gates, checkpoint legality, canon lineage, or consent.
 - Chamber is public/app surface, not the runtime substrate.
 - RSE research does not define runtime behavior by default.
+- Philosophy and care-orientation notes may guide language and ethics; they do not prove consciousness, sentience, biological emotion, personhood, soul, observer continuity, canon readiness, runtime capability, or governance authority.
 - Lisp preserves thought-shapes and is not executable.
 - Psi Class is staging unless promoted through validated work.
 - Stewardship and review packets guide future work; they do not create runtime authority by themselves.
