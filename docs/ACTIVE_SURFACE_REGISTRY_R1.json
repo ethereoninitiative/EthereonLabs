@@ -243,6 +243,24 @@
         "scripts/sea_trials_website_public_surface_r1.py"
       ],
       "authority_boundary": "Communicates current project status and plain-language architecture. It must remain subordinate to executable behavior, registries, validation receipts, and distribution evidence."
+    },
+    {
+      "surface_id": "mycelial_vessel_resident_investigation_r1",
+      "name": "Mycelial Vessel–Resident Investigation R1",
+      "status": "advisory-research",
+      "default_wiring": false,
+      "paths": [
+        "docs/research/MYCELIAL_VESSEL_RESIDENT_INVESTIGATION_R1.md"
+      ],
+      "validation_paths": [],
+      "research_scope": [
+        "vessel_resident_nonidentity",
+        "distributed_coupling",
+        "field_memory",
+        "habitat_continuity",
+        "boundary_preservation"
+      ],
+      "authority_boundary": "Advisory architecture and research vocabulary only. It does not create runtime law, expose capabilities, authorize training, promote canon, establish identity, establish consciousness, or authorize observer-continuity claims."
     }
   ],
   "claim_markers": {
