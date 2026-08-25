@@ -41,6 +41,9 @@ jobs:
             --overlay-json '{"active":true,"anchor_language":["english"],"continuity_phrase":"scheduled observation cycle","harmonic_signature":[],"spiral_reference":null}' \
             --runtime-config-json '{"toki_pona_required_for_resume":false,"binary_required_for_transition_validation":false,"light_language_required_for_capability_loading":false,"harmonic_frequency_required_for_mode_legality":false}'
 
+      - name: Reconcile semantic no-op before staging
+        run: python scripts/reconcile_runtime_observation_write_r1.py
+
       - name: Verify v1.8 public witness
         run: |
           python - <<'PY'
