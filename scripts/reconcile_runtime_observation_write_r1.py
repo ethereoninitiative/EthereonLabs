@@ -33,9 +33,9 @@ def read_ref_json(ref: str, path: str) -> dict:
     return json.loads(git("show", f"{ref}:{path}"))
 
 
-def restore_tracked(paths: Iterable[str], tracked: set[str]) -> list[str]:
+def restore_tracked(paths: Iterable[str], tracked: set[str], changed: set[str]) -> list[str]:
     restored: list[str] = []
-    for path in sorted(set(paths) & tracked):
+    for path in sorted(set(paths) & tracked & changed):
         subprocess.run(["git", "restore", "--source=HEAD", "--", path], cwd=ROOT, check=True)
         restored.append(path)
     return restored
@@ -79,6 +79,7 @@ def main() -> int:
 
     if not semantic_changed:
         tracked = tracked_paths()
+        changed = set(git("diff", "--name-only", "HEAD").splitlines())
         restore_candidates = {
             LATEST_PATH,
             PUBLIC_TRUTH_PATH,
@@ -86,7 +87,7 @@ def main() -> int:
             *[path for path in tracked if path.startswith(HISTORY_PREFIX)],
             *[path for path in tracked if path.startswith(OBSERVATION_PREFIX)],
         }
-        result["restored"] = restore_tracked(restore_candidates, tracked)
+        result["restored"] = restore_tracked(restore_candidates, tracked, changed)
         result["removed_untracked"] = [
             *remove_untracked_generated_files(
                 tracked=tracked,
