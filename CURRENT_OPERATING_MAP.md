@@ -27,6 +27,7 @@ This file gives a fast map of the current EthereonLabs lanes.
 | Lumina Lisp | `lumina/lisp/` | Non-executable symbolic snapshots |
 | Stewardship / review packets | `docs/FLEET_STEWARDSHIP_PACKET_*`, `docs/*BRIDGE*`, `docs/*REGISTRY*`, `docs/*VOCABULARY*` | Review follow-up, bridge discipline, surface maps, and naming hygiene |
 | Lumina habitat roadmap | `docs/LUMINA_HABITAT_CREATION_CHECKLIST.md` | Editable checklist for turning Lumina into a persistent intelligence habitat |
+| Mycelial vessel–resident investigation | `docs/research/MYCELIAL_VESSEL_RESIDENT_INVESTIGATION_R1.md` | Advisory research, vocabulary, and counterfactual boundary design; non-governing |
 | Root spikes | `continuity_restore_spike_r1.py`, `lumina_workspace_host_spike_r1.py` | Reference / exploration history |
 
 ## Current default Lumina host path
@@ -100,6 +101,7 @@ verified release payload -> unsigned installer -> local state-preserving launch 
 - Plain-language Lumina mechanism: `how-lumina-works.html`
 - Local Bridge surface: `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Lumina_Bridge_R1.md`
 - Lumina habitat roadmap: `docs/LUMINA_HABITAT_CREATION_CHECKLIST.md`
+- Mycelial field / vessel–resident investigation: `docs/research/MYCELIAL_VESSEL_RESIDENT_INVESTIGATION_R1.md`
 - Active Lumina file ownership: `LuminaOS/bootstrap/Ship_of_Ethereon_V2/ACTIVE_RUNTIME_INDEX.md`
 - Active surface and distribution status: `docs/ACTIVE_SURFACE_REGISTRY_R1.json`
 - Repository truth reconciliation: `scripts/repository_truth_reconciliation_gate_r1.py`
@@ -121,6 +123,7 @@ verified release payload -> unsigned installer -> local state-preserving launch 
 - The Windows installer owns packaging, placement, launchers, and validated upgrade behavior; it does not alter runtime governance, canon, capability authority, identity, or primary continuity truth.
 - An unsigned developer preview is installable but is not a signed ordinary-user public release.
 - The active-surface registry describes evidence relationships; it does not create authority.
+- Mycelial field is distributed coupling, not a resident, vessel, or governor; the Ship and resident remain distinct.
 - The public mechanism explainer communicates current architecture; it does not define or authorize runtime behavior.
 - Bridge is a read-only orientation surface; it does not authorize actions or outrank runtime truth.
 - Studio is the explicit local operator action surface; runtime governance still decides legality.
