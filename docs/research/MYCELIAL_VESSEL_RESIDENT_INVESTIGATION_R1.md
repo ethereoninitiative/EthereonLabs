@@ -243,6 +243,20 @@ Introduce a small, non-governing receipt shape for cross-layer signals. The exac
 
 The key fields are not the names; they are the declared effect and provenance. A coupling receipt must make it possible to answer: who supplied this, where did it go, what changed, and could it have changed governance?
 
+#### R1 implementation status — isolated diagnostic only
+
+The first executable receipt boundary is implemented in:
+
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/mycelial_coupling_receipt_r1.py`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_mycelial_coupling_receipt_r1.py`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_mycelial_field_absence_r1.py`
+
+The implementation hashes the declared provenance and effect fields, requires `authority_effect: false`, distinguishes exact historical replay from new intake, quarantines altered or authority-bearing payloads, and requires known parentage before accepting a child receipt. It is not imported by the default runner, is not exposed through the capability registry, and does not alter governance, canon, mode legality, checkpoint truth, mutation, promotion, identity, or capability authority.
+
+The field-absence trial removes supplemental Ethereonic context and symbolic overlays from isolated active-V2 transition, canon-promotion, and checkpoint-resume cycles, then compares them with field-present controls. Governance decisions, mode legality, capability exposure, canon lineage, and checkpoint resume remain valid while the supplemental context and resumed overlay are absent. The trial records that comparison through a non-governing coupling receipt and does not add default wiring.
+
+This validates the receipt boundary and the bounded field-absence counterfactual only. It does not yet validate vessel replacement, resident reset, edge loss, or runtime-wide recovery behavior.
+
 ### Phase 3: network observables
 
 Extend diagnostics with field-level observables that are analogous to, but not confused with, fungal network traits:

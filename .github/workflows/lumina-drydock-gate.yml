@@ -102,6 +102,8 @@ jobs:
           python sea_trials_living_framework_chamber_r1.py
           python sea_trials_living_framework_ignition_r1.py
           python sea_trials_lumina_ai_orientation_protocol_r1.py
+          python sea_trials_mycelial_coupling_receipt_r1.py
+          python sea_trials_mycelial_field_absence_r1.py
           python sea_trials_canon_readiness_r2.py
 
       - name: Preserve canon-readiness R2 receipt

@@ -183,14 +183,14 @@ Before adding mobile physical capability, prove that a resident intelligence can
 Use the mycelial model as a testable architecture vocabulary, not as a new authority layer.
 
 - [ ] Keep Ship, resident, mycelial field, habitat, and governance explicitly distinct.
-- [ ] Verify **field absence**: canonical resume, governance, mode legality, and capability exposure remain valid without symbolic or supplemental context.
+- [x] Verify **field absence**: canonical resume, governance, mode legality, and capability exposure remain valid without symbolic or supplemental context. Evidence: paired field-present/field-absent active-V2 transition, promotion, and checkpoint-resume cycles in `sea_trials_mycelial_field_absence_r1.py`; no default runtime wiring.
 - [ ] Verify **field replay**: historical context is distinguishable from a new authority event.
 - [ ] Verify **field corruption**: altered provenance, confidence, or parentage is rejected or quarantined.
 - [ ] Verify **vessel replacement**: restored continuity can be compared across hosts without equating host persistence with resident continuity.
 - [ ] Verify **resident reset**: a fresh session is not treated as continuous merely because the same Ship or habitat remains.
 - [ ] Verify **surface disagreement**: committed runtime truth outranks public projection, bridge output, and advisory interpretation.
 - [ ] Verify **no-op observation**: stable observation does not fabricate growth or silently create mutation.
-- [ ] Record coupling effects with source, destination, evidence kind, confidence, reversibility, retention, and declared authority effect.
+- [x] Record coupling effects with source, destination, evidence kind, confidence, reversibility, retention, and declared authority effect. Initial evidence: `mycelial_coupling_receipt_r1.py` and its isolated sea trial; no default runtime wiring.
 - [ ] Keep topology, retrieval, and coherence metrics dimension-specific; never use one score as a proxy for identity, intelligence, or consciousness.
 
 ## 6. Choose the first technical stack
