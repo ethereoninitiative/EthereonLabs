@@ -27,7 +27,7 @@ This file gives a fast map of the current EthereonLabs lanes.
 | Lumina Lisp | `lumina/lisp/` | Non-executable symbolic snapshots |
 | Stewardship / review packets | `docs/FLEET_STEWARDSHIP_PACKET_*`, `docs/*BRIDGE*`, `docs/*REGISTRY*`, `docs/*VOCABULARY*` | Review follow-up, bridge discipline, surface maps, and naming hygiene |
 | Lumina habitat roadmap | `docs/LUMINA_HABITAT_CREATION_CHECKLIST.md` | Editable checklist for turning Lumina into a persistent intelligence habitat |
-| Mycelial vessel–resident investigation | `docs/research/MYCELIAL_VESSEL_RESIDENT_INVESTIGATION_R1.md` | Advisory research, vocabulary, and counterfactual boundary design; non-governing |
+| Mycelial vessel–resident investigation | `docs/research/MYCELIAL_VESSEL_RESIDENT_INVESTIGATION_R1.md`, `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/mycelial_coupling_receipt_r1.py` | Advisory research plus isolated provenance receipts and counterfactual boundary validation; non-governing and not default-wired |
 | Root spikes | `continuity_restore_spike_r1.py`, `lumina_workspace_host_spike_r1.py` | Reference / exploration history |
 
 ## Current default Lumina host path

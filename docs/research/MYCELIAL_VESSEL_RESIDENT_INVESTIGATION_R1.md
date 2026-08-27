@@ -243,6 +243,17 @@ Introduce a small, non-governing receipt shape for cross-layer signals. The exac
 
 The key fields are not the names; they are the declared effect and provenance. A coupling receipt must make it possible to answer: who supplied this, where did it go, what changed, and could it have changed governance?
 
+#### R1 implementation status — isolated diagnostic only
+
+The first executable receipt boundary is implemented in:
+
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/mycelial_coupling_receipt_r1.py`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_mycelial_coupling_receipt_r1.py`
+
+The implementation hashes the declared provenance and effect fields, requires `authority_effect: false`, distinguishes exact historical replay from new intake, quarantines altered or authority-bearing payloads, and requires known parentage before accepting a child receipt. It is not imported by the default runner, is not exposed through the capability registry, and does not alter governance, canon, mode legality, checkpoint truth, mutation, promotion, identity, or capability authority.
+
+This validates the receipt boundary only. It does not yet validate runtime-wide field absence, vessel replacement, resident reset, or field-level recovery behavior.
+
 ### Phase 3: network observables
 
 Extend diagnostics with field-level observables that are analogous to, but not confused with, fungal network traits:

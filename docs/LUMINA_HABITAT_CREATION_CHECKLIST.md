@@ -190,7 +190,7 @@ Use the mycelial model as a testable architecture vocabulary, not as a new autho
 - [ ] Verify **resident reset**: a fresh session is not treated as continuous merely because the same Ship or habitat remains.
 - [ ] Verify **surface disagreement**: committed runtime truth outranks public projection, bridge output, and advisory interpretation.
 - [ ] Verify **no-op observation**: stable observation does not fabricate growth or silently create mutation.
-- [ ] Record coupling effects with source, destination, evidence kind, confidence, reversibility, retention, and declared authority effect.
+- [x] Record coupling effects with source, destination, evidence kind, confidence, reversibility, retention, and declared authority effect. Initial evidence: `mycelial_coupling_receipt_r1.py` and its isolated sea trial; no default runtime wiring.
 - [ ] Keep topology, retrieval, and coherence metrics dimension-specific; never use one score as a proxy for identity, intelligence, or consciousness.
 
 ## 6. Choose the first technical stack
