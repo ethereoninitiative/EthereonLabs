@@ -391,6 +391,9 @@ class CouplingReceiptLedger:
             rows = []
             errors.append(f"receipt history is unreadable: {exc}")
         for index, payload in enumerate(rows):
+            if not isinstance(payload, dict):
+                errors.append(f"receipt[{index}]: receipt must be a JSON object")
+                continue
             validation = validate_receipt(payload)
             if not validation.valid:
                 errors.extend(f"receipt[{index}]: {error}" for error in validation.errors)

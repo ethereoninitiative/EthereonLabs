@@ -110,6 +110,10 @@ def run_trials(base_dir: Path) -> Dict[str, Any]:
     unreadable_ledger.receipts_path.write_text("{not-json\n", encoding="utf-8")
     unreadable_history_decision = unreadable_ledger.ingest(root)
 
+    non_object_ledger = CouplingReceiptLedger(base_dir / "non_object_history")
+    non_object_ledger.receipts_path.write_text("[]\n", encoding="utf-8")
+    non_object_history_decision = non_object_ledger.ingest(root)
+
     decisions = [
         accepted,
         replay,
@@ -119,6 +123,7 @@ def run_trials(base_dir: Path) -> Dict[str, Any]:
         child_accepted,
         tampered_history_decision,
         unreadable_history_decision,
+        non_object_history_decision,
     ]
     checks = {
         "first_receipt_accepted": accepted.status == "accepted" and accepted.accepted,
@@ -132,6 +137,7 @@ def run_trials(base_dir: Path) -> Dict[str, Any]:
         "accepted_history_count_is_two": integrity["receipt_count"] == 2,
         "tampered_history_fails_closed": tampered_history_decision.status == "quarantined",
         "unreadable_history_fails_closed": unreadable_history_decision.status == "quarantined",
+        "non_object_history_fails_closed": non_object_history_decision.status == "quarantined",
         "no_intake_creates_authority_event": all(
             decision.authority_event_created is False and decision.authority_effect is False
             for decision in decisions
