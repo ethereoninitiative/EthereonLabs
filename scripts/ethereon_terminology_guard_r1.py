@@ -2,9 +2,8 @@
 """Fail closed on Ethereon/Ethereum naming contamination.
 
 This guard protects EthereonLabs naming surfaces from accidental references to
-Ethereum or common misspellings. The only permitted Ethereum reference is the
-bounded external-read correction row that explicitly documents a transcript
-mistake and names EthereonLabs as the corrected term.
+Ethereum or common misspellings. Permitted references are exact, bounded
+correction or drift-test fixtures that require the wrong term as test input.
 """
 from __future__ import annotations
 
@@ -23,6 +22,15 @@ FORBIDDEN_TERMS = [
 ALLOWED_CONTEXTS = {
     "docs/External_Read_NotebookLM_Lumina_Structural_Continuity_001.md": [
         "| Ethereum Labs | EthereonLabs |",
+    ],
+    "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/input_integrity_layer_r1.py": [
+        '"ethereum": "ethereon",',
+        '"etherium": "ethereon",',
+        '"ship of ethereum": "ship of ethereon",',
+        '("lets run sea trails on the ship of ethereum", False),',
+    ],
+    "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/psi42_relational_topology_r1.py": [
+        '"ethereon": "ethereum",',
     ],
 }
 SKIP_PATHS = {
