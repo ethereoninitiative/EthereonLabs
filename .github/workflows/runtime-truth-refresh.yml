@@ -67,6 +67,7 @@ jobs:
         run: |
           python scripts/repository_truth_reconciliation_gate_r1.py
           python LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_canon_readiness_r2.py
+          python LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/post_promotion_verifier_r2.py
           git diff --exit-code -- artifacts/runtime_truth/current public/runtime
           test "$(git rev-parse HEAD)" = "${{ steps.prospective-commit.outputs.candidate_sha }}"
 
