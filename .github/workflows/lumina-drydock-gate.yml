@@ -25,6 +25,7 @@ on:
       - "artifacts/runtime_truth/**"
       - ".github/workflows/generate-lumina-weather-snapshot.yml"
       - ".github/workflows/lumina-observation-cycle.yml"
+      - ".github/workflows/runtime-truth-refresh.yml"
       - ".github/workflows/lumina-drydock-gate.yml"
   push:
     branches: [main]
@@ -50,6 +51,7 @@ on:
       - "artifacts/runtime_truth/**"
       - ".github/workflows/generate-lumina-weather-snapshot.yml"
       - ".github/workflows/lumina-observation-cycle.yml"
+      - ".github/workflows/runtime-truth-refresh.yml"
       - ".github/workflows/lumina-drydock-gate.yml"
 
 permissions:

@@ -37,8 +37,39 @@ jobs:
           git status --short
           git diff -- artifacts/runtime_truth/current public/runtime || true
 
-      - name: Commit runtime truth changes
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: 'Generated: refresh runtime truth receipts'
-          file_pattern: 'artifacts/runtime_truth/current/*.json public/runtime/*.json'
+      - name: Validate generated runtime truth artifacts
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+          PYTHONUNBUFFERED: "1"
+        run: |
+          python studio/runtime_truth_gate_r1.py
+          python scripts/repository_truth_reconciliation_gate_r1.py
+
+      - name: Stage prospective runtime truth commit
+        id: prospective-commit
+        run: |
+          git add -- artifacts/runtime_truth/current/*.json public/runtime/*.json
+          if git diff --cached --quiet; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m 'Generated: refresh runtime truth receipts'
+          echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          echo "candidate_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Validate exact prospective commit
+        if: steps.prospective-commit.outputs.has_changes == 'true'
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+          PYTHONUNBUFFERED: "1"
+        run: |
+          python scripts/repository_truth_reconciliation_gate_r1.py
+          python LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_canon_readiness_r2.py
+          git diff --exit-code -- artifacts/runtime_truth/current public/runtime
+          test "$(git rev-parse HEAD)" = "${{ steps.prospective-commit.outputs.candidate_sha }}"
+
+      - name: Publish validated runtime truth commit
+        if: steps.prospective-commit.outputs.has_changes == 'true'
+        run: git push origin HEAD:main
