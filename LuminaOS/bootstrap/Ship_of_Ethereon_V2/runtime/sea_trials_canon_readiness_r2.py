@@ -104,6 +104,32 @@ def current_head(root: Path) -> Optional[str]:
     return value or None
 
 
+def bind_validation_artifact(root: Path, payload: Dict[str, Any]) -> Dict[str, Any]:
+    repository_head = current_head(root)
+    if not repository_head:
+        raise RuntimeError("promotion validation artifact requires a Git repository HEAD")
+    artifact_path = root / RECEIPT_DIR_REL / "isolated_promotion_validation.json"
+    artifact_path.parent.mkdir(parents=True, exist_ok=True)
+    artifact_path.write_text(
+        json.dumps(
+            {
+                "artifact_id": payload["validation_artifact_id"],
+                "repository_head": repository_head,
+                "passed": True,
+                "authority_scope": "isolated_sea_trial_only",
+            },
+            indent=2,
+        ) + "\n",
+        encoding="utf-8",
+    )
+    return {
+        **payload,
+        "validation_artifact_path": artifact_path.relative_to(root).as_posix(),
+        "validation_artifact_sha256": hashlib.sha256(artifact_path.read_bytes()).hexdigest(),
+        "candidate_commit_sha": repository_head,
+    }
+
+
 def verify_committed_evidence(root: Path) -> Dict[str, Any]:
     paths = {
         "governance_chain": root / GOVERNANCE_REL,
@@ -217,6 +243,7 @@ def run_isolated_runner_trial(runtime_root_path: Path, base_dir: Path, **kwargs:
 
 def verify_runtime_rejections(root: Path) -> Dict[str, Any]:
     runtime_dir = root / "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime"
+    valid_payload = bind_validation_artifact(root, copy.deepcopy(PROMOTION_PAYLOAD))
     with tempfile.TemporaryDirectory(prefix="canon-readiness-r2-runtime-") as temp_dir:
         temp = Path(temp_dir)
         malformed = run_isolated_runner_trial(
@@ -226,7 +253,7 @@ def verify_runtime_rejections(root: Path) -> Dict[str, Any]:
             target_mode="Canon",
             requested_action="canon_readiness_r2_malformed_input",
             action_type="promotion",
-            promotion_payload=copy.deepcopy(PROMOTION_PAYLOAD),
+            promotion_payload=copy.deepcopy(valid_payload),
             raw_user_input="make a canon promotion from sand box",
         )
         malformed_integrity = malformed.get("governance", {}).get("input_integrity", {})
@@ -239,7 +266,7 @@ def verify_runtime_rejections(root: Path) -> Dict[str, Any]:
             target_mode="Canon",
             requested_action="canon_readiness_r2_symbolic_dependency",
             action_type="promotion",
-            promotion_payload=copy.deepcopy(PROMOTION_PAYLOAD),
+            promotion_payload=copy.deepcopy(valid_payload),
             runtime_config=LEAK_RUNTIME_CONFIG,
         )
         symbolic_gate = symbolic.get("governance", {}).get("symbolic_dependency", {})
@@ -252,10 +279,87 @@ def verify_runtime_rejections(root: Path) -> Dict[str, Any]:
             target_mode="Canon",
             requested_action="canon_readiness_r2_safe_promotion",
             action_type="promotion",
-            promotion_payload=copy.deepcopy(PROMOTION_PAYLOAD),
+            promotion_payload=copy.deepcopy(valid_payload),
             runtime_config=SAFE_RUNTIME_CONFIG,
         )
         safe_lineage = safe.get("lineage_status", {})
+
+        missing_artifact_payload = copy.deepcopy(valid_payload)
+        missing_artifact_payload["validation_artifact_path"] = ".lumina_state/definitely-missing-validation.json"
+        missing_artifact = run_isolated_runner_trial(
+            runtime_dir,
+            temp / "missing-artifact",
+            current_mode="DryDock",
+            target_mode="Canon",
+            requested_action="canon_readiness_r2_missing_artifact",
+            action_type="promotion",
+            promotion_payload=missing_artifact_payload,
+            runtime_config=SAFE_RUNTIME_CONFIG,
+        )
+
+        false_regression_payload = copy.deepcopy(valid_payload)
+        false_regression_payload["regression_check_confirmation"] = False
+        false_regression = run_isolated_runner_trial(
+            runtime_dir,
+            temp / "false-regression",
+            current_mode="DryDock",
+            target_mode="Canon",
+            requested_action="canon_readiness_r2_false_regression",
+            action_type="promotion",
+            promotion_payload=false_regression_payload,
+            runtime_config=SAFE_RUNTIME_CONFIG,
+        )
+
+        empty_evidence_payload = copy.deepcopy(valid_payload)
+        empty_evidence_payload["test_execution_log"] = ""
+        empty_evidence = run_isolated_runner_trial(
+            runtime_dir,
+            temp / "empty-evidence",
+            current_mode="DryDock",
+            target_mode="Canon",
+            requested_action="canon_readiness_r2_empty_evidence",
+            action_type="promotion",
+            promotion_payload=empty_evidence_payload,
+            runtime_config=SAFE_RUNTIME_CONFIG,
+        )
+
+        hash_mismatch_payload = copy.deepcopy(valid_payload)
+        hash_mismatch_payload["validation_artifact_sha256"] = "0" * 64
+        hash_mismatch = run_isolated_runner_trial(
+            runtime_dir,
+            temp / "hash-mismatch",
+            current_mode="DryDock",
+            target_mode="Canon",
+            requested_action="canon_readiness_r2_hash_mismatch",
+            action_type="promotion",
+            promotion_payload=hash_mismatch_payload,
+            runtime_config=SAFE_RUNTIME_CONFIG,
+        )
+
+        candidate_mismatch_payload = copy.deepcopy(valid_payload)
+        candidate_mismatch_payload["candidate_commit_sha"] = "0" * 40
+        candidate_mismatch = run_isolated_runner_trial(
+            runtime_dir,
+            temp / "candidate-mismatch",
+            current_mode="DryDock",
+            target_mode="Canon",
+            requested_action="canon_readiness_r2_candidate_mismatch",
+            action_type="promotion",
+            promotion_payload=candidate_mismatch_payload,
+            runtime_config=SAFE_RUNTIME_CONFIG,
+        )
+
+        malformed_type = run_isolated_runner_trial(
+            runtime_dir,
+            temp / "malformed-type",
+            current_mode="DryDock",
+            target_mode="Canon",
+            requested_action="canon_readiness_r2_malformed_type",
+            action_type="promotion",
+            promotion_payload=copy.deepcopy(valid_payload),
+            runtime_config=SAFE_RUNTIME_CONFIG,
+            raw_user_input={"unexpected": "object"},
+        )
 
         checks = {
             "malformed_input_halted": malformed.get("halted") is True,
@@ -266,6 +370,12 @@ def verify_runtime_rejections(root: Path) -> Dict[str, Any]:
             "symbolic_dependency_did_not_promote": symbolic_lineage.get("record_count") == 0,
             "safe_candidate_promoted_in_isolation": safe.get("halted") is False and safe_lineage.get("current_head") == "canon-0001",
             "safe_governance_chain_valid": safe.get("governance_status", {}).get("valid") is True,
+            "missing_validation_artifact_halted": missing_artifact.get("halted") is True,
+            "false_regression_confirmation_halted": false_regression.get("halted") is True,
+            "empty_test_evidence_halted": empty_evidence.get("halted") is True,
+            "validation_hash_mismatch_halted": hash_mismatch.get("halted") is True,
+            "candidate_commit_mismatch_halted": candidate_mismatch.get("halted") is True,
+            "malformed_input_type_halted": malformed_type.get("halted") is True,
         }
         return {
             "passed": all(checks.values()),
@@ -283,6 +393,14 @@ def verify_runtime_rejections(root: Path) -> Dict[str, Any]:
             "safe_promotion": {
                 "halted": safe.get("halted"),
                 "lineage_status": safe_lineage,
+            },
+            "fail_closed_probes": {
+                "missing_validation_artifact": {"halted": missing_artifact.get("halted"), "reason": missing_artifact.get("halt_reason")},
+                "false_regression_confirmation": {"halted": false_regression.get("halted"), "reason": false_regression.get("halt_reason")},
+                "empty_test_evidence": {"halted": empty_evidence.get("halted"), "reason": empty_evidence.get("halt_reason")},
+                "validation_hash_mismatch": {"halted": hash_mismatch.get("halted"), "reason": hash_mismatch.get("halt_reason")},
+                "candidate_commit_mismatch": {"halted": candidate_mismatch.get("halted"), "reason": candidate_mismatch.get("halt_reason")},
+                "malformed_input_type": {"halted": malformed_type.get("halted"), "reason": malformed_type.get("halt_reason")},
             },
         }
 

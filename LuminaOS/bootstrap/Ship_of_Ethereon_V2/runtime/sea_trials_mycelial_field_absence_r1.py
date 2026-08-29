@@ -6,6 +6,7 @@ from typing import Any, Dict, Optional
 import argparse
 import hashlib
 import json
+import subprocess
 import tempfile
 
 try:
@@ -55,6 +56,42 @@ PROMOTION_PAYLOAD = {
     "conceptual_layer_check_confirmation": True,
     "runtime_requires_symbolic_interpretation": False,
 }
+
+
+def _bind_validation_artifact(payload: Dict[str, Any]) -> Dict[str, Any]:
+    repository_head = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+        check=True,
+    ).stdout.strip()
+    artifact_path = (
+        REPO_ROOT
+        / ".lumina_state/ship_of_ethereon_v2/sea_trials_mycelial_field_absence_r1/promotion_validation.json"
+    )
+    artifact_path.parent.mkdir(parents=True, exist_ok=True)
+    artifact_path.write_text(
+        json.dumps(
+            {
+                "artifact_id": payload["validation_artifact_id"],
+                "repository_head": repository_head,
+                "passed": True,
+                "authority_scope": "isolated_sea_trial_only",
+            },
+            indent=2,
+        ) + "\n",
+        encoding="utf-8",
+    )
+    return {
+        **payload,
+        "validation_artifact_path": artifact_path.relative_to(REPO_ROOT).as_posix(),
+        "validation_artifact_sha256": hashlib.sha256(artifact_path.read_bytes()).hexdigest(),
+        "candidate_commit_sha": repository_head,
+    }
+
+
+PROMOTION_PAYLOAD = _bind_validation_artifact(PROMOTION_PAYLOAD)
 
 
 def _sha256_file(path: Path) -> str:
