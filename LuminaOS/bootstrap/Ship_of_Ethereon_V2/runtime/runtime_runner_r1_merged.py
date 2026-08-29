@@ -184,7 +184,7 @@ class RuntimeRunner:
         self.canon_lineage_path = self.base_dir / "canon_lineage_r1.jsonl"
 
         self.session_engine = SessionEngine(self.base_dir)
-        self.mode_guard = ModeGuard()
+        self.mode_guard = ModeGuard(repo_root=_repo_root())
         self.registry = CapabilityRegistry(registry_path)
         self.governance_log = GovernanceLog(self.governance_log_path)
         self.input_integrity_assessor = InputIntegrityAssessor(self.base_dir / "input_integrity_ledger_r1.json") if InputIntegrityAssessor is not None else None
@@ -587,6 +587,19 @@ class RuntimeRunner:
             metadata={"context_bundle_id": context_bundle.bundle_id, "enabled_feature_flags": enabled_feature_flags},
         )
 
+        if raw_user_input is not None and not isinstance(raw_user_input, str):
+            return self._halted_result(
+                session_id=session.session_id,
+                current_mode=current_mode,
+                target_mode=target_mode,
+                requested_action=requested_action,
+                action_type=action_type,
+                context_bundle_id=context_bundle.bundle_id,
+                governance=governance,
+                checkpoint_label="input_integrity_invalid_type",
+                halt_reason="input integrity gate requires raw_user_input to be text",
+            )
+
         if raw_user_input and self.input_integrity_assessor is not None:
             integrity = self.assess_input_integrity(
                 raw_user_input,
@@ -766,8 +779,6 @@ class RuntimeRunner:
         promotion_record: Optional[Dict[str, Any]] = None
         if action_type == "promotion":
             promotion = asdict(self.mode_guard.validate_promotion(promotion_payload or {}))
-            if promotion_payload and "validation_artifact_id" in promotion_payload:
-                promotion["audit_event"] = {"validation_artifact_id": promotion_payload["validation_artifact_id"]}
             governance["promotion"] = promotion
             promotion_record = self._record_decision(
                 event_type="promotion",

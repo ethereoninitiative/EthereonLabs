@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Optional
 import hashlib
 import hmac
 import json
+import re
 import subprocess
 import uuid
 
@@ -298,6 +299,9 @@ MUTATION_RULES: Dict[str, bool] = {
 
 PROMOTION_FIELDS = [
     "validation_artifact_id",
+    "validation_artifact_path",
+    "validation_artifact_sha256",
+    "candidate_commit_sha",
     "test_execution_log",
     "change_summary",
     "structural_impact_assessment",
@@ -319,6 +323,9 @@ class GovernanceDecision:
 
 class ModeGuard:
     """Enforces lawful transitions, mutation limits, promotion gates, and symbolic separation."""
+
+    def __init__(self, repo_root: Optional[str | Path] = None):
+        self.repo_root = infer_repo_root(repo_root)
 
     def validate_transition(self, current_mode: str, new_mode: str) -> GovernanceDecision:
         if current_mode == new_mode:
@@ -358,16 +365,101 @@ class ModeGuard:
     def conceptual_layer_check(self, payload: dict) -> bool:
         if payload.get("runtime_requires_symbolic_interpretation", False):
             return False
-        return bool(payload.get("conceptual_layer_check_confirmation", False))
+        return payload.get("conceptual_layer_check_confirmation") is True
+
+    def _validate_promotion_artifact(self, payload: dict) -> GovernanceDecision:
+        if self.repo_root is None:
+            return GovernanceDecision(False, "promotion blocked; repository root is unavailable")
+
+        candidate_sha = payload["candidate_commit_sha"]
+        if not isinstance(candidate_sha, str) or re.fullmatch(r"[0-9a-f]{40}", candidate_sha) is None:
+            return GovernanceDecision(False, "promotion blocked; candidate_commit_sha must be a full lowercase Git SHA")
+
+        try:
+            repository_head = subprocess.run(
+                ["git", "rev-parse", "HEAD"],
+                cwd=str(self.repo_root),
+                capture_output=True,
+                text=True,
+                check=True,
+            ).stdout.strip()
+        except (OSError, subprocess.CalledProcessError):
+            return GovernanceDecision(False, "promotion blocked; current repository HEAD could not be verified")
+        if repository_head != candidate_sha:
+            return GovernanceDecision(False, "promotion blocked; candidate_commit_sha does not match repository HEAD")
+
+        artifact_reference = payload["validation_artifact_path"]
+        if not isinstance(artifact_reference, str) or not artifact_reference.strip():
+            return GovernanceDecision(False, "promotion blocked; validation_artifact_path must be a non-empty repository-relative path")
+        relative_path = Path(artifact_reference)
+        if relative_path.is_absolute():
+            return GovernanceDecision(False, "promotion blocked; validation_artifact_path must be repository-relative")
+        artifact_path = (self.repo_root / relative_path).resolve()
+        try:
+            artifact_path.relative_to(self.repo_root)
+        except ValueError:
+            return GovernanceDecision(False, "promotion blocked; validation_artifact_path escapes the repository root")
+        if not artifact_path.is_file():
+            return GovernanceDecision(False, "promotion blocked; validation artifact does not exist")
+
+        expected_hash = payload["validation_artifact_sha256"]
+        if not isinstance(expected_hash, str) or re.fullmatch(r"[0-9a-f]{64}", expected_hash) is None:
+            return GovernanceDecision(False, "promotion blocked; validation_artifact_sha256 must be a lowercase SHA-256 digest")
+        actual_hash = hashlib.sha256(artifact_path.read_bytes()).hexdigest()
+        if not hmac.compare_digest(actual_hash, expected_hash):
+            return GovernanceDecision(False, "promotion blocked; validation artifact hash mismatch")
+
+        try:
+            validation_receipt = json.loads(artifact_path.read_text(encoding="utf-8"))
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+            return GovernanceDecision(False, "promotion blocked; validation artifact is not valid UTF-8 JSON")
+        if not isinstance(validation_receipt, dict):
+            return GovernanceDecision(False, "promotion blocked; validation artifact must contain a JSON object")
+        if validation_receipt.get("passed") is not True:
+            return GovernanceDecision(False, "promotion blocked; validation artifact does not record passed=true")
+        if validation_receipt.get("repository_head") != candidate_sha:
+            return GovernanceDecision(False, "promotion blocked; validation artifact is not bound to candidate_commit_sha")
+        if validation_receipt.get("artifact_id") != payload["validation_artifact_id"]:
+            return GovernanceDecision(False, "promotion blocked; validation artifact identity mismatch")
+
+        return GovernanceDecision(
+            True,
+            "validation artifact exists, passed, and is bound to repository HEAD",
+            audit_event={
+                "validation_artifact_id": payload["validation_artifact_id"],
+                "validation_artifact_path": relative_path.as_posix(),
+                "validation_artifact_sha256": actual_hash,
+                "candidate_commit_sha": candidate_sha,
+            },
+        )
 
     def validate_promotion(self, payload: dict) -> GovernanceDecision:
+        if not isinstance(payload, dict):
+            return GovernanceDecision(False, "promotion blocked; promotion payload must be an object")
         normalized = self._normalize_promotion_payload(payload)
         missing = [field for field in PROMOTION_FIELDS if field not in normalized]
         if missing:
             return GovernanceDecision(False, f"promotion blocked; missing fields: {', '.join(missing)}")
+        text_fields = [
+            "validation_artifact_id",
+            "test_execution_log",
+            "change_summary",
+            "structural_impact_assessment",
+        ]
+        invalid_text = [
+            field for field in text_fields
+            if not isinstance(normalized.get(field), str) or not normalized[field].strip()
+        ]
+        if invalid_text:
+            return GovernanceDecision(False, f"promotion blocked; non-empty text required: {', '.join(invalid_text)}")
+        if normalized.get("regression_check_confirmation") is not True:
+            return GovernanceDecision(False, "promotion blocked; regression check confirmation must be true")
         if not self.conceptual_layer_check(normalized):
             return GovernanceDecision(False, "promotion blocked; conceptual layer check failed")
-        return GovernanceDecision(True, "promotion gate passed")
+        artifact_decision = self._validate_promotion_artifact(normalized)
+        if not artifact_decision.allowed:
+            return artifact_decision
+        return GovernanceDecision(True, "promotion gate passed", audit_event=artifact_decision.audit_event)
 
     def detect_symbolic_dependency_leakage(self, runtime_config: dict) -> GovernanceDecision:
         symbolic_keys = {

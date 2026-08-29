@@ -3,7 +3,9 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Dict, Iterable, List
 import json
+import hashlib
 import shutil
+import subprocess
 
 try:
     from .runtime_runner_r1_merged import RuntimeRunner
@@ -79,6 +81,43 @@ PROMOTION_FAIL_SYMBOLIC = {
     "conceptual_layer_check_confirmation": True,
     "runtime_requires_symbolic_interpretation": True,
 }
+
+
+def bind_validation_artifact(payload: Dict[str, Any]) -> Dict[str, Any]:
+    repo_root = Path(__file__).resolve().parents[4]
+    repository_head = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=str(repo_root),
+        capture_output=True,
+        text=True,
+        check=True,
+    ).stdout.strip()
+    artifact_id = str(payload["validation_artifact_id"])
+    artifact_path = BASE_DIR / "promotion_validation_receipts" / f"{artifact_id}.json"
+    artifact_path.parent.mkdir(parents=True, exist_ok=True)
+    artifact_path.write_text(
+        json.dumps(
+            {
+                "artifact_id": artifact_id,
+                "repository_head": repository_head,
+                "passed": True,
+                "authority_scope": "isolated_sea_trial_only",
+            },
+            indent=2,
+        ) + "\n",
+        encoding="utf-8",
+    )
+    return {
+        **payload,
+        "validation_artifact_path": artifact_path.relative_to(repo_root).as_posix(),
+        "validation_artifact_sha256": hashlib.sha256(artifact_path.read_bytes()).hexdigest(),
+        "candidate_commit_sha": repository_head,
+    }
+
+
+PROMOTION_PASS_ONE = bind_validation_artifact(PROMOTION_PASS_ONE)
+PROMOTION_PASS_TWO = bind_validation_artifact(PROMOTION_PASS_TWO)
+PROMOTION_FAIL_SYMBOLIC = bind_validation_artifact(PROMOTION_FAIL_SYMBOLIC)
 
 ETHEREONIC_OVERLAY = {
     "active": True,
