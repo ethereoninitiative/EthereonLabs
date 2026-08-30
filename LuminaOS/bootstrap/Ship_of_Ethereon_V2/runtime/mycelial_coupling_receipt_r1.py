@@ -123,6 +123,8 @@ class CouplingReceiptDecision:
     reasons: List[str]
     authority_effect: bool = False
     authority_event_created: bool = False
+    quarantine_id: Optional[str] = None
+    raw_input_preserved: bool = False
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -260,10 +262,15 @@ class CouplingReceiptLedger:
         self.base_dir.mkdir(parents=True, exist_ok=True)
         self.receipts_path = self.base_dir / "coupling_receipts_r1.jsonl"
         self.decisions_path = self.base_dir / "coupling_receipt_intake_r1.jsonl"
+        self.quarantine_path = self.base_dir / "coupling_receipt_quarantine_r1.jsonl"
 
     @staticmethod
     def _payload(receipt: CouplingReceipt | Mapping[str, Any]) -> Dict[str, Any]:
-        return receipt.to_dict() if isinstance(receipt, CouplingReceipt) else dict(receipt)
+        if isinstance(receipt, CouplingReceipt):
+            return receipt.to_dict()
+        if not isinstance(receipt, Mapping):
+            raise TypeError("receipt must be a mapping")
+        return dict(receipt)
 
     @staticmethod
     def _read_jsonl(path: Path) -> List[Dict[str, Any]]:
@@ -287,6 +294,9 @@ class CouplingReceiptLedger:
     def read_decisions(self) -> List[Dict[str, Any]]:
         return self._read_jsonl(self.decisions_path)
 
+    def read_quarantine(self) -> List[Dict[str, Any]]:
+        return self._read_jsonl(self.quarantine_path)
+
     def _record_decision(self, decision: CouplingReceiptDecision) -> CouplingReceiptDecision:
         payload = decision.to_dict()
         payload["decided_at"] = utc_now()
@@ -294,34 +304,79 @@ class CouplingReceiptLedger:
         self._append_jsonl(self.decisions_path, payload)
         return decision
 
-    def ingest(self, receipt: CouplingReceipt | Mapping[str, Any]) -> CouplingReceiptDecision:
-        payload = self._payload(receipt)
+    @staticmethod
+    def _json_safe(value: Any) -> Any:
+        try:
+            return json.loads(json.dumps(value, ensure_ascii=False))
+        except (TypeError, ValueError):
+            return {
+                "unserializable_type": type(value).__name__,
+                "repr": repr(value),
+            }
+
+    def _quarantine(
+        self,
+        *,
+        raw_receipt: Any,
+        receipt_hash: Optional[str],
+        signal_id: Optional[str],
+        reasons: List[str],
+    ) -> CouplingReceiptDecision:
+        quarantine_id = f"quarantine-{uuid.uuid4().hex}"
+        self._append_jsonl(
+            self.quarantine_path,
+            {
+                "quarantine_id": quarantine_id,
+                "quarantined_at": utc_now(),
+                "receipt_hash": receipt_hash,
+                "signal_id": signal_id,
+                "reasons": list(reasons),
+                "raw_receipt": self._json_safe(raw_receipt),
+                "authority_effect": False,
+                "authority_event_created": False,
+                "authority_boundary": AUTHORITY_BOUNDARY,
+            },
+        )
+        return self._record_decision(
+            CouplingReceiptDecision(
+                status="quarantined",
+                accepted=False,
+                replay=False,
+                quarantined=True,
+                receipt_hash=receipt_hash,
+                signal_id=signal_id,
+                reasons=list(reasons),
+                quarantine_id=quarantine_id,
+                raw_input_preserved=True,
+            )
+        )
+
+    def ingest(self, receipt: CouplingReceipt | Mapping[str, Any] | Any) -> CouplingReceiptDecision:
+        try:
+            payload = self._payload(receipt)
+        except (TypeError, ValueError) as exc:
+            return self._quarantine(
+                raw_receipt=receipt,
+                receipt_hash=None,
+                signal_id=None,
+                reasons=[str(exc)],
+            )
         validation = validate_receipt(payload)
         if not validation.valid:
-            return self._record_decision(
-                CouplingReceiptDecision(
-                    status="quarantined",
-                    accepted=False,
-                    replay=False,
-                    quarantined=True,
-                    receipt_hash=validation.receipt_hash,
-                    signal_id=validation.signal_id,
-                    reasons=validation.errors,
-                )
+            return self._quarantine(
+                raw_receipt=payload,
+                receipt_hash=validation.receipt_hash,
+                signal_id=validation.signal_id,
+                reasons=validation.errors,
             )
 
         existing_integrity = self.verify_integrity()
         if not existing_integrity["valid"]:
-            return self._record_decision(
-                CouplingReceiptDecision(
-                    status="quarantined",
-                    accepted=False,
-                    replay=False,
-                    quarantined=True,
-                    receipt_hash=validation.receipt_hash,
-                    signal_id=validation.signal_id,
-                    reasons=["accepted receipt history failed integrity verification"],
-                )
+            return self._quarantine(
+                raw_receipt=payload,
+                receipt_hash=validation.receipt_hash,
+                signal_id=validation.signal_id,
+                reasons=["accepted receipt history failed integrity verification"],
             )
         existing = self.read_receipts()
         by_hash = {row.get("receipt_hash"): row for row in existing}
@@ -342,30 +397,20 @@ class CouplingReceiptLedger:
                 )
             )
         if signal_id in by_signal:
-            return self._record_decision(
-                CouplingReceiptDecision(
-                    status="quarantined",
-                    accepted=False,
-                    replay=False,
-                    quarantined=True,
-                    receipt_hash=receipt_hash,
-                    signal_id=signal_id,
-                    reasons=["signal_id already exists with different receipt content"],
-                )
+            return self._quarantine(
+                raw_receipt=payload,
+                receipt_hash=receipt_hash,
+                signal_id=signal_id,
+                reasons=["signal_id already exists with different receipt content"],
             )
 
         parent = payload.get("parent_receipt")
         if parent is not None and parent not in by_hash:
-            return self._record_decision(
-                CouplingReceiptDecision(
-                    status="quarantined",
-                    accepted=False,
-                    replay=False,
-                    quarantined=True,
-                    receipt_hash=receipt_hash,
-                    signal_id=signal_id,
-                    reasons=["parent_receipt is not present in accepted history"],
-                )
+            return self._quarantine(
+                raw_receipt=payload,
+                receipt_hash=receipt_hash,
+                signal_id=signal_id,
+                reasons=["parent_receipt is not present in accepted history"],
             )
 
         self._append_jsonl(self.receipts_path, payload)
@@ -414,11 +459,17 @@ class CouplingReceiptLedger:
         except (json.JSONDecodeError, TypeError, ValueError) as exc:
             decision_count = 0
             errors.append(f"intake decision history is unreadable: {exc}")
+        try:
+            quarantine_count = len(self.read_quarantine())
+        except (json.JSONDecodeError, TypeError, ValueError) as exc:
+            quarantine_count = 0
+            errors.append(f"quarantine history is unreadable: {exc}")
         return {
             "schema_version": "lumina-mycelial-coupling-ledger-integrity-r1",
             "valid": not errors,
             "receipt_count": len(rows),
             "decision_count": decision_count,
+            "quarantine_count": quarantine_count,
             "errors": errors,
             "authority_effect": False,
             "authority_boundary": AUTHORITY_BOUNDARY,

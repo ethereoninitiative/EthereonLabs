@@ -27,7 +27,7 @@ This file gives a fast map of the current EthereonLabs lanes.
 | Lumina Lisp | `lumina/lisp/` | Non-executable symbolic snapshots |
 | Stewardship / review packets | `docs/FLEET_STEWARDSHIP_PACKET_*`, `docs/*BRIDGE*`, `docs/*REGISTRY*`, `docs/*VOCABULARY*` | Review follow-up, bridge discipline, surface maps, and naming hygiene |
 | Lumina habitat roadmap | `docs/LUMINA_HABITAT_CREATION_CHECKLIST.md` | Editable checklist for turning Lumina into a persistent intelligence habitat |
-| Mycelial vessel–resident investigation | `docs/research/MYCELIAL_VESSEL_RESIDENT_INVESTIGATION_R1.md`, `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/mycelial_coupling_receipt_r1.py` | Advisory research plus isolated provenance receipts and counterfactual boundary validation; non-governing and not default-wired |
+| Mycelial vessel–resident investigation | `docs/research/MYCELIAL_VESSEL_RESIDENT_INVESTIGATION_R1.md`, `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/mycelial_coupling_receipt_r1.py`, `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/mycelial_field_replay_r1.py` | Advisory research plus optional runner intake for provenance replay and corruption quarantine; dormant without explicit receipts, non-governing, and not capability-exposed |
 | Root spikes | `continuity_restore_spike_r1.py`, `lumina_workspace_host_spike_r1.py` | Reference / exploration history |
 
 ## Current default Lumina host path
@@ -124,6 +124,7 @@ verified release payload -> unsigned installer -> local state-preserving launch 
 - An unsigned developer preview is installable but is not a signed ordinary-user public release.
 - The active-surface registry describes evidence relationships; it does not create authority.
 - Mycelial field is distributed coupling, not a resident, vessel, or governor; the Ship and resident remain distinct.
+- Mycelial replay may attach validated evidence only as supplemental context; replay and quarantine never create governance events, canon promotion, checkpoint truth, or capability authority.
 - The public mechanism explainer communicates current architecture; it does not define or authorize runtime behavior.
 - Bridge is a read-only orientation surface; it does not authorize actions or outrank runtime truth.
 - Studio is the explicit local operator action surface; runtime governance still decides legality.

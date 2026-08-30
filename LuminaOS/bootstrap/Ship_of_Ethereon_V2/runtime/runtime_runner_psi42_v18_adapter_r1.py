@@ -155,6 +155,7 @@ class RuntimeRunner(BaseRuntimeRunner):
             canon_lineage=canon_lineage or self._current_canon_metadata(),
             probe_artifacts=probe_artifacts,
             lumina_return_host_artifacts=lumina_return_host_artifacts,
+            mycelial_field_replay=self._mycelial_field_replay_for_session(session_id),
         )
         log_path = self.logs_dir / f"{result.run_id}.json"
         ids = self._correlation_ids(lumina_return_host_artifacts)
