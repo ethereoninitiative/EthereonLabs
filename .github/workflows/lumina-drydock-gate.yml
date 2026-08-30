@@ -109,6 +109,8 @@ jobs:
           python sea_trials_mycelial_coupling_receipt_r1.py
           python sea_trials_mycelial_field_absence_r1.py
           python sea_trials_canon_readiness_r2.py
+          python post_promotion_verifier_r2.py
+          python sea_trials_post_promotion_verifier_r2.py
 
       - name: Preserve canon-readiness R2 receipt
         if: always()
