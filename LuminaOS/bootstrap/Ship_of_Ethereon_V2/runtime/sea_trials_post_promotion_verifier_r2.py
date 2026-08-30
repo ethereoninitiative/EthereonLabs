@@ -11,12 +11,22 @@ import tempfile
 try:
     from .canon_lineage_store_r1 import CanonLineageStore, canonical_json, sha256_text
     from .governance_integrity_r1 import GovernanceIntegrityChain
-    from .post_promotion_verifier_r2 import verify
+    from .post_promotion_verifier_r2 import (
+        DEFAULT_GOVERNANCE,
+        DEFAULT_LINEAGE,
+        DEFAULT_PROMOTION,
+        verify,
+    )
     from .repo_paths_r1 import repo_root
 except Exception:
     from canon_lineage_store_r1 import CanonLineageStore, canonical_json, sha256_text
     from governance_integrity_r1 import GovernanceIntegrityChain
-    from post_promotion_verifier_r2 import verify
+    from post_promotion_verifier_r2 import (
+        DEFAULT_GOVERNANCE,
+        DEFAULT_LINEAGE,
+        DEFAULT_PROMOTION,
+        verify,
+    )
     from repo_paths_r1 import repo_root
 
 
@@ -35,7 +45,16 @@ def write_json(path: Path, payload: Dict[str, Any]) -> None:
     path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
 
-def build_successor_fixture(root: Path, fixture: Path) -> Dict[str, Path]:
+def build_successor_fixture(
+    root: Path,
+    fixture: Path,
+    *,
+    successor_event_type: str = "promotion",
+    successor_action_type: str = "promotion",
+    successor_previous_mode: str = "DryDock",
+    validation_receipt_artifact_id: str = "successor-validation-0002",
+    regression_check_confirmation: bool = True,
+) -> Dict[str, Path]:
     governance_path = fixture / "governance_chain.jsonl"
     lineage_path = fixture / "canon_lineage.jsonl"
     promotion_path = fixture / "promotion_receipt_0002.json"
@@ -45,7 +64,7 @@ def build_successor_fixture(root: Path, fixture: Path) -> Dict[str, Path]:
     write_json(
         validation_path,
         {
-            "artifact_id": "successor-validation-0002",
+            "artifact_id": validation_receipt_artifact_id,
             "repository_head": head_sha,
             "passed": True,
             "authority_scope": "isolated_successor_sea_trial_only",
@@ -86,20 +105,20 @@ def build_successor_fixture(root: Path, fixture: Path) -> Dict[str, Path]:
         "test_execution_log": "isolated successor verification passed",
         "change_summary": "exercise successor-capable post-promotion verification",
         "structural_impact_assessment": "temporary sea-trial state only",
-        "regression_check_confirmation": True,
+        "regression_check_confirmation": regression_check_confirmation,
         "conceptual_layer_check_confirmation": True,
         "runtime_requires_symbolic_interpretation": False,
     }
     successor_event = governance.append_verified(
-        event_type="promotion",
+        event_type=successor_event_type,
         session_identifier="synthetic-successor",
-        previous_mode="DryDock",
+        previous_mode=successor_previous_mode,
         new_mode="Canon",
         allowed=True,
         canonical_change=True,
         validation_reference="successor-validation-0002",
         metadata={
-            "action_type": "promotion",
+            "action_type": successor_action_type,
             "validation_artifact_id": "successor-validation-0002",
             "validation_artifact_path": validation_relative,
             "validation_artifact_sha256": validation_hash,
@@ -140,7 +159,7 @@ def run() -> Dict[str, Any]:
     state_root.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="post-promotion-r2-", dir=state_root) as temporary:
         fixture = Path(temporary)
-        paths = build_successor_fixture(root, fixture)
+        paths = build_successor_fixture(root, fixture / "valid")
         valid = verify(
             root=root,
             governance_path=paths["governance"],
@@ -178,12 +197,132 @@ def run() -> Dict[str, Any]:
             promotion_receipt_path=paths["promotion"],
             expected_head="canon-0003",
         )
+
+        committed_genesis = verify(root=root, expected_head="canon-0001")
+
+        relocated_dir = fixture / "relocated-genesis"
+        relocated_dir.mkdir()
+        relocated_paths = {
+            "governance": relocated_dir / DEFAULT_GOVERNANCE.name,
+            "lineage": relocated_dir / DEFAULT_LINEAGE.name,
+            "promotion": relocated_dir / DEFAULT_PROMOTION.name,
+        }
+        shutil.copy2(root / DEFAULT_GOVERNANCE, relocated_paths["governance"])
+        shutil.copy2(root / DEFAULT_LINEAGE, relocated_paths["lineage"])
+        shutil.copy2(root / DEFAULT_PROMOTION, relocated_paths["promotion"])
+        relocated_genesis = verify(
+            root=root,
+            governance_path=relocated_paths["governance"],
+            lineage_path=relocated_paths["lineage"],
+            promotion_receipt_path=relocated_paths["promotion"],
+            expected_head="canon-0001",
+        )
+
+        non_promotion_paths = build_successor_fixture(
+            root,
+            fixture / "non-promotion-event",
+            successor_event_type="audit",
+        )
+        non_promotion = verify(
+            root=root,
+            governance_path=non_promotion_paths["governance"],
+            lineage_path=non_promotion_paths["lineage"],
+            promotion_receipt_path=non_promotion_paths["promotion"],
+            expected_head="canon-0002",
+        )
+
+        wrong_action_paths = build_successor_fixture(
+            root,
+            fixture / "wrong-action-type",
+            successor_action_type="audit",
+        )
+        wrong_action = verify(
+            root=root,
+            governance_path=wrong_action_paths["governance"],
+            lineage_path=wrong_action_paths["lineage"],
+            promotion_receipt_path=wrong_action_paths["promotion"],
+            expected_head="canon-0002",
+        )
+
+        wrong_mode_paths = build_successor_fixture(
+            root,
+            fixture / "wrong-source-mode",
+            successor_previous_mode="Sandbox",
+        )
+        wrong_mode = verify(
+            root=root,
+            governance_path=wrong_mode_paths["governance"],
+            lineage_path=wrong_mode_paths["lineage"],
+            promotion_receipt_path=wrong_mode_paths["promotion"],
+            expected_head="canon-0002",
+        )
+
+        identity_mismatch_paths = build_successor_fixture(
+            root,
+            fixture / "validation-identity-mismatch",
+            validation_receipt_artifact_id="different-validation-artifact",
+        )
+        identity_mismatch = verify(
+            root=root,
+            governance_path=identity_mismatch_paths["governance"],
+            lineage_path=identity_mismatch_paths["lineage"],
+            promotion_receipt_path=identity_mismatch_paths["promotion"],
+            expected_head="canon-0002",
+        )
+
+        false_confirmation_paths = build_successor_fixture(
+            root,
+            fixture / "false-regression-confirmation",
+            regression_check_confirmation=False,
+        )
+        false_confirmation = verify(
+            root=root,
+            governance_path=false_confirmation_paths["governance"],
+            lineage_path=false_confirmation_paths["lineage"],
+            promotion_receipt_path=false_confirmation_paths["promotion"],
+            expected_head="canon-0002",
+        )
+
+        with tempfile.TemporaryDirectory(prefix="post-promotion-r2-external-") as external:
+            external_governance = Path(external) / DEFAULT_GOVERNANCE.name
+            shutil.copy2(root / DEFAULT_GOVERNANCE, external_governance)
+            external_evidence = verify(
+                root=root,
+                governance_path=external_governance,
+                lineage_path=DEFAULT_LINEAGE,
+                promotion_receipt_path=DEFAULT_PROMOTION,
+                expected_head="canon-0001",
+            )
         checks = {
+            "committed_genesis_passes": committed_genesis.get("passed") is True,
+            "committed_genesis_uses_narrow_exception": committed_genesis.get("legacy_genesis_exception") is True,
             "successor_canon_0002_passes": valid.get("passed") is True,
             "successor_parent_is_canon_0001": valid.get("canon_parent") == "canon-0001",
             "successor_is_sha_bound": valid.get("candidate_commit_sha") == repository_head(root),
             "tampered_validation_fails": tampered.get("passed") is False,
             "wrong_expected_head_fails": wrong_head.get("passed") is False,
+            "relocated_genesis_fails": relocated_genesis.get("passed") is False,
+            "relocated_genesis_cannot_claim_exception": relocated_genesis.get("legacy_genesis_exception") is False,
+            "non_promotion_governance_event_fails": non_promotion.get("passed") is False,
+            "non_promotion_failure_is_explicit": "governance_event_is_promotion"
+            in non_promotion.get("failed_checks", []),
+            "wrong_governance_action_fails": wrong_action.get("passed") is False,
+            "wrong_governance_action_failure_is_explicit": "governance_action_is_promotion"
+            in wrong_action.get("failed_checks", []),
+            "wrong_governance_mode_fails": wrong_mode.get("passed") is False,
+            "wrong_governance_mode_failure_is_explicit": "governance_modes_are_drydock_to_canon"
+            in wrong_mode.get("failed_checks", []),
+            "validation_identity_mismatch_fails": identity_mismatch.get("passed") is False,
+            "validation_identity_failure_is_explicit": "validation_artifact_identity_linked"
+            in identity_mismatch.get("failed_checks", []),
+            "false_regression_confirmation_fails": false_confirmation.get("passed") is False,
+            "false_confirmation_failure_is_explicit": "successor_regression_confirmed"
+            in false_confirmation.get("failed_checks", []),
+            "external_primary_evidence_fails_closed": external_evidence.get("passed") is False,
+            "external_primary_evidence_failure_is_explicit": external_evidence.get("checks", {}).get(
+                "governance_chain_within_repository"
+            )
+            is False,
             "fixture_reference_was_repo_relative": not Path(original_reference).is_absolute(),
         }
         return {
@@ -193,6 +332,13 @@ def run() -> Dict[str, Any]:
             "valid_successor": valid,
             "tampered_failed_checks": tampered.get("failed_checks", []),
             "wrong_head_failed_checks": wrong_head.get("failed_checks", []),
+            "relocated_genesis_failed_checks": relocated_genesis.get("failed_checks", []),
+            "non_promotion_failed_checks": non_promotion.get("failed_checks", []),
+            "wrong_action_failed_checks": wrong_action.get("failed_checks", []),
+            "wrong_mode_failed_checks": wrong_mode.get("failed_checks", []),
+            "identity_mismatch_failed_checks": identity_mismatch.get("failed_checks", []),
+            "false_confirmation_failed_checks": false_confirmation.get("failed_checks", []),
+            "external_evidence_checks": external_evidence.get("checks", {}),
             "authority_boundary": "Synthetic isolated lineage only; does not alter committed canon authority.",
         }
 

@@ -23,6 +23,24 @@ DEFAULT_GOVERNANCE = DEFAULT_ARTIFACT_DIR / "governance_chain_0001.jsonl"
 DEFAULT_LINEAGE = DEFAULT_ARTIFACT_DIR / "canon_lineage_0001.jsonl"
 DEFAULT_PROMOTION = DEFAULT_ARTIFACT_DIR / "promotion_receipt_0001.json"
 
+# The only evidence allowed to use the pre-SHA-binding compatibility path is the
+# immutable, committed genesis set. A canon label or repo-relative location alone
+# is not sufficient authority for the exception.
+LEGACY_GENESIS_GOVERNANCE_HASH = "690b249ef2388ac70f9714ef3bd649b6bd235f0e32840faefe7c3562563a00ab"
+LEGACY_GENESIS_LINEAGE_HASH = "2664c65bdc3e37733d1262d436e2c615191dc69dc71b0b798d71227f283d5401"
+LEGACY_GENESIS_PAYLOAD_HASH = "fed4e6e257928a502355eaa18a81f8a1130a875c014da2c971c2ff49b5a60dbb"
+LEGACY_GENESIS_VALIDATION_HASH = "c1601b2069ce3eb40081e3590bc3734ed5c9dbe8971e9f1a2f52c0b07e320d77"
+
+SUCCESSOR_TEXT_FIELDS = (
+    "validation_artifact_id",
+    "validation_artifact_path",
+    "validation_artifact_sha256",
+    "candidate_commit_sha",
+    "test_execution_log",
+    "change_summary",
+    "structural_impact_assessment",
+)
+
 
 def read_json(path: Path) -> Dict[str, Any]:
     payload = json.loads(path.read_text(encoding="utf-8"))
@@ -56,6 +74,14 @@ def resolve_evidence_path(root: Path, reference: Any) -> Optional[Path]:
     return candidate
 
 
+def path_is_within(root: Path, candidate: Path) -> bool:
+    try:
+        candidate.relative_to(root)
+    except ValueError:
+        return False
+    return True
+
+
 def git_commit_is_ancestor(root: Path, candidate_sha: Any) -> bool:
     if not isinstance(candidate_sha, str) or re.fullmatch(r"[0-9a-f]{40}", candidate_sha) is None:
         return False
@@ -81,16 +107,36 @@ def verify(
     expected_head: Optional[str] = None,
 ) -> Dict[str, Any]:
     root = (root or repo_root()).resolve()
-    governance_path = governance_path if governance_path.is_absolute() else root / governance_path
-    lineage_path = lineage_path if lineage_path.is_absolute() else root / lineage_path
+    governance_path = (governance_path if governance_path.is_absolute() else root / governance_path).resolve()
+    lineage_path = (lineage_path if lineage_path.is_absolute() else root / lineage_path).resolve()
     promotion_receipt_path = (
         promotion_receipt_path if promotion_receipt_path.is_absolute() else root / promotion_receipt_path
-    )
+    ).resolve()
+
+    evidence_paths = {
+        "governance_chain": governance_path,
+        "canon_lineage": lineage_path,
+        "promotion_receipt": promotion_receipt_path,
+    }
+    evidence_within_repo = {
+        name: path_is_within(root, path)
+        for name, path in evidence_paths.items()
+    }
+    if not all(evidence_within_repo.values()):
+        return {
+            "verifier": "post_promotion_verifier_r2",
+            "passed": False,
+            "valid": False,
+            "checks": {
+                f"{name}_within_repository": within
+                for name, within in evidence_within_repo.items()
+            },
+            "errors": ["post-promotion evidence paths must remain within the repository"],
+        }
 
     required = {
-        "governance_chain": governance_path.is_file(),
-        "canon_lineage": lineage_path.is_file(),
-        "promotion_receipt": promotion_receipt_path.is_file(),
+        name: path.is_file()
+        for name, path in evidence_paths.items()
     }
     if not all(required.values()):
         return {
@@ -134,7 +180,6 @@ def verify(
         reference_links = (
             head.get("validation_artifact_reference") == validation_id
             and governance_event.get("validation_reference") == validation_id
-            and metadata.get("validation_artifact_id") in {None, validation_id}
         )
     else:
         validation_reference = promotion_payload.get("validation_reference")
@@ -154,9 +199,26 @@ def verify(
 
     candidate_sha = promotion_payload.get("candidate_commit_sha")
     sha_bound_promotion = candidate_sha is not None
-    legacy_genesis = head_name == "canon-0001" and not sha_bound_promotion
     validation_hash = hashlib.sha256(validation_path.read_bytes()).hexdigest() if validation_exists and validation_path else None
+    legacy_genesis = (
+        governance_path == (root / DEFAULT_GOVERNANCE).resolve()
+        and lineage_path == (root / DEFAULT_LINEAGE).resolve()
+        and promotion_receipt_path == (root / DEFAULT_PROMOTION).resolve()
+        and len(governance_rows) == 1
+        and len(lineage_rows) == 1
+        and head_name == "canon-0001"
+        and head.get("lineage_record_hash") == LEGACY_GENESIS_LINEAGE_HASH
+        and governance_hash == LEGACY_GENESIS_GOVERNANCE_HASH
+        and promotion.get("promotion_id") == "promotion-0001"
+        and promotion.get("promotion_payload_hash") == LEGACY_GENESIS_PAYLOAD_HASH
+        and validation_hash == LEGACY_GENESIS_VALIDATION_HASH
+        and not sha_bound_promotion
+    )
     expected_validation_hash = promotion_payload.get("validation_artifact_sha256")
+    successor_text_evidence_present = all(
+        isinstance(promotion_payload.get(field), str) and bool(promotion_payload[field].strip())
+        for field in SUCCESSOR_TEXT_FIELDS
+    )
 
     checks = {
         "governance_chain_valid": governance_verification.get("valid") is True,
@@ -173,20 +235,38 @@ def verify(
         "governance_event_linked": bool(governance_event),
         "governance_event_allowed": governance_event.get("allowed") is True,
         "governance_event_is_canonical_change": governance_event.get("canonical_change") is True,
+        "governance_event_is_promotion": legacy_genesis or governance_event.get("event_type") == "promotion",
+        "governance_action_is_promotion": legacy_genesis or metadata.get("action_type") == "promotion",
+        "governance_modes_are_drydock_to_canon": legacy_genesis
+        or (
+            governance_event.get("previous_mode") == "DryDock"
+            and governance_event.get("new_mode") == "Canon"
+        ),
         "promotion_governance_hash_linked": promotion.get("governance_event_hash") == governance_hash,
         "promotion_lineage_hash_linked": promotion.get("canon_lineage_hash") == head.get("lineage_record_hash"),
         "validation_reference_linked": reference_links,
         "validation_artifact_exists": validation_exists,
         "validation_artifact_passed": validation_receipt.get("passed") is True,
+        "validation_artifact_identity_linked": legacy_genesis
+        or validation_receipt.get("artifact_id") == validation_id,
         "symbolic_dependency_separated": (
             promotion_payload.get("symbolic_dependency_violation") is False
             if legacy_genesis
             else promotion_payload.get("runtime_requires_symbolic_interpretation") is False
         ),
         "successor_requires_sha_binding": legacy_genesis or sha_bound_promotion,
+        "successor_text_evidence_present": legacy_genesis or successor_text_evidence_present,
+        "successor_regression_confirmed": legacy_genesis
+        or promotion_payload.get("regression_check_confirmation") is True,
+        "successor_conceptual_layer_confirmed": legacy_genesis
+        or promotion_payload.get("conceptual_layer_check_confirmation") is True,
         "candidate_commit_is_ancestor": legacy_genesis or git_commit_is_ancestor(root, candidate_sha),
         "validation_artifact_hash_linked": legacy_genesis or validation_hash == expected_validation_hash,
         "validation_artifact_commit_linked": legacy_genesis or validation_receipt.get("repository_head") == candidate_sha,
+        "governance_metadata_validation_id_linked": legacy_genesis
+        or metadata.get("validation_artifact_id") == validation_id,
+        "governance_metadata_validation_path_linked": legacy_genesis
+        or metadata.get("validation_artifact_path") == validation_reference,
         "governance_metadata_commit_linked": legacy_genesis or metadata.get("candidate_commit_sha") == candidate_sha,
         "governance_metadata_hash_linked": legacy_genesis or metadata.get("validation_artifact_sha256") == expected_validation_hash,
     }
