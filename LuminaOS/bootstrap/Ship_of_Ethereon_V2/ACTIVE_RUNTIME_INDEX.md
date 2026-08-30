@@ -45,6 +45,10 @@ This path performs bounded project return / host work, governed runtime executio
 
 `runtime/mycelial_field_replay_r1.py` is an optional diagnostic intake owned by the core runner. It remains dormant unless a caller supplies coupling receipts. Valid receipts attach only a bounded projection beneath supplemental Ethereonic context; exact reinsertion is classified as historical replay, and corrupted provenance is preserved in quarantine without attachment. The intake is not capability-exposed and cannot create governance events, canon promotion, mode legality, checkpoint truth, mutation, identity, or capability authority.
 
+### Mycelial edge-loss status
+
+`runtime/mycelial_edge_loss_r1.py` is a standalone topology observer for declared path availability. Its sea trial removes one temporary coupling-intake diagnostic path, independently proves project return and checkpoint recovery, and reports edge retention, canonical-reference availability, and non-authoritative availability as separate dimensions. It is not default-wired or capability-exposed, and its report explicitly does not claim canonical recovery.
+
 ## Runtime core
 
 | Responsibility | Primary files |
@@ -57,6 +61,7 @@ This path performs bounded project return / host work, governed runtime executio
 | Canon lineage | `runtime/canon_lineage_store_r1.py` |
 | Ethereonic overlay boundary and generated registry state | `runtime/ethereonic_layer_r1.py`; generated at `<runner base_dir>/ethereonic_layer_registry_r1.json` |
 | Optional mycelial coupling receipt intake and replay | `runtime/mycelial_coupling_receipt_r1.py`, `runtime/mycelial_field_replay_r1.py` |
+| Standalone mycelial edge-loss observation | `runtime/mycelial_edge_loss_r1.py` |
 
 The Ethereonic registry JSON is runtime-generated state, not a committed source file beside the module. Its generated location follows the active runner or test `base_dir`.
 
@@ -192,6 +197,7 @@ Psi-42 is an instrument. It does not own governance, canon, runtime law, consent
 | Mycelial coupling receipt boundary | `runtime/sea_trials_mycelial_coupling_receipt_r1.py` |
 | Mycelial field-absence boundary | `runtime/sea_trials_mycelial_field_absence_r1.py` |
 | Runtime-integrated mycelial replay and corruption quarantine | `runtime/sea_trials_mycelial_field_replay_r1.py` |
+| Mycelial non-authoritative edge-loss boundary | `runtime/sea_trials_mycelial_edge_loss_r1.py` |
 | Self-guidance | `runtime/sea_trials_lumina_self_guidance_r1.py` |
 | Reflective/self-guided adapter wiring | `sea_trials_lumina_reflective_autonomy_wiring_r1.py` |
 | Meaning Metabolism standalone layer | `sea_trials_lumina_meaning_metabolism_r1.py` |

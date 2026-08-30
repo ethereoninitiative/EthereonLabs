@@ -247,15 +247,24 @@
     {
       "surface_id": "mycelial_vessel_resident_investigation_r1",
       "name": "Mycelial Vessel–Resident Investigation R1",
-      "status": "advisory-research",
+      "status": "advisory-research-with-bounded-diagnostics",
       "default_wiring": false,
+      "activation": {
+        "runtime_replay": "explicit_coupling_receipt_input_only",
+        "edge_loss_observer": "standalone_only"
+      },
+      "capability_exposed": false,
       "paths": [
         "docs/research/MYCELIAL_VESSEL_RESIDENT_INVESTIGATION_R1.md",
-        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/mycelial_coupling_receipt_r1.py"
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/mycelial_coupling_receipt_r1.py",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/mycelial_field_replay_r1.py",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/mycelial_edge_loss_r1.py"
       ],
       "validation_paths": [
         "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_mycelial_coupling_receipt_r1.py",
-        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_mycelial_field_absence_r1.py"
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_mycelial_field_absence_r1.py",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_mycelial_field_replay_r1.py",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_mycelial_edge_loss_r1.py"
       ],
       "research_scope": [
         "vessel_resident_nonidentity",

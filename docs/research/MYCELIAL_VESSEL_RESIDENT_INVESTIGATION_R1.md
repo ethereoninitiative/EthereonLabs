@@ -265,6 +265,14 @@ The core runner now accepts an optional coupling-receipt input and routes it thr
 
 This increment validates runtime-integrated replay and corruption handling only. It does not yet validate edge loss, vessel replacement, resident reset, public-surface disagreement, or runtime-wide recovery behavior.
 
+#### Non-authoritative edge-loss increment — R1
+
+`runtime/mycelial_edge_loss_r1.py` adds a standalone observer for declared field-path availability. It reports edge retention, canonical-reference availability, non-authoritative availability, and lost-edge counts as separate dimensions. It does not combine them into an identity, intelligence, consciousness, coherence, or overall score; it does not choose a repair; and it explicitly does not claim that canonical recovery succeeded.
+
+`runtime/sea_trials_mycelial_edge_loss_r1.py` establishes two externally owned project-return references and one non-authoritative coupling-intake diagnostic edge in temporary state. It removes only the diagnostic decision-log path, observes retention fall from three available edges to two while canonical-reference availability remains `1.0`, and separately proves that the same project, checkpoint, session mode, workspace state, and continuation actions remain recoverable through `ProjectReturnStore`. A control perturbation confirms that canonical-reference loss is classified separately rather than hidden by the non-authoritative result.
+
+The result is recorded through a non-governing coupling receipt with `memory_effect: topology`. Neither the observer nor the receipt is capability-exposed, default-wired, or permitted to create governance, canon, mode, checkpoint, mutation, promotion, identity, or capability authority. This increment does not yet validate vessel replacement, resident reset, public-surface disagreement, no-op observation, or runtime-wide recovery behavior.
+
 ### Phase 3: network observables
 
 Extend diagnostics with field-level observables that are analogous to, but not confused with, fungal network traits:
