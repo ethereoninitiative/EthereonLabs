@@ -57,6 +57,14 @@ except Exception:
         ContinuityRestoreStore = None
         LuminaWorkspaceHost = None
 
+try:
+    from .mycelial_field_replay_r1 import MycelialFieldReplayBridge
+except Exception:
+    try:
+        from mycelial_field_replay_r1 import MycelialFieldReplayBridge
+    except Exception:
+        MycelialFieldReplayBridge = None
+
 
 RUNTIME_SEED_VERSION = "0.4"
 DEFAULT_EXPERIMENTAL_FEATURE_FLAGS = [
@@ -128,6 +136,7 @@ class RunnerResult:
     halt_reason: Optional[str] = None
     probe_artifacts: Optional[Dict[str, Any]] = None
     lumina_return_host_artifacts: Optional[Dict[str, Any]] = None
+    mycelial_field_replay: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -199,6 +208,9 @@ class RuntimeRunner:
             ethereonic_layer_registry=self.ethereonic_layer_registry,
             canon_lineage_store=self.canon_lineage_store,
         )
+        self.mycelial_field_replay_base_dir = self.base_dir / "mycelial_field_replay_r1"
+        self.mycelial_field_replay_bridge = None
+        self._mycelial_field_replay_by_session: Dict[str, Dict[str, Any]] = {}
         self._active_session_id: Optional[str] = None
 
     @staticmethod
@@ -318,6 +330,64 @@ class RuntimeRunner:
         path = self.context_builder.output_dir / f"{payload['bundle_id']}.json"
         with path.open("w", encoding="utf-8") as f:
             json.dump(payload, f, indent=2)
+
+    @staticmethod
+    def _absent_mycelial_field_replay() -> Dict[str, Any]:
+        if MycelialFieldReplayBridge is not None:
+            return MycelialFieldReplayBridge.absent_result()
+        return {
+            "schema_version": "lumina-mycelial-field-replay-v0.1",
+            "status": "absent",
+            "present": False,
+            "input_count": 0,
+            "accepted_count": 0,
+            "replay_count": 0,
+            "quarantine_count": 0,
+            "decisions": [],
+            "context_receipts": [],
+            "authority_effect": False,
+            "authority_event_created": False,
+        }
+
+    def _process_mycelial_field_replay(self, receipts: Optional[List[Dict[str, Any]]]) -> Dict[str, Any]:
+        if receipts is None:
+            inputs: List[Any] = []
+        elif isinstance(receipts, list):
+            inputs = list(receipts)
+        else:
+            inputs = [receipts]
+        if not inputs:
+            return self._absent_mycelial_field_replay()
+        if self.mycelial_field_replay_bridge is None:
+            if MycelialFieldReplayBridge is None:
+                return {
+                    **self._absent_mycelial_field_replay(),
+                    "status": "unavailable",
+                    "present": True,
+                    "input_count": len(inputs),
+                    "error": "mycelial field replay bridge is unavailable; input was not attached",
+                }
+            self.mycelial_field_replay_bridge = MycelialFieldReplayBridge(
+                self.mycelial_field_replay_base_dir
+            )
+        try:
+            return self.mycelial_field_replay_bridge.ingest(inputs)
+        except Exception as exc:
+            return {
+                **self._absent_mycelial_field_replay(),
+                "status": "failed_closed",
+                "present": True,
+                "input_count": len(inputs),
+                "error": f"{type(exc).__name__}: {exc}",
+            }
+
+    def _mycelial_field_replay_for_session(self, session_id: str) -> Dict[str, Any]:
+        return dict(
+            self._mycelial_field_replay_by_session.get(
+                session_id,
+                self._absent_mycelial_field_replay(),
+            )
+        )
 
     def _ethereonic_context_terms(self) -> List[str]:
         if self.ethereonic_layer_registry is None:
@@ -542,6 +612,7 @@ class RuntimeRunner:
         raw_user_input: Optional[str] = None,
         context_bundle_overrides: Optional[Dict[str, Any]] = None,
         project_id: Optional[str] = None,
+        coupling_receipts: Optional[List[Dict[str, Any]]] = None,
     ) -> RunnerResult:
         target_mode = target_mode or current_mode
         action_type = action_type.lower().strip()
@@ -571,6 +642,9 @@ class RuntimeRunner:
             ethereonic_context=ethereonic_overlay or None,
         )
         self.session_engine.initialize_turn(session.session_id, context_bundle_id=context_bundle.bundle_id, artifacts_in_scope=artifacts)
+
+        mycelial_field_replay = self._process_mycelial_field_replay(coupling_receipts)
+        self._mycelial_field_replay_by_session[session.session_id] = mycelial_field_replay
 
         governance: Dict[str, Any] = {}
         canon_lineage_result: Optional[Dict[str, Any]] = None
@@ -667,6 +741,11 @@ class RuntimeRunner:
         context_bundle_payload = context_bundle.to_dict()
         if context_bundle_overrides:
             context_bundle_payload = _deep_merge_dicts(context_bundle_payload, context_bundle_overrides)
+        if MycelialFieldReplayBridge is not None:
+            context_bundle_payload = MycelialFieldReplayBridge.attach_to_context_bundle(
+                context_bundle_payload,
+                mycelial_field_replay,
+            )
 
         if self.ethereonic_layer_registry is not None:
             attachment = self.ethereonic_layer_registry.validate_context_attachment(context_bundle_payload)
@@ -975,6 +1054,7 @@ class RuntimeRunner:
             canon_lineage=canon_lineage or self._current_canon_metadata(),
             probe_artifacts=probe_artifacts,
             lumina_return_host_artifacts=lumina_return_host_artifacts,
+            mycelial_field_replay=self._mycelial_field_replay_for_session(session_id),
         )
         log_path = self.logs_dir / f"{result.run_id}.json"
         payload = result.to_dict()
@@ -1003,6 +1083,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--promotion-json", default=None, help="JSON object for promotion validation")
     parser.add_argument("--raw-user-input", default=None, help="Raw user phrasing to assess before load-bearing action")
     parser.add_argument("--context-overrides-json", default=None, help="JSON object merged into context bundle before boundary checks")
+    parser.add_argument(
+        "--coupling-receipt-json",
+        action="append",
+        dest="coupling_receipt_json",
+        default=[],
+        help="Repeatable non-governing coupling receipt JSON object for diagnostic intake.",
+    )
     return parser.parse_args()
 
 
@@ -1010,6 +1097,16 @@ def _maybe_json(text: Optional[str]) -> Optional[Dict[str, Any]]:
     if not text:
         return None
     return json.loads(text)
+
+
+def _json_objects(values: List[str]) -> List[Dict[str, Any]]:
+    payloads: List[Dict[str, Any]] = []
+    for value in values:
+        payload = json.loads(value)
+        if not isinstance(payload, dict):
+            raise ValueError("--coupling-receipt-json requires a JSON object")
+        payloads.append(payload)
+    return payloads
 
 
 if __name__ == "__main__":
@@ -1032,5 +1129,6 @@ if __name__ == "__main__":
         raw_user_input=args.raw_user_input,
         context_bundle_overrides=_maybe_json(args.context_overrides_json),
         project_id=args.project_id,
+        coupling_receipts=_json_objects(args.coupling_receipt_json) or None,
     )
     print(json.dumps(result.to_dict(), indent=2))

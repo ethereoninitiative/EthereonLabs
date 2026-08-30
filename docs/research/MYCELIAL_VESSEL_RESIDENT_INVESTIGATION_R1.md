@@ -243,7 +243,7 @@ Introduce a small, non-governing receipt shape for cross-layer signals. The exac
 
 The key fields are not the names; they are the declared effect and provenance. A coupling receipt must make it possible to answer: who supplied this, where did it go, what changed, and could it have changed governance?
 
-#### R1 implementation status — isolated diagnostic only
+#### R1 receipt boundary and field-absence status
 
 The first executable receipt boundary is implemented in:
 
@@ -251,11 +251,19 @@ The first executable receipt boundary is implemented in:
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_mycelial_coupling_receipt_r1.py`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_mycelial_field_absence_r1.py`
 
-The implementation hashes the declared provenance and effect fields, requires `authority_effect: false`, distinguishes exact historical replay from new intake, quarantines altered or authority-bearing payloads, and requires known parentage before accepting a child receipt. It is not imported by the default runner, is not exposed through the capability registry, and does not alter governance, canon, mode legality, checkpoint truth, mutation, promotion, identity, or capability authority.
+The implementation hashes the declared provenance and effect fields, requires `authority_effect: false`, distinguishes exact historical replay from new intake, quarantines altered or authority-bearing payloads, and requires known parentage before accepting a child receipt. At this first increment it was not imported by the default runner. It was not exposed through the capability registry and did not alter governance, canon, mode legality, checkpoint truth, mutation, promotion, identity, or capability authority.
 
 The field-absence trial removes supplemental Ethereonic context and symbolic overlays from isolated active-V2 transition, canon-promotion, and checkpoint-resume cycles, then compares them with field-present controls. Governance decisions, mode legality, capability exposure, canon lineage, and checkpoint resume remain valid while the supplemental context and resumed overlay are absent. The trial records that comparison through a non-governing coupling receipt and does not add default wiring.
 
-This validates the receipt boundary and the bounded field-absence counterfactual only. It does not yet validate vessel replacement, resident reset, edge loss, or runtime-wide recovery behavior.
+This validates the receipt boundary and the bounded field-absence counterfactual.
+
+#### Runtime-integrated replay increment — R1
+
+The core runner now accepts an optional coupling-receipt input and routes it through `runtime/mycelial_field_replay_r1.py`. The path remains dormant when no receipt is supplied. Accepted evidence is projected only beneath `supplemental_ethereonic_context`; exact reinsertion is reported as historical replay rather than a new authority event. Source, destination, confidence, parentage, authority, and ledger-integrity failures are quarantined, with a JSON-safe copy of the raw input preserved for inspection and no corrupted projection attached to the runtime context.
+
+`runtime/sea_trials_mycelial_field_replay_r1.py` compares replay, absence, and corruption cycles. It asserts equal governed-event cost, no mycelial governance event type, no promotion or canon mutation, unchanged capability exposure, checkpoint independence, raw-input preservation, and `authority_effect: false` throughout. The Psi-42 default adapter carries the diagnostic result without changing those boundaries, while the capability registry remains unchanged.
+
+This increment validates runtime-integrated replay and corruption handling only. It does not yet validate edge loss, vessel replacement, resident reset, public-surface disagreement, or runtime-wide recovery behavior.
 
 ### Phase 3: network observables
 
