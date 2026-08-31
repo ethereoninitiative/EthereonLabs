@@ -88,7 +88,7 @@ def cmd_dashboard(args: argparse.Namespace) -> int:
     elif session_id == "none":
         print("  lumina session create \"Initial Harbor session\" --open")
     else:
-        print("  lumina run --preset drydock")
+        print("  lumina continue")
     print("  lumina compare")
     print("  lumina state --limit 3")
     print("  lumina studio")
@@ -113,6 +113,29 @@ def cmd_run(args: argparse.Namespace) -> int:
     if ethereonic_overlay:
         cmd.append("--ethereonic-overlay")
     cmd.extend(["--target-mode", str(target_mode), "--action-type", str(action_type), "--focus", str(focus), "--depth", str(depth), "--intent", str(intent)])
+    return _run(cmd, cwd=BOOTSTRAP_ROOT)
+
+
+def cmd_continue(args: argparse.Namespace) -> int:
+    project_id = args.project_id
+    if not project_id:
+        active = _capture_json([_python(), str(INSTALL_DIR / "lumina_project_registry.py"), "active", "--json"])
+        project_id = active.get("active_project_slug") or "lumina-os"
+
+    cmd = [
+        _python(),
+        str(STUDIO_DIR / "lumina_continue_r1.py"),
+        "--project-id",
+        str(project_id),
+        "--action",
+        str(args.action),
+    ]
+    if args.json:
+        cmd.append("--json")
+    if args.full_json:
+        cmd.append("--full-json")
+    if args.base_dir:
+        cmd.extend(["--base-dir", str(args.base_dir)])
     return _run(cmd, cwd=BOOTSTRAP_ROOT)
 
 
@@ -247,6 +270,17 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--receipt-json", action="store_true")
     run.add_argument("--full-json", action="store_true")
     run.set_defaults(func=cmd_run)
+
+    continue_cmd = sub.add_parser(
+        "continue",
+        help="Let bounded self-guidance select the next Observation focus from existing project-return state.",
+    )
+    continue_cmd.add_argument("--project-id", default=None)
+    continue_cmd.add_argument("--action", default="continue_from_latest_checkpoint")
+    continue_cmd.add_argument("--json", action="store_true")
+    continue_cmd.add_argument("--full-json", action="store_true")
+    continue_cmd.add_argument("--base-dir", default=None, help=argparse.SUPPRESS)
+    continue_cmd.set_defaults(func=cmd_continue)
 
     presets = sub.add_parser("presets", help="List local operator presets.")
     presets.add_argument("--json", action="store_true")
