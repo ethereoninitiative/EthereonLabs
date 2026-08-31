@@ -10,6 +10,7 @@ cd LuminaOS/bootstrap/Ship_of_Ethereon_V2
 python install/lumina_doctor.py --ensure-state
 python bin/lumina-bridge
 python bin/lumina run "Review Lumina OS progress and produce the next governed action receipt."
+python bin/lumina continue
 python bin/lumina observe
 python bin/lumina state --limit 12
 ```
@@ -28,6 +29,21 @@ bin/lumina
 ```
 
 This path performs bounded project return / host work, governed runtime execution, Psi-42 v1.8 diagnostics when lawfully exposed, continuity-correlation receipt handling, checkpointing, and receipt emission.
+
+### First-class bounded continuation path
+
+`bin/lumina continue` exposes the already-implemented checkpoint-linked self-guidance path without making it governing authority:
+
+```text
+bin/lumina continue
+  -> studio/lumina_continue_r1.py
+  -> runtime/lumina_continue_controller_r1.py
+  -> runtime/runtime_runner_self_guided_bridge_r1.py
+  -> runtime/runtime_runner_return_host_bridge_r1.py
+  -> runtime/runtime_runner_r1_merged.py
+```
+
+The continuation controller reads the existing project-return / host surface before a new cycle is written, asks the bounded self-guidance steward for the next likely focus, and uses that recommendation only as the requested focus of a governed `Observation` / `audit` cycle. It records a `self_guided_continue_preflight` governance receipt and writes the normal checkpoint/result artifacts. It does not authorize mutation, promotion, canon change, mode-law change, checkpoint legality, or consent decisions. If no stronger return signal exists, the steward falls back to a bounded continuation target rather than inventing structural authority.
 
 ### Optional reflective / self-guided adapter path
 
@@ -109,9 +125,10 @@ Orientation records what sources were supplied and how a connected model separat
 
 | Responsibility | Primary files | Wiring status |
 |---|---|---|
-| Bounded next-action advisory | `runtime/lumina_self_guidance_steward_r1.py` | Used by the explicit self-guided adapter |
-| Checkpoint-linked advisory history | `runtime/lumina_self_guidance_history_r1.py` | Used by the explicit self-guided adapter |
-| Self-guided runner bridge | `runtime/runtime_runner_self_guided_bridge_r1.py` | Optional alternate runner path |
+| Bounded next-action advisory | `runtime/lumina_self_guidance_steward_r1.py` | Used by the explicit self-guided adapter and `lumina continue` preflight |
+| Checkpoint-linked advisory history | `runtime/lumina_self_guidance_history_r1.py` | Used by the explicit self-guided adapter and continuation preflight |
+| Self-guided runner bridge | `runtime/runtime_runner_self_guided_bridge_r1.py` | Optional alternate runner path; used by first-class bounded continue cycle |
+| First-class bounded continuation controller | `runtime/lumina_continue_controller_r1.py`, `studio/lumina_continue_r1.py`, `bin/lumina continue` | Active local command; pre-cycle advisory selects Observation/audit focus only |
 | Recursive reflection motif | `runtime/lumina_reflective_autonomy_layer_r1.py` | Used by the explicit reflective/self-guided adapter |
 | Reflection-before-guidance bridge | `runtime/runtime_runner_reflective_self_guided_bridge_r1.py` | Optional alternate runner path |
 | Meaning metabolism / assimilation ledger | `runtime/lumina_meaning_metabolism_layer_r1.py` | Standalone validated experiment; not wired into default or adapter execution |
@@ -120,6 +137,12 @@ The reflective/self-guided adapter follows this extension shape:
 
 ```text
 governed return / host cycle -> checkpoint -> reflect -> recommend -> refresh advisory receipt/history
+```
+
+The first-class bounded continue path follows:
+
+```text
+existing return/host state -> preflight recommend -> governed Observation/audit -> checkpoint -> refresh advisory history
 ```
 
 The standalone Meaning Metabolism experiment models:
@@ -158,13 +181,14 @@ These are bounded computational and interpretive experiments. They do not gain r
 | Responsibility | Primary files |
 |---|---|
 | Local command entry | `bin/lumina` |
+| Bounded continuation surface | `studio/lumina_continue_r1.py`, `runtime/lumina_continue_controller_r1.py` |
 | Installer and doctor | `install/install_lumina.sh`, `install/lumina_doctor.py` |
 | Observer service | `services/lumina_observer_service.py` |
 | Read-only Bridge R2 position and field surface | `bin/lumina-bridge`, `studio/lumina_bridge_state_r1.py`, `studio/lumina_bridge_field_r1.py`, `studio/lumina_bridge_server_r2.py`, `docs/LUMINA_HARBOR_BRIDGE_WITNESS_R1.md` |
 | Historical Bridge R1 server | `studio/lumina_bridge_server_r1.py` |
 | Studio CLI/server/state browser | `studio/lumina_cli.py`, `studio/lumina_cli_psi42_v18.py`, `studio/lumina_studio_server.py`, `studio/lumina_state_browser.py` |
 
-Bridge witnesses and orients. Studio requests explicit actions. Runtime governance remains authoritative.
+Bridge witnesses and orients. Studio requests explicit actions. `lumina continue` may derive an Observation/audit focus from existing return state, but runtime governance remains authoritative.
 
 ## Psi-42 and quantum-adjacent boundaries
 
@@ -186,6 +210,7 @@ Psi-42 is an instrument. It does not own governance, canon, runtime law, consent
 | Core runtime / governance / canon | `runtime/sea_trials_set_one_r1_merged.py` |
 | Structural repository-context truth | `runtime/sea_trials_context_bundle_repo_truth_r1.py` |
 | Stationary habitation cold return | `runtime/sea_trials_stationary_habitation_cold_return_r1.py` |
+| First-class bounded continuation CLI | `runtime/sea_trials_lumina_continue_cli_r1.py` |
 | Lumina weather observation idempotence | `runtime/sea_trials_lumina_weather_snapshot_idempotence_r1.py` |
 | Ethereonic lineage visibility | `runtime/sea_trials_ethereonic_lineage_visibility_r1.py` |
 | Resonant Manifold | `runtime/sea_trials_resonant_manifold_r1.py` |
