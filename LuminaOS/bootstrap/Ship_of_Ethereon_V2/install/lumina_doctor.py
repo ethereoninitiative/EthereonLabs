@@ -38,6 +38,7 @@ REQUIRED_FILES = [
     "studio/lumina_state_browser.py",
     "studio/lumina_presets_r1.json",
     "runtime/runtime_runner_r1_merged.py",
+    "runtime/lumina_continuation_action_r1.py",
     "runtime/runtime_runner_auto_snapshot_psi42_v18_r1.py",
     "runtime/runtime_spine_r1.py",
     "runtime/capability_registry_r1.json",

@@ -34,6 +34,7 @@ DEFAULT_ARTIFACTS = [
     "runtime/runtime_runner_r1_merged.py",
     "runtime/runtime_runner_return_host_bridge_r1.py",
     "runtime/runtime_runner_self_guided_bridge_r1.py",
+    "runtime/lumina_continuation_action_r1.py",
     "runtime/lumina_self_guidance_steward_r1.py",
     "runtime/lumina_self_guidance_history_r1.py",
     "runtime/lumina_continue_controller_r1.py",

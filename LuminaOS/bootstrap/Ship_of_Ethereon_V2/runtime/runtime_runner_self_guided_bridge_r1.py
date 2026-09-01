@@ -206,6 +206,7 @@ class SelfGuidedReturnHostRuntimeRunner(bridge_mod.ReturnHostBridgedRuntimeRunne
 
         artifact_list = list(artifacts or [])
         for artifact_name in [
+            "lumina_continuation_action_r1.py",
             "lumina_self_guidance_steward_r1.py",
             "lumina_self_guidance_history_r1.py",
             "runtime_runner_self_guided_bridge_r1.py",

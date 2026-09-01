@@ -101,6 +101,7 @@ Desired proof:
 3. recommend next action
 4. append advisory history
 5. re-run and show history alignment instead of acting like every run starts from zero
+6. preserve one stable continuation target across repeated `lumina continue` cycles
 
 ## Orchestration lane
 

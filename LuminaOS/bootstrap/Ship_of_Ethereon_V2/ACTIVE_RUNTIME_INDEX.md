@@ -43,7 +43,7 @@ bin/lumina continue
   -> runtime/runtime_runner_r1_merged.py
 ```
 
-The continuation controller reads the existing project-return / host surface before a new cycle is written, asks the bounded self-guidance steward for the next likely focus, and uses that recommendation only as the requested focus of a governed `Observation` / `audit` cycle. It records a `self_guided_continue_preflight` governance receipt and writes the normal checkpoint/result artifacts. It does not authorize mutation, promotion, canon change, mode-law change, checkpoint legality, or consent decisions. If no stronger return signal exists, the steward falls back to a bounded continuation target rather than inventing structural authority.
+The continuation controller reads the existing project-return / host surface before a new cycle is written, asks the bounded self-guidance steward for the next likely focus, and uses that recommendation only as the requested focus of a governed `Observation` / `audit` cycle. It records a `self_guided_continue_preflight` governance receipt and writes the normal checkpoint/result artifacts. Continuation directives pass through `runtime/lumina_continuation_action_r1.py`, which preserves one stable `continue from` wrapper across repeated cycles and repairs previously compounded wrappers when old project-return or advisory-history state is read. The syntax normalizer does not choose the target or gain state, governance, checkpoint, canon, mutation, promotion, mode-law, or consent authority. If no stronger return signal exists, the steward falls back to a bounded continuation target rather than inventing structural authority.
 
 ### Optional reflective / self-guided adapter path
 
@@ -127,6 +127,7 @@ Orientation records what sources were supplied and how a connected model separat
 |---|---|---|
 | Bounded next-action advisory | `runtime/lumina_self_guidance_steward_r1.py` | Used by the explicit self-guided adapter and `lumina continue` preflight |
 | Checkpoint-linked advisory history | `runtime/lumina_self_guidance_history_r1.py` | Used by the explicit self-guided adapter and continuation preflight |
+| Stable continuation directive syntax | `runtime/lumina_continuation_action_r1.py` | Collapses legacy/repeated `continue from` wrappers; does not choose or authorize action |
 | Self-guided runner bridge | `runtime/runtime_runner_self_guided_bridge_r1.py` | Optional alternate runner path; used by first-class bounded continue cycle |
 | First-class bounded continuation controller | `runtime/lumina_continue_controller_r1.py`, `studio/lumina_continue_r1.py`, `bin/lumina continue` | Active local command; pre-cycle advisory selects Observation/audit focus only |
 | Recursive reflection motif | `runtime/lumina_reflective_autonomy_layer_r1.py` | Used by the explicit reflective/self-guided adapter |
@@ -210,7 +211,7 @@ Psi-42 is an instrument. It does not own governance, canon, runtime law, consent
 | Core runtime / governance / canon | `runtime/sea_trials_set_one_r1_merged.py` |
 | Structural repository-context truth | `runtime/sea_trials_context_bundle_repo_truth_r1.py` |
 | Stationary habitation cold return | `runtime/sea_trials_stationary_habitation_cold_return_r1.py` |
-| First-class bounded continuation CLI | `runtime/sea_trials_lumina_continue_cli_r1.py` |
+| First-class bounded continuation CLI and repeated-action stability | `runtime/sea_trials_lumina_continue_cli_r1.py` |
 | Lumina weather observation idempotence | `runtime/sea_trials_lumina_weather_snapshot_idempotence_r1.py` |
 | Ethereonic lineage visibility | `runtime/sea_trials_ethereonic_lineage_visibility_r1.py` |
 | Resonant Manifold | `runtime/sea_trials_resonant_manifold_r1.py` |
