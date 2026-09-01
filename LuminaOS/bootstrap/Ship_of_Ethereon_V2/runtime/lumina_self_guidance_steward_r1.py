@@ -4,6 +4,11 @@ from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
+try:
+    from .lumina_continuation_action_r1 import normalize_continuation_action
+except Exception:
+    from lumina_continuation_action_r1 import normalize_continuation_action
+
 
 FORBIDDEN_AUTHORITY_KEYS = {
     "governance",
@@ -61,12 +66,15 @@ class LuminaSelfGuidanceSteward:
         rows = list(guidance_history or [])
         recent = rows[-3:]
         recent_recommendations = [
-            row.get("recommended_next_action")
+            normalize_continuation_action(row.get("recommended_next_action"))
             for row in recent
             if row.get("recommended_next_action")
         ]
+        canonical_candidate = normalize_continuation_action(candidate_recommendation)
         alignment_count = sum(
-            1 for row in rows if row.get("recommended_next_action") == candidate_recommendation
+            1
+            for row in rows
+            if normalize_continuation_action(row.get("recommended_next_action")) == canonical_candidate
         )
         latest_recommendation = recent_recommendations[-1] if recent_recommendations else None
         return {
@@ -97,7 +105,12 @@ class LuminaSelfGuidanceSteward:
         latest_restore = self._latest_restore_view(resolved_project_return)
         host_bundle = dict(resolved_host_bundle or {})
 
-        pending_next_action = latest_restore.get("pending_next_action")
+        pending_next_action_raw = latest_restore.get("pending_next_action")
+        pending_next_action = (
+            normalize_continuation_action(pending_next_action_raw)
+            if pending_next_action_raw
+            else None
+        )
         focus_target = (
             working_stance.get("focus_target")
             or host_bundle.get("focus_target")
@@ -190,6 +203,11 @@ class LuminaSelfGuidanceSteward:
             "current_mode": current_mode,
             "target_mode": target_mode,
             "pending_next_action": pending_next_action,
+            "pending_next_action_raw": pending_next_action_raw,
+            "pending_next_action_normalized": bool(
+                pending_next_action_raw
+                and str(pending_next_action_raw).strip() != pending_next_action
+            ),
             "focus_target": focus_target,
             "linked_host_bundle": linked_host_bundle,
             "open_panels": open_panels,

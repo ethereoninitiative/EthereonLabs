@@ -171,7 +171,7 @@ class ReturnHostBridgedRuntimeRunner(runner_mod.RuntimeRunner):
             workspace_state={"active_mode": target_mode, "requested_action": requested_action},
             continuation_notes=[f"runtime cycle: {requested_action}"],
         )
-        session.pending_next_action = f"continue from {requested_action}"
+        session.pending_next_action = runner_mod.as_continuation_action(requested_action)
         session.last_completed_action = f"runtime_cycle:{requested_action}"
         continuity.save_session(session)
 

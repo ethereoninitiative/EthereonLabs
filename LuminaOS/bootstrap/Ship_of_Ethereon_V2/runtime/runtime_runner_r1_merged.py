@@ -58,6 +58,11 @@ except Exception:
         LuminaWorkspaceHost = None
 
 try:
+    from .lumina_continuation_action_r1 import as_continuation_action
+except Exception:
+    from lumina_continuation_action_r1 import as_continuation_action
+
+try:
     from .mycelial_field_replay_r1 import MycelialFieldReplayBridge
 except Exception:
     try:
@@ -85,6 +90,7 @@ REGISTRY_PATH = RUNTIME_ROOT / "capability_registry_r1.json"
 DEFAULT_ARTIFACTS = [
     "runtime_spine_r1.py",
     "runtime_runner_r1_merged.py",
+    "lumina_continuation_action_r1.py",
     "runtime_runner_return_host_bridge_r1.py",
     "project_return_repo_native_r1.py",
     "workspace_host_repo_native_r1.py",
@@ -430,7 +436,7 @@ class RuntimeRunner:
             workspace_state={"active_mode": target_mode, "requested_action": requested_action},
             continuation_notes=[f"runtime cycle: {requested_action}"],
         )
-        session.pending_next_action = f"continue from {requested_action}"
+        session.pending_next_action = as_continuation_action(requested_action)
         session.last_completed_action = f"runtime_cycle:{requested_action}"
         continuity.save_session(session)
 
