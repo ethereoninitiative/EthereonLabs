@@ -58,14 +58,17 @@ class ResidentPulseStore:
         except Exception:
             return {}
 
-    def write(self, project_id: str, receipt: Dict[str, Any]) -> Dict[str, str]:
+    def write(self, project_id: str, receipt: Dict[str, Any]) -> Dict[str, Any]:
         pulse_id = str(receipt.get("pulse_id") or uuid.uuid4())
         receipt_path = self.receipts_dir / f"{self._safe_slug(project_id)}__{pulse_id}.json"
         latest_path = self.latest_path(project_id)
-        encoded = json.dumps(receipt, indent=2)
+        payload = dict(receipt)
+        payload["receipt_path"] = str(receipt_path)
+        payload["latest_path"] = str(latest_path)
+        encoded = json.dumps(payload, indent=2)
         receipt_path.write_text(encoded, encoding="utf-8")
         latest_path.write_text(encoded, encoding="utf-8")
-        return {"receipt_path": str(receipt_path), "latest_path": str(latest_path)}
+        return payload
 
 
 class LuminaResidentPulse:
@@ -159,6 +162,7 @@ class LuminaResidentPulse:
             attention_state = "directed_pending_work"
 
         continuation_receipt: Optional[Dict[str, Any]] = None
+        post_continue_project_checkpoint = None
         last_consumed_after = last_consumed_before
         if invoked:
             continued = self.controller.continue_cycle(
@@ -166,7 +170,10 @@ class LuminaResidentPulse:
                 requested_action=requested_action,
             )
             continuation_receipt = continued.compact_receipt()
-            last_consumed_after = continuation_receipt.get("checkpoint_path") or source_checkpoint
+            post_surface = self._observe_surface(resolved_project_id, requested_action)
+            post_restore = self._latest_restore(post_surface)
+            post_continue_project_checkpoint = post_restore.get("checkpoint_path")
+            last_consumed_after = post_continue_project_checkpoint or source_checkpoint
 
         receipt: Dict[str, Any] = {
             "schema_version": "lumina-resident-pulse-r1",
@@ -182,6 +189,7 @@ class LuminaResidentPulse:
             "source_pending_next_action": pending_next_action,
             "last_consumed_checkpoint_before": last_consumed_before,
             "last_consumed_checkpoint_after": last_consumed_after,
+            "post_continue_project_checkpoint": post_continue_project_checkpoint,
             "min_confidence": self.min_confidence,
             "advisory": advisory,
             "continuation_receipt": continuation_receipt,
@@ -191,8 +199,5 @@ class LuminaResidentPulse:
                 "consent decisions, capability exposure, or identity claims."
             ),
         }
-        paths = self.store.write(resolved_project_id, receipt)
-        receipt.update(paths)
-        # Rewrite so the persisted latest receipt contains its own paths.
-        self.store.write(resolved_project_id, receipt)
-        return ResidentPulseResult(receipt=receipt)
+        persisted = self.store.write(resolved_project_id, receipt)
+        return ResidentPulseResult(receipt=persisted)
