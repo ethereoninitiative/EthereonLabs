@@ -1,0 +1,68 @@
+name: Lumina Resident Pulse R1
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/lumina_resident_pulse_r1.py"
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_lumina_resident_pulse_r1.py"
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_resident_r1.py"
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina-pulse"
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina-resident"
+      - ".github/workflows/lumina-resident-pulse-r1.yml"
+  push:
+    branches: [main]
+    paths:
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/lumina_resident_pulse_r1.py"
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_lumina_resident_pulse_r1.py"
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_resident_r1.py"
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina-pulse"
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina-resident"
+      - ".github/workflows/lumina-resident-pulse-r1.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  resident-pulse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONUNBUFFERED: "1"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compile resident lane
+        run: |
+          python -m py_compile \
+            LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/lumina_resident_pulse_r1.py \
+            LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_lumina_resident_pulse_r1.py \
+            LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_resident_r1.py \
+            LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina-pulse \
+            LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina-resident
+
+      - name: Resident Pulse recurrence sea trial
+        working-directory: LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime
+        run: python sea_trials_lumina_resident_pulse_r1.py
+
+      - name: Host command smoke checks
+        working-directory: LuminaOS/bootstrap/Ship_of_Ethereon_V2
+        run: |
+          python bin/lumina-pulse --help
+          python bin/lumina-resident --help
+
+      - name: Verify no tracked local state
+        run: |
+          tracked=$(git ls-files .lumina_state)
+          if [ -n "$tracked" ]; then
+            echo "Tracked local Lumina state is not allowed."
+            echo "$tracked"
+            exit 1
+          fi
