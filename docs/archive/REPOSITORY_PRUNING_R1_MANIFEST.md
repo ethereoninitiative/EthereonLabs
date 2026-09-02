@@ -14,7 +14,7 @@
 - `chamber-app/src/advisory_queue_server_v0_1.ts` — superseded by the v0.2 advisory server used by package scripts.
 - `chamber-app/src/advisory_queue_memory_store.ts` — private v0.1 in-memory store used only by the superseded server.
 
-## Archived lineage
+## Archived runtime lineage
 
 The former `LuminaOS/runtime/daemon/` v0.1 experiment and its contract moved beneath:
 
@@ -22,9 +22,28 @@ The former `LuminaOS/runtime/daemon/` v0.1 experiment and its contract moved ben
 
 The archive retains the implementation, smoke test, README, and contract for historical comparison while removing the appearance of a parallel active runtime lane.
 
+## Archived orientation lineage
+
+Two pre-V2 AI-orientation families moved beneath:
+
+- `docs/archive/orientation-history/root-r1/`
+- `docs/archive/orientation-history/orientation-r1/`
+
+The active owner remains the bounded V2 orientation protocol and its V2 sea trial under `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/`.
+
+## Archived continuity lineage
+
+The former repository-root passport/reboarding experiment moved intact beneath:
+
+- `docs/archive/continuity-history/passport-r1/`
+
+This preserves the passport implementation, schema, reboarding helper, and sea trial without presenting them as current continuity ownership.
+
 ## Explicit non-cuts
 
-This pass does not prune current V2 runtime, runtime-truth Studio, deployment lanes, Psi Class staging, research, philosophy, provenance, public route redirects, or validation gates merely because multiple versions or surfaces exist. Those require separate ownership evidence before pruning.
+This pass does not prune current V2 runtime, runtime-truth Studio, deployment lanes, Psi Class staging, research, philosophy, provenance, public route redirects, or validation gates merely because multiple versions or surfaces exist.
+
+The root `continuity_restore_spike_r1.py` and `lumina_workspace_host_spike_r1.py` also remain in place because the current operating map explicitly classifies them as reference/exploration history.
 
 ## Rule
 
