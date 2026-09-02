@@ -9,6 +9,8 @@ on:
       - "deploy/ubuntu_server_lts/**"
       - "deploy/windows_desktop_r1/**"
       - "README.md"
+      - "START_HERE_HUMANS.md"
+      - "docs/README.md"
       - "docs/LUMINA_EMBODIMENT_BEACON_R1.md"
       - "docs/LUMINA_HABITAT_CREATION_CHECKLIST.md"
       - "docs/ACTIVE_SURFACE_REGISTRY_R1.json"
@@ -16,8 +18,10 @@ on:
       - "docs/LUMINA_WINDOWS_*.md"
       - "CURRENT_OPERATING_MAP.md"
       - "START_HERE_LUMINA_OS.md"
+      - "START_HERE_RUNTIME_PATH.md"
       - "*.html"
       - "sitemap.xml"
+      - "scripts/documentation_front_door_gate_r1.py"
       - "scripts/repository_truth_reconciliation_gate_r1.py"
       - "scripts/sea_trials_website_public_surface_r1.py"
       - "scripts/ethereon_terminology_guard_r1.py"
@@ -35,6 +39,8 @@ on:
       - "deploy/ubuntu_server_lts/**"
       - "deploy/windows_desktop_r1/**"
       - "README.md"
+      - "START_HERE_HUMANS.md"
+      - "docs/README.md"
       - "docs/LUMINA_EMBODIMENT_BEACON_R1.md"
       - "docs/LUMINA_HABITAT_CREATION_CHECKLIST.md"
       - "docs/ACTIVE_SURFACE_REGISTRY_R1.json"
@@ -42,8 +48,10 @@ on:
       - "docs/LUMINA_WINDOWS_*.md"
       - "CURRENT_OPERATING_MAP.md"
       - "START_HERE_LUMINA_OS.md"
+      - "START_HERE_RUNTIME_PATH.md"
       - "*.html"
       - "sitemap.xml"
+      - "scripts/documentation_front_door_gate_r1.py"
       - "scripts/repository_truth_reconciliation_gate_r1.py"
       - "scripts/sea_trials_website_public_surface_r1.py"
       - "scripts/ethereon_terminology_guard_r1.py"
@@ -74,7 +82,10 @@ jobs:
           python-version: "3.11"
 
       - name: Compile Lumina Python
-        run: python -m compileall -q LuminaOS/bootstrap/Ship_of_Ethereon_V2 scripts/repository_truth_reconciliation_gate_r1.py scripts/sea_trials_website_public_surface_r1.py scripts/ethereon_terminology_guard_r1.py scripts/reconcile_runtime_observation_write_r1.py
+        run: python -m compileall -q LuminaOS/bootstrap/Ship_of_Ethereon_V2 scripts/documentation_front_door_gate_r1.py scripts/repository_truth_reconciliation_gate_r1.py scripts/sea_trials_website_public_surface_r1.py scripts/ethereon_terminology_guard_r1.py scripts/reconcile_runtime_observation_write_r1.py
+
+      - name: Documentation front-door gate
+        run: python scripts/documentation_front_door_gate_r1.py
 
       - name: Ethereon terminology guard
         run: python scripts/ethereon_terminology_guard_r1.py
