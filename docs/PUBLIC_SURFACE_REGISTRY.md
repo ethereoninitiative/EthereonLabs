@@ -1,34 +1,11 @@
 # Public Surface Registry
 
-**Status:** working registry
+**Status:** compatibility pointer; superseded as the active registry.
 
-This registry keeps the website surface aligned with the repository lanes.
+The repository-wide machine-readable source for active surface status is now:
 
-## Fields to track
+- `docs/ACTIVE_SURFACE_REGISTRY_R1.json`
 
-- page or surface
-- path
-- lane
-- purpose
-- status
-- stewardship note
+Use that registry for current lane, status, evidence, and stewardship relationships. This Markdown file remains only so older links and references resolve cleanly.
 
-## Starter lanes
-
-- home / entry
-- Chamber
-- roadmap
-- principles / guide / FAQ
-- lexicon
-- harmonics
-- RSE research
-- Lumina dashboard
-- reference / archive
-
-## Use
-
-When a new page is added, name its lane and purpose here. This prevents page growth from becoming navigation drift.
-
-## Reminder
-
-A public page can explain the work without becoming a source of authority for the work.
+Public pages may explain the work without becoming sources of runtime, governance, canon, continuity, or capability authority.

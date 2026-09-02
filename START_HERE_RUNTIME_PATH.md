@@ -1,108 +1,53 @@
-# START HERE — Runtime Path (Executable Entry)
+# START HERE — Runtime Path
 
-This file exists to answer one question clearly:
+**Status:** compatibility waypoint.  
+**Current executable entry:** `LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina`.
 
-**How do I enter this repository and actually run something?**
+This file is retained so older links do not become dead ends. It no longer defines a separate runtime-entry doctrine.
 
----
+## Current start path
 
-## Step 1 — Go to the runtime substrate
+For the complete and current operator guide, use:
 
-Navigate to:
+- `START_HERE_LUMINA_OS.md`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/ACTIVE_RUNTIME_INDEX.md`
 
-```
-LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/
-```
+From the governed bootstrap root:
 
-This is where execution lives.
-
----
-
-## Step 2 — Run the baseline runtime
-
-Primary entry file:
-
-```
-runtime_runner_r1_merged.py
+```bash
+cd LuminaOS/bootstrap/Ship_of_Ethereon_V2
+python install/lumina_doctor.py --ensure-state
+python bin/lumina-bridge
+python bin/lumina run "Review Lumina OS progress and produce the next governed action receipt."
+python bin/lumina continue
+python bin/lumina observe
+python bin/lumina state --limit 12
 ```
 
-Run it locally with:
+## Current default execution route
 
+```text
+bin/lumina
+  -> studio/lumina_cli_psi42_v18.py
+  -> runtime/runtime_runner_psi42_v18_adapter_r1.py
+  -> runtime/runtime_runner_r1_merged.py
 ```
-python runtime_runner_r1_merged.py
-```
 
----
+`runtime_runner_r1_merged.py` remains the core governed runner and may be invoked directly for focused debugging or validation, but direct invocation is not the ordinary host entry path.
 
-## Step 3 — Run a validation (sea trial)
+## Validation
 
-Example:
+The baseline core sea trial remains:
 
-```
+```bash
+cd LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime
 python sea_trials_set_one_r1_merged.py
 ```
 
-This validates that the runtime spine, governance checks, and execution flow are functioning.
+Repository and workflow gates provide broader validation around the host, truth, distribution, and public surfaces.
 
----
+## Authority boundary
 
-## Step 4 — Observe output
+This waypoint creates no runtime, governance, canon, capability, continuity, or promotion authority. Current executable architecture and validated receipts remain authoritative.
 
-You are looking for:
-
-- no crashes
-- structured output
-- evidence of governance checks
-- traceable execution steps
-
-If it runs cleanly, the substrate is alive.
-
----
-
-## Step 5 — Understand what just happened
-
-Interpretation:
-
-- runtime_runner = execution path
-- sea_trials = validation layer
-- governance files = rule enforcement
-- psi42_transceiver = bounded signal/analysis layer
-
----
-
-## Step 6 — Next moves
-
-From here you can:
-
-- modify runtime behavior
-- add new validation tests
-- connect Chamber → runtime (future)
-- extend orchestration layer
-
----
-
-## GitHub Actions verification
-
-This runtime path is also checked by the `Lumina Runtime Sea Trial` workflow.
-
-The workflow runs the baseline runtime and sea-trial validation so GitHub can report whether the executable path still holds.
-
-Artifact preservation is part of that check: each successful run should keep runtime and sea-trial evidence for later review.
-
-A post-correction confirmation run should verify that the artifact upload step now succeeds.
-
----
-
-## What this file is NOT
-
-This is not philosophy.
-This is not symbolic.
-This is not staging.
-
-This is the **entry point for execution**.
-
----
-
-## One-line summary
-
-> If you want to prove this system exists, run the runtime and watch it behave.
+> If you want to enter Lumina as an operator, start with `START_HERE_LUMINA_OS.md` and `bin/lumina`.
