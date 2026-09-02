@@ -116,7 +116,8 @@ def main() -> Dict[str, Any]:
     first = receipts[0] if len(receipts) > 0 else {}
     second = receipts[1] if len(receipts) > 1 else {}
     first_continue = dict(first.get("continuation_receipt") or {})
-    first_generated_checkpoint = first_continue.get("checkpoint_path")
+    runtime_checkpoint = first_continue.get("checkpoint_path")
+    project_checkpoint = first.get("post_continue_project_checkpoint")
 
     checks = {
         "seed_cycle_passed": seed.get("halted") is False,
@@ -133,16 +134,17 @@ def main() -> Dict[str, Any]:
             and first_continue.get("action_type") == "audit"
         ),
         "first_continuation_governance_chain_valid": first_continue.get("governance_chain_valid") is True,
-        "first_continuation_checkpoint_written": bool(first_generated_checkpoint)
-        and Path(first_generated_checkpoint).exists(),
+        "runtime_checkpoint_written": bool(runtime_checkpoint) and Path(runtime_checkpoint).exists(),
+        "post_continue_project_checkpoint_written": bool(project_checkpoint)
+        and Path(project_checkpoint).exists(),
         "second_pulse_did_not_invoke": second.get("invoked") is False,
         "second_pulse_refused_self_recursion": second.get("decision_reason")
         == "source_checkpoint_already_consumed",
         "second_pulse_attention_settled": second.get("attention_state") == "settled_attention",
-        "generated_checkpoint_became_consumed_marker": (
-            first.get("last_consumed_checkpoint_after") == first_generated_checkpoint
-            and second.get("source_checkpoint") == first_generated_checkpoint
-            and second.get("last_consumed_checkpoint_before") == first_generated_checkpoint
+        "project_checkpoint_became_consumed_marker": (
+            first.get("last_consumed_checkpoint_after") == project_checkpoint
+            and second.get("source_checkpoint") == project_checkpoint
+            and second.get("last_consumed_checkpoint_before") == project_checkpoint
         ),
         "second_pulse_created_no_continuation": second.get("continuation_receipt") is None,
         "resident_receipts_persisted": all(
@@ -161,6 +163,8 @@ def main() -> Dict[str, Any]:
         "seed_action": SEED_ACTION,
         "expected_selected_action": EXPECTED_SELECTED,
         "seed_run_id": seed.get("run_id"),
+        "runtime_checkpoint": runtime_checkpoint,
+        "project_checkpoint": project_checkpoint,
         "first_pulse": first,
         "second_pulse": second,
         "stderr": proc.stderr.strip(),
