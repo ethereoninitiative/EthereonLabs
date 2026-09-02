@@ -12,6 +12,22 @@ For the fastest current repository orientation, start with:
 
 This is the short harbor map for active lanes, current runtime path, symbolic-only layers, and recommended touch order.
 
+For documentation status and stratification inside the large `docs/` tree, use:
+
+- `docs/README.md`
+
+### Front-door hierarchy
+
+```text
+README.md
+  -> START_HERE_HUMANS.md
+      -> CURRENT_OPERATING_MAP.md
+          -> docs/README.md
+              -> lane-specific current contract, runbook, research lane, or archive
+```
+
+Executable Lumina work branches from that hierarchy through `START_HERE_LUMINA_OS.md` and the V2 `ACTIVE_RUNTIME_INDEX.md`. Older compatibility or historical entrypoints do not outrank those surfaces.
+
 ## Current Spatial Orientation
 
 The project now uses an orbital / planetary top-level frame:
@@ -56,6 +72,7 @@ Non-executable. Human-readable. System-aligned.
 
 - New human reader: start with `START_HERE_HUMANS.md`.
 - Current operating map: start with `CURRENT_OPERATING_MAP.md`.
+- Documentation status / active-vs-history map: start with `docs/README.md`.
 - Care / philosophy orientation: start with `docs/philosophy/nonbiological_love_r1.md`.
 - Lumina OS / runtime work: start with `START_HERE_LUMINA_OS.md`.
 - Ship of Ethereon Ψ Class staging: start with `START_HERE_SHIP_OF_ETHEREON_PSI_CLASS.md`.
@@ -145,6 +162,7 @@ Use this lane for observer-continuity inquiry, adversarial pressure against easy
 ## Guidance
 
 - For current repo orientation, begin with `CURRENT_OPERATING_MAP.md`.
+- Before treating an unfamiliar `docs/` file as current, begin with `docs/README.md`.
 - For current Ship / Lumina / Ethereon spatial framing, read `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Ethereon_Orbital_Planetary_Framing_R1.md`.
 - For Ship / Lumina OS substrate questions, begin with the bootstrap path.
 - For Ψ Class staging questions, begin with the Ψ Class start-here waypoint and staging bay.

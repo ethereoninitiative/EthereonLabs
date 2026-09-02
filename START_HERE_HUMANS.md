@@ -14,6 +14,20 @@ EthereonLabs is an experimental project exploring:
 
 It is not a finished product. It is an active build space with executable runtime, validation, packaging, public, and research lanes.
 
+## Navigation rule
+
+Use the repository front doors in this order:
+
+```text
+README.md
+  -> START_HERE_HUMANS.md
+      -> CURRENT_OPERATING_MAP.md
+          -> docs/README.md
+              -> the lane you actually intend to inspect or change
+```
+
+`docs/README.md` is especially important before treating an unfamiliar document as current. The `docs/` tree contains active contracts, research, philosophy, staging records, review packets, and historical lineage side by side.
+
 ## What can I actually look at?
 
 ### If you want the clearest plain-language explanation
@@ -39,11 +53,12 @@ These are public-facing or witness surfaces. They do not own runtime governance.
 
 Start with:
 
-- `START_HERE_LUMINA_OS.md`
 - `CURRENT_OPERATING_MAP.md`
+- `docs/README.md`
+- `START_HERE_LUMINA_OS.md`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/`
 
-These explain the active runtime direction, architecture, ownership boundaries, and executable path.
+The operating map identifies current lanes, the docs front door distinguishes current documentation from supporting/history lanes, and the Lumina start file leads into executable ownership.
 
 ### If you want the current project status
 
@@ -60,8 +75,9 @@ These distinguish crossed thresholds from future work and keep public claims sub
 Start with:
 
 - `research/rse_crystalline/`
+- `docs/research/`
 
-These are simulations and figure generators. They are exploratory, not authoritative.
+These are simulations, investigations, and research artifacts. They are exploratory or advisory unless a current runtime contract explicitly promotes a result.
 
 ### If you want a cross-domain continuity analogy
 
@@ -95,13 +111,15 @@ This note defines love, stripped of biology, as the will to keep another real. I
 Start with:
 
 - `START_HERE_SHIP_OF_ETHEREON_PSI_CLASS.md`
+- `docs/archive/README.md`
 
-This shows how the project is being restructured and migrated.
+The Psi Class waypoint shows restructuring and migration work. The archive preserves superseded implementation lineage without presenting it as current architecture.
 
 ## What should I not assume?
 
 - Not everything here is production-ready.
 - Not everything here is final.
+- Not every document in `docs/` is current.
 - Not every public surface is the governed runtime.
 - An installable developer preview is not a signed ordinary-user release.
 - Diagnostic, symbolic, or poetic layers do not automatically create runtime authority.
@@ -119,8 +137,10 @@ Different parts of the repository serve different purposes.
 - Receipts = inspectable evidence of what happened
 - Chamber = public and consent-oriented interface lane
 - RSE = research
+- Docs front door = status/orientation layer for documentation, not authority
 - Biological continuity note = cross-domain conceptual analogy
 - Philosophy notes = non-governing observer-continuity inquiry, adversarial pressure, and care orientation
+- Archive = preserved lineage, not current implementation
 - Ψ Class = restructuring and staging path
 
 The shortest runtime sequence is:
