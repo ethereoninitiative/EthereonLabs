@@ -187,7 +187,7 @@ Use the mycelial model as a testable architecture vocabulary, not as a new autho
 - [x] Verify **field replay**: historical context is distinguishable from a new authority event. Evidence: optional runner intake and exact-reinsertion comparison in `sea_trials_mycelial_field_replay_r1.py`.
 - [x] Verify **field corruption**: altered provenance, confidence, or parentage is rejected or quarantined. Evidence: raw-preserving adversarial quarantine checks in `sea_trials_mycelial_field_replay_r1.py`.
 - [x] Verify **edge loss**: loss of one non-authoritative diagnostic path degrades topology metrics while project return and checkpoint recovery remain independently valid. Evidence: `mycelial_edge_loss_r1.py` and `sea_trials_mycelial_edge_loss_r1.py`.
-- [ ] Verify **vessel replacement**: restored continuity can be compared across hosts without equating host persistence with resident continuity.
+- [x] Verify **vessel replacement**: restored continuity can be compared across hosts without equating host persistence with resident continuity. Evidence: the explicit, hash-verified project-return capsule and non-resuming target import in `vessel_continuity_transfer_r1.py`, validated by `sea_trials_vessel_continuity_transfer_r1.py`.
 - [ ] Verify **resident reset**: a fresh session is not treated as continuous merely because the same Ship or habitat remains.
 - [ ] Verify **surface disagreement**: committed runtime truth outranks public projection, bridge output, and advisory interpretation.
 - [ ] Verify **no-op observation**: stable observation does not fabricate growth or silently create mutation.

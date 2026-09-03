@@ -65,6 +65,10 @@ The continuation controller reads the existing project-return / host surface bef
 
 `runtime/mycelial_edge_loss_r1.py` is a standalone topology observer for declared path availability. Its sea trial removes one temporary coupling-intake diagnostic path, independently proves project return and checkpoint recovery, and reports edge retention, canonical-reference availability, and non-authoritative availability as separate dimensions. It is not default-wired or capability-exposed, and its report explicitly does not claim canonical recovery.
 
+### Vessel continuity transfer status
+
+`runtime/vessel_continuity_transfer_r1.py` exports and explicitly imports one latest project-return surface through a hash-verified capsule. It rebases host-specific checkpoint links, refuses overwrite, leaves imported sessions dormant, and emits a non-authoritative transfer receipt. `bin/lumina-vessel` exposes separate export, verify, and import commands. Matching cross-vessel evidence does not become an identity claim or transfer governance, canon, capability, or mutation authority.
+
 ## Runtime core
 
 | Responsibility | Primary files |
@@ -78,6 +82,7 @@ The continuation controller reads the existing project-return / host surface bef
 | Ethereonic overlay boundary and generated registry state | `runtime/ethereonic_layer_r1.py`; generated at `<runner base_dir>/ethereonic_layer_registry_r1.json` |
 | Optional mycelial coupling receipt intake and replay | `runtime/mycelial_coupling_receipt_r1.py`, `runtime/mycelial_field_replay_r1.py` |
 | Standalone mycelial edge-loss observation | `runtime/mycelial_edge_loss_r1.py` |
+| Bounded project-return portability | `runtime/vessel_continuity_transfer_r1.py` |
 
 The Ethereonic registry JSON is runtime-generated state, not a committed source file beside the module. Its generated location follows the active runner or test `base_dir`.
 
@@ -107,6 +112,7 @@ Committed canon evidence and ephemeral Observation receipts are separate scopes.
 | Typed continuity correlation | `runtime/continuity_correlation_r1.py`, `runtime/continuity_correlation_registry_r1.json` |
 | Correlation receipt bridge | `runtime/continuity_correlation_bridge_r1.py` |
 | Psi-42 v1.8 correlated runner adapter | `runtime/runtime_runner_psi42_v18_adapter_r1.py` |
+| Explicit vessel-transfer command and receipt | `runtime/vessel_continuity_transfer_r1.py`, `studio/lumina_vessel_transfer_r1.py`, `bin/lumina-vessel` |
 
 Project, Harbor session, runtime session, restore session, and host session remain distinct references joined by a correlation envelope.
 
@@ -224,6 +230,7 @@ Psi-42 is an instrument. It does not own governance, canon, runtime law, consent
 | Mycelial field-absence boundary | `runtime/sea_trials_mycelial_field_absence_r1.py` |
 | Runtime-integrated mycelial replay and corruption quarantine | `runtime/sea_trials_mycelial_field_replay_r1.py` |
 | Mycelial non-authoritative edge-loss boundary | `runtime/sea_trials_mycelial_edge_loss_r1.py` |
+| Cross-vessel project-return portability and tamper boundary | `runtime/sea_trials_vessel_continuity_transfer_r1.py` |
 | Self-guidance | `runtime/sea_trials_lumina_self_guidance_r1.py` |
 | Reflective/self-guided adapter wiring | `sea_trials_lumina_reflective_autonomy_wiring_r1.py` |
 | Meaning Metabolism standalone layer | `sea_trials_lumina_meaning_metabolism_r1.py` |

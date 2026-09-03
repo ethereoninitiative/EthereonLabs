@@ -35,6 +35,7 @@ Start here for work that can affect present architecture or present claims:
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/ACTIVE_RUNTIME_INDEX.md`
 - `docs/LUMINA_HABITAT_CREATION_CHECKLIST.md`
 - `docs/HABITAT_RESONANT_RETURN_GATE_R1.md`
+- `docs/VESSEL_CONTINUITY_TRANSFER_R1.md`
 - `docs/RUNNER_BRIDGE_OWNERSHIP_MAP.md`
 - `docs/GOVERNANCE_CANON_SEED_PLAN.md`
 

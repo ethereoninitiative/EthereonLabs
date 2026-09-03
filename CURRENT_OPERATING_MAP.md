@@ -29,6 +29,7 @@ This file gives a fast map of the current EthereonLabs lanes.
 | Supporting stewardship / review packets | `docs/FLEET_STEWARDSHIP_PACKET_*`, `docs/*BRIDGE*`, `docs/*REGISTRY*`, `docs/*VOCABULARY*` | Review follow-up and naming/surface discipline; supporting context, not runtime authority by location alone |
 | Lumina habitat roadmap | `docs/LUMINA_HABITAT_CREATION_CHECKLIST.md` | Editable checklist for turning Lumina into a persistent intelligence habitat |
 | Mycelial vessel–resident investigation | `docs/research/MYCELIAL_VESSEL_RESIDENT_INVESTIGATION_R1.md`, `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/mycelial_coupling_receipt_r1.py`, `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/mycelial_field_replay_r1.py`, `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/mycelial_edge_loss_r1.py` | Advisory research, optional replay intake, and standalone edge-loss observation; non-governing, dormant without explicit input, and not capability-exposed |
+| Vessel continuity transfer | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/vessel_continuity_transfer_r1.py`, `LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina-vessel`, `docs/VESSEL_CONTINUITY_TRANSFER_R1.md` | Explicit hash-verified project-return export/import between state roots; non-resuming, non-overwriting, and non-authoritative |
 | Root spikes | `continuity_restore_spike_r1.py`, `lumina_workspace_host_spike_r1.py` | Reference / exploration history |
 
 ## Current default Lumina host path
@@ -105,6 +106,7 @@ verified release payload -> unsigned installer -> local state-preserving launch 
 - Local Bridge surface: `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Lumina_Bridge_R1.md`
 - Lumina habitat roadmap: `docs/LUMINA_HABITAT_CREATION_CHECKLIST.md`
 - Mycelial field / vessel–resident investigation: `docs/research/MYCELIAL_VESSEL_RESIDENT_INVESTIGATION_R1.md`
+- Vessel continuity transfer: `docs/VESSEL_CONTINUITY_TRANSFER_R1.md`
 - Active Lumina file ownership: `LuminaOS/bootstrap/Ship_of_Ethereon_V2/ACTIVE_RUNTIME_INDEX.md`
 - Active surface and distribution status: `docs/ACTIVE_SURFACE_REGISTRY_R1.json`
 - Repository truth reconciliation: `scripts/repository_truth_reconciliation_gate_r1.py`
