@@ -146,6 +146,7 @@ models advisory assimilation between reflection and future guidance. It has a de
 
 - `bin/lumina`
 - `bin/lumina-bridge`
+- `bin/lumina-vessel`
 - `studio/lumina_cli.py`
 - `studio/lumina_cli_psi42_v18.py`
 - `studio/lumina_bridge_state_r1.py`
@@ -156,6 +157,15 @@ models advisory assimilation between reflection and future guidance. It has a de
 - `runtime/continuity_correlation_r1.py`
 - `runtime/continuity_correlation_bridge_r1.py`
 - `runtime/runtime_runner_psi42_v18_adapter_r1.py`
+
+### Explicit project-return portability
+
+- `runtime/vessel_continuity_transfer_r1.py`
+- `runtime/sea_trials_vessel_continuity_transfer_r1.py`
+- `studio/lumina_vessel_transfer_r1.py`
+- `bin/lumina-vessel`
+
+This path exports, verifies, and explicitly imports one latest project-return surface between distinct state roots. It rebases host-specific paths, refuses overwrite, leaves the imported session dormant, and records transport evidence without claiming resident identity or transferring governance, canon, capability, or mutation authority.
 
 ### Runtime-truth and reconciliation
 
@@ -230,8 +240,9 @@ It is the correct place to start when the task concerns:
 8. **The Windows graphical installer is an installable unsigned developer preview, not a signed ordinary-user public release.**
 9. **The Ubuntu lane is a governed appliance scaffold, not a custom kernel or distro.**
 10. **Chamber is a parallel public/app lane, not the runtime substrate.**
-11. **Resonant Manifold and Living Framework work remain bounded experiments.**
-12. **Orbital, village, maritime, harmonic, and symbolic language may orient the work but does not create runtime authority.**
+11. **A hash-verified vessel-transfer command can move one bounded project-return surface between state roots without resuming it or claiming identity continuity.**
+12. **Resonant Manifold and Living Framework work remain bounded experiments.**
+13. **Orbital, village, maritime, harmonic, and symbolic language may orient the work but does not create runtime authority.**
 
 ## Parallel lanes in this repository
 

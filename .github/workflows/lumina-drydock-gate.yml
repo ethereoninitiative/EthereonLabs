@@ -123,6 +123,7 @@ jobs:
           python sea_trials_mycelial_field_absence_r1.py
           python sea_trials_mycelial_field_replay_r1.py
           python sea_trials_mycelial_edge_loss_r1.py
+          python sea_trials_vessel_continuity_transfer_r1.py
           python sea_trials_canon_readiness_r2.py
           python post_promotion_verifier_r2.py
           python sea_trials_post_promotion_verifier_r2.py
@@ -153,6 +154,7 @@ jobs:
           python bin/lumina --help
           python bin/lumina continue --help
           python bin/lumina-bridge --help
+          python bin/lumina-vessel --help
           python bin/lumina doctor --json
           python bin/lumina project list --json
           python bin/lumina session list --json

@@ -274,6 +274,29 @@
         "boundary_preservation"
       ],
       "authority_boundary": "Advisory architecture and research vocabulary only. It does not create runtime law, expose capabilities, authorize training, promote canon, establish identity, establish consciousness, or authorize observer-continuity claims."
+    },
+    {
+      "surface_id": "lumina_vessel_continuity_transfer_r1",
+      "name": "Lumina Vessel Continuity Transfer R1",
+      "status": "active-explicit-command",
+      "default_wiring": false,
+      "capability_exposed": false,
+      "paths": [
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/vessel_continuity_transfer_r1.py",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_vessel_transfer_r1.py",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina-vessel",
+        "docs/VESSEL_CONTINUITY_TRANSFER_R1.md"
+      ],
+      "validation_paths": [
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_vessel_continuity_transfer_r1.py",
+        ".github/workflows/lumina-vessel-continuity-transfer-r1.yml",
+        ".github/workflows/lumina-drydock-gate.yml"
+      ],
+      "transfer_scope": "latest_project_return_only",
+      "automatic_import": false,
+      "overwrites_existing_state": false,
+      "resumes_imported_session": false,
+      "authority_boundary": "Transports and verifies one bounded project-return surface between explicitly identified local state roots. It does not transfer governance or canon, create capability authority, resume a session, authorize automatic movement, or establish resident identity or observer continuity."
     }
   ],
   "claim_markers": {
