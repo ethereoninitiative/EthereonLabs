@@ -90,6 +90,23 @@ class GovernanceIntegrityChain:
     def _compute_record_hash(self, payload: Dict[str, Any]) -> str:
         return sha256_text(canonical_json(self._record_payload_for_hash(payload)))
 
+    @staticmethod
+    def _repo_root() -> Path:
+        return Path(__file__).resolve().parents[4]
+
+    def _seed_committed_canon_if_local_promotion(self, event_type: str) -> None:
+        if event_type != "promotion" or self._rows():
+            return
+        root = self._repo_root()
+        try:
+            self.log_path.resolve().relative_to((root / ".lumina_state").resolve())
+        except ValueError:
+            return
+        committed = root / "artifacts/runtime_truth/current/governance_chain_0001.jsonl"
+        if not committed.is_file():
+            return
+        self.log_path.write_text(committed.read_text(encoding="utf-8"), encoding="utf-8")
+
     def append_verified(
         self,
         *,
@@ -105,6 +122,7 @@ class GovernanceIntegrityChain:
         validation_reference: Optional[str] = None,
         metadata: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
+        self._seed_committed_canon_if_local_promotion(event_type)
         record = {
             "event_id": f"gov-{uuid.uuid4().hex[:16]}",
             "timestamp_utc": utc_now(),
