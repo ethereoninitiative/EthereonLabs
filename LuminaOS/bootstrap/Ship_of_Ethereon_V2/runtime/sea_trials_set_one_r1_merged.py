@@ -256,7 +256,7 @@ def canon_lineage_summary(store: CanonLineageStore) -> Dict[str, Any]:
 
 
 def main() -> Dict[str, Any]:
-    runner = RuntimeRunner(base_dir=BASE_DIR, registry_path=infer_runtime_root() / "capability_registry_r1.json")
+    runner = RuntimeRunner(base_dir=BASE_DIR, registry_path=infer_runtime_root() / "capability_registry_r1.json", seed_committed_canon=False)
     results: List[Dict[str, Any]] = []
 
     trials = [

@@ -190,6 +190,7 @@ class RuntimeRunner:
         *,
         base_dir: str | Path = BASE_DIR,
         registry_path: str | Path = REGISTRY_PATH,
+        seed_committed_canon: bool = True,
     ):
         self.base_dir = Path(base_dir)
         self.base_dir.mkdir(parents=True, exist_ok=True)
@@ -201,14 +202,14 @@ class RuntimeRunner:
         self.session_engine = SessionEngine(self.base_dir)
         self.mode_guard = ModeGuard(repo_root=_repo_root())
         self.registry = CapabilityRegistry(registry_path)
-        self.governance_log = GovernanceLog(self.governance_log_path)
+        self.governance_log = GovernanceLog(self.governance_log_path, seed_committed_canon=seed_committed_canon)
         self.input_integrity_assessor = InputIntegrityAssessor(self.base_dir / "input_integrity_ledger_r1.json") if InputIntegrityAssessor is not None else None
         self.ethereonic_layer_registry = (
             EthereonicLayerRegistry(self.base_dir / "ethereonic_layer_registry_r1.json")
             if EthereonicLayerRegistry is not None
             else None
         )
-        self.canon_lineage_store = CanonLineageStore(self.canon_lineage_path)
+        self.canon_lineage_store = CanonLineageStore(self.canon_lineage_path, seed_committed_canon=seed_committed_canon)
         self.context_builder = ContextBundleBuilder(
             self.base_dir / "context_bundles",
             ethereonic_layer_registry=self.ethereonic_layer_registry,
@@ -627,6 +628,14 @@ class RuntimeRunner:
         if action_type == "promotion" and promotion_payload is None:
             raise ValueError("action_type='promotion' requires promotion_payload")
 
+        # Anchor before cycle_start and decision events make the local log nonempty.
+        # Existing unanchored logs cannot be rebased without rewriting their hashes.
+        if action_type == "promotion":
+            if self.governance_log.integrity_chain is None:
+                raise ValueError("promotion requires governance integrity")
+            self.governance_log.integrity_chain._seed_committed_canon_if_local_promotion("promotion")
+            self.canon_lineage_store._seed_committed_canon_if_local_promotion()
+
         artifacts = list(artifacts or DEFAULT_ARTIFACTS)
         available_tools = list(available_tools or ["runtime_spine", "runtime_runner", "sea_trials", "capability_registry", "continuity_restore", "lumina_workspace_host"])
         continuation_notes = list(continuation_notes or [])
@@ -1008,6 +1017,25 @@ class RuntimeRunner:
             action_type=action_type,
             metadata={"checkpoint_path": str(checkpoint)},
         )
+
+        if canon_lineage_result is not None:
+            # Preserve the exact payload already bound into lineage. Export can
+            # relocate evidence bytes, but cannot rewrite this authority record.
+            verified = (self.governance_log.verify_chain()["valid"]
+                        and self.canon_lineage_store.verify_lineage()["valid"])
+            number = canon_lineage_result["canon_version"].removeprefix("canon-")
+            receipt = {
+                "promotion_id": f"promotion-{number}",
+                "valid": verified,
+                "passed": verified,
+                "promotion_payload": dict(promotion_payload or {}),
+                "promotion_payload_hash": canon_lineage_result["promotion_payload_hash"],
+                "governance_event_hash": canon_lineage_result["governance_event_hash"],
+                "canon_lineage_hash": canon_lineage_result["lineage_record_hash"],
+            }
+            (self.base_dir / f"promotion_receipt_{number}.json").write_text(
+                json.dumps(receipt, indent=2) + "\n", encoding="utf-8"
+            )
 
         return self._finalize_result(
             session_id=session.session_id,

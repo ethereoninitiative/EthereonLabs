@@ -1,0 +1,4 @@
+# Local runtime evidence is exported through the guarded preparation path.
+/.lumina_state/
+__pycache__/
+/_site_trials/

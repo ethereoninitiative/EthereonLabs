@@ -73,8 +73,8 @@ def build_successor_fixture(
     validation_hash = hashlib.sha256(validation_path.read_bytes()).hexdigest()
     validation_relative = validation_path.relative_to(root).as_posix()
 
-    governance = GovernanceIntegrityChain(governance_path)
-    lineage = CanonLineageStore(lineage_path)
+    governance = GovernanceIntegrityChain(governance_path, seed_committed_canon=False)
+    lineage = CanonLineageStore(lineage_path, seed_committed_canon=False)
     genesis_payload = {
         "validation_artifact_id": "synthetic-genesis",
         "runtime_requires_symbolic_interpretation": False,
