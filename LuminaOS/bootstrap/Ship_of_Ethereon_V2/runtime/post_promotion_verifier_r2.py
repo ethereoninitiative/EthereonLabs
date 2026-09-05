@@ -188,7 +188,13 @@ def verify(
             and governance_event.get("validation_reference") == validation_reference
         )
 
-    validation_path = resolve_evidence_path(root, validation_reference)
+    # A prepared receipt may relocate validation bytes. The original reference
+    # stays in the hashed payload and governance metadata; the same required
+    # SHA-256, artifact identity and candidate SHA bind the relocated bytes.
+    locations = promotion.get("evidence_paths", {})
+    locations = locations if isinstance(locations, dict) else {}
+    effective_validation_reference = locations.get("validation_artifact", validation_reference)
+    validation_path = resolve_evidence_path(root, effective_validation_reference)
     validation_exists = validation_path is not None and validation_path.is_file()
     validation_receipt: Dict[str, Any] = {}
     if validation_exists and validation_path is not None:
@@ -245,6 +251,13 @@ def verify(
         "promotion_governance_hash_linked": promotion.get("governance_event_hash") == governance_hash,
         "promotion_lineage_hash_linked": promotion.get("canon_lineage_hash") == head.get("lineage_record_hash"),
         "validation_reference_linked": reference_links,
+        "validation_relocation_requires_sha_binding": effective_validation_reference == validation_reference
+        or sha_bound_promotion,
+        "validation_original_reference_within_repository": resolve_evidence_path(root, validation_reference) is not None,
+        "receipt_evidence_locations_linked": all(
+            key not in locations or resolve_evidence_path(root, locations[key]) == path
+            for key, path in evidence_paths.items() if key != "promotion_receipt"
+        ),
         "validation_artifact_exists": validation_exists,
         "validation_artifact_passed": validation_receipt.get("passed") is True,
         "validation_artifact_identity_linked": legacy_genesis
@@ -285,7 +298,7 @@ def verify(
             "governance_chain": governance_path.relative_to(root).as_posix(),
             "canon_lineage": lineage_path.relative_to(root).as_posix(),
             "promotion_receipt": promotion_receipt_path.relative_to(root).as_posix(),
-            "validation_artifact": validation_reference,
+            "validation_artifact": effective_validation_reference,
         },
         "governance_chain_verification": governance_verification,
         "canon_lineage_verification": lineage_verification,

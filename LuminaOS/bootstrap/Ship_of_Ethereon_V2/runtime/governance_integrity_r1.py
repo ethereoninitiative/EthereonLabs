@@ -58,8 +58,9 @@ class GovernanceIntegrityChain:
 
     HASH_EXCLUDED_FIELDS = {"record_hash"}
 
-    def __init__(self, log_path: str | Path):
+    def __init__(self, log_path: str | Path, *, seed_committed_canon: bool = True):
         self.log_path = Path(log_path)
+        self.seed_committed_canon = seed_committed_canon
         self.log_path.parent.mkdir(parents=True, exist_ok=True)
 
     def _rows(self) -> List[Dict[str, Any]]:
@@ -95,7 +96,7 @@ class GovernanceIntegrityChain:
         return Path(__file__).resolve().parents[4]
 
     def _seed_committed_canon_if_local_promotion(self, event_type: str) -> None:
-        if event_type != "promotion" or self._rows():
+        if event_type != "promotion" or not self.seed_committed_canon:
             return
         root = self._repo_root()
         try:
@@ -104,8 +105,16 @@ class GovernanceIntegrityChain:
             return
         committed = root / "artifacts/runtime_truth/current/governance_chain_0001.jsonl"
         if not committed.is_file():
+            raise ValueError("committed promotion governance is missing")
+        source = GovernanceIntegrityChain(committed, seed_committed_canon=False)
+        if not source.verify_chain()["valid"] or not source._rows():
+            raise ValueError("committed promotion governance is invalid")
+        rows = self._rows()
+        if rows:
+            if rows[:len(source._rows())] != source._rows() or not self.verify_chain()["valid"]:
+                raise ValueError("local governance does not extend valid committed governance; use fresh promotion state")
             return
-        self.log_path.write_text(committed.read_text(encoding="utf-8"), encoding="utf-8")
+        self.log_path.write_bytes(committed.read_bytes())
 
     def append_verified(
         self,

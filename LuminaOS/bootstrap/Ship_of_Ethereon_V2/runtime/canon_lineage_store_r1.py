@@ -43,8 +43,9 @@ class CanonLineageStore:
 
     HASH_EXCLUDED_FIELDS = {"lineage_record_hash"}
 
-    def __init__(self, lineage_path: str | Path):
+    def __init__(self, lineage_path: str | Path, *, seed_committed_canon: bool = True):
         self.lineage_path = Path(lineage_path)
+        self.seed_committed_canon = seed_committed_canon
         self.lineage_path.parent.mkdir(parents=True, exist_ok=True)
 
     def _rows(self) -> List[Dict[str, Any]]:
@@ -80,7 +81,7 @@ class CanonLineageStore:
         return Path(__file__).resolve().parents[4]
 
     def _seed_committed_canon_if_local_promotion(self) -> None:
-        if self._rows():
+        if not self.seed_committed_canon:
             return
         root = self._repo_root()
         try:
@@ -89,8 +90,16 @@ class CanonLineageStore:
             return
         committed = root / "artifacts/runtime_truth/current/canon_lineage_0001.jsonl"
         if not committed.is_file():
+            raise ValueError("committed promotion lineage is missing")
+        source = CanonLineageStore(committed, seed_committed_canon=False)
+        if not source.verify_lineage()["valid"] or not source.read_lineage():
+            raise ValueError("committed promotion lineage is invalid")
+        rows = self._rows()
+        if rows:
+            if rows[:len(source.read_lineage())] != source.read_lineage() or not self.verify_lineage()["valid"]:
+                raise ValueError("local lineage does not extend valid committed canon; use fresh promotion state")
             return
-        self.lineage_path.write_text(committed.read_text(encoding="utf-8"), encoding="utf-8")
+        self.lineage_path.write_bytes(committed.read_bytes())
 
     def _next_version(self) -> str:
         rows = self._rows()

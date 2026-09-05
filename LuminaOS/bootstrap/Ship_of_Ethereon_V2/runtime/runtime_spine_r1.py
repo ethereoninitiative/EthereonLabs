@@ -750,10 +750,10 @@ class ContextBundleBuilder:
 class GovernanceLog:
     """Append-only governance recorder backed by a verifiable integrity chain."""
 
-    def __init__(self, log_path: str | Path):
+    def __init__(self, log_path: str | Path, *, seed_committed_canon: bool = True):
         self.log_path = Path(log_path)
         self.log_path.parent.mkdir(parents=True, exist_ok=True)
-        self.integrity_chain = GovernanceIntegrityChain(self.log_path) if GovernanceIntegrityChain is not None else None
+        self.integrity_chain = GovernanceIntegrityChain(self.log_path, seed_committed_canon=seed_committed_canon) if GovernanceIntegrityChain is not None else None
 
     def append(
         self,

@@ -75,6 +75,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -128,6 +130,10 @@ jobs:
           python sea_trials_canonical_successor_lineage_r1.py
           python post_promotion_verifier_r2.py
           python sea_trials_post_promotion_verifier_r2.py
+          python sea_trials_canonical_promotion_export_r1.py
+
+      - name: Verify prepared canonical evidence
+        run: python LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/canonical_promotion_export_r1.py verify
 
       - name: Preserve canon-readiness R2 receipt
         if: always()
