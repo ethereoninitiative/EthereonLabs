@@ -75,6 +75,23 @@ class CanonLineageStore:
     def _compute_record_hash(self, payload: Dict[str, Any]) -> str:
         return sha256_text(canonical_json(self._record_payload_for_hash(payload)))
 
+    @staticmethod
+    def _repo_root() -> Path:
+        return Path(__file__).resolve().parents[4]
+
+    def _seed_committed_canon_if_local_promotion(self) -> None:
+        if self._rows():
+            return
+        root = self._repo_root()
+        try:
+            self.lineage_path.resolve().relative_to((root / ".lumina_state").resolve())
+        except ValueError:
+            return
+        committed = root / "artifacts/runtime_truth/current/canon_lineage_0001.jsonl"
+        if not committed.is_file():
+            return
+        self.lineage_path.write_text(committed.read_text(encoding="utf-8"), encoding="utf-8")
+
     def _next_version(self) -> str:
         rows = self._rows()
         return f"canon-{len(rows)+1:04d}"
@@ -89,6 +106,7 @@ class CanonLineageStore:
         runtime_seed_version: str,
         notes: Optional[str] = None,
     ) -> Dict[str, Any]:
+        self._seed_committed_canon_if_local_promotion()
         head = self.current_head()
         record = {
             "canon_version": self._next_version(),
