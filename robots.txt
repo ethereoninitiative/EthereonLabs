@@ -2,5 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /data/
 Disallow: /assets/artifacts/
+Disallow: /public/runtime/
 
 Sitemap: https://ethereonlabs.com/sitemap.xml
