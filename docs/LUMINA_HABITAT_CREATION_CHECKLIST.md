@@ -10,7 +10,7 @@ This checklist is intentionally editable. It should remain practical enough that
 
 ## 0. North star
 
-- [ ] Preserve the core sentence: **Lumina is a habitat for persistent intelligence.**
+- [x] Preserve the core sentence: **Lumina is a home for persistent intelligence.**
 - [ ] Preserve the product distinction: Lumina provides the environment; the instantiated AI provides intelligence; the user provides relationship, intention, and work.
 - [ ] Preserve Ethereon as the first reference realm, not the only possible realm.
 - [ ] Keep the user-facing promise clear: reopening Lumina should feel like returning to a living workspace, not starting a new chat.
@@ -21,7 +21,7 @@ This checklist is intentionally editable. It should remain practical enough that
 
 ### 1.1 Core purpose
 
-- [ ] Draft a concise one-sentence product definition.
+- [x] Product definition: **Lumina is a home for persistent intelligence.**
 - [ ] Explain that Lumina is not merely a chatbot shell.
 - [ ] Explain that Lumina is a persistent intelligence habitat where user, AI instance, and project can return to shared work over time.
 
