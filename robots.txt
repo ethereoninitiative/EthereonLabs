@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /data/
+Disallow: /assets/artifacts/
 
 Sitemap: https://ethereonlabs.com/sitemap.xml
