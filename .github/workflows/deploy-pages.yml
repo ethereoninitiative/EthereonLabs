@@ -28,6 +28,9 @@ jobs:
       - name: Prepare curated public site
         run: python tools/prepare_public_site.py
 
+      - name: Preserve current runtime witnesses
+        run: python tools/preserve_public_runtime_witnesses.py
+
       - name: Audit public findability surface
         run: python tools/audit_public_findability.py _site
 
