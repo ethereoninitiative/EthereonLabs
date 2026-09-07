@@ -6,18 +6,26 @@ on:
     paths:
       - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/vessel_continuity_transfer_r1.py"
       - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_vessel_continuity_transfer_r1.py"
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_lumina_vessel_host_surface_r1.py"
       - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_vessel_transfer_r1.py"
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina"
       - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina-vessel"
       - "docs/VESSEL_CONTINUITY_TRANSFER_R1.md"
+      - "docs/ACTIVE_SURFACE_REGISTRY_R1.json"
+      - "CURRENT_OPERATING_MAP.md"
       - ".github/workflows/lumina-vessel-continuity-transfer-r1.yml"
   push:
     branches: [main]
     paths:
       - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/vessel_continuity_transfer_r1.py"
       - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_vessel_continuity_transfer_r1.py"
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_lumina_vessel_host_surface_r1.py"
       - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_vessel_transfer_r1.py"
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina"
       - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina-vessel"
       - "docs/VESSEL_CONTINUITY_TRANSFER_R1.md"
+      - "docs/ACTIVE_SURFACE_REGISTRY_R1.json"
+      - "CURRENT_OPERATING_MAP.md"
       - ".github/workflows/lumina-vessel-continuity-transfer-r1.yml"
 
 permissions:
@@ -44,16 +52,26 @@ jobs:
           python -m py_compile \
             LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/vessel_continuity_transfer_r1.py \
             LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_vessel_continuity_transfer_r1.py \
+            LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_lumina_vessel_host_surface_r1.py \
             LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_vessel_transfer_r1.py \
+            LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina \
             LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina-vessel
 
       - name: Cross-vessel continuity sea trial
         working-directory: LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime
         run: python sea_trials_vessel_continuity_transfer_r1.py
 
+      - name: Unified host-surface sea trial
+        working-directory: LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime
+        run: python sea_trials_lumina_vessel_host_surface_r1.py
+
       - name: Host command smoke check
         working-directory: LuminaOS/bootstrap/Ship_of_Ethereon_V2
         run: |
+          python bin/lumina vessel --help
+          python bin/lumina vessel export --help
+          python bin/lumina vessel verify --help
+          python bin/lumina vessel import --help
           python bin/lumina-vessel --help
           python bin/lumina-vessel export --help
           python bin/lumina-vessel verify --help
