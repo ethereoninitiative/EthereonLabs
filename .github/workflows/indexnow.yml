@@ -1,0 +1,24 @@
+name: Notify IndexNow
+
+on:
+  workflow_run:
+    workflows:
+      - Deploy static site to GitHub Pages
+    types:
+      - completed
+
+permissions:
+  contents: read
+
+jobs:
+  submit:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout deployed revision
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Submit canonical URLs
+        run: python tools/notify_indexnow.py
