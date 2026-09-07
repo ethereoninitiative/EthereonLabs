@@ -13,12 +13,12 @@ FORBIDDEN_DIRS = {
     "deploy",
     "docs",
     "metadata",
-    "public",
     "research",
     "scripts",
     "studio",
     "tools",
 }
+PUBLIC_RUNTIME_FILES = {"latest_cycle.json", "runtime_truth_snapshot.json"}
 
 
 def meta_robots(html: str) -> str:
@@ -54,6 +54,23 @@ def main() -> int:
     root_source_like = [p.name for p in site.iterdir() if p.is_file() and p.suffix.lower() in {".md", ".py", ".sql", ".ts", ".yml", ".yaml"}]
     if root_source_like:
         fail(errors, "source/document files leaked at public root: " + ", ".join(sorted(root_source_like)))
+
+    runtime_dir = site / "public" / "runtime"
+    if not runtime_dir.exists():
+        fail(errors, "missing bounded public runtime witness directory")
+    else:
+        actual_runtime_files = {p.name for p in runtime_dir.iterdir() if p.is_file()}
+        missing_runtime = PUBLIC_RUNTIME_FILES - actual_runtime_files
+        unexpected_runtime = actual_runtime_files - PUBLIC_RUNTIME_FILES
+        if missing_runtime:
+            fail(errors, "missing public runtime witnesses: " + ", ".join(sorted(missing_runtime)))
+        if unexpected_runtime:
+            fail(errors, "unexpected public runtime files: " + ", ".join(sorted(unexpected_runtime)))
+        if (runtime_dir / "history").exists():
+            fail(errors, "public/runtime/history must not be deployed")
+        nested_runtime_dirs = [p.name for p in runtime_dir.iterdir() if p.is_dir()]
+        if nested_runtime_dirs:
+            fail(errors, "unexpected public runtime directories: " + ", ".join(sorted(nested_runtime_dirs)))
 
     indexable_urls: set[str] = set()
     for path in sorted(site.glob("*.html")):
@@ -113,6 +130,8 @@ def main() -> int:
         fail(errors, "robots.txt does not advertise canonical sitemap")
     if re.search(r"(?im)^\s*Disallow:\s*/\s*$", robots):
         fail(errors, "robots.txt blocks the entire site")
+    if "Disallow: /public/runtime/" not in robots:
+        fail(errors, "robots.txt does not keep raw runtime witness JSON out of search crawling")
 
     if errors:
         print("Findability audit FAILED")
@@ -122,7 +141,8 @@ def main() -> int:
 
     print("Findability audit PASSED")
     print(f"indexable_urls={len(indexable_urls)}")
-    print("public surface excludes repository implementation/canon directories")
+    print("public surface excludes repository implementation/canon directories and runtime history")
+    print("current runtime witnesses remain browser-readable but search-crawl excluded")
     print("canonicals, structured data, raw-HTML discovery links, sitemap, robots aligned")
     return 0
 
