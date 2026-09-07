@@ -25,13 +25,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Prepare curated public site
+        run: python tools/prepare_public_site.py
+
+      - name: Audit public findability surface
+        run: python tools/audit_public_findability.py _site
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload static site artifact
+      - name: Upload curated static site artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
 
       - name: Deploy to GitHub Pages
         id: deployment
