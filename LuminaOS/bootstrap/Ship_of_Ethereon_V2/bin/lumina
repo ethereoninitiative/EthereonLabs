@@ -250,6 +250,21 @@ def cmd_doctor(args: argparse.Namespace) -> int:
     return _run(cmd, cwd=BOOTSTRAP_ROOT)
 
 
+def cmd_vessel(args: argparse.Namespace) -> int:
+    cmd = [_python(), str(STUDIO_DIR / "lumina_vessel_transfer_r1.py"), args.vessel_command]
+    if getattr(args, "project_id", None):
+        cmd.extend(["--project-id", str(args.project_id)])
+    if getattr(args, "capsule", None):
+        cmd.extend(["--capsule", str(args.capsule)])
+    if getattr(args, "source_vessel_id", None):
+        cmd.extend(["--source-vessel-id", str(args.source_vessel_id)])
+    if getattr(args, "target_vessel_id", None):
+        cmd.extend(["--target-vessel-id", str(args.target_vessel_id)])
+    if getattr(args, "surface_root", None):
+        cmd.extend(["--surface-root", str(args.surface_root)])
+    return _run(cmd, cwd=BOOTSTRAP_ROOT)
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="lumina", description="Start and inspect the Lumina OS local governed substrate.")
     sub = parser.add_subparsers(dest="command")
@@ -355,6 +370,26 @@ def build_parser() -> argparse.ArgumentParser:
     studio.add_argument("--host", default=None)
     studio.add_argument("--port", type=int, default=None)
     studio.set_defaults(func=cmd_studio)
+
+    vessel = sub.add_parser(
+        "vessel",
+        help="Explicitly export, verify, or import one bounded project-return capsule.",
+    )
+    vessel_sub = vessel.add_subparsers(dest="vessel_command", required=True)
+    vessel_export = vessel_sub.add_parser("export", help="Export the latest return state for one project.")
+    vessel_export.add_argument("--project-id", required=True)
+    vessel_export.add_argument("--capsule", required=True)
+    vessel_export.add_argument("--source-vessel-id", required=True)
+    vessel_export.add_argument("--surface-root", default=None)
+    vessel_export.set_defaults(func=cmd_vessel)
+    vessel_verify = vessel_sub.add_parser("verify", help="Verify a capsule without importing it.")
+    vessel_verify.add_argument("--capsule", required=True)
+    vessel_verify.set_defaults(func=cmd_vessel)
+    vessel_import = vessel_sub.add_parser("import", help="Import a verified capsule into an empty project slot.")
+    vessel_import.add_argument("--capsule", required=True)
+    vessel_import.add_argument("--target-vessel-id", required=True)
+    vessel_import.add_argument("--surface-root", default=None)
+    vessel_import.set_defaults(func=cmd_vessel)
 
     doctor = sub.add_parser("doctor", help="Check local Lumina host readiness.")
     doctor.add_argument("--json", action="store_true")

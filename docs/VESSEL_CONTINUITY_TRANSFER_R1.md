@@ -18,22 +18,24 @@ R1 answers that question with a hash-verified capsule and an import receipt. It 
 
 ## Host command
 
-From `LuminaOS/bootstrap/Ship_of_Ethereon_V2`:
+From `LuminaOS/bootstrap/Ship_of_Ethereon_V2`, the primary host surface is:
 
 ```bash
-python bin/lumina-vessel export \
+python bin/lumina vessel export \
   --project-id <project> \
   --source-vessel-id <source-vessel> \
   --capsule <path-to-capsule.json>
 
-python bin/lumina-vessel verify \
+python bin/lumina vessel verify \
   --capsule <path-to-capsule.json>
 
-python bin/lumina-vessel import \
+python bin/lumina vessel import \
   --target-vessel-id <target-vessel> \
   --surface-root <target-runtime-root>/lumina_project_surface \
   --capsule <path-to-capsule.json>
 ```
+
+`python bin/lumina-vessel ...` remains a compatibility entrypoint and delegates to the same Studio transfer implementation. The unified `lumina vessel` surface changes command exposure only; it does not alter transfer law, import behavior, continuation, governance, canon, identity, or capability authority.
 
 Without `--surface-root`, export and import use the active local runtime's project surface. Export and import are separate, explicit actions. Import never invokes continuation; a later `lumina continue` remains a separate governed request.
 
@@ -113,7 +115,9 @@ These receipts are transport evidence. They are not governance, canon, checkpoin
 - payload tampering is rejected before project files are written;
 - neither the return surface nor transfer receipt gains authority-bearing fields.
 
-The focused workflow `.github/workflows/lumina-vessel-continuity-transfer-r1.yml` runs this proof and checks both the host command and local-state hygiene.
+`runtime/sea_trials_lumina_vessel_host_surface_r1.py` additionally proves that `lumina vessel` exposes export/verify/import and delegates bounded transfer failures to the same implementation used by the compatibility `lumina-vessel` command.
+
+The focused workflow `.github/workflows/lumina-vessel-continuity-transfer-r1.yml` runs both proofs and checks both host surfaces plus local-state hygiene.
 
 ## Deliberate R1 limits
 
