@@ -34,14 +34,16 @@
       "paths": [
         "LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina-bridge",
         "LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_bridge_server_r2.py",
-        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_bridge_field_r1.py"
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_bridge_field_r1.py",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_bridge_return_r1.py"
       ],
       "validation_paths": [
         "LuminaOS/bootstrap/Ship_of_Ethereon_V2/sea_trials_lumina_bridge_r1.py",
         "LuminaOS/bootstrap/Ship_of_Ethereon_V2/sea_trials_lumina_bridge_field_r1.py",
-        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/sea_trials_lumina_bridge_browser_boundary_r2.py"
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/sea_trials_lumina_bridge_browser_boundary_r2.py",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/sea_trials_lumina_bridge_return_r1.py"
       ],
-      "authority_boundary": "Witnesses and displays verified position and committed field evidence. It does not authorize or execute mutating work.",
+      "authority_boundary": "Witnesses position, committed sample field evidence, and verified local return agreement with freshness and provenance. Return suggestions await runtime governance; Bridge does not authorize or execute work.",
       "cors_policy": {
         "production_origin": "https://app.ethereonlabs.com",
         "local_development": "http://localhost/*, http://127.0.0.1/*, http://[::1]/*",
@@ -217,7 +219,7 @@
         "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_resonant_return_panel_r1.py",
         ".github/workflows/lumina-drydock-gate.yml"
       ],
-      "authority_boundary": "Read-only orientation from supplied snapshots. Composes existing manifold metrics and continuation advice, without opening evidence references, verifying reported governance, invoking runtime execution, or granting authority. The committed sample is synthetic; live Bridge and default-host wiring remain absent."
+      "authority_boundary": "Read-only orientation from supplied snapshots. Composes existing manifold metrics and continuation advice, without opening evidence references, verifying reported governance, invoking runtime execution, or granting authority. The committed sample is synthetic; the read-only Bridge adapter supplies local return evidence, while default-host runtime wiring remains absent."
     },
     {
       "surface_id": "lumina_embodiment_horizon",

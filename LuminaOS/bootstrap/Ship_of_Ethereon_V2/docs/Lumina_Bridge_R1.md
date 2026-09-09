@@ -178,6 +178,7 @@ Run:
 ```bash
 python sea_trials_lumina_bridge_r1.py
 python sea_trials_lumina_bridge_field_r1.py
+python studio/sea_trials_lumina_bridge_return_r1.py
 ```
 
 The trials verify ship position, committed authority, correlation distinctions, read-only behavior, field receipt verification, all five luminous threads, lawful and denied path visibility, observer and continuity boundary language, and the Toki Pona interpretive key.
@@ -193,3 +194,11 @@ docs/Luminous_Threads_Continuity_Lineage_R1.md
 ## Guiding sentence
 
 > The Bridge is where the ship and its luminous threads become legible before anything becomes steerable.
+
+## Return to your work
+
+The first panel reads the active Harbor project's saved return through `GET /api/return`. It shows the last completed action, existing steward's suggested focus, saved directions awaiting a governed cycle, and expandable freshness/provenance evidence. Missing, inconsistent, or changing sources remove the suggestions. State older than 24 hours remains available with an explicit older-state label. The committed Luminous Threads sample remains separately labeled.
+
+Both Bridge state endpoints use `LUMINA_STATE_ROOT` (including the normal Windows default), or an explicit `--state-root`. `--base-dir` selects an existing runtime base directory on the host. Query parameters cannot redirect `/api/return` to other files or projects. This reader constructs no writable runtime stores and runs no cycles.
+
+Verification covers bounded local artifact agreement and stable reads, including the host's valid matching predecessor checkpoint. Digests describe observed bytes, not signed provenance. Guidance history is project-scoped but historical references are not independently verified. All candidate governance statuses remain deferred.
