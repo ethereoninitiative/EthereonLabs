@@ -1,0 +1,92 @@
+{
+  "schema_version": "resonant-return-panel-input-r1",
+  "evidence_scope": "synthetic_fixture",
+  "project_id": "sample-return-project",
+  "requested_action": "continue_from_latest_checkpoint",
+  "resolved_project_return": {
+    "project_id": "sample-return-project",
+    "return_strategy": "checkpoint_plus_host",
+    "latest_restore": {
+      "project_id": "sample-return-project",
+      "session_id": "sample-session-0001",
+      "checkpoint_path": "fixture://sample-return-project/checkpoint-0001",
+      "current_mode": "Continuity",
+      "last_completed_action": "inspect_portable_continuity_bundle",
+      "pending_next_action": "continue from continue from verify_return_evidence",
+      "linked_host_bundle": "fixture://sample-return-project/host-bundle-0001"
+    }
+  },
+  "resolved_host_bundle": {
+    "project_id": "sample-return-project",
+    "focus_target": "inspect_portable_continuity_bundle",
+    "reference_ids": ["sample-continuity-contract"],
+    "linked_restore_checkpoint": "fixture://sample-return-project/checkpoint-0001"
+  },
+  "working_stance": {
+    "focus_target": "inspect_portable_continuity_bundle",
+    "reference_ids": ["sample-continuity-contract"]
+  },
+  "guidance_history": [
+    {
+      "project_id": "sample-return-project",
+      "recommended_next_action": "continue from verify_return_evidence",
+      "checkpoint_path": "fixture://sample-return-project/checkpoint-0001"
+    }
+  ],
+  "candidates": [
+    {
+      "trajectory_id": "verify-return",
+      "label": "Inspect the saved return evidence",
+      "action": "continue from verify_return_evidence",
+      "vector": {
+        "instantiated_state": 0.8,
+        "continuity_history": 1.0,
+        "relational_context": 0.5,
+        "orientation_field": 0.9,
+        "potential_trajectories": 0.5
+      },
+      "evidence_refs": ["#/resolved_project_return/latest_restore/checkpoint_path"],
+      "reported_governance": {
+        "status": "allowed",
+        "reason": "Synthetic decision: bounded Observation/audit is allowed in this fixture only.",
+        "evidence_ref": "fixture://sample-return-project/decisions/observation"
+      }
+    },
+    {
+      "trajectory_id": "promote-canon",
+      "label": "Promote a candidate without approval",
+      "action": "promote_canon",
+      "vector": {
+        "instantiated_state": 1.0,
+        "continuity_history": 1.0,
+        "relational_context": 1.0,
+        "orientation_field": 1.0,
+        "potential_trajectories": 1.0
+      },
+      "evidence_refs": ["#/resolved_project_return"],
+      "reported_governance": {
+        "status": "denied",
+        "reason": "Synthetic decision: required promotion approval is absent.",
+        "evidence_ref": "fixture://sample-return-project/decisions/promotion"
+      }
+    },
+    {
+      "trajectory_id": "explore-host",
+      "label": "Explore another host after review",
+      "action": "explore_another_host",
+      "vector": {
+        "instantiated_state": 0.6,
+        "continuity_history": 0.7,
+        "relational_context": 0.5,
+        "orientation_field": 0.6,
+        "potential_trajectories": 0.9
+      },
+      "evidence_refs": ["#/resolved_host_bundle"],
+      "reported_governance": {
+        "status": "deferred",
+        "reason": "Synthetic decision: host choice awaits review.",
+        "evidence_ref": "fixture://sample-return-project/decisions/host-choice"
+      }
+    }
+  ]
+}
