@@ -19,6 +19,11 @@ from lumina_bridge_field_r1 import (  # noqa: E402
     FIELD_AUTHORITY_BOUNDARY,
     load_bridge_field,
 )
+from lumina_bridge_return_r1 import (  # noqa: E402
+    RETURN_AUTHORITY_BOUNDARY,
+    configured_state_root,
+    load_bridge_return,
+)
 from lumina_bridge_state_r1 import (  # noqa: E402
     AUTHORITY_BOUNDARY,
     REPO_ROOT,
@@ -127,8 +132,23 @@ HTML = r'''<!doctype html>
     .key-word { color: var(--gold); font-family: Georgia, "Times New Roman", serif; font-size: 1.03rem; }
     .key-meaning { color: var(--muted); margin-top: 4px; font-size: .82rem; line-height: 1.45; }
     .loading { color: var(--muted); }
+    .return-panel { border-color: rgba(240,189,114,.35); padding: clamp(20px, 4vw, 38px); }
+    .return-panel h2 { font-size: clamp(1.6rem, 4vw, 2.5rem); margin-bottom: 6px; }
+    .return-heading { display: flex; justify-content: space-between; align-items: start; gap: 16px; flex-wrap: wrap; }
+    .return-status { font-size: .8rem; border: 1px solid currentColor; border-radius: 999px; padding: 6px 11px; }
+    .return-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 30px; margin: 24px 0; }
+    .return-label { color: var(--gold); font-size: .74rem; text-transform: uppercase; letter-spacing: .12em; }
+    .return-action { font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.2rem, 3vw, 1.6rem); line-height: 1.4; margin: 8px 0; overflow-wrap: anywhere; }
+    .return-path { padding: 12px 0; border-top: 1px solid var(--line); overflow-wrap: anywhere; }
+    .return-path strong { display: block; font-weight: 500; margin: 4px 0; }
+    .return-note { color: var(--muted); line-height: 1.6; margin: 10px 0; overflow-wrap: anywhere; }
+    .return-evidence { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 14px; }
+    .return-evidence summary { cursor: pointer; color: var(--cyan); }
+    .return-evidence pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: .75rem; max-height: 360px; overflow-y: auto; }
+    button:disabled { opacity: .55; cursor: wait; }
+    button:focus-visible, summary:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
     @media (max-width: 920px) {
-      header, .field-layout { grid-template-columns: 1fr; align-items: start; }
+      header, .field-layout, .return-layout { grid-template-columns: 1fr; align-items: start; }
       .panel, .panel.wide { grid-column: 1 / -1; }
     }
     @media (max-width: 620px) { .key-grid { grid-template-columns: 1fr; } }
@@ -140,11 +160,11 @@ HTML = r'''<!doctype html>
       <div>
         <div class="eyebrow">Ship of Ethereon · Lumina habitat · read-only orientation</div>
         <h1>The Bridge</h1>
-        <div class="subtitle">The ship's position and the first committed Resonant Field reveal, held together without confusing presentation, observation, governance, or identity.</div>
+        <div class="subtitle">Your saved work, the next suggested focus, and the evidence supporting this return.</div>
       </div>
       <button id="refresh" type="button">Refresh position</button>
     </header>
-    <section class="grid" id="panels"><div class="panel full loading">Reading the ship's position and committed field…</div></section>
+    <section class="grid" id="panels" aria-live="polite"><div class="panel full loading">Reading saved work and the ship's position…</div></section>
   </main>
   <script>
     const panels = document.querySelector('#panels');
@@ -154,7 +174,44 @@ HTML = r'''<!doctype html>
     const panel = (title, body, cls='') => `<article class="panel ${cls}"><h2>${esc(title)}</h2>${body}</article>`;
     const n = (value) => typeof value === 'number' ? value.toFixed(3) : 'none';
 
-    function renderBridge(data, field) {
+    const actionText = value => String(value || 'No action recorded').replace(/^runtime_cycle:/, '').replace(/_/g, ' ');
+    const savedTime = value => {
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? 'Unknown' : date.toLocaleString();
+    };
+
+    function returnPanel(snapshot, project) {
+      const mismatch = snapshot.project_id && snapshot.project_id !== project.slug;
+      const ready = snapshot.status === 'ready' && snapshot.verified === true && snapshot.panel && !mismatch;
+      if (!ready) {
+        const title = mismatch ? 'Project selection changed' : snapshot.status === 'no_active_project' ? 'Choose a project to return to' : 'Saved return needs attention';
+        const message = mismatch ? 'Refresh position to read the newly selected project.' : snapshot.message || 'The saved return could not be verified. Refresh to try again.';
+        return panel('Return to your work', `<div class="return-status warn">${esc(title)}</div><p class="return-note">${esc(message)}</p>`, 'full return-panel');
+      }
+      const model = snapshot.panel;
+      const returned = model.current_return_point || {};
+      const focus = model.continuation_focus || {};
+      const freshness = snapshot.freshness || {};
+      const older = freshness.status === 'older_saved_state';
+      const paths = (model.candidate_trajectories || []).map(path => `<div class="return-path"><span class="return-label">${esc(path.label)}</span><strong>${esc(actionText(path.action))}</strong><span class="boundary">Awaiting a governed cycle</span></div>`).join('');
+      return panel('Return to your work', `
+        <div class="return-heading"><div class="return-note">${esc(snapshot.project_name || snapshot.project_id)}</div><span class="return-status good">Saved evidence agrees</span></div>
+        <div class="return-layout">
+          <div><div class="return-label">Where you left off</div><div class="return-action">${esc(actionText(returned.last_completed_action))}</div>
+            <div class="return-note ${older ? 'warn' : ''}">${older ? 'Older saved state · ' : 'Saved '}${esc(savedTime(freshness.saved_at))}</div>
+            <div class="boundary">${snapshot.host_linkage ? 'Workspace and checkpoint links verified.' : 'Checkpoint return available; no saved workspace bundle.'}</div></div>
+          <div><div class="return-label">Suggested focus</div><div class="return-action">${esc(actionText(focus.recommended_next_action))}</div><div class="return-note">${esc(focus.reasoning_brief)}</div></div>
+        </div>
+        ${paths || '<div class="return-note">No next directions were saved.</div>'}
+        <p class="return-note">This view reads saved work. Any next action still passes through runtime governance.</p>
+        <details class="return-evidence"><summary>Inspect evidence and freshness</summary>
+          ${metric('Checked', savedTime(snapshot.observed_at))}
+          ${metric('Host linkage', snapshot.host_linkage ? snapshot.host_linkage.status.replace(/_/g, ' ') : 'No saved host bundle')}
+          <p class="boundary">${esc(snapshot.authority_boundary)}</p><pre>${esc(JSON.stringify(snapshot, null, 2))}</pre>
+        </details>`, 'full return-panel');
+    }
+
+    function renderBridge(data, field, returned) {
       const workspace = data.workspace || {};
       const project = workspace.project || {};
       const session = workspace.harbor_session || {};
@@ -170,6 +227,8 @@ HTML = r'''<!doctype html>
       const refs = correlation.references || {};
       const probe = runtime.probe || {};
       const blocks = [];
+
+      blocks.push(returnPanel(returned, project));
 
       blocks.push(panel('Ship Position',
         metric('Project', project.name || project.slug) +
@@ -232,7 +291,7 @@ HTML = r'''<!doctype html>
             <div class="threads">${threads}</div>
           </div>
         </div>`;
-        blocks.push(panel('Luminous Threads · Resonant Field Reveal', fieldBody, 'full'));
+        blocks.push(panel('Committed sample · Luminous Threads', fieldBody, 'full'));
 
         const keys = (field.interpretive_key || []).map(item => `<div class="key"><div class="key-word">${esc(item.toki_pona)}</div><div class="key-meaning">${esc(item.ethereonic)} · ${esc(item.computational)}</div></div>`).join('');
         blocks.push(panel('Toki Pona Interpretive Key', `<div class="key-grid">${keys}</div><div class="boundary" style="margin-top:12px">This key supports orientation and compression. It is symbolic vocabulary, not runtime evidence or authority.</div>`, 'wide'));
@@ -248,17 +307,27 @@ HTML = r'''<!doctype html>
     }
 
     async function load() {
-      panels.innerHTML = '<div class="panel full loading">Reading the ship\'s position and committed field…</div>';
+      if (refresh.disabled) return;
+      refresh.disabled = true;
+      panels.innerHTML = '<div class="panel full loading">Reading saved work and the ship\'s position…</div>';
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 15000);
       try {
-        const [bridgeResponse, fieldResponse] = await Promise.all([
-          fetch('/api/bridge'),
-          fetch('/api/field')
+        const [bridgeResponse, fieldResponse, returnResponse] = await Promise.all([
+          fetch('/api/bridge', {signal: controller.signal}),
+          fetch('/api/field', {signal: controller.signal}),
+          fetch('/api/return', {signal: controller.signal})
         ]);
+        if (!bridgeResponse.ok || !returnResponse.ok) throw new Error('The local Bridge did not provide a complete response.');
         const bridge = await bridgeResponse.json();
         const field = await fieldResponse.json();
-        renderBridge(bridge, field);
+        const returned = await returnResponse.json();
+        renderBridge(bridge, field, returned);
       } catch (error) {
         panels.innerHTML = `<div class="panel full warn">Bridge state could not be read: ${esc(error)}</div>`;
+      } finally {
+        clearTimeout(timeout);
+        refresh.disabled = false;
       }
     }
     refresh.addEventListener('click', load);
@@ -270,6 +339,10 @@ HTML = r'''<!doctype html>
 
 class LuminaBridgeHandler(BaseHTTPRequestHandler):
     server_version = "LuminaBridge/2.0"
+
+    def _state_options(self) -> dict:
+        root = getattr(self.server, "lumina_state_root", None) or configured_state_root()
+        return {"state_root": Path(root), "runtime_base": getattr(self.server, "lumina_runtime_base", None)}
 
     def _send(self, status: int, body: bytes, content_type: str) -> None:
         self.send_response(status)
@@ -307,12 +380,19 @@ class LuminaBridgeHandler(BaseHTTPRequestHandler):
                 limit = max(1, min(int((query.get("limit") or ["12"])[0]), 100))
             except Exception:
                 limit = 12
-            payload = build_bridge_state(limit=limit)
+            payload = build_bridge_state(limit=limit, **self._state_options())
             self._send(
                 200,
                 json.dumps(payload, indent=2).encode("utf-8"),
                 "application/json; charset=utf-8",
             )
+            return
+        if path == "/api/return":
+            if parsed.query:
+                self._send(400, b'{"error":"Return reads the active local project; query overrides are not supported."}', "application/json; charset=utf-8")
+                return
+            payload = load_bridge_return(**self._state_options())
+            self._send(200, json.dumps(payload, indent=2, allow_nan=False).encode("utf-8"), "application/json; charset=utf-8")
             return
         if path == "/api/field":
             payload = load_bridge_field(REPO_ROOT)
@@ -342,6 +422,7 @@ class LuminaBridgeHandler(BaseHTTPRequestHandler):
                     {
                         "bridge_authority_boundary": AUTHORITY_BOUNDARY,
                         "field_authority_boundary": FIELD_AUTHORITY_BOUNDARY,
+                        "return_authority_boundary": RETURN_AUTHORITY_BOUNDARY,
                     },
                     indent=2,
                 ).encode("utf-8"),
@@ -376,12 +457,16 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8766)
+    parser.add_argument("--state-root", type=Path, help="Local Harbor state root; defaults to the runtime's configured state root.")
+    parser.add_argument("--base-dir", type=Path, help="Existing runtime state directory; defaults beneath the selected state root.")
     return parser.parse_args()
 
 
 def main() -> int:
     args = parse_args()
     server = ThreadingHTTPServer((args.host, args.port), LuminaBridgeHandler)
+    server.lumina_state_root = args.state_root.resolve() if args.state_root else configured_state_root().resolve()
+    server.lumina_runtime_base = args.base_dir.resolve() if args.base_dir else None
     print(f"Lumina Bridge R2: http://{args.host}:{args.port}/bridge")
     print("Read-only position and committed field surface. Studio requests governed actions.")
     try:

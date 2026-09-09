@@ -123,14 +123,16 @@ The panel calls the same `LuminaSelfGuidanceSteward` used by `LuminaContinueCont
 
 `governance_membrane.decisions_verified`, both `execution_authorized` fields, evidence verification flags, and all authority/identity/physical-field claims remain false. The `reachable_in_supplied_snapshot` field describes only the caller's reported decision. A new governed cycle must independently decide any actual execution.
 
-## Validation and next integration
+## Validation and Bridge integration
 
 `runtime/sea_trials_resonant_return_panel_r1.py` is included in the existing DryDock gate. Its 17 behavioral tests cover deterministic output, input immutability, no evidence IO or process execution, read-only CLI behavior with existing and absent state roots, actual controller-preflight parity with supplied IO, empty state, stable continuation syntax, denied/deferred paths, malformed input, project/checkpoint disagreement, independent potential contribution, and false authority claims.
 
-The next increment is a read-only adapter that obtains a verified current return snapshot for Bridge, preserves provenance and freshness, and displays this model. SVG rendering is also deferred: the existing Field Reveal uses a binary allowed/denied status, so it must not silently mislabel deferred paths. Frequency probing remains a separate supplied-signal instrument; this model does not invent frequency measurements from project metadata.
+The read-only `studio/lumina_bridge_return_r1.py` adapter now supplies the active Harbor project’s saved return to Bridge through `/api/return`. It compares return, session, checkpoint, host snapshot and host checkpoint linkage, checks source bytes again before rendering, and exposes paths, SHA-256 digests and saved-state age. The runtime’s legitimate host link to the matching predecessor checkpoint is preserved explicitly, without relabeling it as the latest checkpoint. All live candidate decisions are deferred; saved evidence never grants current permission. SVG rendering remains deferred: the existing Field Reveal uses a binary allowed/denied status, so it must not silently mislabel deferred paths. Frequency probing remains a separate supplied-signal instrument; this model does not invent frequency measurements from project metadata.
 
 ---
 
 ## Success sentence
 
 A returning operator can open Lumina and see where the work is, what it is attracted toward, which paths remain lawful, and what evidence supports that orientation — without the field becoming the law.
+
+The live Bridge trial exercises real runtime-produced evidence, continuation-focus parity, read-only repeated reads, absent state, malformed or oversized JSON, wrong-project history, missing and conflicting checkpoints, symlinks, freshness, concurrent changes, and HTTP write rejection. Evidence files are limited to 1 MiB each and fixed local owner paths; checkpoint references must be absolute. Older saved state stays useful and visibly dated. Historical guidance references are not independently verified. Local agreement and byte digests are not signatures or proof of identity.
