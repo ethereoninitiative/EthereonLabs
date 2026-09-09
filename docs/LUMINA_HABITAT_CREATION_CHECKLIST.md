@@ -51,6 +51,8 @@ This checklist is intentionally editable. It should remain practical enough that
 - [ ] Context preservation must be visible to the user.
 - [ ] The user must be able to inspect what was preserved, why it was preserved, when it was preserved, and where it came from.
 - [ ] Memory should be treated as evidence-bearing project state, not vibes.
+- [x] Implement a standalone read-only Resonant Return Panel JSON model with a synthetic fixture, inspectable input provenance, denied/deferred paths, and continuation-preflight parity (`docs/HABITAT_RESONANT_RETURN_GATE_R1.md`).
+- [ ] Connect verified current return evidence to the panel through a read-only Bridge adapter, with explicit freshness and provenance.
 
 ### 2.3 Project-first interaction
 

@@ -167,12 +167,15 @@ These layers are advisory. They do not own mode legality, mutation permission, c
 | Resonant Manifold model | `runtime/resonant_manifold_r1.py`, `runtime/resonant_manifold_registry_r1.json` |
 | Resonant Field Reveal | `runtime/resonant_field_reveal_r1.py`, `runtime/resonant_field_reveal_registry_r1.json`, `docs/Resonant_Field_Reveal_R1.md` |
 | Committed field sample | `artifacts/resonant_field_reveal/sample_0001/`, `runtime/resonant_field_reveal_sample_r1.py`, `docs/Resonant_Field_Reveal_Sample_0001.md` |
+| Resonant Return Panel (standalone read-only JSON) | `runtime/resonant_return_panel_r1.py`, `artifacts/resonant_return_panel/sample_0001/input.json`, repository-root `docs/HABITAT_RESONANT_RETURN_GATE_R1.md` |
 | Luminous Threads lineage | `docs/Luminous_Threads_Continuity_Lineage_R1.md` |
 | Living Framework Chamber | `runtime/living_framework_chamber_r1.py`, `runtime/living_framework_registry_r1.json` |
 | Living Framework ignition | `runtime/living_framework_ignition_r1.py` |
 | Chamber and ignition docs | `docs/Lumina_Living_Framework_Chamber_R1.md`, `docs/Lumina_Living_Framework_Ignition_R1.md` |
 
 These are bounded computational and interpretive experiments. They do not gain runtime authority merely by existing or producing expressive output.
+
+The return panel composes explicit supplied return/host/stance/history with the existing manifold and continuation steward. It does not open referenced evidence, discover live state, invoke continuation, or verify caller-reported governance. Its fixture is synthetic; Bridge/default-host wiring remains absent.
 
 ## Orchestration lane
 
@@ -223,6 +226,7 @@ Psi-42 is an instrument. It does not own governance, canon, runtime law, consent
 | Resonant Manifold | `runtime/sea_trials_resonant_manifold_r1.py` |
 | Resonant Field Reveal | `runtime/sea_trials_resonant_field_reveal_r1.py` |
 | Committed field reproducibility | `runtime/sea_trials_resonant_field_reveal_sample_r1.py` |
+| Read-only return panel and continuation-preview parity | `runtime/sea_trials_resonant_return_panel_r1.py` |
 | Living Framework Chamber | `runtime/sea_trials_living_framework_chamber_r1.py` |
 | Living Framework ignition | `runtime/sea_trials_living_framework_ignition_r1.py` |
 | AI orientation protocol | `runtime/sea_trials_lumina_ai_orientation_protocol_r1.py` |

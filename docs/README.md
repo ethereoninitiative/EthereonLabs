@@ -34,7 +34,7 @@ Start here for work that can affect present architecture or present claims:
 - `START_HERE_LUMINA_OS.md`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/ACTIVE_RUNTIME_INDEX.md`
 - `docs/LUMINA_HABITAT_CREATION_CHECKLIST.md`
-- `docs/HABITAT_RESONANT_RETURN_GATE_R1.md`
+- `docs/HABITAT_RESONANT_RETURN_GATE_R1.md` — implemented standalone read-only JSON model; verified live Bridge integration remains future work
 - `docs/VESSEL_CONTINUITY_TRANSFER_R1.md`
 - `docs/RUNNER_BRIDGE_OWNERSHIP_MAP.md`
 - `docs/GOVERNANCE_CANON_SEED_PLAN.md`

@@ -203,6 +203,23 @@
       "authority_boundary": "Demonstrates deterministic artifact return and bounded trajectory visualization. It does not establish identity, literal magnetism, runtime law, or observer continuity."
     },
     {
+      "surface_id": "resonant_return_panel_r1",
+      "name": "Resonant Return Panel R1",
+      "status": "standalone-read-only-model",
+      "default_wiring": false,
+      "capability_exposed": false,
+      "paths": [
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/resonant_return_panel_r1.py",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/artifacts/resonant_return_panel/sample_0001/input.json",
+        "docs/HABITAT_RESONANT_RETURN_GATE_R1.md"
+      ],
+      "validation_paths": [
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_resonant_return_panel_r1.py",
+        ".github/workflows/lumina-drydock-gate.yml"
+      ],
+      "authority_boundary": "Read-only orientation from supplied snapshots. Composes existing manifold metrics and continuation advice, without opening evidence references, verifying reported governance, invoking runtime execution, or granting authority. The committed sample is synthetic; live Bridge and default-host wiring remain absent."
+    },
+    {
       "surface_id": "lumina_embodiment_horizon",
       "name": "Lumina embodiment architectural horizon",
       "status": "architectural-horizon",

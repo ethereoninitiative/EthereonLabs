@@ -21,6 +21,7 @@ This file gives a fast map of the current EthereonLabs lanes.
 | Active surface truth registry | `docs/ACTIVE_SURFACE_REGISTRY_R1.json`, `scripts/repository_truth_reconciliation_gate_r1.py` | Machine-readable lane status and executable cross-surface drift detection |
 | Advisory reflection and self-guidance adapters | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/runtime_runner_self_guided_bridge_r1.py`, `runtime/runtime_runner_reflective_self_guided_bridge_r1.py` | Explicit optional adapters layered around governed return/host cycles |
 | Meaning Metabolism experiment | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/lumina_meaning_metabolism_layer_r1.py` | Standalone advisory assimilation layer; validated but not wired into the default host entrypoint |
+| Resonant Return Panel | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/resonant_return_panel_r1.py`, `docs/HABITAT_RESONANT_RETURN_GATE_R1.md` | Standalone read-only JSON orientation from explicitly supplied snapshots; synthetic sample, unverified reported decisions, no live Bridge/default-host wiring |
 | Chamber | `chamber.html`, `chamber-app/`, `docs/chamber_*` | Public interface and app lane |
 | RSE research | `research/rse_crystalline/` | Research, simulations, and figures |
 | Philosophy / care orientation | `docs/philosophy/` | Non-governing observer-continuity inquiry, adversarial identity pressure, and care-orientation notes |

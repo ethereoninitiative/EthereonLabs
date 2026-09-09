@@ -193,6 +193,7 @@ Repository-wide surface and generated-artifact reconciliation is handled separat
 - `runtime/runtime_runner_reflective_self_guided_bridge_r1.py`
 - `runtime/lumina_meaning_metabolism_layer_r1.py`
 - `runtime/resonant_manifold_r1.py`
+- `runtime/resonant_return_panel_r1.py` — standalone read-only JSON over supplied return/host evidence; usage and limits in `docs/HABITAT_RESONANT_RETURN_GATE_R1.md` at the repository root
 - `runtime/living_framework_chamber_r1.py`
 - `runtime/living_framework_ignition_r1.py`
 
