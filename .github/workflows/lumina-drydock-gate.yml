@@ -131,6 +131,7 @@ jobs:
           python sea_trials_canonical_successor_lineage_r1.py
           python post_promotion_verifier_r2.py
           python sea_trials_post_promotion_verifier_r2.py
+          python sea_trials_current_canon_resolution_r1.py
           python sea_trials_canonical_promotion_export_r1.py
 
       - name: Verify prepared canonical evidence
