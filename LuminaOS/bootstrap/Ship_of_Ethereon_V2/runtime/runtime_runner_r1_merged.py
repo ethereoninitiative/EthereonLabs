@@ -10,9 +10,11 @@ import json
 try:
     from .runtime_spine_r1 import ContextBundleBuilder, GovernanceLog, ModeGuard, SessionEngine
     from .canon_lineage_store_r1 import CanonLineageStore
+    from .lumina_meaning_metabolism_layer_r1 import MeaningAssimilationLedger
 except Exception:
     from runtime_spine_r1 import ContextBundleBuilder, GovernanceLog, ModeGuard, SessionEngine
     from canon_lineage_store_r1 import CanonLineageStore
+    from lumina_meaning_metabolism_layer_r1 import MeaningAssimilationLedger
 
 try:
     from .psi42_transceiver_v1_6 import Config as Psi42Config, ResonanceTransceiverV16
@@ -620,6 +622,7 @@ class RuntimeRunner:
         context_bundle_overrides: Optional[Dict[str, Any]] = None,
         project_id: Optional[str] = None,
         coupling_receipts: Optional[List[Dict[str, Any]]] = None,
+        meaning_source_root: Optional[str | Path] = None,
     ) -> RunnerResult:
         target_mode = target_mode or current_mode
         action_type = action_type.lower().strip()
@@ -756,6 +759,18 @@ class RuntimeRunner:
         context_bundle_payload = context_bundle.to_dict()
         if context_bundle_overrides:
             context_bundle_payload = _deep_merge_dicts(context_bundle_payload, context_bundle_overrides)
+        # Recompute current guidance on every cycle. A saved bundle or caller
+        # override must never revive a subsequently revoked memory.
+        memory_context = context_bundle_payload.get("memory_context")
+        if not isinstance(memory_context, dict):
+            memory_context = {}
+            context_bundle_payload["memory_context"] = memory_context
+        memory_context["meaning_recall"] = MeaningAssimilationLedger(
+            self.base_dir / "meaning_memory", create=False,
+        ).recall(
+            self._resolve_lumina_project_id(project_id, requested_action, raw_user_input),
+            source_root=meaning_source_root or repo_path or _repo_root(),
+        )
         if MycelialFieldReplayBridge is not None:
             context_bundle_payload = MycelialFieldReplayBridge.attach_to_context_bundle(
                 context_bundle_payload,
