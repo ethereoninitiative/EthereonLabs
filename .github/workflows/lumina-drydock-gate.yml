@@ -109,6 +109,7 @@ jobs:
           python sea_trials_psi42_frequency_probe_r1.py
           python sea_trials_context_bundle_repo_truth_r1.py
           python sea_trials_lumina_return_host_r1.py
+          python sea_trials_meaning_recall_r1.py
           python sea_trials_stationary_habitation_cold_return_r1.py
           python sea_trials_lumina_self_guidance_r1.py
           python sea_trials_lumina_continue_cli_r1.py
@@ -165,6 +166,7 @@ jobs:
           python bin/lumina --help
           python bin/lumina continue --help
           python bin/lumina intention --help
+          python bin/lumina memory --help
           python bin/lumina-bridge --help
           python bin/lumina-vessel --help
           python bin/lumina doctor --json

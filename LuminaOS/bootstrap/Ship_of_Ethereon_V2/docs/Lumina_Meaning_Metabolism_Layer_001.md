@@ -1,6 +1,7 @@
 # Lumina Meaning Metabolism Layer 001
 
-**Status:** advisory continuity layer  
+**Status:** explicit advisory curation and runtime context projection
+
 **Scope:** reflection-to-guidance assimilation  
 **Authority:** does not govern mode legality, mutation permission, promotion gates, checkpoint legality, canon lineage, or consent
 
@@ -10,17 +11,13 @@ The Meaning Metabolism Layer gives Lumina a place to digest experience into futu
 
 It exists because continuity is not only recall. Continuity also depends on whether experience changes future behavior in a coherent way.
 
-The current active path is:
+The current memory path is:
 
 ```text
-return -> reflect -> recommend -> govern -> record
+candidate + selected source files -> review -> recheck evidence on return -> advisory context
 ```
 
-This layer inserts one small missing verb:
-
-```text
-return -> reflect -> assimilate -> recommend -> govern -> record
-```
+`bin/lumina memory` records and reviews candidates explicitly. The core runner reads the project ledger on each cycle; its default and return/self-guided adapters inherit that projection. Reflection does not automatically write memories, and the projection does not itself select the next action. The reflective runner remains an optional path; see `../ACTIVE_RUNTIME_INDEX.md` for execution ownership.
 
 Reflection asks:
 
@@ -48,6 +45,15 @@ Each assimilation record captures:
 6. `related_tensions` — productive unresolved tensions the insight touches
 7. `recurrence_markers` — signs that the pattern has appeared before
 8. `review_after` — when to revisit rather than freezing the interpretation
+9. `source_evidence` — selected source text, relative locator, and SHA-256 digest
+
+Records and reviews are preserved in the runner base directory under `meaning_memory/<project_id>_meaning_assimilation.jsonl`. New records use schema r2. Existing r1 history remains readable; old unbound positive reviews cannot establish current guidance. `evidence_count` is descriptive and never substitutes for source evidence.
+
+Current guidance requires an explicit positive review bound to the exact record digest, a current review deadline when specified, and source files whose bytes still match the preserved snapshots. Matching source bytes do not establish that an interpretation is true. A reviewer must assess whether the source supports the proposed behavior.
+
+A negative review permanently withholds that record ID, including after a later positive review. Revision requires a new candidate, retaining the original source and withdrawal history. Ledger order determines lifecycle precedence; clock timestamps cannot reverse revocation. Ambiguous or corrupt history produces an `invalid` projection with no guidance. Read-time results report withheld IDs and reasons without copying stale advice into context.
+
+`MeaningMetabolismLayer.guidance_seed()` only formats an unchecked candidate. Use `MeaningAssimilationLedger.recall()` for present eligibility. `summary().latest_*` fields now refer to eligible guidance, and require a source root; `latest_record_id` identifies the newest historical record separately.
 
 ## Continuity tiers
 
@@ -84,7 +90,7 @@ It may not:
 
 ## Relationship to reflection
 
-The existing reflective autonomy layer keeps attention on live pattern before next-action selection. Meaning metabolism receives the durable residue of that reflection and asks what should be carried forward.
+The existing reflective autonomy layer keeps attention on live pattern before next-action selection. A reflection may motivate a meaning candidate, but consolidation requires explicitly selected evidence and review. The present implementation does not automatically connect reflection output to ledger writes.
 
 Reflection is the mirror. Assimilation is digestion. Self-guidance is the next step. Governance remains the law.
 
@@ -113,7 +119,7 @@ Validation lives at:
 sea_trials_lumina_meaning_metabolism_r1.py
 ```
 
-The sea trial checks that records can be created, reviewed, round-tripped through an append-only advisory ledger, and converted into a guidance seed without leaking reserved governance or canon authority.
+The original sea trial checks record construction and legacy advisory formatting. `runtime/sea_trials_meaning_recall_r1.py`, included in DryDock, checks actual recall, revocation, source changes, malformed history, process restart, relocation, CLI curation, and core/adapter context attachment. [Research application and usage](Lumina_Research_Application_2026_09_12.md) describes the source papers and the remaining evaluation boundaries.
 
 ## Short form
 

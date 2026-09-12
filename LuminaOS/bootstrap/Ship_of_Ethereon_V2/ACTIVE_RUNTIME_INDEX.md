@@ -64,7 +64,7 @@ See `docs/Resident_Intention_Continuity_R1.md` and
 
 ### Meaning Metabolism status
 
-`runtime/lumina_meaning_metabolism_layer_r1.py` is a standalone validated advisory experiment. It is not exposed in the capability registry and is not wired into the default host path or the reflective/self-guided adapter path.
+`runtime/lumina_meaning_metabolism_layer_r1.py` preserves candidate meaning and review history. `bin/lumina memory` provides explicit record, review, recall, and history commands through `studio/lumina_meaning_memory_r1.py`. The core runner recomputes `memory_context.meaning_recall` from its project ledger on each cycle, including the default and return/self-guided adapter paths. Only reviewed records with matching source evidence are surfaced. Revocation, overdue review, missing or changed sources, and invalid history withhold guidance. Memory curation is explicit; reflection does not automatically create records. The projection does not choose actions, alter the capability registry, or establish resident identity. See `docs/Lumina_Research_Application_2026_09_12.md` for the evidence and limits.
 
 ### AI orientation protocol status
 
@@ -151,7 +151,7 @@ Orientation records what sources were supplied and how a connected model separat
 | First-class bounded continuation controller | `runtime/lumina_continue_controller_r1.py`, `studio/lumina_continue_r1.py`, `bin/lumina continue` | Active local command; pre-cycle advisory selects Observation/audit focus only |
 | Recursive reflection motif | `runtime/lumina_reflective_autonomy_layer_r1.py` | Used by the explicit reflective/self-guided adapter |
 | Reflection-before-guidance bridge | `runtime/runtime_runner_reflective_self_guided_bridge_r1.py` | Optional alternate runner path |
-| Meaning metabolism / assimilation ledger | `runtime/lumina_meaning_metabolism_layer_r1.py` | Standalone validated experiment; not wired into default or adapter execution |
+| Meaning metabolism / assimilation ledger | `runtime/lumina_meaning_metabolism_layer_r1.py`, `runtime/lumina_meaning_evidence_r1.py`, `studio/lumina_meaning_memory_r1.py` | Explicit curation; reviewed, source-checked recall in core and adapter context bundles |
 
 The reflective/self-guided adapter follows this extension shape:
 
@@ -165,10 +165,10 @@ The first-class bounded continue path follows:
 existing return/host state -> preflight recommend -> governed Observation/audit -> checkpoint -> refresh advisory history
 ```
 
-The standalone Meaning Metabolism experiment models:
+Meaning Metabolism supports explicit curation followed by read-only runtime recall:
 
 ```text
-reflect -> assimilate -> seed future guidance
+candidate + source snapshot -> review -> recheck sources on return -> advisory context
 ```
 
 These layers are advisory. They do not own mode legality, mutation permission, canon lineage, promotion gates, checkpoint legality, or consent.
@@ -250,7 +250,8 @@ Psi-42 is an instrument. It does not own governance, canon, runtime law, consent
 | Cross-vessel project-return portability and tamper boundary | `runtime/sea_trials_vessel_continuity_transfer_r1.py` |
 | Self-guidance | `runtime/sea_trials_lumina_self_guidance_r1.py` |
 | Reflective/self-guided adapter wiring | `sea_trials_lumina_reflective_autonomy_wiring_r1.py` |
-| Meaning Metabolism standalone layer | `sea_trials_lumina_meaning_metabolism_r1.py` |
+| Meaning Metabolism construction / legacy advisory formatting | `sea_trials_lumina_meaning_metabolism_r1.py` |
+| Reviewed meaning recall / revocation / process transfer | `runtime/sea_trials_meaning_recall_r1.py` |
 | Orchestration continuity | `sea_trials_lumina_orchestration_continuity_r1.py` |
 | Studio | `sea_trials_lumina_studio_v0_1.py` |
 | Studio bounded diagnostics | `sea_trials_lumina_studio_diagnostics_r1.py` |
