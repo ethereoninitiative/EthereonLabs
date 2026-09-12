@@ -269,8 +269,16 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="lumina", description="Start and inspect the Lumina OS local governed substrate.")
     sub = parser.add_subparsers(dest="command")
 
-    sys.path.insert(0, str(STUDIO_DIR))
+    # Same host entrypoint and state-root policy as other explicit local commands.
+    if str(STUDIO_DIR) not in sys.path:
+        sys.path.insert(0, str(STUDIO_DIR))
+    from lumina_intention_r1 import add_arguments as intention_arguments, run as intention_run
     from lumina_meaning_memory_r1 import configure_parser as configure_memory, execute as execute_memory
+
+    intention = sub.add_parser("intention", help="Create, discover, and explicitly reconsider resident intentions.")
+    intention_arguments(intention)
+    intention.set_defaults(func=intention_run)
+
     memory = sub.add_parser("memory", help="Curate, review, and inspect evidence-backed advisory memory.")
     configure_memory(memory)
     memory.set_defaults(func=execute_memory)

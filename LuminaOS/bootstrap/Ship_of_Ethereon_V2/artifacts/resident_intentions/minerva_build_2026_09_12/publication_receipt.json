@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-09-12T03:48:13.817374+00:00",
+  "reason": "Shell Git push had no credentials. GitHub connector created a new commit for exactly the validated source tree. Commit metadata differs; source content and parent anchor do not.",
+  "local_validation_commit": "c185857bff2cde4370dd106825cf14472e35de71",
+  "published_implementation_commit": "c57fcf6ac8d46a68a536d2f3122d9b337596cd9c",
+  "local_tree_sha": "f87c1ddc234b097abfb17ff425b6a4e7198d5fb1",
+  "published_tree_sha": "f87c1ddc234b097abfb17ff425b6a4e7198d5fb1",
+  "source_trees_match": true,
+  "parent_anchor": "ae960190e36694c51e38dd22fed9547302679cf6",
+  "history_policy": "Original journal events and build_receipt.json are preserved byte-for-byte. Their local-commit references resolve through this explicit publication map. Local commit URLs in the original events are not published GitHub evidence; use the mapped published commit and per-file hashes.",
+  "published_source_url": "https://github.com/ethereoninitiative/EthereonLabs/commit/c57fcf6ac8d46a68a536d2f3122d9b337596cd9c"
+}

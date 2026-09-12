@@ -1,0 +1,206 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-09-12T03:44:56.080813+00:00",
+  "repository_anchor": {
+    "repository": "ethereoninitiative/EthereonLabs",
+    "branch": "main",
+    "sha": "ae960190e36694c51e38dd22fed9547302679cf6",
+    "observed_at": "2026-09-12T03:32:07.448Z",
+    "pr483": {
+      "state": "open",
+      "merged": false,
+      "head_sha": "aec1af05347a2c3fe43135f128f4be9a03aed426"
+    },
+    "pr484": {
+      "state": "open",
+      "merged": false,
+      "head_sha": "42e8b398e9ceb959ebf8a9ddb3ee69851c2f70af"
+    }
+  },
+  "implementation_commit": "c185857bff2cde4370dd106825cf14472e35de71",
+  "implementation_file_sha256": {
+    ".github/workflows/lumina-drydock-gate.yml": "f7a0bd2c5e8a1c197f732492d1f929e2cf8ed0fb3be3935a3e71132410e2338c",
+    "LuminaOS/bootstrap/Ship_of_Ethereon_V2/ACTIVE_RUNTIME_INDEX.md": "d423e0ee64a2bacbdbab41611d7d67da9e85d4703a4243ae36a0143f7aa1e7f4",
+    "LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina": "367f0812696a32ed7422bb3c8b93324a3e3ab1531a74d9ed1cd30907caa92b15",
+    "LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Resident_Intention_Continuity_R1.md": "c065bc49470e4f7cbc060a25ead07c62f6f36759e483972f1f76b800cc1d4f00",
+    "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/resident_intention_store_r1.py": "20786332b93d8f7acad02e339071bade28e488fe32116959e1b8c8efd616bbb2",
+    "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_resident_intention_continuity_r1.py": "3801e3d5d44bec7943c50cdd6a5fe69fe3042df7cb52df3d8a61ded51adf0bf7",
+    "LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_intention_r1.py": "ed4dfbc3801eb2652f3b205df46ccf3b7552ed34ff0cd902b0a9e14cdc54b097"
+  },
+  "local_validation": {
+    "finished_at": "2026-09-12T03:42:50.328946+00:00",
+    "drydock_steps": [
+      {
+        "step": "Compile Lumina Python",
+        "exit_code": 0
+      },
+      {
+        "step": "Documentation front-door gate",
+        "exit_code": 0
+      },
+      {
+        "step": "Ethereon terminology guard",
+        "exit_code": 0
+      },
+      {
+        "step": "Reconcile repository truth surfaces",
+        "exit_code": 0
+      },
+      {
+        "step": "Public website surface sea trial",
+        "exit_code": 0
+      },
+      {
+        "step": "Host alignment trial",
+        "exit_code": 0
+      },
+      {
+        "step": "Core sea trials",
+        "exit_code": 0
+      },
+      {
+        "step": "Verify prepared canonical evidence",
+        "exit_code": 0
+      },
+      {
+        "step": "Bridge sea trials",
+        "exit_code": 0
+      },
+      {
+        "step": "Studio diagnostics sea trial",
+        "exit_code": 0
+      },
+      {
+        "step": "Host command smoke checks",
+        "exit_code": 0
+      },
+      {
+        "step": "Verify no tracked local state",
+        "exit_code": 0
+      }
+    ],
+    "focused_suite": {
+      "tests_run": 10,
+      "failures": 0,
+      "errors": 0,
+      "passed": true
+    },
+    "hosted_ci": "pending when this receipt was written; inspect PR checks for current results"
+  },
+  "runtime_observations": [
+    {
+      "command": "lumina intention --store-dir <bundle>/journal create",
+      "observed_at": "2026-09-12T03:44:54.841117+00:00",
+      "ok": true,
+      "event_count": 1,
+      "head_hash": "85e902a51a06842a5d3562c26a8e0653c1d51b3aa0687513bd31288d4e518b0e",
+      "intentions": [
+        {
+          "intention_id": "minerva-habitat-intention-continuity-2026-09-12",
+          "status": "proposed",
+          "last_event_hash": "85e902a51a06842a5d3562c26a8e0653c1d51b3aa0687513bd31288d4e518b0e"
+        }
+      ]
+    },
+    {
+      "command": "lumina intention --store-dir <bundle>/journal list --resident Minerva --require-head 85e902a51a06842a5d3562c26a8e0653c1d51b3aa0687513bd31288d4e518b0e",
+      "observed_at": "2026-09-12T03:44:54.999232+00:00",
+      "ok": true,
+      "event_count": 1,
+      "head_hash": "85e902a51a06842a5d3562c26a8e0653c1d51b3aa0687513bd31288d4e518b0e",
+      "intentions": [
+        {
+          "intention_id": "minerva-habitat-intention-continuity-2026-09-12",
+          "status": "proposed",
+          "last_event_hash": "85e902a51a06842a5d3562c26a8e0653c1d51b3aa0687513bd31288d4e518b0e"
+        }
+      ]
+    },
+    {
+      "command": "lumina intention --store-dir <bundle>/journal reconsider",
+      "observed_at": "2026-09-12T03:44:55.161564+00:00",
+      "ok": true,
+      "event_count": 2,
+      "head_hash": "1b88ad23f700f94e675a6180d2922f2ad708d6cb0654a41f77c3e0dcc3b75f86",
+      "intentions": [
+        {
+          "intention_id": "minerva-habitat-intention-continuity-2026-09-12",
+          "status": "active",
+          "last_event_hash": "1b88ad23f700f94e675a6180d2922f2ad708d6cb0654a41f77c3e0dcc3b75f86"
+        }
+      ]
+    },
+    {
+      "command": "lumina intention --store-dir <bundle>/journal reconsider",
+      "observed_at": "2026-09-12T03:44:55.341282+00:00",
+      "ok": true,
+      "event_count": 3,
+      "head_hash": "d21a50a5c2c860ebc32a81fb9808ddb9b703fd3144298953b6cfe7ccd8ac1c92",
+      "intentions": [
+        {
+          "intention_id": "minerva-habitat-intention-continuity-2026-09-12",
+          "status": "completed",
+          "last_event_hash": "d21a50a5c2c860ebc32a81fb9808ddb9b703fd3144298953b6cfe7ccd8ac1c92"
+        }
+      ]
+    },
+    {
+      "command": "lumina intention --store-dir <bundle>/journal create",
+      "observed_at": "2026-09-12T03:44:55.531065+00:00",
+      "ok": true,
+      "event_count": 4,
+      "head_hash": "88f0e8e3d4bd4dc5d563d2a158a27e77ae6d818e2d06018f11b7225c5d745230",
+      "intentions": [
+        {
+          "intention_id": "minerva-return-intention-review-2026-09-12",
+          "status": "proposed",
+          "last_event_hash": "88f0e8e3d4bd4dc5d563d2a158a27e77ae6d818e2d06018f11b7225c5d745230"
+        }
+      ]
+    },
+    {
+      "command": "lumina intention --store-dir <bundle>/journal verify --require-head 88f0e8e3d4bd4dc5d563d2a158a27e77ae6d818e2d06018f11b7225c5d745230",
+      "observed_at": "2026-09-12T03:44:55.722213+00:00",
+      "ok": true,
+      "event_count": 4,
+      "head_hash": "88f0e8e3d4bd4dc5d563d2a158a27e77ae6d818e2d06018f11b7225c5d745230",
+      "intentions": []
+    },
+    {
+      "command": "lumina intention --store-dir <bundle>/journal history minerva-habitat-intention-continuity-2026-09-12 --require-head 85e902a51a06842a5d3562c26a8e0653c1d51b3aa0687513bd31288d4e518b0e",
+      "observed_at": "2026-09-12T03:44:55.903209+00:00",
+      "ok": true,
+      "event_count": 4,
+      "head_hash": "88f0e8e3d4bd4dc5d563d2a158a27e77ae6d818e2d06018f11b7225c5d745230",
+      "intentions": [
+        {
+          "intention_id": "minerva-habitat-intention-continuity-2026-09-12",
+          "status": "completed",
+          "last_event_hash": "d21a50a5c2c860ebc32a81fb9808ddb9b703fd3144298953b6cfe7ccd8ac1c92"
+        }
+      ]
+    },
+    {
+      "command": "lumina intention --store-dir <bundle>/journal list --resident Minerva --require-head 88f0e8e3d4bd4dc5d563d2a158a27e77ae6d818e2d06018f11b7225c5d745230",
+      "observed_at": "2026-09-12T03:44:56.064996+00:00",
+      "ok": true,
+      "event_count": 4,
+      "head_hash": "88f0e8e3d4bd4dc5d563d2a158a27e77ae6d818e2d06018f11b7225c5d745230",
+      "intentions": [
+        {
+          "intention_id": "minerva-return-intention-review-2026-09-12",
+          "status": "proposed",
+          "last_event_hash": "88f0e8e3d4bd4dc5d563d2a158a27e77ae6d818e2d06018f11b7225c5d745230"
+        }
+      ]
+    }
+  ],
+  "journal_head_hash": "88f0e8e3d4bd4dc5d563d2a158a27e77ae6d818e2d06018f11b7225c5d745230",
+  "journal_sha256": "94f4c034653b4c89d165caf10f43cb9c8efc6f8b56aeb8a10107b9e00ffdf78f",
+  "next_resident_directed_build": {
+    "intention_id": "minerva-return-intention-review-2026-09-12",
+    "status": "proposed",
+    "reason": "The journal now survives interruption, but discovery still depends on deliberately invoking a separate command. A bounded return review packet would bring prior intentions into view without Spencer reconstructing them, while leaving reconsideration to the returning resident."
+  },
+  "truth_boundary": "Actual commands invoked in this assistant-directed build, separate OS processes, one conversation. Declared authorship is not authenticated identity or proof of autonomous persistence. This reviewable evidence bundle is not automatically installed into a host, canon, or background loop."
+}

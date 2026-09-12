@@ -60,6 +60,40 @@ def read_jsonl(path: Path) -> list[Dict[str, Any]]:
     return rows
 
 
+def resolve_current_evidence_set(root: Path) -> tuple[Path, Path, Path, str]:
+    """Resolve the highest numbered evidence set under runtime_truth/current.
+
+    Resolution is fail-closed: if any evidence file advertises a newer suffix,
+    that suffix becomes the current candidate even when the set is incomplete.
+    The normal verifier then rejects the missing counterpart files instead of
+    silently falling back to an older canon.
+    """
+    current = (root / DEFAULT_ARTIFACT_DIR).resolve()
+    suffixes: set[str] = set()
+    patterns = (
+        ("governance_chain_", ".jsonl"),
+        ("canon_lineage_", ".jsonl"),
+        ("promotion_receipt_", ".json"),
+    )
+    if current.is_dir():
+        for path in current.iterdir():
+            if not path.is_file():
+                continue
+            for prefix, ending in patterns:
+                if path.name.startswith(prefix) and path.name.endswith(ending):
+                    suffix = path.name[len(prefix):-len(ending)]
+                    if re.fullmatch(r"[0-9]{4}", suffix):
+                        suffixes.add(suffix)
+                    break
+    suffix = max(suffixes, key=int) if suffixes else "0001"
+    return (
+        DEFAULT_ARTIFACT_DIR / f"governance_chain_{suffix}.jsonl",
+        DEFAULT_ARTIFACT_DIR / f"canon_lineage_{suffix}.jsonl",
+        DEFAULT_ARTIFACT_DIR / f"promotion_receipt_{suffix}.json",
+        f"canon-{suffix}",
+    )
+
+
 def resolve_evidence_path(root: Path, reference: Any) -> Optional[Path]:
     if not isinstance(reference, str) or not reference.strip():
         return None
@@ -101,12 +135,21 @@ def git_commit_is_ancestor(root: Path, candidate_sha: Any) -> bool:
 def verify(
     *,
     root: Optional[Path] = None,
-    governance_path: Path = DEFAULT_GOVERNANCE,
-    lineage_path: Path = DEFAULT_LINEAGE,
-    promotion_receipt_path: Path = DEFAULT_PROMOTION,
+    governance_path: Optional[Path] = None,
+    lineage_path: Optional[Path] = None,
+    promotion_receipt_path: Optional[Path] = None,
     expected_head: Optional[str] = None,
 ) -> Dict[str, Any]:
     root = (root or repo_root()).resolve()
+    auto_current = governance_path is None and lineage_path is None and promotion_receipt_path is None
+    if auto_current:
+        governance_path, lineage_path, promotion_receipt_path, resolved_head = resolve_current_evidence_set(root)
+        expected_head = expected_head or resolved_head
+    else:
+        governance_path = governance_path or DEFAULT_GOVERNANCE
+        lineage_path = lineage_path or DEFAULT_LINEAGE
+        promotion_receipt_path = promotion_receipt_path or DEFAULT_PROMOTION
+
     governance_path = (governance_path if governance_path.is_absolute() else root / governance_path).resolve()
     lineage_path = (lineage_path if lineage_path.is_absolute() else root / lineage_path).resolve()
     promotion_receipt_path = (
@@ -145,6 +188,7 @@ def verify(
             "valid": False,
             "checks": {f"{name}_exists": exists for name, exists in required.items()},
             "errors": ["required post-promotion evidence is missing"],
+            "expected_head": expected_head,
         }
 
     try:
@@ -308,9 +352,9 @@ def verify(
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Verify current or successor canon after promotion.")
-    parser.add_argument("--governance", default=DEFAULT_GOVERNANCE.as_posix())
-    parser.add_argument("--lineage", default=DEFAULT_LINEAGE.as_posix())
-    parser.add_argument("--promotion-receipt", default=DEFAULT_PROMOTION.as_posix())
+    parser.add_argument("--governance", default=None)
+    parser.add_argument("--lineage", default=None)
+    parser.add_argument("--promotion-receipt", default=None)
     parser.add_argument("--expected-head", default=None)
     parser.add_argument("--output", default=None)
     return parser.parse_args()
@@ -319,9 +363,9 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     result = verify(
-        governance_path=Path(args.governance),
-        lineage_path=Path(args.lineage),
-        promotion_receipt_path=Path(args.promotion_receipt),
+        governance_path=Path(args.governance) if args.governance else None,
+        lineage_path=Path(args.lineage) if args.lineage else None,
+        promotion_receipt_path=Path(args.promotion_receipt) if args.promotion_receipt else None,
         expected_head=args.expected_head,
     )
     if args.output:

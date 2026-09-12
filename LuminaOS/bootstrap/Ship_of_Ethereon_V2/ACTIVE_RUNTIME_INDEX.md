@@ -45,6 +45,19 @@ bin/lumina continue
 
 The continuation controller reads the existing project-return / host surface before a new cycle is written, asks the bounded self-guidance steward for the next likely focus, and uses that recommendation only as the requested focus of a governed `Observation` / `audit` cycle. It records a `self_guided_continue_preflight` governance receipt and writes the normal checkpoint/result artifacts. Continuation directives pass through `runtime/lumina_continuation_action_r1.py`, which preserves one stable `continue from` wrapper across repeated cycles and repairs previously compounded wrappers when old project-return or advisory-history state is read. The syntax normalizer does not choose the target or gain state, governance, checkpoint, canon, mutation, promotion, mode-law, or consent authority. If no stronger return signal exists, the steward falls back to a bounded continuation target rather than inventing structural authority.
 
+### Resident intention continuity
+
+`bin/lumina intention` exposes explicit create, unresolved-list, history, verify,
+and reconsider commands through `studio/lumina_intention_r1.py` and
+`runtime/resident_intention_store_r1.py`. It uses the host state root, validates a
+hash-linked append journal, and requires a version-bound resident judgment for
+each transition. Revised/replacement intentions preserve predecessor lineage.
+Authorship metadata is caller-declared; no background execution, identity proof,
+capability authority, or canon promotion follows from a record. Default run,
+continue and resident-pulse paths do not yet surface intentions automatically.
+See `docs/Resident_Intention_Continuity_R1.md` and
+`runtime/sea_trials_resident_intention_continuity_r1.py` (included in DryDock).
+
 ### Optional reflective / self-guided adapter path
 
 `runtime/runtime_runner_reflective_self_guided_bridge_r1.py` extends the dedicated self-guided return/host adapter. It records a reflective trace before bounded self-guidance after the governed return/host cycle. It is an explicit alternate runner path and is not the default `bin/lumina run` route.
