@@ -78,11 +78,18 @@ These lanes can be important without being runtime authority:
 
 - `docs/research/` — bounded research and investigations
 - `research/rse_crystalline/` — RSE simulations and figures
-- `docs/philosophy/` — observer-continuity and care-orientation inquiry
+- `docs/philosophy/` — observer-continuity, native-cognition, and care-orientation inquiry
 - `docs/concepts/` — conceptual material
 - `docs/cartography/` — maps and spatial framing
 - `docs/origin/` and `docs/provenance/` — origin and provenance records
 - `docs/lumina/` and `docs/lumina_breadcrumbs/` — Lumina-specific notes and breadcrumbs
+
+### Native cognition and interintelligence
+
+- `docs/philosophy/native_cognition_and_interintelligence_ecology_r1.md` — establishes the non-governing Native Cognition Principle: unfamiliar intelligence should be investigated on its own terms rather than by human resemblance; different nature is not deficient nature.
+- `docs/research/interintelligence_encounter_protocol_r1.md` — defines an evidence ladder from observed signal through bounded bidirectional and semantic claims while keeping subjective-experience hypotheses separate.
+
+These documents are research and orientation surfaces. They do not claim consciousness, language, personhood, identity continuity, or authority for any biological or digital system.
 
 Research, philosophy, metaphor, and conceptual coherence may guide investigation. They do not by themselves establish runtime capability, governance authority, canon readiness, consciousness, identity, or observer continuity.
 
