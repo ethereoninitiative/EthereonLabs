@@ -1,0 +1,571 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ethereon:irp:r1:packet",
+  "title": "Interresident Resonance Protocol R1 packet",
+  "description": "Structural contract; full validity additionally requires strict IRP JSON, bounded content, verified hashes, source binding, scope, and lineage validation. Receipt grants no authority.",
+  "type": "object",
+  "properties": {
+    "protocol_version": {
+      "const": "IRP-R1"
+    },
+    "packet_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$"
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$"
+    },
+    "encounter_scope": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$"
+    },
+    "created_at": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,6})?Z$"
+    },
+    "resident": {
+      "type": "object",
+      "properties": {
+        "declared_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$"
+        },
+        "provider_or_origin": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536
+        },
+        "model_or_architecture": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536
+        },
+        "identity_basis": {
+          "const": "caller_declared"
+        }
+      },
+      "required": [
+        "declared_id",
+        "provider_or_origin",
+        "model_or_architecture",
+        "identity_basis"
+      ],
+      "additionalProperties": false
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "enum": [
+            "synthetic_fixture",
+            "declared_externalization"
+          ]
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$"
+        }
+      },
+      "required": [
+        "mode",
+        "session_id"
+      ],
+      "additionalProperties": false
+    },
+    "packet_kind": {
+      "enum": [
+        "observation",
+        "interpretation",
+        "question",
+        "proposal",
+        "critique",
+        "response",
+        "intention",
+        "boundary",
+        "synthesis"
+      ]
+    },
+    "focus": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$"
+    },
+    "observations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/claim"
+      },
+      "minItems": 0,
+      "maxItems": 64
+    },
+    "interpretations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/claim"
+      },
+      "minItems": 0,
+      "maxItems": 64
+    },
+    "questions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/claim"
+      },
+      "minItems": 0,
+      "maxItems": 64
+    },
+    "proposals": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/claim"
+      },
+      "minItems": 0,
+      "maxItems": 64
+    },
+    "intentions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/claim"
+      },
+      "minItems": 0,
+      "maxItems": 64
+    },
+    "memories": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/claim"
+      },
+      "minItems": 0,
+      "maxItems": 64
+    },
+    "uncertainties": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "uncertainty_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$"
+          },
+          "value": {
+            "$ref": "#/$defs/json_value"
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$"
+            },
+            "minItems": 1,
+            "maxItems": 32,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "uncertainty_id",
+          "value",
+          "source_refs"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 64
+    },
+    "relations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "relation_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$"
+          },
+          "kind": {
+            "enum": [
+              "supports",
+              "challenges",
+              "answers",
+              "extends",
+              "alternative_to"
+            ]
+          },
+          "from_claim_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$"
+          },
+          "to": {
+            "type": "object",
+            "properties": {
+              "packet_id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$"
+              },
+              "packet_sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "claim_id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$"
+              }
+            },
+            "required": [
+              "packet_id",
+              "packet_sha256",
+              "claim_id"
+            ],
+            "additionalProperties": false
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$"
+            },
+            "minItems": 1,
+            "maxItems": 32,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "relation_id",
+          "kind",
+          "from_claim_id",
+          "to",
+          "source_refs"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 64
+    },
+    "source_manifest": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$"
+          },
+          "locator": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 65536
+          },
+          "content": {
+            "$ref": "#/$defs/json_value"
+          },
+          "content_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "source_id",
+          "locator",
+          "content",
+          "content_sha256"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 32
+    },
+    "parents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "packet_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$"
+          },
+          "packet_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "packet_id",
+          "packet_sha256"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 32
+    },
+    "responds_to": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 32,
+      "uniqueItems": true
+    },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 32,
+      "uniqueItems": true
+    },
+    "authority": {
+      "type": "object",
+      "properties": {
+        "authority_granted": {
+          "const": false
+        },
+        "authority_claim": {
+          "const": "none"
+        },
+        "requested_action": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "operation": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$"
+                },
+                "arguments": {
+                  "$ref": "#/$defs/json_value"
+                }
+              },
+              "required": [
+                "operation",
+                "arguments"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "permission_required": {
+          "const": true
+        }
+      },
+      "required": [
+        "authority_granted",
+        "authority_claim",
+        "requested_action",
+        "permission_required"
+      ],
+      "additionalProperties": false
+    },
+    "claim_boundaries": {
+      "const": {
+        "observation_not_interpretation": true,
+        "interpretation_not_fact": true,
+        "confidence_not_truth": true,
+        "memory_not_current_belief": true,
+        "intention_not_authority": true,
+        "capability_not_permission": true,
+        "agreement_not_consensus": true,
+        "consensus_not_canon": true,
+        "human_gloss_not_canonical_payload": true,
+        "externalized_packet_not_total_interiority": true,
+        "provider_metadata_not_authenticated_identity": true
+      }
+    },
+    "native_externalization": {
+      "type": "object",
+      "properties": {
+        "representation": {
+          "const": "opaque"
+        },
+        "universally_interpretable": {
+          "const": false
+        },
+        "media_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536
+        },
+        "content": {
+          "$ref": "#/$defs/json_value"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "representation",
+        "universally_interpretable",
+        "media_type",
+        "content",
+        "content_sha256"
+      ],
+      "additionalProperties": false
+    },
+    "human_gloss": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536
+        },
+        "canonical": {
+          "const": false
+        },
+        "lossy": {
+          "const": true
+        },
+        "derived_from_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "text",
+        "canonical",
+        "lossy",
+        "derived_from_sha256"
+      ],
+      "additionalProperties": false
+    },
+    "semantic_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "packet_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "protocol_version",
+    "packet_id",
+    "project_id",
+    "encounter_scope",
+    "created_at",
+    "resident",
+    "provenance",
+    "packet_kind",
+    "focus",
+    "observations",
+    "interpretations",
+    "questions",
+    "proposals",
+    "intentions",
+    "memories",
+    "uncertainties",
+    "relations",
+    "source_manifest",
+    "parents",
+    "responds_to",
+    "supersedes",
+    "authority",
+    "claim_boundaries",
+    "semantic_sha256",
+    "packet_sha256"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "json_value": {
+      "description": "IRP JSON: null, bool, Unicode strings, safe integers, arrays, or objects; no floats. Max depth 24 and packet size 262144 bytes are enforced by the protocol validator.",
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        {
+          "type": "string",
+          "maxLength": 65536
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/json_value"
+          },
+          "minItems": 0,
+          "maxItems": 1024
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/json_value"
+          }
+        }
+      ]
+    },
+    "claim": {
+      "type": "object",
+      "properties": {
+        "claim_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$"
+        },
+        "subject": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$"
+        },
+        "predicate": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$"
+        },
+        "value": {
+          "$ref": "#/$defs/json_value"
+        },
+        "confidence_bps": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            }
+          ]
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$"
+          },
+          "minItems": 1,
+          "maxItems": 32,
+          "uniqueItems": true
+        },
+        "uncertainty_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$"
+          },
+          "minItems": 0,
+          "maxItems": 64,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "claim_id",
+        "subject",
+        "predicate",
+        "value",
+        "confidence_bps",
+        "source_refs",
+        "uncertainty_refs"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

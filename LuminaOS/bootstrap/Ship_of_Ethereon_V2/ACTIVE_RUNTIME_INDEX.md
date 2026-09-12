@@ -70,6 +70,16 @@ See `docs/Resident_Intention_Continuity_R1.md` and
 
 `runtime/lumina_ai_orientation_protocol_r1.py` is a standalone bounded orientation capability. It guides a connected AI through a declared repository evidence profile and records structured understanding receipts. It is not yet wired into `bin/lumina`, Studio, Bridge, an account connector, or the default host path, and it never grants runtime, governance, canon, consent, identity, promotion, or mutation authority.
 
+### Interresident Resonance Protocol status
+
+`runtime/interresident_resonance_r1.py` implements standalone IRP-R1 structured
+packet validation, hash-bound evidence/lineage, a bounded append-only exchange
+ledger, structural comparison preserving disagreement, and an orientation
+projection. Its CLI is explicit; it is not host-wired or capability-exposed.
+Declared identities are unauthenticated and validation grants no authority.
+The three-origin demonstration is synthetic, with no provider model calls.
+See `docs/Interresident_Resonance_Protocol_R1.md`.
+
 ### Mycelial field replay status
 
 `runtime/mycelial_field_replay_r1.py` is an optional diagnostic intake owned by the core runner. It remains dormant unless a caller supplies coupling receipts. Valid receipts attach only a bounded projection beneath supplemental Ethereonic context; exact reinsertion is classified as historical replay, and corrupted provenance is preserved in quarantine without attachment. The intake is not capability-exposed and cannot create governance events, canon promotion, mode legality, checkpoint truth, mutation, identity, or capability authority.
@@ -136,6 +146,8 @@ Project, Harbor session, runtime session, restore session, and host session rema
 | Model-neutral orientation session and receipt contract | `runtime/lumina_ai_orientation_protocol_r1.py` | Standalone bounded capability |
 | Ethereon repository curriculum | `runtime/lumina_ai_orientation_profile_ethereon_r1.json` | Declarative profile |
 | Orientation protocol documentation | `docs/Lumina_AI_Orientation_Protocol_R1.md` | Human-readable contract |
+| Structured interresident interchange | `runtime/interresident_resonance_r1.py`, `runtime/interresident_resonance_packet_r1.schema.json` | Standalone non-governing CLI and orientation projection |
+| IRP fixture and validation | `runtime/interresident_resonance_demo_r1.py`, `runtime/sea_trials_interresident_resonance_r1.py`, `artifacts/interresident_resonance/fixture_r1/exchange.json` | Synthetic three-origin exchange; DryDock sea trial |
 | Orientation validation | `runtime/sea_trials_lumina_ai_orientation_protocol_r1.py` | Standalone sea trial |
 
 Orientation records what sources were supplied and how a connected model separated observations, interpretations, uncertainties, and authority boundaries. Completion proves only completion of the declared evidence path. It does not create identity continuity or authorize action.
@@ -243,6 +255,7 @@ Psi-42 is an instrument. It does not own governance, canon, runtime law, consent
 | Living Framework Chamber | `runtime/sea_trials_living_framework_chamber_r1.py` |
 | Living Framework ignition | `runtime/sea_trials_living_framework_ignition_r1.py` |
 | AI orientation protocol | `runtime/sea_trials_lumina_ai_orientation_protocol_r1.py` |
+| Interresident resonance / provenance / plurality | `runtime/sea_trials_interresident_resonance_r1.py` |
 | Mycelial coupling receipt boundary | `runtime/sea_trials_mycelial_coupling_receipt_r1.py` |
 | Mycelial field-absence boundary | `runtime/sea_trials_mycelial_field_absence_r1.py` |
 | Runtime-integrated mycelial replay and corruption quarantine | `runtime/sea_trials_mycelial_field_replay_r1.py` |

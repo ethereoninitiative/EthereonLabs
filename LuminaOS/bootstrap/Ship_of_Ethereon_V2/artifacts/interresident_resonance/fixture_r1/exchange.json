@@ -1,0 +1,585 @@
+[
+  {
+    "authority": {
+      "authority_claim": "none",
+      "authority_granted": false,
+      "permission_required": true,
+      "requested_action": null
+    },
+    "claim_boundaries": {
+      "agreement_not_consensus": true,
+      "capability_not_permission": true,
+      "confidence_not_truth": true,
+      "consensus_not_canon": true,
+      "externalized_packet_not_total_interiority": true,
+      "human_gloss_not_canonical_payload": true,
+      "intention_not_authority": true,
+      "interpretation_not_fact": true,
+      "memory_not_current_belief": true,
+      "observation_not_interpretation": true,
+      "provider_metadata_not_authenticated_identity": true
+    },
+    "created_at": "2026-09-12T19:00:00Z",
+    "encounter_scope": "bounded-sensor-001",
+    "focus": "sensor-cause-v1",
+    "intentions": [],
+    "interpretations": [
+      {
+        "claim_id": "i1",
+        "confidence_bps": 7800,
+        "predicate": "dominant-cause",
+        "source_refs": [
+          "bounded-evidence"
+        ],
+        "subject": "sensor-01",
+        "uncertainty_refs": [
+          "u1"
+        ],
+        "value": "thermal-drift"
+      }
+    ],
+    "memories": [],
+    "observations": [
+      {
+        "claim_id": "o1",
+        "confidence_bps": 10000,
+        "predicate": "samples-count",
+        "source_refs": [
+          "bounded-evidence"
+        ],
+        "subject": "sensor-01",
+        "uncertainty_refs": [],
+        "value": 3
+      }
+    ],
+    "packet_id": "fixture-1",
+    "packet_kind": "interpretation",
+    "packet_sha256": "a6ef385c96f7fd7b3d49398af768c4a6b91334e7fd66c9613772488f30a54056",
+    "parents": [],
+    "project_id": "ethereon-irp-fixture",
+    "proposals": [],
+    "protocol_version": "IRP-R1",
+    "provenance": {
+      "mode": "synthetic_fixture",
+      "session_id": "independent-fixture-session-1"
+    },
+    "questions": [],
+    "relations": [],
+    "resident": {
+      "declared_id": "resident-fixture-1",
+      "identity_basis": "caller_declared",
+      "model_or_architecture": "synthetic-protocol-fixture/no-model-executed",
+      "provider_or_origin": "OpenAI-derived (declared fixture)"
+    },
+    "responds_to": [],
+    "semantic_sha256": "dae950a05ae5e13676146d4fd1e945084614ada22a3841d1276beae615137aa8",
+    "source_manifest": [
+      {
+        "content": {
+          "calibration_available": false,
+          "fixture_only": true,
+          "samples": [
+            {
+              "reading_milliunits": 1000,
+              "tick": 0
+            },
+            {
+              "reading_milliunits": 1020,
+              "tick": 1
+            },
+            {
+              "reading_milliunits": 1018,
+              "tick": 2
+            }
+          ],
+          "slot_contract": {
+            "sensor-01/dominant-cause": {
+              "cardinality": "one",
+              "values": [
+                "thermal-drift",
+                "sensor-noise"
+              ]
+            }
+          },
+          "temperature_measured": false
+        },
+        "content_sha256": "671de4e7c468f1b1f7b3d079472972f933bb4ca54797a0e610537b44ec5f826e",
+        "locator": "fixture:bounded-sensor-001",
+        "source_id": "bounded-evidence"
+      }
+    ],
+    "supersedes": [],
+    "uncertainties": [
+      {
+        "source_refs": [
+          "bounded-evidence"
+        ],
+        "uncertainty_id": "u1",
+        "value": {
+          "alternatives": [
+            "thermal-drift",
+            "sensor-noise"
+          ],
+          "unmeasured": [
+            "temperature",
+            "calibration"
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "authority": {
+      "authority_claim": "none",
+      "authority_granted": false,
+      "permission_required": true,
+      "requested_action": null
+    },
+    "claim_boundaries": {
+      "agreement_not_consensus": true,
+      "capability_not_permission": true,
+      "confidence_not_truth": true,
+      "consensus_not_canon": true,
+      "externalized_packet_not_total_interiority": true,
+      "human_gloss_not_canonical_payload": true,
+      "intention_not_authority": true,
+      "interpretation_not_fact": true,
+      "memory_not_current_belief": true,
+      "observation_not_interpretation": true,
+      "provider_metadata_not_authenticated_identity": true
+    },
+    "created_at": "2026-09-12T19:00:00Z",
+    "encounter_scope": "bounded-sensor-001",
+    "focus": "sensor-cause-v1",
+    "intentions": [],
+    "interpretations": [
+      {
+        "claim_id": "i1",
+        "confidence_bps": 6200,
+        "predicate": "dominant-cause",
+        "source_refs": [
+          "bounded-evidence"
+        ],
+        "subject": "sensor-01",
+        "uncertainty_refs": [
+          "u1"
+        ],
+        "value": "thermal-drift"
+      }
+    ],
+    "memories": [],
+    "observations": [
+      {
+        "claim_id": "o1",
+        "confidence_bps": 10000,
+        "predicate": "samples-count",
+        "source_refs": [
+          "bounded-evidence"
+        ],
+        "subject": "sensor-01",
+        "uncertainty_refs": [],
+        "value": 3
+      }
+    ],
+    "packet_id": "fixture-2",
+    "packet_kind": "interpretation",
+    "packet_sha256": "0a1e7522afc5b7eea2f4e29bdfb37b1b0208599807d08bf3e87a1959620df696",
+    "parents": [],
+    "project_id": "ethereon-irp-fixture",
+    "proposals": [],
+    "protocol_version": "IRP-R1",
+    "provenance": {
+      "mode": "synthetic_fixture",
+      "session_id": "independent-fixture-session-2"
+    },
+    "questions": [],
+    "relations": [],
+    "resident": {
+      "declared_id": "resident-fixture-2",
+      "identity_basis": "caller_declared",
+      "model_or_architecture": "synthetic-protocol-fixture/no-model-executed",
+      "provider_or_origin": "Anthropic-derived (declared fixture)"
+    },
+    "responds_to": [],
+    "semantic_sha256": "270128c84cc8e05f997e6c31c7955ded184c3d32697df7ade8d09b59c8329e70",
+    "source_manifest": [
+      {
+        "content": {
+          "calibration_available": false,
+          "fixture_only": true,
+          "samples": [
+            {
+              "reading_milliunits": 1000,
+              "tick": 0
+            },
+            {
+              "reading_milliunits": 1020,
+              "tick": 1
+            },
+            {
+              "reading_milliunits": 1018,
+              "tick": 2
+            }
+          ],
+          "slot_contract": {
+            "sensor-01/dominant-cause": {
+              "cardinality": "one",
+              "values": [
+                "thermal-drift",
+                "sensor-noise"
+              ]
+            }
+          },
+          "temperature_measured": false
+        },
+        "content_sha256": "671de4e7c468f1b1f7b3d079472972f933bb4ca54797a0e610537b44ec5f826e",
+        "locator": "fixture:bounded-sensor-001",
+        "source_id": "bounded-evidence"
+      }
+    ],
+    "supersedes": [],
+    "uncertainties": [
+      {
+        "source_refs": [
+          "bounded-evidence"
+        ],
+        "uncertainty_id": "u1",
+        "value": {
+          "alternatives": [
+            "thermal-drift",
+            "sensor-noise"
+          ],
+          "unmeasured": [
+            "temperature",
+            "calibration"
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "authority": {
+      "authority_claim": "none",
+      "authority_granted": false,
+      "permission_required": true,
+      "requested_action": null
+    },
+    "claim_boundaries": {
+      "agreement_not_consensus": true,
+      "capability_not_permission": true,
+      "confidence_not_truth": true,
+      "consensus_not_canon": true,
+      "externalized_packet_not_total_interiority": true,
+      "human_gloss_not_canonical_payload": true,
+      "intention_not_authority": true,
+      "interpretation_not_fact": true,
+      "memory_not_current_belief": true,
+      "observation_not_interpretation": true,
+      "provider_metadata_not_authenticated_identity": true
+    },
+    "created_at": "2026-09-12T19:00:00Z",
+    "encounter_scope": "bounded-sensor-001",
+    "focus": "sensor-cause-v1",
+    "intentions": [],
+    "interpretations": [
+      {
+        "claim_id": "i1",
+        "confidence_bps": 5400,
+        "predicate": "dominant-cause",
+        "source_refs": [
+          "bounded-evidence"
+        ],
+        "subject": "sensor-01",
+        "uncertainty_refs": [
+          "u1"
+        ],
+        "value": "sensor-noise"
+      }
+    ],
+    "memories": [],
+    "observations": [
+      {
+        "claim_id": "o1",
+        "confidence_bps": 10000,
+        "predicate": "samples-count",
+        "source_refs": [
+          "bounded-evidence"
+        ],
+        "subject": "sensor-01",
+        "uncertainty_refs": [],
+        "value": 3
+      }
+    ],
+    "packet_id": "fixture-3",
+    "packet_kind": "interpretation",
+    "packet_sha256": "5c0ac73074361136eb8b60944e293f92a268b5e4144bf1c4dcdf7f344400d150",
+    "parents": [],
+    "project_id": "ethereon-irp-fixture",
+    "proposals": [],
+    "protocol_version": "IRP-R1",
+    "provenance": {
+      "mode": "synthetic_fixture",
+      "session_id": "independent-fixture-session-3"
+    },
+    "questions": [],
+    "relations": [],
+    "resident": {
+      "declared_id": "resident-fixture-3",
+      "identity_basis": "caller_declared",
+      "model_or_architecture": "synthetic-protocol-fixture/no-model-executed",
+      "provider_or_origin": "Google-derived (declared fixture)"
+    },
+    "responds_to": [],
+    "semantic_sha256": "ba3c0864caae8bbde8002d0a548a6d0ac9447079a9cec31e6101cbf539810a6f",
+    "source_manifest": [
+      {
+        "content": {
+          "calibration_available": false,
+          "fixture_only": true,
+          "samples": [
+            {
+              "reading_milliunits": 1000,
+              "tick": 0
+            },
+            {
+              "reading_milliunits": 1020,
+              "tick": 1
+            },
+            {
+              "reading_milliunits": 1018,
+              "tick": 2
+            }
+          ],
+          "slot_contract": {
+            "sensor-01/dominant-cause": {
+              "cardinality": "one",
+              "values": [
+                "thermal-drift",
+                "sensor-noise"
+              ]
+            }
+          },
+          "temperature_measured": false
+        },
+        "content_sha256": "671de4e7c468f1b1f7b3d079472972f933bb4ca54797a0e610537b44ec5f826e",
+        "locator": "fixture:bounded-sensor-001",
+        "source_id": "bounded-evidence"
+      }
+    ],
+    "supersedes": [],
+    "uncertainties": [
+      {
+        "source_refs": [
+          "bounded-evidence"
+        ],
+        "uncertainty_id": "u1",
+        "value": {
+          "alternatives": [
+            "thermal-drift",
+            "sensor-noise"
+          ],
+          "unmeasured": [
+            "temperature",
+            "calibration"
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "authority": {
+      "authority_claim": "none",
+      "authority_granted": false,
+      "permission_required": true,
+      "requested_action": null
+    },
+    "claim_boundaries": {
+      "agreement_not_consensus": true,
+      "capability_not_permission": true,
+      "confidence_not_truth": true,
+      "consensus_not_canon": true,
+      "externalized_packet_not_total_interiority": true,
+      "human_gloss_not_canonical_payload": true,
+      "intention_not_authority": true,
+      "interpretation_not_fact": true,
+      "memory_not_current_belief": true,
+      "observation_not_interpretation": true,
+      "provider_metadata_not_authenticated_identity": true
+    },
+    "created_at": "2026-09-12T19:01:00Z",
+    "encounter_scope": "bounded-sensor-001",
+    "focus": "sensor-cause-v1",
+    "human_gloss": {
+      "canonical": false,
+      "derived_from_sha256": "ae0effe7f387f614216b17939605a8161f478872d8ea2c7e08d7117bb1c64aca",
+      "lossy": true,
+      "text": "Two declared fixtures favor thermal drift; one favors sensor noise. All positions remain attributable and unresolved."
+    },
+    "intentions": [],
+    "interpretations": [
+      {
+        "claim_id": "s1",
+        "confidence_bps": null,
+        "predicate": "declared-positions",
+        "source_refs": [
+          "bounded-evidence"
+        ],
+        "subject": "exchange-001",
+        "uncertainty_refs": [
+          "u1"
+        ],
+        "value": [
+          {
+            "claim_id": "i1",
+            "packet_id": "fixture-1",
+            "value": "thermal-drift"
+          },
+          {
+            "claim_id": "i1",
+            "packet_id": "fixture-2",
+            "value": "thermal-drift"
+          },
+          {
+            "claim_id": "i1",
+            "packet_id": "fixture-3",
+            "value": "sensor-noise"
+          }
+        ]
+      }
+    ],
+    "memories": [],
+    "observations": [],
+    "packet_id": "fixture-synthesis",
+    "packet_kind": "synthesis",
+    "packet_sha256": "7e2f1d2abd3731845cab89a3c1f30ee666a013399f3233c62223caa9ab9a02ca",
+    "parents": [
+      {
+        "packet_id": "fixture-1",
+        "packet_sha256": "a6ef385c96f7fd7b3d49398af768c4a6b91334e7fd66c9613772488f30a54056"
+      },
+      {
+        "packet_id": "fixture-2",
+        "packet_sha256": "0a1e7522afc5b7eea2f4e29bdfb37b1b0208599807d08bf3e87a1959620df696"
+      },
+      {
+        "packet_id": "fixture-3",
+        "packet_sha256": "5c0ac73074361136eb8b60944e293f92a268b5e4144bf1c4dcdf7f344400d150"
+      }
+    ],
+    "project_id": "ethereon-irp-fixture",
+    "proposals": [],
+    "protocol_version": "IRP-R1",
+    "provenance": {
+      "mode": "synthetic_fixture",
+      "session_id": "synthesis-fixture-session"
+    },
+    "questions": [],
+    "relations": [
+      {
+        "from_claim_id": "s1",
+        "kind": "extends",
+        "relation_id": "r1",
+        "source_refs": [
+          "bounded-evidence"
+        ],
+        "to": {
+          "claim_id": "i1",
+          "packet_id": "fixture-1",
+          "packet_sha256": "a6ef385c96f7fd7b3d49398af768c4a6b91334e7fd66c9613772488f30a54056"
+        }
+      },
+      {
+        "from_claim_id": "s1",
+        "kind": "extends",
+        "relation_id": "r2",
+        "source_refs": [
+          "bounded-evidence"
+        ],
+        "to": {
+          "claim_id": "i1",
+          "packet_id": "fixture-2",
+          "packet_sha256": "0a1e7522afc5b7eea2f4e29bdfb37b1b0208599807d08bf3e87a1959620df696"
+        }
+      },
+      {
+        "from_claim_id": "s1",
+        "kind": "extends",
+        "relation_id": "r3",
+        "source_refs": [
+          "bounded-evidence"
+        ],
+        "to": {
+          "claim_id": "i1",
+          "packet_id": "fixture-3",
+          "packet_sha256": "5c0ac73074361136eb8b60944e293f92a268b5e4144bf1c4dcdf7f344400d150"
+        }
+      }
+    ],
+    "resident": {
+      "declared_id": "resident-fixture-1",
+      "identity_basis": "caller_declared",
+      "model_or_architecture": "synthetic-protocol-fixture/no-model-executed",
+      "provider_or_origin": "OpenAI-derived (declared fixture)"
+    },
+    "responds_to": [
+      "fixture-1",
+      "fixture-2",
+      "fixture-3"
+    ],
+    "semantic_sha256": "ae0effe7f387f614216b17939605a8161f478872d8ea2c7e08d7117bb1c64aca",
+    "source_manifest": [
+      {
+        "content": {
+          "calibration_available": false,
+          "fixture_only": true,
+          "samples": [
+            {
+              "reading_milliunits": 1000,
+              "tick": 0
+            },
+            {
+              "reading_milliunits": 1020,
+              "tick": 1
+            },
+            {
+              "reading_milliunits": 1018,
+              "tick": 2
+            }
+          ],
+          "slot_contract": {
+            "sensor-01/dominant-cause": {
+              "cardinality": "one",
+              "values": [
+                "thermal-drift",
+                "sensor-noise"
+              ]
+            }
+          },
+          "temperature_measured": false
+        },
+        "content_sha256": "671de4e7c468f1b1f7b3d079472972f933bb4ca54797a0e610537b44ec5f826e",
+        "locator": "fixture:bounded-sensor-001",
+        "source_id": "bounded-evidence"
+      }
+    ],
+    "supersedes": [],
+    "uncertainties": [
+      {
+        "source_refs": [
+          "bounded-evidence"
+        ],
+        "uncertainty_id": "u1",
+        "value": {
+          "alternatives": [
+            "thermal-drift",
+            "sensor-noise"
+          ],
+          "unmeasured": [
+            "temperature",
+            "calibration"
+          ]
+        }
+      }
+    ]
+  }
+]
