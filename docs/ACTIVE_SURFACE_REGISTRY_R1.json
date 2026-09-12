@@ -316,6 +316,24 @@
       "overwrites_existing_state": false,
       "resumes_imported_session": false,
       "authority_boundary": "Transports and verifies one bounded project-return surface between explicitly identified local state roots. It does not transfer governance or canon, create capability authority, resume a session, authorize automatic movement, or establish resident identity or observer continuity."
+    },
+    {
+      "surface_id": "interresident_resonance_protocol_r1",
+      "name": "Interresident Resonance Protocol R1",
+      "status": "standalone-bounded-interchange",
+      "default_wiring": false,
+      "paths": [
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/interresident_resonance_r1.py",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/interresident_resonance_packet_r1.schema.json",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/interresident_resonance_demo_r1.py",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Interresident_Resonance_Protocol_R1.md",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/artifacts/interresident_resonance/fixture_r1/exchange.json"
+      ],
+      "validation_paths": [
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_interresident_resonance_r1.py",
+        ".github/workflows/lumina-drydock-gate.yml"
+      ],
+      "authority_boundary": "Validates externalized declarations, bounded source evidence, content/lineage hashes, and structural agreement/disagreement across distinct declared origins. Synthetic fixtures exercise no live providers. No identity authentication, semantic-equivalence proof, consensus, runtime, governance, canon, capability, consent, or execution authority is created."
     }
   ],
   "claim_markers": {

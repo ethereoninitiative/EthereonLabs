@@ -41,6 +41,10 @@ Start here for work that can affect present architecture or present claims:
 
 These documents orient current work. Runtime legality still belongs to executable governance and validated receipts.
 
+### Structured interresident exchange
+
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Interresident_Resonance_Protocol_R1.md` — implemented standalone IRP-R1: schema, bounded append-only exchange, source and lineage hashes, comparison preserving disagreement, and orientation projection. The three-origin demo is synthetic; no live provider models participated. No runtime, governance, canon, or identity authority is created.
+
 ### Deployment and desktop distribution
 
 - `docs/DEPLOYMENT_HOST_REGISTRY_MODEL.md`

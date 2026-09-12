@@ -199,6 +199,19 @@ Repository-wide surface and generated-artifact reconciliation is handled separat
 
 These files do not gain default-path or governance authority merely by existing or passing their dedicated tests.
 
+### Standalone interresident exchange
+
+- `runtime/interresident_resonance_r1.py`
+- `runtime/interresident_resonance_packet_r1.schema.json`
+- `runtime/sea_trials_interresident_resonance_r1.py`
+- V2 `docs/Interresident_Resonance_Protocol_R1.md`
+
+IRP-R1 validates source-bound, hash-linked structured declarations and preserves
+distinct residents and disagreement in a bounded local exchange. Its orientation
+projection reuses the existing response categories. The demo is synthetic;
+validation grants no authority or identity authentication. This CLI is standalone,
+not default-host wiring.
+
 ### Psi-42 and terminology boundaries
 
 - `runtime/psi42_transceiver_v1_6.py`
