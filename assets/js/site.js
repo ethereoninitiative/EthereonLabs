@@ -129,6 +129,65 @@ const enhanceHeaderActions = () => {
   });
 };
 
+const installNavigationMenu = () => {
+  const compact = window.matchMedia('(max-width: 980px)');
+  document.querySelectorAll('.site-header').forEach((header, index) => {
+    const nav = header.querySelector('.nav-links');
+    const actions = header.querySelector('.header-actions');
+    if (!nav || !actions || header.hasAttribute('data-menu-ready')) return;
+    nav.id = nav.id || `site-navigation-${index}`;
+    const toggle = document.createElement('button');
+    toggle.className = 'menu-toggle';
+    toggle.type = 'button';
+    toggle.setAttribute('aria-controls', nav.id);
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.textContent = 'Menu';
+    actions.appendChild(toggle);
+    header.setAttribute('data-menu-ready', '');
+    const close = () => {
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.textContent = 'Menu';
+      nav.hidden = compact.matches;
+    };
+    toggle.addEventListener('click', () => {
+      const opening = toggle.getAttribute('aria-expanded') !== 'true';
+      toggle.setAttribute('aria-expanded', String(opening));
+      toggle.textContent = opening ? 'Close' : 'Menu';
+      nav.hidden = !opening;
+    });
+    header.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        close();
+        toggle.focus();
+      }
+    });
+    nav.addEventListener('click', (event) => {
+      if (event.target.closest('a') && compact.matches) close();
+    });
+    document.addEventListener('click', (event) => {
+      if (!header.contains(event.target) && compact.matches) close();
+    });
+    compact.addEventListener('change', () => {
+      const focused = document.activeElement;
+      close();
+      if (compact.matches && nav.contains(focused)) toggle.focus();
+      else if (!compact.matches && focused === toggle) nav.querySelector('a')?.focus();
+    });
+    close();
+  });
+};
+
+const installSkipLink = () => {
+  const main = document.querySelector('main');
+  if (!main || document.querySelector('.skip-link')) return;
+  main.id = main.id || 'main-content';
+  const link = document.createElement('a');
+  link.href = `#${main.id}`;
+  link.className = 'skip-link';
+  link.textContent = 'Skip to content';
+  document.body.prepend(link);
+};
+
 const secondaryFooterLinks = () => {
   const fallbackFooterLinks = [
     ['how-lumina-works.html', 'How Lumina works'],
@@ -151,7 +210,7 @@ const enhanceFooter = () => {
       footerRow.innerHTML = `
         <div class="footer-brand-block" data-footer-brand-block>
           <a class="footer-brand-link" href="index.html">EthereonLabs</a>
-          <span class="footer-tagline">Adaptive continuity workspaces for returning to complex work.</span>
+          <span class="footer-tagline">Building a habitat for digital intelligence and creative continuity.</span>
         </div>
         <div class="footer-year">© <span data-year></span></div>
       `;
@@ -181,7 +240,8 @@ const normalizeLegacyExploreLabels = () => {
 const installSoundToggle = () => {
   const soundButton = document.querySelector('[data-sound-toggle]');
   const SOUND_KEY = 'ethereonlabs-sound-enabled';
-  let soundEnabled = localStorage.getItem(SOUND_KEY) === 'true';
+  let soundEnabled = false;
+  try { soundEnabled = localStorage.getItem(SOUND_KEY) === 'true'; } catch (_) { /* Storage is optional. */ }
   let audioContext = null;
 
   const updateButton = () => {
@@ -217,7 +277,7 @@ const installSoundToggle = () => {
   if (soundButton) {
     soundButton.addEventListener('click', () => {
       soundEnabled = !soundEnabled;
-      localStorage.setItem(SOUND_KEY, soundEnabled ? 'true' : 'false');
+      try { localStorage.setItem(SOUND_KEY, soundEnabled ? 'true' : 'false'); } catch (_) { /* Keep the toggle usable for this visit. */ }
       updateButton();
       ping();
     });
@@ -236,6 +296,8 @@ const enhanceSite = () => {
   loadBrandSigil();
   enhancePrimaryNav();
   enhanceHeaderActions();
+  installNavigationMenu();
+  installSkipLink();
   normalizeLegacyExploreLabels();
   enhanceFooter();
 

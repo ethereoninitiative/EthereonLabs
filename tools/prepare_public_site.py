@@ -17,7 +17,7 @@ ROOT_FILES = (".nojekyll", "CNAME", "robots.txt", "sitemap.xml", "llms.txt")
 INDEXNOW_KEY = "7d4b3f1c9a2e6d8f0b5c4a7e1f3d9b62"
 
 SEO_TITLES = {
-    "index.html": "EthereonLabs | Lumina Continuity Software for Complex Work",
+    "index.html": "EthereonLabs | Lumina — A Habitat for Digital Continuity",
     "lumina.html": "Lumina Continuity Workspace | EthereonLabs",
     "how-lumina-works.html": "How Lumina Works | Governed AI Continuity | EthereonLabs",
     "build.html": "What EthereonLabs Is Building | Lumina Continuity Software",
@@ -102,7 +102,7 @@ def common_graph(canonical: str, title: str, description: str, name: str) -> dic
             "@id": f"{BASE}/#organization",
             "name": "EthereonLabs",
             "url": f"{BASE}/",
-            "description": "EthereonLabs develops Lumina, an adaptive continuity workspace for returning to complex creative and technical work with context, governance, and inspectable records intact.",
+            "description": "EthereonLabs develops Lumina, a habitat for digital intelligence and creative continuity, with project return, evidence-backed memory, explicit governance, and inspectable records.",
             "sameAs": ["https://github.com/ethereoninitiative/EthereonLabs"],
             "knowsAbout": [
                 "Lumina",
