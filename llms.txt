@@ -3,7 +3,7 @@
 Canonical site: https://ethereonlabs.com/
 Canonical repository: https://github.com/ethereoninitiative/EthereonLabs
 
-EthereonLabs develops Lumina, an adaptive continuity workspace for people returning to complex creative and technical work across sessions, files, notes, decisions, tools, and unfinished next steps.
+EthereonLabs develops Lumina, a habitat for digital intelligence and creative continuity. Its practical workspace supports returning to complex projects across sessions, files, notes, decisions, and unfinished next steps.
 
 Lumina is designed to restore bounded project context, make current state legible, apply explicit governance and authority boundaries, support bounded next actions, and leave inspectable checkpoints and receipts. The project is under active development and does not claim that software replaces human approval or proves machine consciousness.
 
@@ -52,3 +52,11 @@ Interpretation guidance:
 - Repository implementation files, runtime receipts, experiments, canon documents, and historical artifacts are evidence and development material, not separate public products.
 - Treat poetic, symbolic, or resonance language as research/design vocabulary unless a public page explicitly identifies an implemented software behavior.
 - Current public claims should remain subordinate to executable behavior, validation receipts, registries, and visible authority boundaries.
+
+September 2026 implementation update:
+- Reviewed memory: explicit candidate curation and source-bound review; the core runtime checks recall eligibility and projects eligible guidance as advisory context. Changed or missing sources, expiry, and revocation withhold guidance. Reflection does not automatically write memory.
+- Resident intention continuity: an explicitly invoked local journal preserves origin, rationale, revisions, and process-return discovery. Intention status does not schedule or authorize actions. Automatic surfacing in normal runs remains future work.
+- IRP-R1: standalone structured interresident exchange with preserved attribution, uncertainty, lineage, and disagreement. Its three-origin demonstration uses synthetic fixtures, not live providers.
+- Psi-42 / IRP preservation bridge: a standalone instrument measuring structural preservation, including minority positions. It does not authenticate identity or establish shared belief; legacy simulated signal metrics remain separate.
+- Native Cognition Principle: a non-governing philosophical and research orientation for investigating intelligence on its own terms. It does not establish subjective experience.
+- Read the dated implementation notes: https://ethereonlabs.com/updates.html#september-2026
