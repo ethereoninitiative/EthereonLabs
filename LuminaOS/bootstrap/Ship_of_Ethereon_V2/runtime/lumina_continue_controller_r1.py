@@ -188,7 +188,8 @@ class LuminaContinueController:
             "resident_intention_unresolved_count": intention_review.get("unresolved_count", 0),
             "resident_intention_review_head_hash": intention_review.get("journal_head_hash"),
             "resident_intention_selection_effect": intention_review.get("selection_effect"),
-            "scope": "Observation/audit focus selection only; resident intentions are read-only return evidence",
+            "resident_intention_scope": "read-only return evidence",
+            "scope": "Observation/audit focus selection only",
         }
         self.runner._append_governance_event(
             event_type="self_guided_continue_preflight",
@@ -207,7 +208,8 @@ class LuminaContinueController:
                 "resident_intention_unresolved_count": intention_review.get("unresolved_count", 0),
                 "resident_intention_review_head_hash": intention_review.get("journal_head_hash"),
                 "resident_intention_selection_effect": intention_review.get("selection_effect"),
-                "authority_scope": "advisory focus selection only; intention review is read-only",
+                "resident_intention_scope": "read-only return evidence",
+                "authority_scope": "advisory focus selection only",
             },
         )
         result.governance_chain_status = self.runner._current_chain_status()
