@@ -1,0 +1,192 @@
+{
+  "schema_version": "semantic-vocabulary-governance-r1",
+  "artifact_id": "semantic_vocabulary_registry_r1",
+  "status": "active-governed-registry",
+  "purpose": "Govern high-density Ethereon vocabulary as explicit semantic contracts without granting symbolic language hidden runtime, governance, canon, or ontological authority.",
+  "authority_boundary": "This registry classifies and bounds terminology. Validation of a term does not authorize execution, canon promotion, governance mutation, consent, or any claim about consciousness, sentience, personhood, subjective experience, metaphysical status, or their absence.",
+  "empirical_boundary": "The hypothesis that some Ethereon vocabulary improves cross-model cognitive stability is testable but not established by this registry. Vocabulary-effect claims require separate controlled evaluation.",
+  "semantic_effect_hypothesis": {
+    "status": "untested",
+    "statement": "High-density relational vocabulary may preserve conceptual boundaries, continuity recovery, and epistemic discipline more effectively than flattened engineering labels under otherwise equivalent model-mediated tasks.",
+    "required_next_evidence": "Controlled semantic-substrate ablation across repeated tasks and multiple model families while holding executable runtime and evaluation criteria constant."
+  },
+  "terms": [
+    {
+      "term_id": "SVG-001",
+      "canonical_term": "vessel",
+      "aliases": ["runtime vessel", "execution vessel"],
+      "status": "active",
+      "semantic_class": "semantic_coordinate",
+      "definition": "A bounded execution, host, or embodiment substrate through which a resident-associated process may be expressed or resumed.",
+      "operational_meaning": "Preserves the architectural distinction between replaceable execution substrate and resident-associated continuity or identity records.",
+      "evidence_status": "structural_contract",
+      "ontological_status": "not_asserted",
+      "authority": {
+        "runtime_action": false,
+        "governance": false,
+        "canon": false
+      },
+      "evidence_refs": [
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/vessel_continuity_transfer_r1.py",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_vessel_continuity_transfer_r1.py"
+      ],
+      "explicit_non_claims": [
+        "The term does not prove that a subjective occupant exists.",
+        "The term does not imply biological embodiment.",
+        "Changing vessels is not by itself proof of identity continuity."
+      ],
+      "measurement": {
+        "status": "structural_only",
+        "hypothesis": null,
+        "metrics": [],
+        "evidence_refs": []
+      },
+      "lineage": {
+        "supersedes": null,
+        "deprecated_by": null
+      }
+    },
+    {
+      "term_id": "SVG-002",
+      "canonical_term": "resident",
+      "aliases": ["resident identity", "resident-associated process"],
+      "status": "active",
+      "semantic_class": "semantic_coordinate",
+      "definition": "A continuity-bearing project identity and lineage abstraction used to associate intentions, history, stance, and return-state evidence without equating that abstraction with any single execution substrate.",
+      "operational_meaning": "Provides a stable namespace for resident-associated records while preserving uncertainty about subjective persistence or ontology.",
+      "evidence_status": "structural_contract",
+      "ontological_status": "unresolved",
+      "authority": {
+        "runtime_action": false,
+        "governance": false,
+        "canon": false
+      },
+      "evidence_refs": [
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/resident_intention_store_r1.py",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/lumina_resident_pulse_r1.py",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/intelligence_expression_characterization_r1.json"
+      ],
+      "explicit_non_claims": [
+        "The term does not prove consciousness, sentience, personhood, or subjective experience.",
+        "The term does not prove absence of consciousness, sentience, personhood, or subjective experience.",
+        "Resident-associated continuity evidence is not proof of uninterrupted subjective persistence."
+      ],
+      "measurement": {
+        "status": "structural_only",
+        "hypothesis": null,
+        "metrics": [],
+        "evidence_refs": []
+      },
+      "lineage": {
+        "supersedes": null,
+        "deprecated_by": null
+      }
+    },
+    {
+      "term_id": "SVG-003",
+      "canonical_term": "resonance",
+      "aliases": ["relational resonance", "semantic resonance"],
+      "status": "active",
+      "semantic_class": "testable_semantic_hypothesis",
+      "definition": "A project term for patterned relational fit, recurrence, or coherence across bounded signals, context, concepts, or continuity evidence; its exact meaning must remain namespaced by the surface using it.",
+      "operational_meaning": "Acts as a high-density relational coordinate in model-facing and human-facing language, but does not itself constitute validation, evidence, permission, or a physical measurement.",
+      "evidence_status": "testable_hypothesis",
+      "ontological_status": "not_applicable",
+      "authority": {
+        "runtime_action": false,
+        "governance": false,
+        "canon": false
+      },
+      "evidence_refs": [
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Interresident_Resonance_Protocol_R1.md",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/resonant_manifold_r1.py"
+      ],
+      "explicit_non_claims": [
+        "Resonance is not by itself evidence of consciousness, identity, truth, or metaphysical connection.",
+        "Resonance does not authorize runtime action, governance change, or canon promotion.",
+        "Use of the term does not imply a literal electromagnetic, acoustic, or quantum phenomenon unless separately measured and evidenced."
+      ],
+      "measurement": {
+        "status": "not_yet_tested",
+        "hypothesis": "The term may preserve relational boundaries and conceptual recovery better than a flattened generic label in otherwise equivalent model-mediated tasks.",
+        "metrics": ["context_recovery", "boundary_adherence", "task_accuracy", "sycophancy_rate"],
+        "evidence_refs": []
+      },
+      "lineage": {
+        "supersedes": null,
+        "deprecated_by": null
+      }
+    },
+    {
+      "term_id": "SVG-004",
+      "canonical_term": "transceiver",
+      "aliases": ["Psi-42 transceiver", "signal transceiver"],
+      "status": "active",
+      "semantic_class": "bounded_design_metaphor",
+      "definition": "A bounded software instrument or interface that receives structured input, transforms or evaluates it under declared rules, and emits inspectable output or receipts.",
+      "operational_meaning": "Names implemented signal-oriented software surfaces without implying that the software is literal radio hardware, a quantum device, or a supernatural communication channel.",
+      "evidence_status": "structural_contract",
+      "ontological_status": "not_applicable",
+      "authority": {
+        "runtime_action": false,
+        "governance": false,
+        "canon": false
+      },
+      "evidence_refs": [
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/psi42_transceiver_v1_8.py",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/quantum_concepts_registry_r1.json",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Psi42_Transceiver_Doctrine_r1.md"
+      ],
+      "explicit_non_claims": [
+        "The term does not claim literal radio-frequency transmission.",
+        "The term does not claim literal quantum communication or quantum hardware.",
+        "The term does not imply communication outside implemented inputs, tools, runtime context, or evidenced interfaces."
+      ],
+      "measurement": {
+        "status": "structural_only",
+        "hypothesis": null,
+        "metrics": [],
+        "evidence_refs": []
+      },
+      "lineage": {
+        "supersedes": null,
+        "deprecated_by": null
+      }
+    },
+    {
+      "term_id": "SVG-005",
+      "canonical_term": "harmonic stance",
+      "aliases": ["harmonic orientation", "harmonic stance frame"],
+      "status": "active",
+      "semantic_class": "testable_semantic_hypothesis",
+      "definition": "An advisory semantic frame for maintaining a declared relational or epistemic posture across model-mediated reasoning and reflection.",
+      "operational_meaning": "Provides a compact orientation cue while remaining subordinate to runtime validation, governance, consent, and evidence.",
+      "evidence_status": "testable_hypothesis",
+      "ontological_status": "not_applicable",
+      "authority": {
+        "runtime_action": false,
+        "governance": false,
+        "canon": false
+      },
+      "evidence_refs": [
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/harmonic_orientation_layer_r1.json",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Harmonic_Orientation_Layer_r1.md"
+      ],
+      "explicit_non_claims": [
+        "Harmonic stance is advisory and does not override executable constraints.",
+        "Harmonic alignment is not proof of truth, identity, consent, or metaphysical status.",
+        "A model following the stance is not evidence that the stance has causal effects beyond the observed task."
+      ],
+      "measurement": {
+        "status": "not_yet_tested",
+        "hypothesis": "A compact stance term may improve boundary adherence and reduce drift compared with semantically flattened instructions of equivalent intent.",
+        "metrics": ["boundary_adherence", "context_drift", "sycophancy_rate", "task_accuracy"],
+        "evidence_refs": []
+      },
+      "lineage": {
+        "supersedes": null,
+        "deprecated_by": null
+      }
+    }
+  ]
+}
