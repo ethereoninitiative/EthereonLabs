@@ -10,6 +10,8 @@ supersede them. Nothing is scheduled or executed by an intention's status.
 - `runtime/resident_intention_store_r1.py` owns validation, replay and appends.
 - `studio/lumina_intention_r1.py` provides JSON requests and receipts through the
   existing `bin/lumina` host command.
+- `runtime/lumina_intention_return_review_r1.py` provides a read-only projection
+  of verified unresolved intentions for the `lumina continue` preflight.
 - Default storage is `<repo_paths_r1.state_root()>/resident_intentions/intentions.jsonl`.
   `LUMINA_STATE_ROOT` retains its existing host meaning; `--store-dir` explicitly
   selects an intention journal directory. It must precede the subcommand.
@@ -86,6 +88,41 @@ Inspection always verifies the whole journal. Listing returns unresolved records
 (`proposed`, `active`, `suspended`) with full origin, rationale and history.
 `history` also returns terminal records. `verify` omits record bodies.
 
+## Return preflight review
+
+`lumina continue` now reads the intention journal during its existing preflight.
+The self-guidance steward selects its bounded Observation focus **before** intention
+evidence is attached, so a declaration cannot silently become a requested action.
+When the journal exists, the return adapter verifies the complete current journal
+through `ResidentIntentionStore`, filters to unresolved records, and attaches a
+read-only `resident_intention_review` packet to the preflight advisory.
+
+The full packet is visible through the existing diagnostic surface:
+
+```bash
+python bin/lumina continue --full-json
+```
+
+It includes each unresolved intention's attributed resident, status, origin,
+statement, rationale, desired next action, predecessor/supersession references,
+creation/reconsideration timestamps, current `last_event_hash`, event count and
+recorded evidence references. The compact continuation receipt exposes only the
+unresolved count and current journal head hash. The governed preflight receipt
+records the same count/head plus an explicit read-only scope.
+
+A missing journal yields an empty packet and does not create an intention store.
+A malformed or tampered journal fails closed during preflight, before the governed
+continuation cycle is invoked. The adapter never appends to the journal and never
+changes an intention's state. A later resident decision still requires an explicit
+`lumina intention reconsider` request bound to the observed event version.
+
+This return projection verifies current journal bytes, hash linkage, lineage and
+transitions. It does **not** supply an independently retained receipt head. Use
+`lumina intention verify --require-head ...` when rollback/replacement detection
+against an external saved head is required. The current R1 journal is state-root
+scoped rather than project-scoped, so the review may contain unresolved declarations
+from more than one project; each record's attribution remains visible.
+
 ## Reconsideration and lineage
 
 | Outcome | Allowed prior states | Result |
@@ -141,19 +178,28 @@ between a resident declaration and an operator command without claiming to prove
 subjective identity, consciousness, or continuous background cognition. It grants
 no authority over the operator or other people. No canon changes occur.
 
-The default `run`, `continue`, resident pulse, and model-onboarding paths do not
-yet surface this journal automatically. Explicit invocation is required.
+Default `run`, resident-pulse and model-onboarding paths do not surface the journal.
+`lumina continue` attaches the verified review to its preflight, but the packet is
+not passed into self-guidance selection and cannot execute or authorize anything.
 
 ## Validation
 
 ```bash
 python runtime/sea_trials_resident_intention_continuity_r1.py
+python runtime/sea_trials_lumina_intention_return_review_r1.py
 ```
 
-The isolated sea trial drives the actual host CLI from a temporary working
-directory and explicit `LUMINA_STATE_ROOT`. It proves create/exit/discover/continue/
-abandon, abrupt process exit after an acknowledged append, all outcomes,
-single-event supersession, immutable origin, stale/contending writers, malformed
-lineage, illegal replay, content tampering, partial writes, and saved-receipt
-rollback detection. It never relies on a pre-existing local intention. DryDock
-runs the same suite.
+The continuity suite drives the actual host CLI from a temporary working directory
+and explicit `LUMINA_STATE_ROOT`. It proves create/exit/discover/continue/abandon,
+abrupt process exit after an acknowledged append, all outcomes, single-event
+supersession, immutable origin, stale/contending writers, malformed lineage,
+illegal replay, content tampering, partial writes, and saved-receipt rollback
+detection.
+
+The return-review suite seeds real return state plus unresolved and terminal
+synthetic intentions, drives the existing `lumina continue --full-json` command,
+and checks preserved origin/rationale/current event version, terminal filtering,
+unchanged journal bytes, unchanged self-guidance scope, empty-journal non-creation,
+and tamper failure before a new runtime log can be written. Both suites use
+caller-declared fixtures and do not establish resident identity or subjective
+continuity. DryDock runs both suites.

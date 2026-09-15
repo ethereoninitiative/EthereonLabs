@@ -114,6 +114,7 @@ jobs:
           python sea_trials_lumina_self_guidance_r1.py
           python sea_trials_lumina_continue_cli_r1.py
           python sea_trials_resident_intention_continuity_r1.py
+          python sea_trials_lumina_intention_return_review_r1.py
           python sea_trials_lumina_weather_snapshot_idempotence_r1.py
           python sea_trials_runtime_memory_ledger_idempotence_r1.py
           python sea_trials_windows_return_host_path_budget_r1.py
