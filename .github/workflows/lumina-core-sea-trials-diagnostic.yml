@@ -1,4 +1,4 @@
-name: Lumina Core Sea Trials Diagnostic
+name: Lumina Return Panel Diagnostic
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ permissions:
   contents: read
 
 jobs:
-  isolate-core-sea-trial:
+  isolate-return-panel-test:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
@@ -27,71 +27,37 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: 01 set one merged
-        run: python sea_trials_set_one_r1_merged.py
-      - name: 02 psi42 frequency probe
-        run: python sea_trials_psi42_frequency_probe_r1.py
-      - name: 03 context bundle repo truth
-        run: python sea_trials_context_bundle_repo_truth_r1.py
-      - name: 04 lumina return host
-        run: python sea_trials_lumina_return_host_r1.py
-      - name: 05 meaning recall
-        run: python sea_trials_meaning_recall_r1.py
-      - name: 06 stationary habition cold return
-        run: python sea_trials_stationary_habitation_cold_return_r1.py
-      - name: 07 lumina self guidance
-        run: python sea_trials_lumina_self_guidance_r1.py
-      - name: 08 lumina continue cli
-        run: python sea_trials_lumina_continue_cli_r1.py
-      - name: 09 resident intention continuity
-        run: python sea_trials_resident_intention_continuity_r1.py
-      - name: 10 lumina intention return review
-        run: python sea_trials_lumina_intention_return_review_r1.py
-      - name: 11 lumina weather snapshot idempotence
-        run: python sea_trials_lumina_weather_snapshot_idempotence_r1.py
-      - name: 12 runtime memory ledger idempotence
-        run: python sea_trials_runtime_memory_ledger_idempotence_r1.py
-      - name: 13 windows return host path budget
-        run: python sea_trials_windows_return_host_path_budget_r1.py
-      - name: 14 resonant manifold
-        run: python sea_trials_resonant_manifold_r1.py
-      - name: 15 resonant field reveal
-        run: python sea_trials_resonant_field_reveal_r1.py
-      - name: 16 resonant field reveal sample
-        run: python sea_trials_resonant_field_reveal_sample_r1.py
-      - name: 17 resonant return panel
-        run: python sea_trials_resonant_return_panel_r1.py
-      - name: 18 living framework chamber
-        run: python sea_trials_living_framework_chamber_r1.py
-      - name: 19 living framework ignition
-        run: python sea_trials_living_framework_ignition_r1.py
-      - name: 20 lumina ai orientation protocol
-        run: python sea_trials_lumina_ai_orientation_protocol_r1.py
-      - name: 21 semantic vocabulary governance
-        run: python sea_trials_semantic_vocabulary_governance_r1.py
-      - name: 22 interresident resonance
-        run: python sea_trials_interresident_resonance_r1.py
-      - name: 23 psi42 irp preservation bridge
-        run: python sea_trials_psi42_irp_preservation_bridge_r1.py
-      - name: 24 mycelial coupling receipt
-        run: python sea_trials_mycelial_coupling_receipt_r1.py
-      - name: 25 mycelial field absence
-        run: python sea_trials_mycelial_field_absence_r1.py
-      - name: 26 mycelial field replay
-        run: python sea_trials_mycelial_field_replay_r1.py
-      - name: 27 mycelial edge loss
-        run: python sea_trials_mycelial_edge_loss_r1.py
-      - name: 28 vessel continuity transfer
-        run: python sea_trials_vessel_continuity_transfer_r1.py
-      - name: 29 canon readiness r2
-        run: python sea_trials_canon_readiness_r2.py
-      - name: 30 canonical successor lineage
-        run: python sea_trials_canonical_successor_lineage_r1.py
-      - name: 31 post promotion verifier
-        run: python post_promotion_verifier_r2.py
-      - name: 32 sea trials post promotion verifier
-        run: python sea_trials_post_promotion_verifier_r2.py
-      - name: 33 current canon resolution
-        run: python sea_trials_current_canon_resolution_r1.py
-      - name: 34 canonical promotion export
-        run: python sea_trials_canonical_promotion_export_r1.py
+      - name: 01 deterministic content binding
+        run: python -m unittest sea_trials_resonant_return_panel_r1.ReturnPanelTrial.test_repeated_output_is_byte_deterministic_and_content_bound
+      - name: 02 immutable detached output
+        run: python -m unittest sea_trials_resonant_return_panel_r1.ReturnPanelTrial.test_input_is_immutable_and_output_is_detached
+      - name: 03 no evidence IO or process
+        run: python -m unittest sea_trials_resonant_return_panel_r1.ReturnPanelTrial.test_build_never_opens_evidence_or_starts_a_process
+      - name: 04 denial cannot be crossed
+        run: python -m unittest sea_trials_resonant_return_panel_r1.ReturnPanelTrial.test_perfect_coherence_cannot_cross_a_denial
+      - name: 05 missing governance defers
+        run: python -m unittest sea_trials_resonant_return_panel_r1.ReturnPanelTrial.test_missing_governance_defers_even_with_injected_allowed_flags
+      - name: 06 malformed governance rejected
+        run: python -m unittest sea_trials_resonant_return_panel_r1.ReturnPanelTrial.test_malformed_governance_cannot_become_allowed
+      - name: 07 focus matches continue preflight
+        run: python -m unittest sea_trials_resonant_return_panel_r1.ReturnPanelTrial.test_focus_reuses_continue_preflight_for_the_same_supplied_inputs
+      - name: 08 scores cannot replace steward focus
+        run: python -m unittest sea_trials_resonant_return_panel_r1.ReturnPanelTrial.test_scores_do_not_replace_the_stewards_focus
+      - name: 09 selected focus can be denied
+        run: python -m unittest sea_trials_resonant_return_panel_r1.ReturnPanelTrial.test_selected_focus_can_be_denied_without_granting_execution
+      - name: 10 absent state remains absent
+        run: python -m unittest sea_trials_resonant_return_panel_r1.ReturnPanelTrial.test_absent_state_stays_absent_despite_a_fallback_recommendation
+      - name: 11 axis evidence and potential independence
+        run: python -m unittest sea_trials_resonant_return_panel_r1.ReturnPanelTrial.test_axes_explain_evidence_presence_and_potential_is_independent
+      - name: 12 cross project checkpoint mismatch rejected
+        run: python -m unittest sea_trials_resonant_return_panel_r1.ReturnPanelTrial.test_cross_project_and_checkpoint_disagreement_are_rejected
+      - name: 13 nonfinite malformed vectors rejected
+        run: python -m unittest sea_trials_resonant_return_panel_r1.ReturnPanelTrial.test_nonfinite_and_malformed_vectors_are_rejected
+      - name: 14 duplicate unbounded candidates rejected
+        run: python -m unittest sea_trials_resonant_return_panel_r1.ReturnPanelTrial.test_duplicate_and_unbounded_candidate_inputs_are_rejected
+      - name: 15 evidence locators preserved without verification
+        run: python -m unittest sea_trials_resonant_return_panel_r1.ReturnPanelTrial.test_evidence_locators_are_preserved_without_verification_claims
+      - name: 16 cli read-only state preservation
+        run: python -m unittest sea_trials_resonant_return_panel_r1.ReturnPanelTrial.test_cli_reads_one_file_and_preserves_present_and_absent_state
+      - name: 17 cli rejects ambiguous invalid json
+        run: python -m unittest sea_trials_resonant_return_panel_r1.ReturnPanelTrial.test_cli_rejects_ambiguous_or_invalid_json_without_a_partial_panel
