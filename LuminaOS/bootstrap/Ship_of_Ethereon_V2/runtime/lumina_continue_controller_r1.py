@@ -9,10 +9,12 @@ try:
     from .runtime_runner_self_guided_bridge_r1 import SelfGuidedReturnHostRuntimeRunner
     from .lumina_self_guidance_steward_r1 import LuminaSelfGuidanceSteward
     from .lumina_self_guidance_history_r1 import ProjectGuidanceHistoryStore
+    from .lumina_intention_return_review_r1 import build_resident_intention_return_review
 except Exception:
     from runtime_runner_self_guided_bridge_r1 import SelfGuidedReturnHostRuntimeRunner
     from lumina_self_guidance_steward_r1 import LuminaSelfGuidanceSteward
     from lumina_self_guidance_history_r1 import ProjectGuidanceHistoryStore
+    from lumina_intention_return_review_r1 import build_resident_intention_return_review
 
 
 SAFE_RUNTIME_CONFIG: Dict[str, bool] = {
@@ -37,6 +39,7 @@ DEFAULT_ARTIFACTS = [
     "runtime/lumina_continuation_action_r1.py",
     "runtime/lumina_self_guidance_steward_r1.py",
     "runtime/lumina_self_guidance_history_r1.py",
+    "runtime/lumina_intention_return_review_r1.py",
     "runtime/lumina_continue_controller_r1.py",
     "runtime/project_return_repo_native_r1.py",
     "runtime/workspace_host_repo_native_r1.py",
@@ -53,6 +56,7 @@ class ContinueResult:
         governance = dict(self.runtime_result.get("governance") or {})
         exposed = list(self.runtime_result.get("exposed_capabilities") or [])
         post_guidance = dict(governance.get("self_guidance_execution") or {})
+        intention_review = dict(self.preflight_advisory.get("resident_intention_review") or {})
         return {
             "run_id": self.runtime_result.get("run_id"),
             "project_id": self.preflight_advisory.get("project_id"),
@@ -62,6 +66,8 @@ class ContinueResult:
             "preflight_confidence_score": self.preflight_advisory.get("confidence_score"),
             "preflight_reasoning_brief": self.preflight_advisory.get("reasoning_brief"),
             "preflight_boundary_note": self.preflight_advisory.get("boundary_note"),
+            "resident_intention_unresolved_count": intention_review.get("unresolved_count", 0),
+            "resident_intention_review_head_hash": intention_review.get("journal_head_hash"),
             "target_mode": self.runtime_result.get("target_mode"),
             "action_type": self.runtime_result.get("action_type"),
             "halted": self.runtime_result.get("halted"),
@@ -75,7 +81,8 @@ class ContinueResult:
             "post_cycle_recommended_next_action": post_guidance.get("recommended_next_action"),
             "authority_boundary": (
                 "The selected action may focus a governed Observation/audit cycle only. "
-                "Self-guidance remains advisory and cannot authorize mutation, promotion, canon, or mode-law changes."
+                "Self-guidance remains advisory and resident intention review remains read-only; "
+                "neither can authorize mutation, promotion, canon, or mode-law changes."
             ),
         }
 
@@ -121,7 +128,15 @@ class LuminaContinueController:
             working_stance=surface.get("working_stance"),
             guidance_history=prior_history,
         )
-        return steward.advisory_summary(advisory)
+        advisory_summary = steward.advisory_summary(advisory)
+
+        # Intention evidence is deliberately attached only after the steward has
+        # selected its bounded focus. This prevents a declaration from silently
+        # becoming execution, governance, or self-guidance authority.
+        advisory_summary["resident_intention_review"] = build_resident_intention_return_review(
+            base_dir=Path(self.runner.base_dir),
+        )
+        return advisory_summary
 
     def continue_cycle(
         self,
@@ -138,6 +153,7 @@ class LuminaContinueController:
             target_mode=target_mode,
         )
         selected = str(advisory.get("recommended_next_action") or requested_action)
+        intention_review = dict(advisory.get("resident_intention_review") or {})
 
         result = self.runner.run_cycle(
             current_mode=current_mode,
@@ -150,6 +166,7 @@ class LuminaContinueController:
             artifacts=list(DEFAULT_ARTIFACTS),
             continuation_notes=[
                 "Lumina continue selected its Observation focus from pre-cycle project-return/self-guidance state.",
+                "Resident intention review was attached after focus selection as read-only return evidence.",
                 "The selection is advisory input to an audit cycle, not mutation or governance authority.",
             ],
             context_bundle_overrides={
@@ -168,7 +185,10 @@ class LuminaContinueController:
             "confidence_score": advisory.get("confidence_score"),
             "reasoning_brief": advisory.get("reasoning_brief"),
             "boundary_note": advisory.get("boundary_note"),
-            "scope": "Observation/audit focus selection only",
+            "resident_intention_unresolved_count": intention_review.get("unresolved_count", 0),
+            "resident_intention_review_head_hash": intention_review.get("journal_head_hash"),
+            "resident_intention_selection_effect": intention_review.get("selection_effect"),
+            "scope": "Observation/audit focus selection only; resident intentions are read-only return evidence",
         }
         self.runner._append_governance_event(
             event_type="self_guided_continue_preflight",
@@ -184,7 +204,10 @@ class LuminaContinueController:
                 "guidance_strategy": advisory.get("guidance_strategy"),
                 "confidence_label": advisory.get("confidence_label"),
                 "selected_next_action": selected,
-                "authority_scope": "advisory focus selection only",
+                "resident_intention_unresolved_count": intention_review.get("unresolved_count", 0),
+                "resident_intention_review_head_hash": intention_review.get("journal_head_hash"),
+                "resident_intention_selection_effect": intention_review.get("selection_effect"),
+                "authority_scope": "advisory focus selection only; intention review is read-only",
             },
         )
         result.governance_chain_status = self.runner._current_chain_status()
