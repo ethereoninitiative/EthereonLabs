@@ -109,8 +109,18 @@ class ReturnPanelTrial(unittest.TestCase):
                 history.return_value.read_history.return_value = fixture["guidance_history"]
                 expected = controller.preflight(project_id=fixture["project_id"], requested_action=fixture["requested_action"])
                 actual = build_panel(fixture)["continuation_focus"]
+                # Continue preflight now attaches resident-intention evidence only after
+                # the steward chooses its focus. The panel reuses that focus contract,
+                # but must not reach outside the supplied snapshot to synthesize store
+                # evidence. Compare the shared selection surface and preserve the gap.
+                self.assertIn("resident_intention_review", expected)
+                selection_expected = {
+                    key: value for key, value in expected.items()
+                    if key != "resident_intention_review"
+                }
                 with self.subTest(mode=mode):
-                    self.assertEqual({key: actual[key] for key in expected}, expected)
+                    self.assertEqual({key: actual[key] for key in selection_expected}, selection_expected)
+                    self.assertNotIn("resident_intention_review", actual)
 
     def test_scores_do_not_replace_the_stewards_focus(self):
         first = build_panel(self.input)["continuation_focus"]
