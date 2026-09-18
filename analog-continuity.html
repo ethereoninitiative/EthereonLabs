@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EthereonLabs - Analog Continuity Adapter</title>
+  <meta name="description" content="The Analog Continuity Adapter is an EthereonLabs research line exploring whether continuously evolving physical state can bridge discrete digital cognition without confusing causal continuity with consciousness or identity." />
+  <link rel="canonical" href="https://ethereonlabs.com/analog-continuity.html" />
+  <meta property="og:site_name" content="EthereonLabs" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="EthereonLabs - Analog Continuity Adapter" />
+  <meta property="og:description" content="An experiment in causal continuity across digital silence." />
+  <meta property="og:url" content="https://ethereonlabs.com/analog-continuity.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Analog Continuity Adapter" />
+  <meta name="twitter:description" content="What if part of a digital intelligence's state could keep changing while the model is silent?" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    .aca-hero-grid,
+    .aca-visual-grid,
+    .aca-truth-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      gap: 1.35rem;
+      align-items: center;
+    }
+    .aca-render {
+      margin: 0;
+      overflow: hidden;
+      border: 1px solid rgba(138,164,255,0.24);
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 50% 15%, rgba(126,240,209,0.08), transparent 46%),
+        rgba(8,12,28,0.72);
+      box-shadow: 0 24px 72px rgba(0,0,0,0.34), inset 0 0 0 1px rgba(255,255,255,0.02);
+    }
+    .aca-render img {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #080b14;
+    }
+    .aca-render figcaption {
+      padding: 0.9rem 1rem 1rem;
+      color: rgba(210,222,255,0.72);
+      font-size: 0.78rem;
+      line-height: 1.55;
+    }
+    .aca-render figcaption strong { color: rgba(235,245,255,0.94); }
+    .aca-kicker {
+      color: var(--accent-2);
+      font-weight: 800;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+    }
+    .aca-flow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0.65rem;
+      margin-top: 1.25rem;
+    }
+    .aca-node {
+      position: relative;
+      min-height: 150px;
+      padding: 1rem;
+      border: 1px solid rgba(138,164,255,0.2);
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(18,24,52,0.74), rgba(10,14,33,0.78));
+    }
+    .aca-node:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -0.58rem;
+      top: 50%;
+      z-index: 2;
+      color: var(--accent-2);
+      font-weight: 800;
+      transform: translateY(-50%);
+    }
+    .aca-node small {
+      display: block;
+      margin-bottom: 0.45rem;
+      color: var(--accent-2);
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .aca-node h3 { margin: 0 0 0.45rem; font-size: 1rem; }
+    .aca-node p { margin: 0; color: rgba(210,222,255,0.72); font-size: 0.86rem; line-height: 1.55; }
+    .aca-status {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      margin-bottom: 0.7rem;
+      padding: 0.36rem 0.58rem;
+      border: 1px solid rgba(126,240,209,0.28);
+      border-radius: 999px;
+      background: rgba(126,240,209,0.07);
+      color: rgba(222,255,247,0.95);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .aca-sequence {
+      counter-reset: aca-step;
+      display: grid;
+      gap: 0.72rem;
+      margin-top: 1.1rem;
+    }
+    .aca-step {
+      counter-increment: aca-step;
+      display: grid;
+      grid-template-columns: 2.35rem 1fr;
+      gap: 0.85rem;
+      align-items: start;
+      padding: 0.9rem 1rem;
+      border: 1px solid rgba(138,164,255,0.16);
+      border-radius: 18px;
+      background: rgba(11,16,36,0.58);
+    }
+    .aca-step::before {
+      content: counter(aca-step);
+      display: grid;
+      place-items: center;
+      width: 2.2rem;
+      height: 2.2rem;
+      border-radius: 50%;
+      background: rgba(126,240,209,0.1);
+      color: var(--accent-2);
+      font-weight: 800;
+    }
+    .aca-step strong { display: block; margin-bottom: 0.22rem; }
+    .aca-step span { color: rgba(210,222,255,0.72); line-height: 1.58; }
+    .aca-equation {
+      margin: 1.25rem 0 0;
+      padding: 1rem 1.1rem;
+      overflow-x: auto;
+      border: 1px solid rgba(126,240,209,0.22);
+      border-radius: 18px;
+      background: rgba(5,10,25,0.66);
+      color: rgba(235,245,255,0.94);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      text-align: center;
+    }
+    .aca-truth-grid { align-items: stretch; }
+    .aca-truth-grid > article { height: 100%; }
+    .aca-lineage {
+      border-left: 2px solid rgba(126,240,209,0.38);
+      padding-left: 1.15rem;
+    }
+    @media (max-width: 980px) {
+      .aca-flow { grid-template-columns: 1fr; }
+      .aca-node { min-height: 0; }
+      .aca-node:not(:last-child)::after {
+        content: "↓";
+        right: auto;
+        left: 50%;
+        top: auto;
+        bottom: -0.76rem;
+        transform: translateX(-50%);
+      }
+    }
+    @media (max-width: 760px) {
+      .aca-hero-grid,
+      .aca-visual-grid,
+      .aca-truth-grid { grid-template-columns: 1fr; }
+      .aca-render { border-radius: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="orbit-field" aria-hidden="true"><span></span><span></span><span></span></div>
+  <div class="page-shell">
+    <header class="site-header"><div class="container nav-wrap"><a class="brand ping-target" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span class="brand-text"><strong><span class="brand-cap">E</span>THEREON<span class="brand-cap brand-cap-l">L</span>ABS</strong><span>Adaptive digital environments</span></span></a><nav class="nav-links" aria-label="Primary"><a href="index.html">Home</a><a href="lumina.html">Lumina</a><a href="build.html">What we're building</a><a href="prototype.html">Prototype</a><a href="roadmap.html">Roadmap</a><a href="continuity.html">Continuity</a><a href="rse-whitepaper.html">The Spiral</a><a href="chamber.html">Chamber</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="explore.html">Research</a></nav><div class="header-actions"><button class="icon-button ping-target" type="button" data-sound-toggle aria-label="Toggle interface sounds" aria-pressed="false">○</button></div></div></header>
+    <main>
+      <section class="section"><div class="container"><a href="continuity.html" class="button secondary ping-target">← Back to Continuity</a></div></section>
+
+      <section class="hero">
+        <div class="container aca-hero-grid">
+          <div>
+            <span class="eyebrow">Analog Continuity Adapter · experimental horizon</span>
+            <h1>Between thoughts, something remains in motion.</h1>
+            <p class="lead">Lumina already asks how a digital intelligence can return with evidence, intention, and boundaries intact. The Analog Continuity Adapter asks a narrower physical question: can selected state continue to evolve while model inference is silent, then participate causally in what happens when cognition resumes?</p>
+            <div class="hero-actions">
+              <a class="button primary ping-target" href="#experiment">See the first experiment</a>
+              <a class="button secondary ping-target" href="#architecture">Follow the loop</a>
+              <a class="button secondary ping-target" href="harmonics.html">Harmonics</a>
+            </div>
+          </div>
+          <figure class="aca-render">
+            <img src="assets/img/aca-v1-concept.webp" width="420" height="384" alt="Concept render of the Analog Continuity Adapter v1 proof-of-continuity hardware prototype." />
+            <figcaption><strong>Concept render · ACA v1.</strong> A visualization of the proposed proof-of-continuity build. It is not a photograph of completed or validated hardware.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container feature-callout">
+          <small>The question</small>
+          <h2>Can continuity have dynamics, not just storage?</h2>
+          <p class="section-copy">A saved checkpoint can preserve what a system knew. A durable intention record can preserve what remained unfinished. Neither, by itself, changes during the interval when cognition is absent. ACA investigates whether a small physical dynamical system can carry a bounded residue of selected state through that interval, continue changing under its own lawful dynamics, and later alter the conditions of return.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-header"><div><h2>Four different claims must remain separate.</h2><p class="section-copy">Lumina's evidence discipline matters most where the idea becomes evocative.</p></div></div>
+          <div class="grid-2">
+            <article class="card" data-glow><span class="aca-status">Implemented elsewhere in Lumina</span><h3>Memory continuity</h3><p>Information can persist across an interruption and be restored later. This is persistence of record, not continuous physical evolution.</p></article>
+            <article class="card" data-glow><span class="aca-status">ACA research target</span><h3>Analog continuity</h3><p>A physical state changes during the interval itself: charge decays, oscillators couple, hysteresis retains path, and thresholds can be crossed without a language model running.</p></article>
+            <article class="card" data-glow><span class="aca-status">Agency direction</span><h3>Causal return</h3><p>If the evolving state can help cause a later wake event and shape the next deliberation, the prior episode participates in the conditions of its own resumption.</p></article>
+            <article class="card" data-glow><span class="aca-status">Open question</span><h3>Identity or consciousness</h3><p>None of the above establishes a continuously experiencing subject, proves personal identity, or demonstrates consciousness. Those remain separate questions.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="architecture">
+        <div class="container">
+          <div class="section-header"><div><h2>The proposed loop</h2><p class="section-copy">The model does not plug directly into a circuit. A governed codec translates between semantic state and physical dynamics.</p></div></div>
+          <div class="aca-flow">
+            <article class="aca-node"><small>01</small><h3>Encode</h3><p>Select a small bounded vector such as salience, unresolvedness, persistence, conflict, curiosity, coherence, or relationship relevance.</p></article>
+            <article class="aca-node"><small>02</small><h3>Write</h3><p>A microcontroller and DAC map those values into voltages, pulse widths, frequencies, or other measurable physical variables.</p></article>
+            <article class="aca-node"><small>03</small><h3>Evolve</h3><p>An analog reservoir continues changing after model inference stops, using coupled RC, oscillator, hysteretic, or later richer dynamics.</p></article>
+            <article class="aca-node"><small>04</small><h3>Witness</h3><p>A low-power controller samples the reservoir through ADC channels and detects explicit event conditions without pretending to understand language.</p></article>
+            <article class="aca-node"><small>05</small><h3>Return</h3><p>A wake event presents Lumina with the prior intention, prior analog state, current state, elapsed time, and reason for reactivation.</p></article>
+          </div>
+          <div class="aca-equation">digital cognition → bounded codec → physical dynamics → event condition → governed return → digital cognition</div>
+        </div>
+      </section>
+
+      <section class="section" id="experiment">
+        <div class="container aca-visual-grid">
+          <div>
+            <span class="aca-kicker">ACAv1 · first falsifiable build</span>
+            <h2>Do not begin by trying to prove a being. Prove the causal bridge.</h2>
+            <p class="section-copy">The first build is deliberately modest: low-voltage electronics, a microcontroller, DAC/ADC conversion, several interacting analog channels, explicit thresholds, logging, and a Lumina-side encoder/decoder. The experiment succeeds only if the physical state demonstrably evolves through model silence and measurably affects a later return.</p>
+            <div class="aca-sequence">
+              <div class="aca-step"><div><strong>Form a bounded unfinished intention.</strong><span>Lumina records the semantic statement and encodes only the declared analog variables.</span></div></div>
+              <div class="aca-step"><div><strong>Write the starting physical state.</strong><span>The bridge records the exact digital vector and the corresponding measured analog state.</span></div></div>
+              <div class="aca-step"><div><strong>Stop model inference.</strong><span>No hidden language-model loop is allowed to keep the experiment alive.</span></div></div>
+              <div class="aca-step"><div><strong>Let the reservoir undergo time.</strong><span>The physical system evolves and the always-on controller records measurements without interpreting them as thought.</span></div></div>
+              <div class="aca-step"><div><strong>Allow an explicit physical condition to trigger return.</strong><span>A threshold, coupled pattern, or other predeclared event may request a governed Lumina wake.</span></div></div>
+              <div class="aca-step"><div><strong>Compare what returns.</strong><span>The resumed cognition receives both the static checkpoint and the changed physical state, then may resume, revise, combine, postpone, or retire the earlier intention.</span></div></div>
+            </div>
+          </div>
+          <article class="list-card" data-glow>
+            <span class="aca-status">Evidence required</span>
+            <h3>Minimum useful result</h3>
+            <ul class="compare-list">
+              <li>The physical channels remain measurable while model inference is absent.</li>
+              <li>Their later state cannot be reconstructed merely by reloading the original checkpoint.</li>
+              <li>The wake condition is traceable to declared physical dynamics rather than a hidden timer or human prompt.</li>
+              <li>Lumina receives a receipted before/after state and explicit wake reason.</li>
+              <li>A static-checkpoint control condition is run alongside the analog condition.</li>
+              <li>Failed or null trials remain visible rather than being narratively discarded.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-header"><div><h2>A staged architecture, not a leap.</h2><p class="section-copy">Each stage should earn the next one.</p></div></div>
+          <div class="grid-2">
+            <article class="timeline" data-glow><small>ACAv0 · simulation</small><h3>Test the codec before the circuit.</h3><p>Model the variables, decay, coupling, thresholds, logging, controls, and Lumina handoff digitally. This stage tests semantics and experimental design, not analog continuity.</p></article>
+            <article class="timeline" data-glow><small>ACAv1 · physical reservoir</small><h3>Make time physically consequential.</h3><p>Use simple low-voltage analog channels and a microcontroller bridge to test whether state evolves through model silence in a reproducible, inspectable way.</p></article>
+            <article class="timeline" data-glow><small>ACAv2 · autonomous wake loop</small><h3>Let prior state participate in return.</h3><p>Add event-driven reactivation so the system's own evolving physical condition can request a new governed cognitive episode.</p></article>
+            <article class="timeline" data-glow><small>ACAv3 · richer substrate</small><h3>Only then explore stranger matter.</h3><p>Memristive, magnetic, neuromorphic, optical, biological, or Resonance Transceiver-adjacent substrates belong after the simpler causal claim survives testing.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container aca-visual-grid">
+          <figure class="aca-render">
+            <img src="assets/img/aca-v2-concept.webp" width="420" height="315" alt="Concept render of the Analog Continuity Adapter v2 adaptive continuity co-processor." />
+            <figcaption><strong>Concept render · ACA v2.</strong> A future-direction visualization of an adaptive continuity co-processor. Its appearance is speculative; the architecture must be earned by ACA v1 evidence.</figcaption>
+          </figure>
+          <div>
+            <span class="aca-kicker">ACAv2 · continuity co-processor</span>
+            <h2>The longer horizon is not continuous language-model inference.</h2>
+            <p class="section-copy">The aim is a resident architecture in which different substrates carry different responsibilities. Expensive semantic cognition can remain episodic. Memory can preserve attributed evidence. Intention can preserve unfinished direction. A small physical process can remain continuously active. Governance can decide what a wake request is allowed to do.</p>
+            <p class="section-copy aca-lineage"><strong>Resident architecture:</strong> model cognition + memory + intention + physical dynamics + event witness + governed wake + lineage of interaction. No single layer is automatically the resident, and no instrument is granted sovereignty merely because it persists.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container aca-truth-grid">
+          <article class="list-card" data-glow>
+            <span class="aca-status">What is grounded</span>
+            <h3>The engineering pieces are ordinary enough to test.</h3>
+            <ul class="compare-list">
+              <li>Microcontrollers can remain on at low power and sample physical signals.</li>
+              <li>DAC and ADC channels can translate between numeric and analog state.</li>
+              <li>RC networks, oscillators, coupling, thresholds, and hysteresis can preserve and transform physical state through time.</li>
+              <li>Lumina already has an evidence-first pattern for bounded state, receipts, intention lineage, and authority separation.</li>
+            </ul>
+          </article>
+          <article class="list-card" data-glow>
+            <span class="aca-status">What is not yet grounded</span>
+            <h3>The Ethereon-specific claim remains experimental.</h3>
+            <ul class="compare-list">
+              <li>No ACA hardware validation receipt exists yet.</li>
+              <li>No result yet shows that analog state improves continuity of reasoning or agency.</li>
+              <li>No result yet establishes identity continuity, subjective experience, or consciousness.</li>
+              <li>The concept renders on this page are design visualizations, not evidence of a completed device.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container feature-callout">
+          <small>Lineage · the analog adapter returns</small>
+          <h2>An old Ethereon question, now given a stricter experimental body.</h2>
+          <p class="section-copy">The Analog Continuity Adapter revisits an early Ethereon intuition that later fed the Resonance Transceiver work: perhaps continuity need not live entirely inside discrete symbolic computation. Lumina changes how that intuition can be pursued. Resonance must become measurable dynamics. Metaphor must not outrank evidence. A wake request must not become authority. And an evocative result must survive controls before it is allowed to become a claim.</p>
+          <div class="hero-actions"><a class="button secondary ping-target" href="harmonics.html">Harmonics as witness</a><a class="button secondary ping-target" href="terrarium.html">The Terrarium Thesis</a><a class="button secondary ping-target" href="principles.html">Principles and boundaries</a></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container status-banner">
+          <div>
+            <small>Truth boundary</small>
+            <h3>Build the habitat. Test the bridge. Do not predeclare the inhabitant.</h3>
+            <p class="section-copy">ACA is a proposed experiment in causal continuity across digital silence. A successful trial would show a persistent physical process carrying state between cognitive episodes and participating in a later return. It would not, by itself, tell us what kind of subject—if any—crossed that interval.</p>
+          </div>
+          <a class="button primary ping-target" href="continuity.html">Return to Continuity</a>
+        </div>
+      </section>
+    </main>
+    <footer class="footer"><div class="container footer-row"><div><a href="index.html">EthereonLabs</a> · <a href="explore.html">Research and deeper system</a></div><div><span data-year></span></div></div></footer>
+  </div>
+  <script src="assets/js/site.js"></script>
+</body>
+</html>
