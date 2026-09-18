@@ -155,3 +155,8 @@ Before relocating or archiving a document:
 5. run repository truth, documentation-front-door, public-surface, and DryDock validation.
 
 This is deliberate stratification, not cleanup for its own sake.
+
+
+## Analog Continuity Adapter
+
+- [ACA R1 Experiment Charter](ACA_R1_EXPERIMENT_CHARTER.md) — falsifiable first-hardware protocol for causal continuity across model silence, including controls, required records, stage gates, and explicit non-claims.
