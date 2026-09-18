@@ -18,6 +18,7 @@ window.ETHEREON_SITE_NAVIGATION = {
     ['realm.html', 'Realm'],
     ['lumina-dashboard.html', 'Dashboard'],
     ['harmonics.html', 'Harmonics'],
+    ['analog-continuity.html', 'Analog continuity'],
     ['rse.html', 'RSE'],
     ['specimen.html', 'Specimen'],
     ['lexicon.html', 'Lexicon'],

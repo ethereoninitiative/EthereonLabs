@@ -43,6 +43,7 @@ REQUIRED_SECONDARY_LABELS = {
     "Realm",
     "Dashboard",
     "Harmonics",
+    "Analog continuity",
     "RSE",
     "Specimen",
     "Lexicon",
@@ -69,6 +70,7 @@ EXPECTED_SECONDARY_TARGETS = {
     "realm.html",
     "lumina-dashboard.html",
     "harmonics.html",
+    "analog-continuity.html",
     "rse.html",
     "specimen.html",
     "lexicon.html",
@@ -215,6 +217,38 @@ def check_internal_links() -> Check:
     return Check("internal_html_links_resolve", not missing, details)
 
 
+def check_aca_claim_boundary() -> Check:
+    page = ROOT / "analog-continuity.html"
+    v1 = ROOT / "assets" / "img" / "aca-v1-concept.webp"
+    v2 = ROOT / "assets" / "img" / "aca-v2-concept.webp"
+    required_phrases = [
+        "Concept render · ACA v1.",
+        "Concept render · ACA v2.",
+        "No ACA hardware validation receipt exists yet.",
+        "would not, by itself",
+        "Build the habitat. Test the bridge. Do not predeclare the inhabitant.",
+    ]
+    page_text = read(page) if page.exists() else ""
+    curator_path = ROOT / "tools" / "prepare_public_site.py"
+    curator_text = read(curator_path) if curator_path.exists() else ""
+    details = {
+        "page_exists": page.exists(),
+        "v1_concept_asset_exists": v1.exists(),
+        "v2_concept_asset_exists": v2.exists(),
+        "missing_boundary_phrases": [phrase for phrase in required_phrases if phrase not in page_text],
+        "curated_footer_includes_aca": '("analog-continuity.html", "Analog continuity")' in curator_text,
+        "curated_title_includes_aca": '"analog-continuity.html": "Analog Continuity Adapter | EthereonLabs"' in curator_text,
+    }
+    passed = (
+        details["page_exists"]
+        and details["v1_concept_asset_exists"]
+        and details["v2_concept_asset_exists"]
+        and not details["missing_boundary_phrases"]
+        and details["curated_footer_includes_aca"]
+        and details["curated_title_includes_aca"]
+    )
+    return Check("aca_public_surface_preserves_experimental_boundary", passed, details)
+
 def check_footer_css_no_pseudo_only_brand() -> Check:
     css = read(ROOT / "assets" / "css" / "styles.css")
     js = read(ROOT / "assets" / "js" / "site.js")
@@ -240,6 +274,7 @@ def run() -> Dict[str, object]:
         check_shared_site_js(),
         check_rse_naming(),
         check_internal_links(),
+        check_aca_claim_boundary(),
         check_footer_css_no_pseudo_only_brand(),
     ]
     report = {
