@@ -124,6 +124,9 @@
   .home-page .section-header { display: grid; gap: 0.6rem; }
   .build-row { grid-template-columns: 1fr; gap: 0.85rem; padding: 1.6rem 0; }
   .build-row .text-link { grid-column: auto; }
-  .home-aca { grid-template-columns: 1fr; gap: 1.4rem; padding: 1.35rem; }\n  .home-aca-copy .hero-actions { display: grid; gap: 0.4rem; }\n  .home-aca-copy .text-link { justify-content: flex-start; }\n  .home-principle { padding: 2rem 0 1.6rem; gap: 1.5rem; }
+  .home-aca { grid-template-columns: 1fr; gap: 1.4rem; padding: 1.35rem; }
+  .home-aca-copy .hero-actions { display: grid; gap: 0.4rem; }
+  .home-aca-copy .text-link { justify-content: flex-start; }
+  .home-principle { padding: 2rem 0 1.6rem; gap: 1.5rem; }
   .home-closing { padding-bottom: 3rem; }
 }
