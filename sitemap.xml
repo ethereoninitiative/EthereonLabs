@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://ethereonlabs.com/</loc><lastmod>2026-09-06</lastmod></url>
-  <url><loc>https://ethereonlabs.com/lumina.html</loc><lastmod>2026-09-06</lastmod></url>
+  <url><loc>https://ethereonlabs.com/lumina.html</loc><lastmod>2026-09-17</lastmod></url>
   <url><loc>https://ethereonlabs.com/how-lumina-works.html</loc><lastmod>2026-09-06</lastmod></url>
-  <url><loc>https://ethereonlabs.com/build.html</loc><lastmod>2026-09-06</lastmod></url>
+  <url><loc>https://ethereonlabs.com/build.html</loc><lastmod>2026-09-17</lastmod></url>
   <url><loc>https://ethereonlabs.com/prototype.html</loc><lastmod>2026-09-06</lastmod></url>
   <url><loc>https://ethereonlabs.com/roadmap.html</loc><lastmod>2026-09-06</lastmod></url>
-  <url><loc>https://ethereonlabs.com/continuity.html</loc><lastmod>2026-09-06</lastmod></url>
+  <url><loc>https://ethereonlabs.com/continuity.html</loc><lastmod>2026-09-17</lastmod></url>
   <url><loc>https://ethereonlabs.com/about.html</loc><lastmod>2026-09-06</lastmod></url>
-  <url><loc>https://ethereonlabs.com/explore.html</loc><lastmod>2026-09-06</lastmod></url>
+  <url><loc>https://ethereonlabs.com/explore.html</loc><lastmod>2026-09-17</lastmod></url>
   <url><loc>https://ethereonlabs.com/app/</loc><lastmod>2026-09-06</lastmod></url>
   <url><loc>https://ethereonlabs.com/app/runtime.html</loc><lastmod>2026-09-06</lastmod></url>
   <url><loc>https://ethereonlabs.com/principles.html</loc><lastmod>2026-09-06</lastmod></url>
@@ -27,4 +27,8 @@
   <url><loc>https://ethereonlabs.com/rse-companion.html</loc><lastmod>2026-09-06</lastmod></url>
   <url><loc>https://ethereonlabs.com/harmonics.html</loc><lastmod>2026-09-06</lastmod></url>
   <url><loc>https://ethereonlabs.com/lexicon.html</loc><lastmod>2026-09-06</lastmod></url>
+  <url>
+    <loc>https://ethereonlabs.com/analog-continuity.html</loc>
+    <lastmod>2026-09-17</lastmod>
+  </url>
 </urlset>
