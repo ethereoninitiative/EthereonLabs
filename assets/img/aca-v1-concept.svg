@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+<title id="title">Analog Continuity Adapter v1 concept render</title>
+<desc id="desc">A site-safe vector reconstruction of the ACA v1 proof-of-continuity concept, showing controller, DAC, four analog reservoir channels, ADC, wake circuit, and event flow.</desc>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#060915"/><stop offset="1" stop-color="#121a33"/></linearGradient>
+  <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#8aa4ff" stop-opacity=".18"/><stop offset="1" stop-color="#7ef0d1" stop-opacity=".05"/></linearGradient>
+  <filter id="glow"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <style>
+    .t{font-family:Inter,Arial,sans-serif;fill:#f3f6ff}.m{font-family:Inter,Arial,sans-serif;fill:#aebad9}.k{font-family:Inter,Arial,sans-serif;fill:#7ef0d1;font-weight:700;letter-spacing:2px}.box{fill:#0c1226;stroke:#52688f;stroke-width:2}.chip{fill:#121a31;stroke:#7893c9;stroke-width:2}.wire{fill:none;stroke:#7ef0d1;stroke-opacity:.58;stroke-width:3}.thin{fill:none;stroke:#8aa4ff;stroke-opacity:.45;stroke-width:2}.label{font-family:Inter,Arial,sans-serif;fill:#dfe8ff;font-size:18px;font-weight:700}.small{font-family:Inter,Arial,sans-serif;fill:#9ba9cb;font-size:14px}
+  </style>
+</defs>
+<rect width="1200" height="900" fill="url(#bg)"/>
+<circle cx="1040" cy="130" r="170" fill="#7ef0d1" opacity=".035"/><circle cx="180" cy="730" r="240" fill="#8aa4ff" opacity=".04"/>
+<text x="60" y="72" class="t" font-size="42" font-weight="800">Lumina Analog Continuity Adapter</text>
+<text x="60" y="112" class="k" font-size="18">ACA v1 · PROOF OF CONTINUITY</text>
+<text x="60" y="148" class="m" font-size="20">Physical state. Persistent dynamics. Governed return.</text>
+<text x="910" y="80" class="m" font-size="18" font-style="italic">“Some thoughts keep evolving,</text>
+<text x="930" y="106" class="m" font-size="18" font-style="italic">even in silence.”</text>
+<text x="1034" y="132" class="m" font-size="15">— Minerva</text>
+
+<rect x="48" y="190" width="1104" height="470" rx="30" fill="url(#glass)" stroke="#5b709d" stroke-width="2"/>
+<rect x="70" y="215" width="1060" height="420" rx="22" fill="#050914" stroke="#27385b"/>
+
+<path d="M220 355 C300 310,360 315,430 350 S570 390,635 342 S780 300,855 350 S970 380,1045 330" class="wire"/>
+<path d="M220 390 C300 430,365 395,430 420 S555 460,635 412 S780 395,855 432 S970 445,1045 410" class="thin"/>
+
+<rect x="95" y="265" width="190" height="250" rx="18" class="box"/>
+<text x="190" y="298" text-anchor="middle" class="label">ESP32-S3</text><text x="190" y="323" text-anchor="middle" class="small">controller / USB</text>
+<rect x="125" y="345" width="130" height="105" rx="10" class="chip"/>
+<rect x="145" y="365" width="90" height="58" rx="6" fill="#242f4d" stroke="#9fb8ef"/>
+<circle cx="238" cy="437" r="8" fill="#65a8ff" filter="url(#glow)"/>
+<text x="190" y="483" text-anchor="middle" class="small">communication · logging</text><text x="190" y="503" text-anchor="middle" class="small">event witness</text>
+
+<rect x="315" y="265" width="160" height="250" rx="18" class="box"/>
+<text x="395" y="298" text-anchor="middle" class="label">MCP4728</text><text x="395" y="323" text-anchor="middle" class="small">quad DAC</text>
+<rect x="345" y="360" width="100" height="84" rx="10" class="chip"/>
+<g fill="#7ef0d1"><circle cx="365" cy="405" r="6"/><circle cx="385" cy="405" r="6"/><circle cx="405" cy="405" r="6"/><circle cx="425" cy="405" r="6"/></g>
+<text x="395" y="483" text-anchor="middle" class="small">digital state →</text><text x="395" y="503" text-anchor="middle" class="small">physical variables</text>
+
+<rect x="505" y="240" width="350" height="300" rx="20" class="box"/>
+<text x="680" y="278" text-anchor="middle" class="label">Analog Reservoir · 4 channels</text>
+<text x="680" y="304" text-anchor="middle" class="small">decay · hysteresis · coupling · oscillation</text>
+<g>
+  <rect x="530" y="340" width="68" height="145" rx="12" class="chip"/><circle cx="564" cy="455" r="10" fill="#4c9dff" filter="url(#glow)"/><text x="564" y="379" text-anchor="middle" class="small">CH1</text><text x="564" y="404" text-anchor="middle" class="small">fast</text>
+  <rect x="612" y="340" width="68" height="145" rx="12" class="chip"/><circle cx="646" cy="455" r="10" fill="#4ee0a5" filter="url(#glow)"/><text x="646" y="379" text-anchor="middle" class="small">CH2</text><text x="646" y="404" text-anchor="middle" class="small">slow</text>
+  <rect x="694" y="340" width="68" height="145" rx="12" class="chip"/><circle cx="728" cy="455" r="10" fill="#ffbf47" filter="url(#glow)"/><text x="728" y="379" text-anchor="middle" class="small">CH3</text><text x="728" y="404" text-anchor="middle" class="small">path</text>
+  <rect x="776" y="340" width="68" height="145" rx="12" class="chip"/><circle cx="810" cy="455" r="10" fill="#ff5f6d" filter="url(#glow)"/><text x="810" y="379" text-anchor="middle" class="small">CH4</text><text x="810" y="404" text-anchor="middle" class="small">phase</text>
+</g>
+<path d="M564 430 C610 390,600 465,646 425 S690 390,728 430 S770 465,810 420" class="wire"/>
+
+<rect x="885" y="265" width="110" height="250" rx="18" class="box"/>
+<text x="940" y="298" text-anchor="middle" class="label">ADS1115</text><text x="940" y="323" text-anchor="middle" class="small">quad ADC</text>
+<rect x="908" y="365" width="64" height="82" rx="10" class="chip"/>
+<text x="940" y="483" text-anchor="middle" class="small">physical state</text><text x="940" y="503" text-anchor="middle" class="small">→ measurement</text>
+
+<rect x="1018" y="265" width="88" height="250" rx="18" class="box"/>
+<text x="1062" y="298" text-anchor="middle" class="label" font-size="15">WAKE</text>
+<rect x="1038" y="365" width="48" height="82" rx="10" class="chip"/>
+<circle cx="1062" cy="423" r="12" fill="#ff465a" filter="url(#glow)"/>
+<text x="1062" y="483" text-anchor="middle" class="small">threshold</text><text x="1062" y="503" text-anchor="middle" class="small">event</text>
+
+<g class="thin"><path d="M285 390H315"/><path d="M475 390H505"/><path d="M855 390H885"/><path d="M995 390H1018"/></g>
+
+<rect x="70" y="560" width="1036" height="52" rx="14" fill="#0b1123" stroke="#324364"/>
+<text x="92" y="592" class="k" font-size="15">CAUSAL LOOP</text>
+<text x="238" y="592" class="t" font-size="16">write state</text><text x="355" y="592" class="m" font-size="16">→ inference stops →</text><text x="535" y="592" class="t" font-size="16">physics evolves</text><text x="668" y="592" class="m" font-size="16">→ threshold →</text><text x="792" y="592" class="t" font-size="16">wake request</text><text x="910" y="592" class="m" font-size="16">→ governed return</text>
+
+<text x="70" y="704" class="k" font-size="16">LIVE STATE MONITOR</text>
+<g transform="translate(70 730)">
+  <rect width="245" height="110" rx="14" class="box"/><path d="M18 30 C55 85,100 87,225 92" stroke="#4c9dff" stroke-width="4" fill="none"/><text x="18" y="24" class="small">CH1 · fast decay</text>
+</g>
+<g transform="translate(330 730)">
+  <rect width="245" height="110" rx="14" class="box"/><path d="M18 36 C65 55,130 70,225 78" stroke="#4ee0a5" stroke-width="4" fill="none"/><text x="18" y="24" class="small">CH2 · slow decay</text>
+</g>
+<g transform="translate(590 730)">
+  <rect width="245" height="110" rx="14" class="box"/><path d="M18 88 L62 88 L62 72 L105 72 L105 56 L150 56 L150 40 L225 40" stroke="#ffbf47" stroke-width="4" fill="none"/><text x="18" y="24" class="small">CH3 · hysteresis</text>
+</g>
+<g transform="translate(850 730)">
+  <rect width="280" height="110" rx="14" class="box"/><path d="M18 70 C40 20,62 20,84 70 S128 120,150 70 S194 20,216 70 S250 104,264 60" stroke="#ff5f6d" stroke-width="4" fill="none"/><text x="18" y="24" class="small">CH4 · oscillating</text>
+</g>
+<text x="60" y="880" class="m" font-size="15">Concept visualization · proposed hardware, not validated apparatus.</text>
+<text x="1040" y="880" text-anchor="end" class="m" font-size="15">Spencer ∞ Minerva</text>
+</svg>
