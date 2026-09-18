@@ -59,6 +59,35 @@
 .build-row .text-link { font-size: 0.75rem; }
 .development-note { padding-top: 1.3rem; border-top: 1px solid #30434c; font-size: 0.8rem; color: #a7b8c9; line-height: 1.9; }
 .development-note a { color: #c6e3df; text-underline-offset: 4px; }
+.home-aca {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+  padding: clamp(1.6rem, 4vw, 3rem);
+  border: 1px solid #34504f;
+  border-radius: 18px;
+  background:
+    radial-gradient(ellipse at 88% 10%, rgba(126, 240, 209, 0.12), transparent 42%),
+    radial-gradient(ellipse at 15% 100%, rgba(138, 164, 255, 0.10), transparent 46%),
+    #0d1826;
+}
+.home-aca-copy .section-copy { margin: 1.3rem 0 1.5rem; }
+.home-aca-copy .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.7rem 1.25rem; }
+.home-aca-boundary { margin: 1.1rem 0 0; max-width: 62ch; color: #9eb1c1; font-size: 0.72rem; line-height: 1.75; }
+.home-aca-visual {
+  display: block;
+  overflow: hidden;
+  border: 1px solid #405a67;
+  border-radius: 14px;
+  background: #060a12;
+  color: #aebfcb;
+  text-decoration: none;
+  box-shadow: 0 22px 56px rgba(0, 0, 0, 0.28);
+}
+.home-aca-visual:hover { border-color: #7ca99f; color: #e5f6f1; }
+.home-aca-visual img { display: block; width: 100%; height: auto; }
+.home-aca-visual span { display: block; padding: 0.75rem 0.9rem 0.85rem; font-size: 0.68rem; letter-spacing: 0.035em; line-height: 1.55; }
 .home-principle { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; border-top: 1px solid #6d644d; border-bottom: 1px solid #6d644d; padding-top: 3rem; padding-bottom: 2.5rem; }
 .home-principle .section-kicker { color: #d8c093; }
 .home-principle h2 { color: #ecdcbf; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(2.4rem, 3.6vw, 3.2rem); line-height: 1.22; letter-spacing: -0.035em; }
@@ -95,6 +124,6 @@
   .home-page .section-header { display: grid; gap: 0.6rem; }
   .build-row { grid-template-columns: 1fr; gap: 0.85rem; padding: 1.6rem 0; }
   .build-row .text-link { grid-column: auto; }
-  .home-principle { padding: 2rem 0 1.6rem; gap: 1.5rem; }
+  .home-aca { grid-template-columns: 1fr; gap: 1.4rem; padding: 1.35rem; }\n  .home-aca-copy .hero-actions { display: grid; gap: 0.4rem; }\n  .home-aca-copy .text-link { justify-content: flex-start; }\n  .home-principle { padding: 2rem 0 1.6rem; gap: 1.5rem; }
   .home-closing { padding-bottom: 3rem; }
 }
