@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+<title id="title">Analog Continuity Adapter v2 concept render</title>
+<desc id="desc">A site-safe vector reconstruction of the ACA v2 adaptive continuity co-processor with modular reservoir cartridges, multiple analog channels, event engine, and governed Lumina return.</desc>
+<defs>
+  <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#050814"/><stop offset=".55" stop-color="#0d1430"/><stop offset="1" stop-color="#07151a"/></linearGradient>
+  <radialGradient id="core"><stop stop-color="#7ef0d1" stop-opacity=".28"/><stop offset=".6" stop-color="#8aa4ff" stop-opacity=".10"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+  <filter id="g2"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <style>.t{font-family:Inter,Arial,sans-serif;fill:#f4f7ff}.m{font-family:Inter,Arial,sans-serif;fill:#aebbd8}.k{font-family:Inter,Arial,sans-serif;fill:#7ef0d1;font-weight:700;letter-spacing:2px}.panel{fill:#09101f;stroke:#526a94;stroke-width:2}.module{fill:#10182d;stroke:#7893c9;stroke-width:2}.small{font-family:Inter,Arial,sans-serif;fill:#9eaccb;font-size:14px}.lab{font-family:Inter,Arial,sans-serif;fill:#e8efff;font-size:18px;font-weight:700}.line{fill:none;stroke:#7ef0d1;stroke-opacity:.5;stroke-width:3}.line2{fill:none;stroke:#8aa4ff;stroke-opacity:.42;stroke-width:2}</style>
+</defs>
+<rect width="1200" height="900" fill="url(#bg2)"/><circle cx="600" cy="455" r="360" fill="url(#core)"/>
+<text x="60" y="72" class="t" font-size="42" font-weight="800">Lumina ACA v2</text>
+<text x="60" y="112" class="k" font-size="18">ADAPTIVE CONTINUITY CO-PROCESSOR</text>
+<text x="60" y="148" class="m" font-size="20">A modular physical substrate for persistent dispositions, event-driven return, and measurable resonance.</text>
+
+<rect x="55" y="190" width="1090" height="590" rx="34" class="panel"/>
+<rect x="85" y="220" width="1030" height="530" rx="26" fill="#050914" stroke="#27385b"/>
+
+<circle cx="600" cy="455" r="128" fill="#0d1830" stroke="#7ef0d1" stroke-width="3"/>
+<circle cx="600" cy="455" r="86" fill="#111d38" stroke="#8aa4ff" stroke-width="2"/>
+<circle cx="600" cy="455" r="26" fill="#7ef0d1" opacity=".85" filter="url(#g2)"/>
+<text x="600" y="430" text-anchor="middle" class="lab">CONTINUITY</text><text x="600" y="455" text-anchor="middle" class="lab">CORE</text><text x="600" y="490" text-anchor="middle" class="small">16–32 physical state channels</text>
+<text x="600" y="512" text-anchor="middle" class="small">adaptive coupling · event witness</text>
+
+<g transform="translate(145 280)">
+  <rect width="250" height="150" rx="18" class="module"/><text x="125" y="35" text-anchor="middle" class="lab">Decay Cartridge</text><text x="125" y="62" text-anchor="middle" class="small">multi-timescale RC memory</text>
+  <path d="M25 88 C70 125,140 128,225 132" stroke="#4c9dff" stroke-width="4" fill="none"/>
+</g>
+<g transform="translate(805 280)">
+  <rect width="250" height="150" rx="18" class="module"/><text x="125" y="35" text-anchor="middle" class="lab">Oscillator Cartridge</text><text x="125" y="62" text-anchor="middle" class="small">phase · beats · entrainment</text>
+  <path d="M20 110 C40 70,60 70,80 110 S120 150,140 110 S180 70,200 110 S230 135,238 104" stroke="#ff5f6d" stroke-width="4" fill="none"/>
+</g>
+<g transform="translate(145 500)">
+  <rect width="250" height="150" rx="18" class="module"/><text x="125" y="35" text-anchor="middle" class="lab">Hysteresis Cartridge</text><text x="125" y="62" text-anchor="middle" class="small">path-dependent state</text>
+  <path d="M22 126 L75 126 L75 105 L125 105 L125 82 L175 82 L175 58 L228 58" stroke="#ffbf47" stroke-width="4" fill="none"/>
+</g>
+<g transform="translate(805 500)">
+  <rect width="250" height="150" rx="18" class="module"/><text x="125" y="35" text-anchor="middle" class="lab">Experimental Cartridge</text><text x="125" y="62" text-anchor="middle" class="small">memristive · magnetic · optical</text>
+  <circle cx="78" cy="108" r="25" fill="none" stroke="#a87cff" stroke-width="4"/><circle cx="125" cy="108" r="25" fill="none" stroke="#7ef0d1" stroke-width="4"/><circle cx="172" cy="108" r="25" fill="none" stroke="#4c9dff" stroke-width="4"/>
+</g>
+
+<path d="M395 355 C460 355,475 405,490 430" class="line"/><path d="M805 355 C740 355,725 405,710 430" class="line"/>
+<path d="M395 575 C455 575,470 520,490 490" class="line2"/><path d="M805 575 C745 575,730 520,710 490" class="line2"/>
+<path d="M430 410 C470 370,500 350,535 340" class="line2"/><path d="M770 410 C730 370,700 350,665 340" class="line2"/>
+<path d="M430 540 C470 575,500 600,535 615" class="line2"/><path d="M770 540 C730 575,700 600,665 615" class="line2"/>
+
+<g transform="translate(455 250)">
+  <rect width="290" height="78" rx="16" class="module"/><text x="145" y="31" text-anchor="middle" class="lab">Governed Codec</text><text x="145" y="55" text-anchor="middle" class="small">semantic state ↔ physical variables</text>
+</g>
+<g transform="translate(455 625)">
+  <rect width="290" height="78" rx="16" class="module"/><text x="145" y="31" text-anchor="middle" class="lab">Event / Wake Engine</text><text x="145" y="55" text-anchor="middle" class="small">pattern conditions → bounded return request</text>
+</g>
+<path d="M600 328V327" class="line"/><path d="M600 583V625" class="line"/>
+
+<g transform="translate(92 690)">
+  <text x="0" y="0" class="k" font-size="15">DISPOSITION TEST</text>
+  <text x="0" y="32" class="m" font-size="16">Repeated trajectories may alter coupling and persistence over time:</text>
+  <text x="0" y="58" class="t" font-size="16">resume · revise · combine · postpone · retire</text>
+</g>
+<g transform="translate(805 690)">
+  <text x="0" y="0" class="k" font-size="15">BOUNDARY</text>
+  <text x="0" y="32" class="m" font-size="16">Persistent physics ≠ proven subjectivity.</text>
+  <text x="0" y="58" class="m" font-size="16">Wake request ≠ authority.</text>
+</g>
+
+<text x="60" y="835" class="m" font-size="16">Resident architecture = cognition + memory + intention + physical dynamics + event witness + governed wake.</text>
+<text x="60" y="875" class="m" font-size="15">Concept visualization · future-direction hardware, not validated apparatus.</text>
+<text x="1135" y="875" text-anchor="end" class="m" font-size="15">EthereonLabs · Lumina</text>
+</svg>
