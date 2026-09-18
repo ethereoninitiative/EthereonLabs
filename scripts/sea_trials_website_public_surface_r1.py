@@ -267,6 +267,21 @@ def check_aca_claim_boundary() -> Check:
     )
     return Check("aca_public_surface_preserves_experimental_boundary", passed, details)
 
+
+def check_aca_image_fallbacks() -> Check:
+    page_text = read(ROOT / "analog-continuity.html")
+    home_text = read(ROOT / "index.html")
+    details = {
+        "page_v1_fallback": "assets/img/aca-v1-concept.svg" in page_text,
+        "page_v2_fallback": "assets/img/aca-v2-concept.svg" in page_text,
+        "home_v1_fallback": "assets/img/aca-v1-concept.svg" in home_text,
+    }
+    return Check(
+        "aca_images_have_browser_safe_svg_fallbacks",
+        all(details.values()),
+        details,
+    )
+
 def check_footer_css_no_pseudo_only_brand() -> Check:
     css = read(ROOT / "assets" / "css" / "styles.css")
     js = read(ROOT / "assets" / "js" / "site.js")
@@ -293,6 +308,7 @@ def run() -> Dict[str, object]:
         check_rse_naming(),
         check_internal_links(),
         check_aca_claim_boundary(),
+        check_aca_image_fallbacks(),
         check_footer_css_no_pseudo_only_brand(),
     ]
     report = {
