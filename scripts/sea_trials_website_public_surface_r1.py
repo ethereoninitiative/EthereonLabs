@@ -229,17 +229,23 @@ def check_aca_claim_boundary() -> Check:
         "Build the habitat. Test the bridge. Do not predeclare the inhabitant.",
     ]
     page_text = read(page) if page.exists() else ""
+    curator_path = ROOT / "tools" / "prepare_public_site.py"
+    curator_text = read(curator_path) if curator_path.exists() else ""
     details = {
         "page_exists": page.exists(),
         "v1_concept_asset_exists": v1.exists(),
         "v2_concept_asset_exists": v2.exists(),
         "missing_boundary_phrases": [phrase for phrase in required_phrases if phrase not in page_text],
+        "curated_footer_includes_aca": '("analog-continuity.html", "Analog continuity")' in curator_text,
+        "curated_title_includes_aca": '"analog-continuity.html": "Analog Continuity Adapter | EthereonLabs"' in curator_text,
     }
     passed = (
         details["page_exists"]
         and details["v1_concept_asset_exists"]
         and details["v2_concept_asset_exists"]
         and not details["missing_boundary_phrases"]
+        and details["curated_footer_includes_aca"]
+        and details["curated_title_includes_aca"]
     )
     return Check("aca_public_surface_preserves_experimental_boundary", passed, details)
 
