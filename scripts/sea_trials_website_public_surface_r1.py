@@ -219,8 +219,8 @@ def check_internal_links() -> Check:
 
 def check_aca_claim_boundary() -> Check:
     page = ROOT / "analog-continuity.html"
-    v1 = ROOT / "assets" / "img" / "aca-v1-concept.webp"
-    v2 = ROOT / "assets" / "img" / "aca-v2-concept.webp"
+    v1 = ROOT / "assets" / "img" / "aca-v1-concept.svg"
+    v2 = ROOT / "assets" / "img" / "aca-v2-concept.svg"
     required_phrases = [
         "Concept render · ACA v1.",
         "Concept render · ACA v2.",
@@ -229,12 +229,16 @@ def check_aca_claim_boundary() -> Check:
         "Build the habitat. Test the bridge. Do not predeclare the inhabitant.",
     ]
     page_text = read(page) if page.exists() else ""
+    v1_text = read(v1) if v1.exists() else ""
+    v2_text = read(v2) if v2.exists() else ""
     curator_path = ROOT / "tools" / "prepare_public_site.py"
     curator_text = read(curator_path) if curator_path.exists() else ""
     details = {
         "page_exists": page.exists(),
         "v1_concept_asset_exists": v1.exists(),
         "v2_concept_asset_exists": v2.exists(),
+        "v1_vector_is_parseable_surface": "<svg" in v1_text and "Analog Continuity Adapter v1 concept render" in v1_text,
+        "v2_vector_is_parseable_surface": "<svg" in v2_text and "Analog Continuity Adapter v2 concept render" in v2_text,
         "missing_boundary_phrases": [phrase for phrase in required_phrases if phrase not in page_text],
         "curated_footer_includes_aca": '("analog-continuity.html", "Analog continuity")' in curator_text,
         "curated_title_includes_aca": '"analog-continuity.html": "Analog Continuity Adapter | EthereonLabs"' in curator_text,
@@ -243,6 +247,8 @@ def check_aca_claim_boundary() -> Check:
         details["page_exists"]
         and details["v1_concept_asset_exists"]
         and details["v2_concept_asset_exists"]
+        and details["v1_vector_is_parseable_surface"]
+        and details["v2_vector_is_parseable_surface"]
         and not details["missing_boundary_phrases"]
         and details["curated_footer_includes_aca"]
         and details["curated_title_includes_aca"]
