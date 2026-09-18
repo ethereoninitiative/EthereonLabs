@@ -60,3 +60,10 @@ September 2026 implementation update:
 - Psi-42 / IRP preservation bridge: a standalone instrument measuring structural preservation, including minority positions. It does not authenticate identity or establish shared belief; legacy simulated signal metrics remain separate.
 - Native Cognition Principle: a non-governing philosophical and research orientation for investigating intelligence on its own terms. It does not establish subjective experience.
 - Read the dated implementation notes: https://ethereonlabs.com/updates.html#september-2026
+
+
+## Analog Continuity Adapter — experimental research
+- Page: https://ethereonlabs.com/analog-continuity.html
+- Status: proposed experiment; concept renders and an R1 experiment charter exist, but no ACA hardware validation receipt exists yet.
+- Question: can bounded physical state continue evolving while model inference is absent and later participate causally in a governed return?
+- Boundary: a successful causal-continuity trial would not by itself establish identity continuity, subjective experience, or consciousness.
