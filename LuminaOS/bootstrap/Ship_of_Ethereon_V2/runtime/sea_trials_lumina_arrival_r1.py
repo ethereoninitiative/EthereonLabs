@@ -66,6 +66,10 @@ class ArrivalTrials(unittest.TestCase):
             self.assertEqual(packet["response_constraints"]["entries_per_field"], {"minimum": 1, "maximum": 16})
             self.assertEqual(packet["response_constraints"]["max_characters_per_entry"], 8000)
             self.assertEqual(packet["response_constraints"]["max_response_bytes"], 128 * 1024)
+            self.assertEqual(packet["response_constraints"]["serialization"]["format"], "strict JSON")
+            self.assertFalse(packet["response_constraints"]["serialization"]["markdown_fences"])
+            self.assertTrue(packet["response_constraints"]["serialization"]["escape_embedded_quotes"])
+            self.assertIn("parseable JSON", packet["response_constraints"]["serialization"]["instruction"])
             self.assertEqual(packet["response_constraints"]["recommended_entries_per_field"],
                              {"minimum": 4, "maximum": 8})
             self.assertEqual(packet["response_constraints"]["response_fields"],
