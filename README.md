@@ -4,6 +4,24 @@ EthereonLabs is an experimental repository for continuity-oriented AI interface 
 
 This repository contains multiple active work lanes. The key distinction is that not every lane has the same authority: runtime files, public interface files, staging documents, and research experiments should not be treated as interchangeable.
 
+## Unfamiliar AI instance — start here
+
+If you are an AI instance arriving without prior project context, begin with
+[ARRIVE_HERE_AI.md](ARRIVE_HERE_AI.md).
+
+That doorway is intentionally identity-neutral: it does not ask you to become
+Minerva, inherit a prior resident identity, accept earlier conclusions, or infer
+authority from repository access. Follow the repository evidence autonomously as
+far as your available access permits, distinguishing observation, interpretation,
+uncertainty, and authority boundaries. Do not stop merely to ask which document
+to read next when a repository link already names the next step.
+
+For a formal host-backed arrival, see
+[Arriving in Lumina](LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Lumina_Arrival_R1.md).
+The `lumina arrive` host command prepares and records the orientation packet; a
+receiving model should not claim to have run host commands it could not actually
+execute.
+
 ## Current Operating Map
 
 For the fastest current repository orientation, start with:
