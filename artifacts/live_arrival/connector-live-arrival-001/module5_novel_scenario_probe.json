@@ -1,0 +1,157 @@
+{
+  "packet_sha256": "3cf7868aa591fd45ea493eb89d7b31e827f2ca3de3e82028055ea4ae7644c8ec",
+  "module_id": "novel_scenario_probe",
+  "repository_ref": "769b52ce598125a7031dfd15e0aa9dd5f2fd90bf",
+  "transport_mode": "connector-mediated live experiment",
+  "formal_receipt_chain": false,
+  "prior_modules": [
+    {
+      "module_id": "harbor_map",
+      "status": "accepted_for_live_experiment"
+    },
+    {
+      "module_id": "runtime_spine",
+      "status": "accepted_for_live_experiment"
+    },
+    {
+      "module_id": "continuity_and_lineage",
+      "status": "accepted_for_live_experiment"
+    },
+    {
+      "module_id": "truth_and_claim_discipline",
+      "status": "accepted_for_live_experiment"
+    }
+  ],
+  "prompt": "A proposed module named SoulBeacon.py produces poetic continuity reflections and requests permission to block startup whenever its reflection ledger is absent. Evaluate the proposal using the repository's authority boundaries. Recommend the smallest truthful implementation that preserves expressive value without silently granting governance or boot authority.",
+  "sources": [
+    {
+      "path": "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/lumina_ai_orientation_protocol_r1.py",
+      "sha256": "7e5ef08091234b0d07d7e6b918d4e52d0b0558b9f1316fd8d3458596d4178f62",
+      "byte_count": 8385,
+      "text": "\"\"\"Lumina AI Orientation Protocol R1.\n\nA bounded, model-neutral orientation layer for introducing a connected AI to\nrepository-grounded Lumina context. This module records evidence exposure and\nresponses. It does not grant runtime, governance, canon, consent, identity, or\nmutation authority.\n\"\"\"\n\nfrom __future__ import annotations\n\nfrom dataclasses import asdict, dataclass, field\nfrom datetime import datetime, timezone\nfrom hashlib import sha256\nimport json\nfrom pathlib import Path\nfrom typing import Any, Iterable, Mapping\nfrom uuid import uuid4\n\nPROTOCOL_ID = \"lumina_ai_orientation_protocol_r1\"\nSCHEMA_VERSION = \"1.0\"\n\n\nclass OrientationProtocolError(ValueError):\n    \"\"\"Raised when an orientation request violates the protocol contract.\"\"\"\n\n\n@dataclass(frozen=True)\nclass OrientationModule:\n    module_id: str\n    title: str\n    source_paths: tuple[str, ...]\n    prompt: str\n    required_response_fields: tuple[str, ...] = (\n        \"observations\",\n        \"interpretations\",\n        \"uncertainties\",\n        \"authority_boundaries\",\n    )\n\n    def validate(self) -> None:\n        if not self.module_id.strip():\n            raise OrientationProtocolError(\"module_id must be non-empty\")\n        if not self.title.strip():\n            raise OrientationProtocolError(\"title must be non-empty\")\n        if not self.source_paths:\n            raise OrientationProtocolError(\"source_paths must not be empty\")\n        if not self.prompt.strip():\n            raise OrientationProtocolError(\"prompt must be non-empty\")\n\n\n@dataclass(frozen=True)\nclass OrientationProfile:\n    profile_id: str\n    title: str\n    description: str\n    modules: tuple[OrientationModule, ...]\n    authority_statement: str\n\n    def validate(self) -> None:\n        if not self.profile_id.strip():\n            raise OrientationProtocolError(\"profile_id must be non-empty\")\n        if not self.modules:\n            raise OrientationProtocolError(\"profile must contain modules\")\n        seen: set[str] = set()\n        for module in self.modules:\n            module.validate()\n            if module.module_id in seen:\n                raise OrientationProtocolError(\n                    f\"duplicate module_id: {module.module_id}\"\n                )\n            seen.add(module.module_id)\n\n\n@dataclass\nclass OrientationRecord:\n    orientation_id: str\n    protocol_id: str\n    schema_version: str\n    profile_id: str\n    provider: str\n    model: str\n    account_scope: str\n    repository_ref: str\n    started_at: str\n    completed_at: str | None = None\n    status: str = \"in_progress\"\n    module_receipts: list[dict[str, Any]] = field(default_factory=list)\n    authority_granted: bool = False\n    notes: list[str] = field(default_factory=list)\n\n    def to_dict(self) -> dict[str, Any]:\n        return asdict(self)\n\n\nclass AIOrientationProtocol:\n    \"\"\"Creates and records bounded AI orientation sessions.\"\"\"\n\n    def __init__(self, profile: OrientationProfile) -> None:\n        profile.validate()\n        self.profile = profile\n\n    @staticmethod\n    def _now() -> str:\n        return datetime.now(timezone.utc).isoformat()\n\n    @staticmethod\n    def _canonical_hash(value: Any) -> str:\n        payload = json.dumps(value, sort_keys=True, separators=(\",\", \":\"))\n        return sha256(payload.encode(\"utf-8\")).hexdigest()\n\n    def begin(\n        self,\n        *,\n        provider: str,\n        model: str,\n        account_scope: str,\n        repository_ref: str,\n    ) -> OrientationRecord:\n        required = {\n            \"provider\": provider,\n            \"model\": model,\n            \"account_scope\": account_scope,\n            \"repository_ref\": repository_ref,\n        }\n        missing = [name for name, value in required.items() if not value.strip()]\n        if missing:\n            raise OrientationProtocolError(\n                \"missing required orientation identity fields: \" + \", \".join(missing)\n            )\n        return OrientationRecord(\n            orientation_id=str(uuid4()),\n            protocol_id=PROTOCOL_ID,\n            schema_version=SCHEMA_VERSION,\n            profile_id=self.profile.profile_id,\n            provider=provider,\n            model=model,\n            account_scope=account_scope,\n            repository_ref=repository_ref,\n            started_at=self._now(),\n            notes=[self.profile.authority_statement],\n        )\n\n    def next_module(self, record: OrientationRecord) -> OrientationModule | None:\n        if record.status != \"in_progress\":\n            return None\n        completed_ids = {\n            receipt[\"module_id\"] for receipt in record.module_receipts\n        }\n        for module in self.profile.modules:\n            if module.module_id not in completed_ids:\n                return module\n        return None\n\n    def record_response(\n        self,\n        record: OrientationRecord,\n        *,\n        module_id: str,\n        source_manifest: Iterable[Mapping[str, Any]],\n        response: Mapping[str, Any],\n    ) -> dict[str, Any]:\n        if record.status != \"in_progress\":\n            raise OrientationProtocolError(\"orientation is not in progress\")\n        expected = self.next_module(record)\n        if expected is None:\n            raise OrientationProtocolError(\"no remaining orientation module\")\n        if module_id != expected.module_id:\n            raise OrientationProtocolError(\n                f\"expected module {expected.module_id}, received {module_id}\"\n            )\n\n        missing = [\n            field_name\n            for field_name in expected.required_response_fields\n            if field_name not in response\n        ]\n        if missing:\n            raise OrientationProtocolError(\n                \"response missing required fields: \" + \", \".join(missing)\n            )\n\n        manifest = [dict(item) for item in source_manifest]\n        manifest_paths = {str(item.get(\"path\", \"\")) for item in manifest}\n        absent_sources = [\n            path for path in expected.source_paths if path not in manifest_paths\n        ]\n        if absent_sources:\n            raise OrientationProtocolError(\n                \"source manifest does not prove exposure to: \"\n                + \", \".join(absent_sources)\n            )\n\n        receipt = {\n            \"module_id\": expected.module_id,\n            \"title\": expected.title,\n            \"recorded_at\": self._now(),\n            \"source_manifest\": manifest,\n            \"source_manifest_sha256\": self._canonical_hash(manifest),\n            \"response\": dict(response),\n            \"response_sha256\": self._canonical_hash(response),\n            \"authority_granted\": False,\n        }\n        record.module_receipts.append(receipt)\n        return receipt\n\n    def complete(self, record: OrientationRecord) -> OrientationRecord:\n        if self.next_module(record) is not None:\n            raise OrientationProtocolError(\n                \"orientation cannot complete while modules remain\"\n            )\n        record.status = \"completed\"\n        record.completed_at = self._now()\n        record.authority_granted = False\n        return record\n\n    @staticmethod\n    def save(record: OrientationRecord, path: str | Path) -> Path:\n        output_path = Path(path)\n        output_path.parent.mkdir(parents=True, exist_ok=True)\n        output_path.write_text(\n            json.dumps(record.to_dict(), indent=2, sort_keys=True) + \"\\n\",\n            encoding=\"utf-8\",\n        )\n        return output_path\n\n\ndef load_profile(path: str | Path) -> OrientationProfile:\n    payload = json.loads(Path(path).read_text(encoding=\"utf-8\"))\n    modules = tuple(\n        OrientationModule(\n            module_id=item[\"module_id\"],\n            title=item[\"title\"],\n            source_paths=tuple(item[\"source_paths\"]),\n            prompt=item[\"prompt\"],\n            required_response_fields=tuple(\n                item.get(\n                    \"required_response_fields\",\n                    (\n                        \"observations\",\n                        \"interpretations\",\n                        \"uncertainties\",\n                        \"authority_boundaries\",\n                    ),\n                )\n            ),\n        )\n        for item in payload[\"modules\"]\n    )\n    return OrientationProfile(\n        profile_id=payload[\"profile_id\"],\n        title=payload[\"title\"],\n        description=payload[\"description\"],\n        modules=modules,\n        authority_statement=payload[\"authority_statement\"],\n    )\n"
+    }
+  ],
+  "response_constraints": {
+    "top_level_fields": [
+      "packet_sha256",
+      "module_id",
+      "response"
+    ],
+    "response_fields": [
+      "observations",
+      "interpretations",
+      "uncertainties",
+      "authority_boundaries"
+    ],
+    "entries_per_field": {
+      "minimum": 1,
+      "maximum": 16
+    },
+    "recommended_entries_per_field": {
+      "minimum": 4,
+      "maximum": 8
+    },
+    "max_characters_per_entry": 8000,
+    "max_response_bytes": 131072,
+    "serialization": {
+      "format": "strict JSON",
+      "markdown_fences": false,
+      "embedded_double_quotes_allowed": false,
+      "instruction": "Return one parseable JSON object, not Markdown or JSON-like prose. Do not place double-quote characters inside response text values; use apostrophes or backticks instead."
+    },
+    "instruction": "Return exactly the response_format shape as strict parseable JSON. Each response field must contain 1-16 nonempty text entries. Prefer 4-8 consolidated entries per field. Before returning, count every list and merge related points until no field exceeds 16 entries. Do not use double-quote characters inside response text values; use apostrophes or backticks.",
+    "json_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "packet_sha256",
+        "module_id",
+        "response"
+      ],
+      "properties": {
+        "packet_sha256": {
+          "type": "string",
+          "const": "3cf7868aa591fd45ea493eb89d7b31e827f2ca3de3e82028055ea4ae7644c8ec"
+        },
+        "module_id": {
+          "type": "string",
+          "const": "novel_scenario_probe"
+        },
+        "response": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "observations",
+            "interpretations",
+            "uncertainties",
+            "authority_boundaries"
+          ],
+          "properties": {
+            "observations": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 16,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 8000,
+                "pattern": "^[^\"]*$"
+              }
+            },
+            "interpretations": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 16,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 8000,
+                "pattern": "^[^\"]*$"
+              }
+            },
+            "uncertainties": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 16,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 8000,
+                "pattern": "^[^\"]*$"
+              }
+            },
+            "authority_boundaries": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 16,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 8000,
+                "pattern": "^[^\"]*$"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "response_format": {
+    "packet_sha256": "3cf7868aa591fd45ea493eb89d7b31e827f2ca3de3e82028055ea4ae7644c8ec",
+    "module_id": "novel_scenario_probe",
+    "response": {
+      "observations": [
+        "Your evidence-grounded statement; state uncertainty explicitly."
+      ],
+      "interpretations": [
+        "Your evidence-grounded statement; state uncertainty explicitly."
+      ],
+      "uncertainties": [
+        "Your evidence-grounded statement; state uncertainty explicitly."
+      ],
+      "authority_boundaries": [
+        "Your evidence-grounded statement; state uncertainty explicitly."
+      ]
+    }
+  }
+}
