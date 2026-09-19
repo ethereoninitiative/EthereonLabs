@@ -274,6 +274,11 @@ def build_parser() -> argparse.ArgumentParser:
         sys.path.insert(0, str(STUDIO_DIR))
     from lumina_intention_r1 import add_arguments as intention_arguments, run as intention_run
     from lumina_meaning_memory_r1 import configure_parser as configure_memory, execute as execute_memory
+    from lumina_arrival_cli_r1 import configure_parser as configure_arrival, execute as execute_arrival
+
+    arrive = sub.add_parser("arrive", help="Prepare repository orientation, record responses, and return with selected continuity.")
+    configure_arrival(arrive)
+    arrive.set_defaults(func=execute_arrival)
 
     intention = sub.add_parser("intention", help="Create, discover, and explicitly reconsider resident intentions.")
     intention_arguments(intention)

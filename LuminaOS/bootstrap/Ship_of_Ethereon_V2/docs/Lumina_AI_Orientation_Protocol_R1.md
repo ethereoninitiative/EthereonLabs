@@ -60,7 +60,13 @@ This separation is intended to make orientation inspectable rather than persuasi
 
 ## Integration boundary
 
-R1 is a standalone runtime-lane capability and sea trial. It is not yet wired into `bin/lumina`, Studio, Bridge, an account connector, or the default governed host path.
+R1 now has an explicit host adapter through `bin/lumina arrive`, implemented in
+`runtime/lumina_arrival_r1.py` and `studio/lumina_arrival_cli_r1.py`. It resolves
+committed sources, computes actual source hashes, emits prompts, validates and
+records structured replies, and supports a subsequent arrival carrying prior
+responses. See [Arriving in Lumina](Lumina_Arrival_R1.md).
+It is not wired into Studio, Bridge, an account connector, or the default governed
+host path. Structural response completion is not semantic understanding verification.
 
 A future integration should preserve these boundaries:
 
@@ -89,13 +95,16 @@ The sea trial verifies:
 - persisted completion records;
 - permanent `authority_granted=false` behavior.
 
-## Next bounded slice
+## Host adapter and remaining integration
 
-The next implementation should add an operator-facing adapter that:
+The explicit arrival adapter implements these parts:
 
 1. resolves source files at a pinned repository revision;
 2. computes actual source hashes;
 3. emits a transport-neutral prompt bundle for ChatGPT, Claude, Gemini, or another model;
 4. accepts the structured response;
-5. writes the orientation record beneath Lumina state;
-6. exposes read-only status to Bridge and explicit controls to Studio.
+5. persists a reconstructible orientation record in an explicitly selected arrival directory.
+
+Read-only Bridge status, Studio controls, and direct provider transport remain
+future integrations. The host command can be used now with manually supplied
+responses or a caller's external provider adapter.

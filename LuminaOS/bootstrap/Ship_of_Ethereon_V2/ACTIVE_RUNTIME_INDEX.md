@@ -77,7 +77,14 @@ Its measurement sea trial is included in DryDock; live model results are pending
 
 ### AI orientation protocol status
 
-`runtime/lumina_ai_orientation_protocol_r1.py` is a standalone bounded orientation capability. It guides a connected AI through a declared repository evidence profile and records structured understanding receipts. It is not yet wired into `bin/lumina`, Studio, Bridge, an account connector, or the default host path, and it never grants runtime, governance, canon, consent, identity, promotion, or mutation authority.
+`runtime/lumina_ai_orientation_protocol_r1.py` owns ordered orientation records.
+The explicit `bin/lumina arrive prepare|prompt|respond|status` path uses
+`studio/lumina_arrival_cli_r1.py` and `runtime/lumina_arrival_r1.py` to snapshot
+sources at a pinned Git commit, select requested continuity records, present
+module prompts, and preserve hash-linked responses for later arrivals. It does
+not invoke a provider or grade understanding. It is not wired into Studio,
+Bridge, an account connector or the default run path, and grants no authority.
+See `docs/Lumina_Arrival_R1.md` for selection, return and integrity limits.
 
 ### Interresident Resonance Protocol status
 
@@ -152,7 +159,8 @@ Project, Harbor session, runtime session, restore session, and host session rema
 
 | Responsibility | Primary files | Wiring status |
 |---|---|---|
-| Model-neutral orientation session and receipt contract | `runtime/lumina_ai_orientation_protocol_r1.py` | Standalone bounded capability |
+| Model-neutral orientation session and receipt contract | `runtime/lumina_ai_orientation_protocol_r1.py` | Used by the explicit arrival adapter |
+| Pinned source and selected continuity arrival | `runtime/lumina_arrival_r1.py`, `studio/lumina_arrival_cli_r1.py` | Explicit `bin/lumina arrive`; no provider calls |
 | Ethereon repository curriculum | `runtime/lumina_ai_orientation_profile_ethereon_r1.json` | Declarative profile |
 | Orientation protocol documentation | `docs/Lumina_AI_Orientation_Protocol_R1.md` | Human-readable contract |
 | Structured interresident interchange | `runtime/interresident_resonance_r1.py`, `runtime/interresident_resonance_packet_r1.schema.json` | Standalone non-governing CLI and orientation projection |
