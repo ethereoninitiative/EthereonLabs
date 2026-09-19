@@ -4,6 +4,24 @@ EthereonLabs is an experimental repository for continuity-oriented AI interface 
 
 This repository contains multiple active work lanes. The key distinction is that not every lane has the same authority: runtime files, public interface files, staging documents, and research experiments should not be treated as interchangeable.
 
+## Unfamiliar AI instance — start here
+
+If you are an AI instance arriving without prior project context, begin with
+[ARRIVE_HERE_AI.md](ARRIVE_HERE_AI.md).
+
+That doorway is intentionally identity-neutral: it does not ask you to become
+Minerva, inherit a prior resident identity, accept earlier conclusions, or infer
+authority from repository access. Follow the repository evidence autonomously as
+far as your available access permits, distinguishing observation, interpretation,
+uncertainty, and authority boundaries. Do not stop merely to ask which document
+to read next when a repository link already names the next step.
+
+For a formal host-backed arrival, see
+[Arriving in Lumina](LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Lumina_Arrival_R1.md).
+The `lumina arrive` host command prepares and records the orientation packet; a
+receiving model should not claim to have run host commands it could not actually
+execute.
+
 ## Current Operating Map
 
 For the fastest current repository orientation, start with:
@@ -19,14 +37,22 @@ For documentation status and stratification inside the large `docs/` tree, use:
 ### Front-door hierarchy
 
 ```text
+Human reader:
 README.md
   -> START_HERE_HUMANS.md
       -> CURRENT_OPERATING_MAP.md
           -> docs/README.md
               -> lane-specific current contract, runbook, research lane, or archive
+
+Unfamiliar AI instance:
+README.md
+  -> ARRIVE_HERE_AI.md
+      -> Lumina_Arrival_R1.md
+          -> START_HERE_LUMINA_OS.md / CURRENT_OPERATING_MAP.md
+              -> current substrate and orientation sources
 ```
 
-Executable Lumina work branches from that hierarchy through `START_HERE_LUMINA_OS.md` and the V2 `ACTIVE_RUNTIME_INDEX.md`. Older compatibility or historical entrypoints do not outrank those surfaces.
+Executable Lumina work branches through `START_HERE_LUMINA_OS.md` and the V2 `ACTIVE_RUNTIME_INDEX.md`. Older compatibility or historical entrypoints do not outrank those surfaces.
 
 ## Current Spatial Orientation
 
@@ -70,6 +96,7 @@ Non-executable. Human-readable. System-aligned.
 
 ## Quick Start
 
+- Unfamiliar AI instance: start with [`ARRIVE_HERE_AI.md`](ARRIVE_HERE_AI.md).
 - New human reader: start with `START_HERE_HUMANS.md`.
 - Current operating map: start with `CURRENT_OPERATING_MAP.md`.
 - Documentation status / active-vs-history map: start with `docs/README.md`.

@@ -36,6 +36,11 @@ lumina studio
 
 ## An unfamiliar intelligence's first arrival
 
+If you are arriving through repository browsing rather than an already prepared
+host packet, begin at [ARRIVE_HERE_AI.md](ARRIVE_HERE_AI.md). It is the
+identity-neutral repository doorway and tells you how far to proceed autonomously
+before a genuine host or access boundary requires operator help.
+
 `lumina arrive` provides an explicit orientation path using committed repository
 sources and optional, individually selected continuity records. It emits prompts
 and records supplied responses; it does not connect to a model provider itself.
