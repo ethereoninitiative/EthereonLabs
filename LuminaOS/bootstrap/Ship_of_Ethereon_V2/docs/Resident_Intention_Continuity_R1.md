@@ -125,6 +125,12 @@ from more than one project; each record's attribution remains visible.
 
 ## Reconsideration and lineage
 
+For an explicit decision experiment using this return projection, see
+[Commitment enactment experiment R1](Commitment_Enactment_Experiment_R1.md).
+It separates preserved declaration availability from a later recommendation,
+with frozen opposing-preference, revision and untrusted-note controls. This is a
+standalone evaluation; it does not feed intention text into runtime selection.
+
 | Outcome | Allowed prior states | Result |
 |---|---|---|
 | continue | proposed, active, suspended | active; an already-active intention receives a new affirmation |
