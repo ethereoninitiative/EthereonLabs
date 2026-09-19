@@ -63,6 +63,11 @@ class ArrivalTrials(unittest.TestCase):
             response = self.root / f"response-{index}.json"
             arrival.write_new(response, self.answer(packet_hash))
             self.assertEqual(packet["sources"][0]["text"], "Committed repository evidence.\n")
+            self.assertEqual(packet["response_constraints"]["entries_per_field"], {"minimum": 1, "maximum": 16})
+            self.assertEqual(packet["response_constraints"]["max_characters_per_entry"], 8000)
+            self.assertEqual(packet["response_constraints"]["max_response_bytes"], 128 * 1024)
+            self.assertEqual(packet["response_constraints"]["response_fields"],
+                             ["observations", "interpretations", "uncertainties", "authority_boundaries"])
             state = self.cli("respond", "--arrival", self.output, "--require-packet", packet_hash,
                              "--require-head", state["head_sha256"], "--response", response)
         self.assertEqual(state["status"], "completed")
@@ -98,6 +103,16 @@ class ArrivalTrials(unittest.TestCase):
         self.assertFalse((self.repo / ".lumina_state").exists())
         with self.assertRaises(FileExistsError):
             self.prepare()
+
+    def test_prompt_exposes_limits_that_respond_enforces(self):
+        state = self.prepare()
+        packet_hash = state["packet_sha256"]
+        packet = arrival.prompt(self.output, packet_hash)
+        self.assertEqual(packet["response_constraints"]["entries_per_field"]["maximum"], 16)
+        too_many = self.answer(packet_hash)
+        too_many["response"]["observations"] = ["evidence"] * 17
+        with self.assertRaisesRegex(ValueError, "1–16"):
+            arrival.respond(self.output, packet_hash, packet_hash, too_many)
 
     def test_order_wrong_packet_empty_fields_and_stale_writes_refused(self):
         state = self.prepare()

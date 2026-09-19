@@ -42,8 +42,11 @@ python bin/lumina arrive prompt --arrival /path/to/state/arrivals/first --requir
 ```
 
 This prints the next module's actual source texts, its question, selected state,
-earlier replies, and a response template. Present the emitted prompt to the
-instance. Save its reply as JSON:
+earlier replies, a response template, and the validation constraints that
+`respond` will enforce. Present the emitted prompt to the instance. In particular,
+each of the four response fields must contain 1–16 nonempty text entries, each at
+most 8,000 characters; related points should be combined rather than emitted as
+unbounded bullet lists. Save its reply as JSON:
 
 ```json
 {

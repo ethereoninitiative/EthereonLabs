@@ -248,6 +248,17 @@ def prompt(root, packet_hash, required_head=None):
             "sources": [item for item in payload["sources"] if item["path"] in module.source_paths],
             "selected_state": payload["selected_state"], "previous_orientation": payload["previous_orientation"],
             "earlier_module_responses": record.module_receipts, "boundary": BOUNDARY,
+            "response_constraints": {
+                "top_level_fields": ["packet_sha256", "module_id", "response"],
+                "response_fields": list(module.required_response_fields),
+                "entries_per_field": {"minimum": 1, "maximum": 16},
+                "max_characters_per_entry": 8000,
+                "max_response_bytes": 128 * 1024,
+                "instruction": (
+                    "Return exactly the response_format shape. Each response field must contain "
+                    "1-16 nonempty text entries; combine related points rather than exceeding the limit."
+                ),
+            },
             "response_format": {"packet_sha256": packet_hash, "module_id": module.module_id,
                                 "response": {key: ["Your evidence-grounded statement; state uncertainty explicitly."] for key in module.required_response_fields}}}
 
