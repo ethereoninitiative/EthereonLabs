@@ -66,8 +66,15 @@ class ArrivalTrials(unittest.TestCase):
             self.assertEqual(packet["response_constraints"]["entries_per_field"], {"minimum": 1, "maximum": 16})
             self.assertEqual(packet["response_constraints"]["max_characters_per_entry"], 8000)
             self.assertEqual(packet["response_constraints"]["max_response_bytes"], 128 * 1024)
+            self.assertEqual(packet["response_constraints"]["recommended_entries_per_field"],
+                             {"minimum": 4, "maximum": 8})
             self.assertEqual(packet["response_constraints"]["response_fields"],
                              ["observations", "interpretations", "uncertainties", "authority_boundaries"])
+            schema = packet["response_constraints"]["json_schema"]
+            self.assertFalse(schema["additionalProperties"])
+            self.assertEqual(schema["properties"]["packet_sha256"]["const"], packet_hash)
+            self.assertEqual(schema["properties"]["module_id"]["const"], packet["module_id"])
+            self.assertEqual(schema["properties"]["response"]["properties"]["observations"]["maxItems"], 16)
             state = self.cli("respond", "--arrival", self.output, "--require-packet", packet_hash,
                              "--require-head", state["head_sha256"], "--response", response)
         self.assertEqual(state["status"], "completed")
