@@ -47,10 +47,11 @@ earlier replies, a response template, and the validation constraints that
 each of the four response fields must contain 1–16 nonempty text entries, each at
 most 8,000 characters. The prompt also includes a machine-readable JSON Schema
 with the same bounds and recommends 4–8 consolidated entries per field. The
-reply must be strict parseable JSON, not Markdown or JSON-like prose; quotation
-marks inside a string value must be JSON-escaped. Before returning, the receiving
-instance should count each list and merge related points until no field exceeds
-the hard limit. Save its reply as JSON:
+reply must be strict parseable JSON, not Markdown or JSON-like prose. For manual
+cross-model transport, response text values must not contain double-quote
+characters at all; use apostrophes or backticks when quoting a phrase. Before
+returning, the receiving instance should count each list and merge related points
+until no field exceeds the hard limit. Save its reply as JSON:
 
 ```json
 {

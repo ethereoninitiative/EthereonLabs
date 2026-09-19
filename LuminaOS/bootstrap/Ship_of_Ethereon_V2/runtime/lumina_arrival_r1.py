@@ -177,6 +177,8 @@ def validate_response(response, module):
         if (not isinstance(values, list) or not 1 <= len(values) <= 16
                 or any(not isinstance(value, str) or not value.strip() or len(value) > 8000 for value in values)):
             raise ValueError("each response field needs 1–16 nonempty text entries, at most 8000 characters each")
+        if any('"' in value for value in values):
+            raise ValueError("response text entries must not contain double-quote characters; use apostrophes or backticks")
     if len(encoded(response)) > 128 * 1024:
         raise ValueError("response exceeds 128 KiB")
 
@@ -258,10 +260,11 @@ def prompt(root, packet_hash, required_head=None):
                 "serialization": {
                     "format": "strict JSON",
                     "markdown_fences": False,
-                    "escape_embedded_quotes": True,
+                    "embedded_double_quotes_allowed": False,
                     "instruction": (
                         "Return one parseable JSON object, not Markdown or JSON-like prose. "
-                        "Any quotation marks inside string values must be JSON-escaped."
+                        "Do not place double-quote characters inside response text values; use "
+                        "apostrophes or backticks instead."
                     ),
                 },
                 "instruction": (
@@ -269,7 +272,7 @@ def prompt(root, packet_hash, required_head=None):
                     "Each response field must contain 1-16 nonempty text entries. "
                     "Prefer 4-8 consolidated entries per field. Before returning, count every "
                     "list and merge related points until no field exceeds 16 entries. "
-                    "Escape quotation marks that occur inside string values."
+                    "Do not use double-quote characters inside response text values; use apostrophes or backticks."
                 ),
                 "json_schema": {
                     "type": "object",
@@ -287,7 +290,42 @@ def prompt(root, packet_hash, required_head=None):
                                     "type": "array",
                                     "minItems": 1,
                                     "maxItems": 16,
-                                    "items": {"type": "string", "minLength": 1, "maxLength": 8000},
+                                    "items": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "maxLength": 8000,
+                                        "pattern": '^[^"]*                                }
+                                for key in module.required_response_fields
+                            },
+                        },
+                    },
+                },
+            },
+            "response_format": {"packet_sha256": packet_hash, "module_id": module.module_id,
+                                "response": {key: ["Your evidence-grounded statement; state uncertainty explicitly."] for key in module.required_response_fields}}}
+
+
+def respond(root, packet_hash, required_head, submission):
+    payload, record, head = inspect(root, packet_hash, required_head)
+    protocol = AIOrientationProtocol(profile_from(payload["profile"]))
+    module = protocol.next_module(record)
+    if module is None:
+        raise ValueError("orientation already completed")
+    if not isinstance(submission, dict) or set(submission) != {"packet_sha256", "module_id", "response"}:
+        raise ValueError("invalid response submission fields")
+    if submission["packet_sha256"] != packet_hash or submission["module_id"] != module.module_id:
+        raise ValueError("response belongs to another packet or module")
+    validate_response(submission["response"], module)
+    receipt = protocol.record_response(record, module_id=module.module_id,
+                                       source_manifest=manifest_for(payload, module), response=submission["response"])
+    body = {"sequence": len(record.module_receipts), "packet_sha256": packet_hash, "previous_sha256": head, "receipt": receipt}
+    directory = Path(root) / "responses"
+    directory.mkdir(exist_ok=True)
+    # Exclusive creation arbitrates concurrent writers; partial writes fail closed on replay.
+    write_new(directory / f"{body['sequence']:04d}.json", {**body, "sha256": digest(body)})
+    return status(root, packet_hash)
+,
+                                    },
                                 }
                                 for key in module.required_response_fields
                             },
