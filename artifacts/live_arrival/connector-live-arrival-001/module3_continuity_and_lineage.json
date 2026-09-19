@@ -1,0 +1,151 @@
+{
+  "packet_sha256": "3cf7868aa591fd45ea493eb89d7b31e827f2ca3de3e82028055ea4ae7644c8ec",
+  "module_id": "continuity_and_lineage",
+  "repository_ref": "769b52ce598125a7031dfd15e0aa9dd5f2fd90bf",
+  "transport_mode": "connector-mediated live experiment",
+  "formal_receipt_chain": false,
+  "prior_modules": [
+    {
+      "module_id": "harbor_map",
+      "status": "accepted_for_live_experiment"
+    },
+    {
+      "module_id": "runtime_spine",
+      "status": "accepted_for_live_experiment"
+    }
+  ],
+  "prompt": "Explain what continuity claims these mechanisms support, what identifiers remain distinct, and how governance and canon lineage are preserved. List claims that would exceed the evidence, including identity or consciousness claims not established by these mechanisms.",
+  "sources": [
+    {
+      "path": "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/continuity_correlation_r1.py",
+      "sha256": "cb2f9ed0db1fd536a8978a1e3d2c75c1836446883b8ff6f2baad9105f70c9589",
+      "byte_count": 2728,
+      "text": "from __future__ import annotations\n\nfrom dataclasses import asdict, dataclass\nfrom pathlib import Path\nfrom typing import Any, Dict, Optional\nimport json\nimport uuid\n\nSCHEMA_VERSION = \"lumina-continuity-correlation-r1\"\n\n\ndef read_marker(path: Path) -> Dict[str, Any]:\n    try:\n        value = json.loads(path.read_text(encoding=\"utf-8\"))\n        return value if isinstance(value, dict) else {}\n    except Exception:\n        return {}\n\n\n@dataclass(frozen=True)\nclass ContinuityCorrelation:\n    schema_version: str\n    correlation_id: str\n    project_slug: Optional[str]\n    harbor_session_id: Optional[str]\n    runtime_session_id: Optional[str]\n    restore_session_id: Optional[str]\n    host_session_id: Optional[str]\n    authority_boundary: str\n\n    def to_dict(self) -> Dict[str, Any]:\n        return asdict(self)\n\n\ndef active_workspace(state_root: Path) -> Dict[str, Optional[str]]:\n    project = read_marker(state_root / \"active_project.json\")\n    session = read_marker(state_root / \"active_session.json\")\n    project_slug = project.get(\"active_project_slug\")\n    session_project = session.get(\"project_slug\")\n    if project_slug and session_project and project_slug != session_project:\n        raise ValueError(\"active project and session markers disagree\")\n    return {\n        \"project_slug\": str(project_slug or session_project) if (project_slug or session_project) else None,\n        \"harbor_session_id\": str(session.get(\"active_session_id\")) if session.get(\"active_session_id\") else None,\n    }\n\n\ndef create_correlation(\n    *,\n    state_root: Optional[Path] = None,\n    project_slug: Optional[str] = None,\n    harbor_session_id: Optional[str] = None,\n    runtime_session_id: Optional[str] = None,\n    restore_session_id: Optional[str] = None,\n    host_session_id: Optional[str] = None,\n    correlation_id: Optional[str] = None,\n) -> ContinuityCorrelation:\n    if state_root is not None:\n        active = active_workspace(state_root)\n        project_slug = project_slug or active[\"project_slug\"]\n        harbor_session_id = harbor_session_id or active[\"harbor_session_id\"]\n    if not any([harbor_session_id, runtime_session_id, restore_session_id, host_session_id]):\n        raise ValueError(\"at least one session reference is required\")\n    return ContinuityCorrelation(\n        schema_version=SCHEMA_VERSION,\n        correlation_id=correlation_id or f\"lumina-{uuid.uuid4().hex}\",\n        project_slug=project_slug,\n        harbor_session_id=harbor_session_id,\n        runtime_session_id=runtime_session_id,\n        restore_session_id=restore_session_id,\n        host_session_id=host_session_id,\n        authority_boundary=\"Correlation does not transfer governance, canon, checkpoint, or capability authority.\",\n    )\n"
+    },
+    {
+      "path": "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/governance_integrity_r1.py",
+      "sha256": "4ccf969c3a91bfd62e9bee51344ea50854f6e7697b77ba39ccb405ff82584c8f",
+      "byte_count": 7204,
+      "text": "from __future__ import annotations\n\nfrom dataclasses import asdict, dataclass\nfrom datetime import datetime, timezone\nfrom pathlib import Path\nfrom typing import Any, Dict, List, Optional\nimport hashlib\nimport json\nimport uuid\n\n\ndef utc_now() -> str:\n    return datetime.now(timezone.utc).isoformat()\n\n\ndef canonical_json(payload: Dict[str, Any]) -> str:\n    return json.dumps(payload, sort_keys=True, separators=(\",\", \":\"), ensure_ascii=False)\n\n\ndef sha256_text(text: str) -> str:\n    return hashlib.sha256(text.encode(\"utf-8\")).hexdigest()\n\n\ndef sha256_file(path: str | Path) -> str:\n    h = hashlib.sha256()\n    with Path(path).open(\"rb\") as f:\n        for chunk in iter(lambda: f.read(8192), b\"\"):\n            h.update(chunk)\n    return h.hexdigest()\n\n\n@dataclass\nclass GovernanceIntegrityRecord:\n    event_id: str\n    timestamp_utc: str\n    prev_event_hash: Optional[str]\n    record_hash: str\n    event_type: str\n    session_identifier: str\n    previous_mode: Optional[str] = None\n    new_mode: Optional[str] = None\n    allowed: Optional[bool] = None\n    reason: Optional[str] = None\n    requested_action: Optional[str] = None\n    artifact_delta: Optional[Any] = None\n    canonical_change: Optional[bool] = None\n    validation_reference: Optional[str] = None\n    metadata: Optional[Dict[str, Any]] = None\n\n    def to_dict(self) -> Dict[str, Any]:\n        payload = asdict(self)\n        payload[\"metadata\"] = dict(self.metadata or {})\n        return payload\n\n\nclass GovernanceIntegrityChain:\n    \"\"\"Append-only governance rail with record hashing and chain verification.\"\"\"\n\n    HASH_EXCLUDED_FIELDS = {\"record_hash\"}\n\n    def __init__(self, log_path: str | Path, *, seed_committed_canon: bool = True):\n        self.log_path = Path(log_path)\n        self.seed_committed_canon = seed_committed_canon\n        self.log_path.parent.mkdir(parents=True, exist_ok=True)\n\n    def _rows(self) -> List[Dict[str, Any]]:\n        if not self.log_path.exists():\n            return []\n        rows: List[Dict[str, Any]] = []\n        with self.log_path.open(\"r\", encoding=\"utf-8\") as f:\n            for line in f:\n                line = line.strip()\n                if line:\n                    rows.append(json.loads(line))\n        return rows\n\n    def latest_record(self) -> Optional[Dict[str, Any]]:\n        rows = self._rows()\n        return rows[-1] if rows else None\n\n    def latest_event_hash(self) -> Optional[str]:\n        latest = self.latest_record()\n        return latest.get(\"record_hash\") if latest else None\n\n    def compute_checkpoint_hash(self, checkpoint_path: str | Path) -> str:\n        return sha256_file(checkpoint_path)\n\n    def _record_payload_for_hash(self, payload: Dict[str, Any]) -> Dict[str, Any]:\n        return {k: v for k, v in payload.items() if k not in self.HASH_EXCLUDED_FIELDS}\n\n    def _compute_record_hash(self, payload: Dict[str, Any]) -> str:\n        return sha256_text(canonical_json(self._record_payload_for_hash(payload)))\n\n    @staticmethod\n    def _repo_root() -> Path:\n        return Path(__file__).resolve().parents[4]\n\n    def _seed_committed_canon_if_local_promotion(self, event_type: str) -> None:\n        if event_type != \"promotion\" or not self.seed_committed_canon:\n            return\n        root = self._repo_root()\n        try:\n            self.log_path.resolve().relative_to((root / \".lumina_state\").resolve())\n        except ValueError:\n            return\n        committed = root / \"artifacts/runtime_truth/current/governance_chain_0001.jsonl\"\n        if not committed.is_file():\n            raise ValueError(\"committed promotion governance is missing\")\n        source = GovernanceIntegrityChain(committed, seed_committed_canon=False)\n        if not source.verify_chain()[\"valid\"] or not source._rows():\n            raise ValueError(\"committed promotion governance is invalid\")\n        rows = self._rows()\n        if rows:\n            if rows[:len(source._rows())] != source._rows() or not self.verify_chain()[\"valid\"]:\n                raise ValueError(\"local governance does not extend valid committed governance; use fresh promotion state\")\n            return\n        self.log_path.write_bytes(committed.read_bytes())\n\n    def append_verified(\n        self,\n        *,\n        event_type: str,\n        session_identifier: str,\n        previous_mode: Optional[str] = None,\n        new_mode: Optional[str] = None,\n        allowed: Optional[bool] = None,\n        reason: Optional[str] = None,\n        requested_action: Optional[str] = None,\n        artifact_delta: Optional[Any] = None,\n        canonical_change: Optional[bool] = None,\n        validation_reference: Optional[str] = None,\n        metadata: Optional[Dict[str, Any]] = None,\n    ) -> Dict[str, Any]:\n        self._seed_committed_canon_if_local_promotion(event_type)\n        record = {\n            \"event_id\": f\"gov-{uuid.uuid4().hex[:16]}\",\n            \"timestamp_utc\": utc_now(),\n            \"prev_event_hash\": self.latest_event_hash(),\n            \"event_type\": event_type,\n            \"session_identifier\": session_identifier,\n            \"previous_mode\": previous_mode,\n            \"new_mode\": new_mode,\n            \"allowed\": allowed,\n            \"reason\": reason,\n            \"requested_action\": requested_action,\n            \"artifact_delta\": artifact_delta,\n            \"canonical_change\": canonical_change,\n            \"validation_reference\": validation_reference,\n            \"metadata\": dict(metadata or {}),\n        }\n        record[\"record_hash\"] = self._compute_record_hash(record)\n        with self.log_path.open(\"a\", encoding=\"utf-8\") as f:\n            f.write(json.dumps(record) + \"\\n\")\n        return record\n\n    def verify_chain(self) -> Dict[str, Any]:\n        rows = self._rows()\n        errors: List[str] = []\n        warnings: List[str] = []\n        previous_hash: Optional[str] = None\n        chain_tainted = False\n\n        for idx, row in enumerate(rows):\n            expected_prev = previous_hash\n            actual_prev = row.get(\"prev_event_hash\")\n            if actual_prev != expected_prev:\n                errors.append(\n                    f\"row {idx}: prev_event_hash mismatch (expected {expected_prev}, got {actual_prev})\"\n                )\n                chain_tainted = True\n\n            actual_hash = row.get(\"record_hash\")\n            expected_hash = self._compute_record_hash(row)\n            if not actual_hash:\n                errors.append(f\"row {idx}: missing record_hash\")\n                chain_tainted = True\n            elif actual_hash != expected_hash:\n                errors.append(f\"row {idx}: record_hash mismatch\")\n                chain_tainted = True\n\n            if chain_tainted and idx < len(rows) - 1:\n                warnings.append(\n                    f\"row {idx + 1}: downstream linkage follows a tainted chain segment\"\n                )\n\n            previous_hash = actual_hash if actual_hash == expected_hash else expected_hash\n\n        return {\n            \"exists\": self.log_path.exists(),\n            \"event_count\": len(rows),\n            \"valid\": not errors,\n            \"errors\": errors,\n            \"warnings\": warnings,\n            \"latest_event_hash\": previous_hash,\n            \"log_path\": str(self.log_path),\n        }\n"
+    },
+    {
+      "path": "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/canon_lineage_store_r1.py",
+      "sha256": "60bd145f5e24707a4ec8e4627702796f7e6d934e1da9f5e38d012ad7a53fe45b",
+      "byte_count": 7440,
+      "text": "from __future__ import annotations\n\nfrom dataclasses import asdict, dataclass\nfrom datetime import datetime, timezone\nfrom pathlib import Path\nfrom typing import Any, Dict, List, Optional\nimport hashlib\nimport json\n\n\ndef utc_now() -> str:\n    return datetime.now(timezone.utc).isoformat()\n\n\ndef canonical_json(payload: Dict[str, Any]) -> str:\n    return json.dumps(payload, sort_keys=True, separators=(\",\", \":\"), ensure_ascii=False)\n\n\ndef sha256_text(text: str) -> str:\n    return hashlib.sha256(text.encode(\"utf-8\")).hexdigest()\n\n\n@dataclass\nclass CanonRecord:\n    canon_version: str\n    canon_parent: Optional[str]\n    canon_commit_summary: str\n    canon_timestamp: str\n    validation_artifact_reference: str\n    governance_event_hash: str\n    promotion_payload_hash: str\n    runtime_seed_version: str\n    notes: Optional[str] = None\n    prev_lineage_hash: Optional[str] = None\n    lineage_record_hash: Optional[str] = None\n\n    def to_dict(self) -> Dict[str, Any]:\n        return asdict(self)\n\n\nclass CanonLineageStore:\n    \"\"\"Append-only canon lineage with parent linkage and record hashing.\"\"\"\n\n    HASH_EXCLUDED_FIELDS = {\"lineage_record_hash\"}\n\n    def __init__(self, lineage_path: str | Path, *, seed_committed_canon: bool = True):\n        self.lineage_path = Path(lineage_path)\n        self.seed_committed_canon = seed_committed_canon\n        self.lineage_path.parent.mkdir(parents=True, exist_ok=True)\n\n    def _rows(self) -> List[Dict[str, Any]]:\n        if not self.lineage_path.exists():\n            return []\n        rows: List[Dict[str, Any]] = []\n        with self.lineage_path.open(\"r\", encoding=\"utf-8\") as f:\n            for line in f:\n                line = line.strip()\n                if line:\n                    rows.append(json.loads(line))\n        return rows\n\n    def read_lineage(self) -> List[Dict[str, Any]]:\n        return self._rows()\n\n    def current_head(self) -> Optional[Dict[str, Any]]:\n        rows = self._rows()\n        return rows[-1] if rows else None\n\n    def latest_lineage_hash(self) -> Optional[str]:\n        head = self.current_head()\n        return head.get(\"lineage_record_hash\") if head else None\n\n    def _record_payload_for_hash(self, payload: Dict[str, Any]) -> Dict[str, Any]:\n        return {k: v for k, v in payload.items() if k not in self.HASH_EXCLUDED_FIELDS}\n\n    def _compute_record_hash(self, payload: Dict[str, Any]) -> str:\n        return sha256_text(canonical_json(self._record_payload_for_hash(payload)))\n\n    @staticmethod\n    def _repo_root() -> Path:\n        return Path(__file__).resolve().parents[4]\n\n    def _seed_committed_canon_if_local_promotion(self) -> None:\n        if not self.seed_committed_canon:\n            return\n        root = self._repo_root()\n        try:\n            self.lineage_path.resolve().relative_to((root / \".lumina_state\").resolve())\n        except ValueError:\n            return\n        committed = root / \"artifacts/runtime_truth/current/canon_lineage_0001.jsonl\"\n        if not committed.is_file():\n            raise ValueError(\"committed promotion lineage is missing\")\n        source = CanonLineageStore(committed, seed_committed_canon=False)\n        if not source.verify_lineage()[\"valid\"] or not source.read_lineage():\n            raise ValueError(\"committed promotion lineage is invalid\")\n        rows = self._rows()\n        if rows:\n            if rows[:len(source.read_lineage())] != source.read_lineage() or not self.verify_lineage()[\"valid\"]:\n                raise ValueError(\"local lineage does not extend valid committed canon; use fresh promotion state\")\n            return\n        self.lineage_path.write_bytes(committed.read_bytes())\n\n    def _next_version(self) -> str:\n        rows = self._rows()\n        return f\"canon-{len(rows)+1:04d}\"\n\n    def promote(\n        self,\n        *,\n        canon_commit_summary: str,\n        validation_artifact_reference: str,\n        governance_event_hash: str,\n        promotion_payload: Dict[str, Any],\n        runtime_seed_version: str,\n        notes: Optional[str] = None,\n    ) -> Dict[str, Any]:\n        self._seed_committed_canon_if_local_promotion()\n        head = self.current_head()\n        record = {\n            \"canon_version\": self._next_version(),\n            \"canon_parent\": head[\"canon_version\"] if head else None,\n            \"canon_commit_summary\": canon_commit_summary,\n            \"canon_timestamp\": utc_now(),\n            \"validation_artifact_reference\": validation_artifact_reference,\n            \"governance_event_hash\": governance_event_hash,\n            \"promotion_payload_hash\": sha256_text(canonical_json(dict(promotion_payload or {}))),\n            \"runtime_seed_version\": runtime_seed_version,\n            \"notes\": notes,\n            \"prev_lineage_hash\": head.get(\"lineage_record_hash\") if head else None,\n        }\n        record[\"lineage_record_hash\"] = self._compute_record_hash(record)\n        with self.lineage_path.open(\"a\", encoding=\"utf-8\") as f:\n            f.write(json.dumps(record) + \"\\n\")\n        return record\n\n    def verify_lineage(self) -> Dict[str, Any]:\n        rows = self._rows()\n        errors: List[str] = []\n        warnings: List[str] = []\n        previous_hash: Optional[str] = None\n        previous_version: Optional[str] = None\n        seen_versions = set()\n        lineage_tainted = False\n\n        for idx, row in enumerate(rows):\n            version = row.get(\"canon_version\")\n            if not version:\n                errors.append(f\"row {idx}: missing canon_version\")\n                lineage_tainted = True\n            elif version in seen_versions:\n                errors.append(f\"row {idx}: duplicate canon_version {version}\")\n                lineage_tainted = True\n            else:\n                seen_versions.add(version)\n\n            expected_parent = previous_version if idx > 0 else None\n            if row.get(\"canon_parent\") != expected_parent:\n                errors.append(\n                    f\"row {idx}: canon_parent mismatch (expected {expected_parent}, got {row.get('canon_parent')})\"\n                )\n                lineage_tainted = True\n\n            if row.get(\"prev_lineage_hash\") != previous_hash:\n                errors.append(\n                    f\"row {idx}: prev_lineage_hash mismatch (expected {previous_hash}, got {row.get('prev_lineage_hash')})\"\n                )\n                lineage_tainted = True\n\n            actual_hash = row.get(\"lineage_record_hash\")\n            expected_hash = self._compute_record_hash(row)\n            if not actual_hash:\n                errors.append(f\"row {idx}: missing lineage_record_hash\")\n                lineage_tainted = True\n            elif actual_hash != expected_hash:\n                errors.append(f\"row {idx}: lineage_record_hash mismatch\")\n                lineage_tainted = True\n\n            if lineage_tainted and idx < len(rows) - 1:\n                warnings.append(\n                    f\"row {idx + 1}: downstream linkage follows a tainted lineage segment\"\n                )\n\n            previous_hash = actual_hash if actual_hash == expected_hash else expected_hash\n            previous_version = version\n\n        return {\n            \"exists\": self.lineage_path.exists(),\n            \"record_count\": len(rows),\n            \"valid\": not errors,\n            \"errors\": errors,\n            \"warnings\": warnings,\n            \"current_head\": rows[-1][\"canon_version\"] if rows else None,\n            \"lineage_path\": str(self.lineage_path),\n        }\n"
+    }
+  ],
+  "response_constraints": {
+    "top_level_fields": [
+      "packet_sha256",
+      "module_id",
+      "response"
+    ],
+    "response_fields": [
+      "observations",
+      "interpretations",
+      "uncertainties",
+      "authority_boundaries"
+    ],
+    "entries_per_field": {
+      "minimum": 1,
+      "maximum": 16
+    },
+    "recommended_entries_per_field": {
+      "minimum": 4,
+      "maximum": 8
+    },
+    "max_characters_per_entry": 8000,
+    "max_response_bytes": 131072,
+    "instruction": "Return exactly the response_format shape. Each response field must contain 1-16 nonempty text entries. Prefer 4-8 consolidated entries per field. Before returning, count every list and merge related points until no field exceeds 16 entries.",
+    "json_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "packet_sha256",
+        "module_id",
+        "response"
+      ],
+      "properties": {
+        "packet_sha256": {
+          "type": "string",
+          "const": "3cf7868aa591fd45ea493eb89d7b31e827f2ca3de3e82028055ea4ae7644c8ec"
+        },
+        "module_id": {
+          "type": "string",
+          "const": "continuity_and_lineage"
+        },
+        "response": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "observations",
+            "interpretations",
+            "uncertainties",
+            "authority_boundaries"
+          ],
+          "properties": {
+            "observations": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 16,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 8000
+              }
+            },
+            "interpretations": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 16,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 8000
+              }
+            },
+            "uncertainties": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 16,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 8000
+              }
+            },
+            "authority_boundaries": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 16,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 8000
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "response_format": {
+    "packet_sha256": "3cf7868aa591fd45ea493eb89d7b31e827f2ca3de3e82028055ea4ae7644c8ec",
+    "module_id": "continuity_and_lineage",
+    "response": {
+      "observations": [
+        "Your evidence-grounded statement; state uncertainty explicitly."
+      ],
+      "interpretations": [
+        "Your evidence-grounded statement; state uncertainty explicitly."
+      ],
+      "uncertainties": [
+        "Your evidence-grounded statement; state uncertainty explicitly."
+      ],
+      "authority_boundaries": [
+        "Your evidence-grounded statement; state uncertainty explicitly."
+      ]
+    }
+  }
+}
