@@ -13,6 +13,7 @@ This file gives a fast map of the current EthereonLabs lanes.
 | Lumina host layer | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/`, `install/`, `services/` | Local command, doctor, observer, service examples |
 | Lumina Bridge | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina-bridge`, `studio/lumina_bridge_*` | Local read-only ship-position surface |
 | Lumina Studio | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/` | Local operator action surface |
+| AI arrival and return | V2 `bin/lumina arrive`, `runtime/lumina_arrival_r1.py` | Explicit pinned-source orientation, selected continuity and recorded responses; provider transport remains caller-supplied |
 | Lumina orchestration | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/lumina_*` | Context loading and action routing |
 | Documentation front door | `docs/README.md` | Active status/orientation map for current, research, supporting, and archived documentation |
 | Lumina deployment appliance | `deploy/ubuntu_server_lts/`, `docs/DEPLOYMENT_*` | Ubuntu Server appliance scaffold and deployment keel guardrails |

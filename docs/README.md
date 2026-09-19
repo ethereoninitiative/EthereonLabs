@@ -33,6 +33,7 @@ Start here for work that can affect present architecture or present claims:
 
 - `START_HERE_LUMINA_OS.md`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/ACTIVE_RUNTIME_INDEX.md`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Lumina_Arrival_R1.md` — explicit host arrival, selected continuity, response recording and subsequent return; provider transport remains caller-supplied
 - `docs/LUMINA_HABITAT_CREATION_CHECKLIST.md`
 - `docs/HABITAT_RESONANT_RETURN_GATE_R1.md` — implemented standalone read-only JSON model; verified live Bridge integration remains future work
 - `docs/VESSEL_CONTINUITY_TRANSFER_R1.md`

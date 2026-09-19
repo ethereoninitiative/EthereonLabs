@@ -34,6 +34,14 @@ lumina state --limit 12
 lumina studio
 ```
 
+## An unfamiliar intelligence's first arrival
+
+`lumina arrive` provides an explicit orientation path using committed repository
+sources and optional, individually selected continuity records. It emits prompts
+and records supplied responses; it does not connect to a model provider itself.
+See [Arriving in Lumina](LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Lumina_Arrival_R1.md)
+for preparation, response collection, and returning in another session.
+
 ## Current spatial frame
 
 The current top-level orientation is orbital / planetary:
