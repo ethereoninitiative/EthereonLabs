@@ -255,11 +255,21 @@ def prompt(root, packet_hash, required_head=None):
                 "recommended_entries_per_field": {"minimum": 4, "maximum": 8},
                 "max_characters_per_entry": 8000,
                 "max_response_bytes": 128 * 1024,
+                "serialization": {
+                    "format": "strict JSON",
+                    "markdown_fences": False,
+                    "escape_embedded_quotes": True,
+                    "instruction": (
+                        "Return one parseable JSON object, not Markdown or JSON-like prose. "
+                        "Any quotation marks inside string values must be JSON-escaped."
+                    ),
+                },
                 "instruction": (
-                    "Return exactly the response_format shape. Each response field must contain "
-                    "1-16 nonempty text entries. Prefer 4-8 consolidated entries per field. "
-                    "Before returning, count every list and merge related points until no field "
-                    "exceeds 16 entries."
+                    "Return exactly the response_format shape as strict parseable JSON. "
+                    "Each response field must contain 1-16 nonempty text entries. "
+                    "Prefer 4-8 consolidated entries per field. Before returning, count every "
+                    "list and merge related points until no field exceeds 16 entries. "
+                    "Escape quotation marks that occur inside string values."
                 ),
                 "json_schema": {
                     "type": "object",
