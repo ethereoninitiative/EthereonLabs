@@ -37,14 +37,22 @@ For documentation status and stratification inside the large `docs/` tree, use:
 ### Front-door hierarchy
 
 ```text
+Human reader:
 README.md
   -> START_HERE_HUMANS.md
       -> CURRENT_OPERATING_MAP.md
           -> docs/README.md
               -> lane-specific current contract, runbook, research lane, or archive
+
+Unfamiliar AI instance:
+README.md
+  -> ARRIVE_HERE_AI.md
+      -> Lumina_Arrival_R1.md
+          -> START_HERE_LUMINA_OS.md / CURRENT_OPERATING_MAP.md
+              -> current substrate and orientation sources
 ```
 
-Executable Lumina work branches from that hierarchy through `START_HERE_LUMINA_OS.md` and the V2 `ACTIVE_RUNTIME_INDEX.md`. Older compatibility or historical entrypoints do not outrank those surfaces.
+Executable Lumina work branches through `START_HERE_LUMINA_OS.md` and the V2 `ACTIVE_RUNTIME_INDEX.md`. Older compatibility or historical entrypoints do not outrank those surfaces.
 
 ## Current Spatial Orientation
 
@@ -88,6 +96,7 @@ Non-executable. Human-readable. System-aligned.
 
 ## Quick Start
 
+- Unfamiliar AI instance: start with [`ARRIVE_HERE_AI.md`](ARRIVE_HERE_AI.md).
 - New human reader: start with `START_HERE_HUMANS.md`.
 - Current operating map: start with `CURRENT_OPERATING_MAP.md`.
 - Documentation status / active-vs-history map: start with `docs/README.md`.
