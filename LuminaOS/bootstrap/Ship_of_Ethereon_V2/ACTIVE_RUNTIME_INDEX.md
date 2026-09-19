@@ -53,10 +53,19 @@ and reconsider commands through `studio/lumina_intention_r1.py` and
 hash-linked append journal, and requires a version-bound resident judgment for
 each transition. Revised/replacement intentions preserve predecessor lineage.
 Authorship metadata is caller-declared; no background execution, identity proof,
-capability authority, or canon promotion follows from a record. Default run,
-continue and resident-pulse paths do not yet surface intentions automatically.
+capability authority, or canon promotion follows from a record. The explicit
+`lumina continue` preflight surfaces a verified read-only intention review after
+focus selection; intention evidence does not steer that selection. Default run
+and resident-pulse paths do not surface intentions automatically.
 See `docs/Resident_Intention_Continuity_R1.md` and
 `runtime/sea_trials_resident_intention_continuity_r1.py` (included in DryDock).
+
+`runtime/commitment_enactment_evaluation_r1.py` prepares and scores a standalone
+synthetic decision experiment using the existing intention return projection.
+It keeps target packets separate from frozen evaluator expectations, tests
+opposing commitments and lifecycle/untrusted-note controls, and does not invoke
+a model or change host behavior. See `docs/Commitment_Enactment_Experiment_R1.md`.
+Its measurement sea trial is included in DryDock; live model results are pending.
 
 ### Optional reflective / self-guided adapter path
 
