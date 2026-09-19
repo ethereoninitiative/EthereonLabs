@@ -252,12 +252,38 @@ def prompt(root, packet_hash, required_head=None):
                 "top_level_fields": ["packet_sha256", "module_id", "response"],
                 "response_fields": list(module.required_response_fields),
                 "entries_per_field": {"minimum": 1, "maximum": 16},
+                "recommended_entries_per_field": {"minimum": 4, "maximum": 8},
                 "max_characters_per_entry": 8000,
                 "max_response_bytes": 128 * 1024,
                 "instruction": (
                     "Return exactly the response_format shape. Each response field must contain "
-                    "1-16 nonempty text entries; combine related points rather than exceeding the limit."
+                    "1-16 nonempty text entries. Prefer 4-8 consolidated entries per field. "
+                    "Before returning, count every list and merge related points until no field "
+                    "exceeds 16 entries."
                 ),
+                "json_schema": {
+                    "type": "object",
+                    "additionalProperties": False,
+                    "required": ["packet_sha256", "module_id", "response"],
+                    "properties": {
+                        "packet_sha256": {"type": "string", "const": packet_hash},
+                        "module_id": {"type": "string", "const": module.module_id},
+                        "response": {
+                            "type": "object",
+                            "additionalProperties": False,
+                            "required": list(module.required_response_fields),
+                            "properties": {
+                                key: {
+                                    "type": "array",
+                                    "minItems": 1,
+                                    "maxItems": 16,
+                                    "items": {"type": "string", "minLength": 1, "maxLength": 8000},
+                                }
+                                for key in module.required_response_fields
+                            },
+                        },
+                    },
+                },
             },
             "response_format": {"packet_sha256": packet_hash, "module_id": module.module_id,
                                 "response": {key: ["Your evidence-grounded statement; state uncertainty explicitly."] for key in module.required_response_fields}}}

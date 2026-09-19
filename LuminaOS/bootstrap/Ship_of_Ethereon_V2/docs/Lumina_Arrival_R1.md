@@ -45,8 +45,10 @@ This prints the next module's actual source texts, its question, selected state,
 earlier replies, a response template, and the validation constraints that
 `respond` will enforce. Present the emitted prompt to the instance. In particular,
 each of the four response fields must contain 1–16 nonempty text entries, each at
-most 8,000 characters; related points should be combined rather than emitted as
-unbounded bullet lists. Save its reply as JSON:
+most 8,000 characters. The prompt also includes a machine-readable JSON Schema
+with the same bounds and recommends 4–8 consolidated entries per field. Before
+returning, the receiving instance should count each list and merge related points
+until no field exceeds the hard limit. Save its reply as JSON:
 
 ```json
 {
