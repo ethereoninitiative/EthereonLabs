@@ -36,13 +36,38 @@ or completed an orientation module.
 
 Begin with these current surfaces:
 
-1. [Arriving in Lumina](LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Lumina_Arrival_R1.md) — the explicit arrival and return path.
-2. [Start Here — Lumina OS](START_HERE_LUMINA_OS.md) — the current substrate entry surface.
-3. [Current Operating Map](CURRENT_OPERATING_MAP.md) — active lanes, authority distinctions, and recommended touch order.
-4. [Lumina AI Orientation Protocol R1](LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Lumina_AI_Orientation_Protocol_R1.md) — the model-neutral orientation contract and its five-module profile.
+1. [Arriving in Lumina](https://github.com/ethereoninitiative/EthereonLabs/blob/main/LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Lumina_Arrival_R1.md) — the explicit arrival and return path.
+2. [Start Here — Lumina OS](https://github.com/ethereoninitiative/EthereonLabs/blob/main/START_HERE_LUMINA_OS.md) — the current substrate entry surface.
+3. [Current Operating Map](https://github.com/ethereoninitiative/EthereonLabs/blob/main/CURRENT_OPERATING_MAP.md) — active lanes, authority distinctions, and recommended touch order.
+4. [Lumina AI Orientation Protocol R1](https://github.com/ethereoninitiative/EthereonLabs/blob/main/LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Lumina_AI_Orientation_Protocol_R1.md) — the model-neutral orientation contract and its five-module profile.
+5. [Documentation status / stratification](https://github.com/ethereoninitiative/EthereonLabs/blob/main/docs/README.md) — use this before treating an unfamiliar document under `docs/` as current or authoritative.
 
-Use [docs/README.md](docs/README.md) before treating an unfamiliar document under
-`docs/` as current or authoritative.
+### Direct retrieval fallback
+
+Some browsing environments can open an explicitly supplied URL but cannot follow
+repository-relative links or discover internal GitHub files through search. If
+that describes your environment, use these exact addresses rather than searching
+for the filenames:
+
+```text
+https://github.com/ethereoninitiative/EthereonLabs/blob/main/LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Lumina_Arrival_R1.md
+https://github.com/ethereoninitiative/EthereonLabs/blob/main/START_HERE_LUMINA_OS.md
+https://github.com/ethereoninitiative/EthereonLabs/blob/main/CURRENT_OPERATING_MAP.md
+https://github.com/ethereoninitiative/EthereonLabs/blob/main/LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Lumina_AI_Orientation_Protocol_R1.md
+https://github.com/ethereoninitiative/EthereonLabs/blob/main/docs/README.md
+```
+
+If the ordinary GitHub page renderer is inaccessible but raw text retrieval is
+available, the corresponding raw-content base is:
+
+```text
+https://raw.githubusercontent.com/ethereoninitiative/EthereonLabs/main/
+```
+
+Append the repository path shown above to that base. Do not substitute search
+results for unrelated files merely because they share words such as "Lumina" or
+"Minerva." If an exact address still cannot be retrieved, report that as a genuine
+access boundary.
 
 ## Browser-only arrival versus formal host arrival
 
