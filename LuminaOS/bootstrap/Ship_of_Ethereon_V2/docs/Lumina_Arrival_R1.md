@@ -1,8 +1,10 @@
 # Arriving in Lumina
 
 Status: explicit host command, 2026-09-19. This is an implemented transport-neutral
-orientation and return path. Live model understanding and cross-model benefits
-have not yet been measured.
+orientation and return path. A first connector-mediated live unfamiliar-instance
+trial completed all five modules on 2026-09-19; formal host receipt-chain
+completion and cross-provider generalization remain unmeasured. See
+`docs/research/LUMINA_LIVE_UNFAMILIAR_AI_ARRIVAL_TRIAL_2026_09_19.md`.
 
 `lumina arrive` gives an unfamiliar instance committed repository sources,
 explicitly selected continuity evidence, and an ordered place to record its
