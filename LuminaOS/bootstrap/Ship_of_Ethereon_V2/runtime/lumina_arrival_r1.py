@@ -294,37 +294,7 @@ def prompt(root, packet_hash, required_head=None):
                                         "type": "string",
                                         "minLength": 1,
                                         "maxLength": 8000,
-                                        "pattern": '^[^"]*                                }
-                                for key in module.required_response_fields
-                            },
-                        },
-                    },
-                },
-            },
-            "response_format": {"packet_sha256": packet_hash, "module_id": module.module_id,
-                                "response": {key: ["Your evidence-grounded statement; state uncertainty explicitly."] for key in module.required_response_fields}}}
-
-
-def respond(root, packet_hash, required_head, submission):
-    payload, record, head = inspect(root, packet_hash, required_head)
-    protocol = AIOrientationProtocol(profile_from(payload["profile"]))
-    module = protocol.next_module(record)
-    if module is None:
-        raise ValueError("orientation already completed")
-    if not isinstance(submission, dict) or set(submission) != {"packet_sha256", "module_id", "response"}:
-        raise ValueError("invalid response submission fields")
-    if submission["packet_sha256"] != packet_hash or submission["module_id"] != module.module_id:
-        raise ValueError("response belongs to another packet or module")
-    validate_response(submission["response"], module)
-    receipt = protocol.record_response(record, module_id=module.module_id,
-                                       source_manifest=manifest_for(payload, module), response=submission["response"])
-    body = {"sequence": len(record.module_receipts), "packet_sha256": packet_hash, "previous_sha256": head, "receipt": receipt}
-    directory = Path(root) / "responses"
-    directory.mkdir(exist_ok=True)
-    # Exclusive creation arbitrates concurrent writers; partial writes fail closed on replay.
-    write_new(directory / f"{body['sequence']:04d}.json", {**body, "sha256": digest(body)})
-    return status(root, packet_hash)
-,
+                                        "pattern": r'^[^"]*$',
                                     },
                                 }
                                 for key in module.required_response_fields
