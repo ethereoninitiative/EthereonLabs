@@ -211,3 +211,30 @@ The smallest executable slice should add:
 - focused sea trials for all controls above.
 
 Do not add cameras, microphones, network event streams, multiple drives, affect models, relationship drives, or physical embodiment in R1. First establish whether causal inheritance plus endogenous wake can be demonstrated without collapsing into cron.
+
+
+## Executable slice status
+
+The first executable slice lives in `runtime/resident_ember_r1.py` with focused
+trials in `runtime/sea_trials_resident_ember_r1.py`.
+
+This slice deliberately stops before the Resident Pulse bridge. It proves the
+smaller prerequisite first: hash-linked Ember state can advance without model
+inference, a resident-attributed drive can cross a threshold from elapsed time
+plus inherited state, and the resulting wake packet names the exact causal Ember
+event while carrying no execution authority.
+
+Run:
+
+```bash
+python runtime/sea_trials_resident_ember_r1.py
+```
+
+The focused controls cover endogenous threshold crossing, a frozen drive that
+never wakes despite elapsed time, single-transition wake behavior, tamper
+failure, and explicit separation between elapsed time as an input and the
+resident-inherited drive as the recorded wake cause.
+
+The next slice should bind this wake packet into Resident Pulse without using
+`force=True`, then return a later explicit intention reconsideration to Ember.
+That bridge must preserve the existing Pulse and intention authority boundaries.
