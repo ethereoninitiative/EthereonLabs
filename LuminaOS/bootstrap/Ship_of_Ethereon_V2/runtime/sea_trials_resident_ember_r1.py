@@ -69,7 +69,7 @@ def trial_wake_is_single_transition():
         later = ember.advance(observed_at=ts(20))
         assert first["wake_requested"]
         assert not later["wake_requested"]
-        assert ember.wake_packet()["event_hash" if False else "ember_event_hash"] == first["event_hash"]
+        assert ember.wake_packet()["ember_event_hash"] == first["event_hash"]
 
 
 def trial_tamper_fails_closed():
