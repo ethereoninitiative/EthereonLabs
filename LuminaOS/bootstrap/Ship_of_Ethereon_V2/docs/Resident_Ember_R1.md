@@ -238,3 +238,32 @@ resident-inherited drive as the recorded wake cause.
 The next slice should bind this wake packet into Resident Pulse without using
 `force=True`, then return a later explicit intention reconsideration to Ember.
 That bridge must preserve the existing Pulse and intention authority boundaries.
+
+
+## Ember to Pulse bridge R1
+
+The first bridge is implemented in `runtime/lumina_resident_pulse_r1.py`.
+Resident Pulse now accepts an optional `ember_wake` packet through a path that
+is explicitly separate from operator `force=True`.
+
+Pulse does not trust the packet by itself. It replays the local Ember journal and
+requires the packet's event hash and sequence to identify exactly one verified
+event whose `wake_requested` is true and whose cause is
+`resident_inherited_drive`. Resident, intention, drive value, threshold, and
+cause must match the journal event. Changed or absent evidence fails before the
+continuation controller is invoked.
+
+A verified Ember wake changes only the cause of bounded attention. It does not
+change the continuation controller's authority, target mode, governance, canon,
+consent, capability, or identity boundaries.
+
+Focused bridge trials:
+
+```bash
+python runtime/sea_trials_ember_pulse_bridge_r1.py
+```
+
+The next research slice is the return path: after Ember-originated attention, an
+explicit later resident reconsideration should be bound back into Ember so that
+the resident can continue, revise, suspend, complete, or abandon the intention
+that caused the wake. Automatic execution remains out of scope.
