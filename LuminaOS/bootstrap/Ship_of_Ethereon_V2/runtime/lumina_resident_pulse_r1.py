@@ -9,8 +9,10 @@ import uuid
 
 try:
     from .lumina_continue_controller_r1 import LuminaContinueController
+    from .resident_ember_r1 import ResidentEmberStore
 except Exception:
     from lumina_continue_controller_r1 import LuminaContinueController
+    from resident_ember_r1 import ResidentEmberStore
 
 
 def utc_now() -> str:
@@ -113,12 +115,45 @@ class LuminaResidentPulse:
             requested_action=requested_action,
         )
 
+    def _verify_ember_wake(self, wake_packet: Dict[str, Any]) -> Dict[str, Any]:
+        required = {
+            "schema_version", "resident", "intention_id", "ember_event_hash",
+            "ember_sequence", "wake_cause", "drive_at_wake", "wake_threshold", "authority",
+        }
+        if set(wake_packet) != required:
+            raise ValueError("invalid Ember wake packet fields")
+        if wake_packet.get("schema_version") != "resident-ember-wake-r1":
+            raise ValueError("unsupported Ember wake packet")
+        ember = ResidentEmberStore(Path(self.controller.runner.base_dir))
+        rows = ember.read()
+        matches = [
+            row for row in rows
+            if row.get("event_hash") == wake_packet.get("ember_event_hash")
+            and row.get("sequence") == wake_packet.get("ember_sequence")
+        ]
+        if len(matches) != 1:
+            raise ValueError("Ember wake event is absent from verified local history")
+        event = matches[0]
+        if not event.get("wake_requested") or event.get("wake_cause") != "resident_inherited_drive":
+            raise ValueError("Ember event is not an endogenous wake")
+        for packet_key, event_key in (
+            ("resident", "resident"),
+            ("intention_id", "intention_id"),
+            ("wake_cause", "wake_cause"),
+            ("drive_at_wake", "drive_after"),
+            ("wake_threshold", "wake_threshold"),
+        ):
+            if wake_packet.get(packet_key) != event.get(event_key):
+                raise ValueError("Ember wake packet does not match verified event")
+        return event
+
     def pulse(
         self,
         *,
         project_id: Optional[str] = None,
         requested_action: str = LuminaContinueController.FALLBACK_REQUEST,
         force: bool = False,
+        ember_wake: Optional[Dict[str, Any]] = None,
     ) -> ResidentPulseResult:
         pulse_id = str(uuid.uuid4())
         observed_at = utc_now()
@@ -143,8 +178,17 @@ class LuminaResidentPulse:
         invoked = False
         decision_reason = "unallocated_attention"
         attention_state = "unallocated_attention"
+        verified_ember_event = None
+        if ember_wake is not None:
+            if force:
+                raise ValueError("Ember wake and operator force are mutually exclusive")
+            verified_ember_event = self._verify_ember_wake(ember_wake)
 
-        if not source_checkpoint:
+        if verified_ember_event is not None:
+            invoked = True
+            decision_reason = "verified_ember_endogenous_wake"
+            attention_state = "resident_initiated_attention"
+        elif not source_checkpoint:
             decision_reason = "no_source_checkpoint"
             attention_state = "awaiting_continuity_state"
         elif source_checkpoint == last_consumed_before and not force:
@@ -184,6 +228,10 @@ class LuminaResidentPulse:
             "decision_reason": decision_reason,
             "attention_state": attention_state,
             "force_requested": bool(force),
+            "ember_wake": ember_wake,
+            "verified_ember_event_hash": (
+                verified_ember_event.get("event_hash") if verified_ember_event is not None else None
+            ),
             "source_checkpoint": source_checkpoint,
             "source_captured_at": source_captured_at,
             "source_pending_next_action": pending_next_action,
@@ -195,8 +243,9 @@ class LuminaResidentPulse:
             "continuation_receipt": continuation_receipt,
             "authority_boundary": (
                 "Resident Pulse may decide whether to invoke the existing bounded continuation path. "
-                "It cannot authorize mutation, promotion, canon change, checkpoint legality, mode law, "
-                "consent decisions, capability exposure, or identity claims."
+                "A verified Ember wake is an attention cause, not execution authority. Pulse cannot "
+                "authorize mutation, promotion, canon change, checkpoint legality, mode law, consent "
+                "decisions, capability exposure, or identity claims."
             ),
         }
         persisted = self.store.write(resolved_project_id, receipt)
