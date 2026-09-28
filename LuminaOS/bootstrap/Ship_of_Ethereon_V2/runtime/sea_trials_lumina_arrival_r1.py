@@ -72,7 +72,8 @@ class ArrivalTrials(unittest.TestCase):
             self.assertIn("parseable JSON", packet["response_constraints"]["serialization"]["instruction"])
             self.assertEqual(
                 packet["response_constraints"]["json_schema"]["properties"]["response"]["properties"]["observations"]["items"]["pattern"],
-                '^[^"]*
+                '^[^"]*$')
+            self.assertEqual(packet["response_constraints"]["recommended_entries_per_field"],
                              {"minimum": 4, "maximum": 8})
             self.assertEqual(packet["response_constraints"]["response_fields"],
                              ["observations", "interpretations", "uncertainties", "authority_boundaries"])
