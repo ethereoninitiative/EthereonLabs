@@ -41,7 +41,7 @@ class ResidentEmberPulseBridge:
             self.base_dir / "resident_intentions"
         )
 
-    def _verified_wake(self) -> tuple[dict, dict]:
+    def _verified_wake(self, *, require_unresolved: bool = True) -> tuple[dict, dict]:
         packet = self.ember.wake_packet()
         if packet is None:
             raise EmberPulseBridgeError("no Ember wake is available")
