@@ -103,7 +103,7 @@ class ResidentEmberPulseBridge:
         reconsideration_receipt: dict,
         observed_at: str,
     ) -> dict:
-        packet, _ = self._verified_wake()
+        packet, _ = self._verified_wake(require_unresolved=False)
         event = dict(reconsideration_receipt.get("event") or {})
         request = dict(event.get("request") or {})
         provenance = dict(event.get("provenance") or {})
