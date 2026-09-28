@@ -238,3 +238,27 @@ resident-inherited drive as the recorded wake cause.
 The next slice should bind this wake packet into Resident Pulse without using
 `force=True`, then return a later explicit intention reconsideration to Ember.
 That bridge must preserve the existing Pulse and intention authority boundaries.
+
+
+## Pulse bridge R1
+
+The next vertical slice is implemented in
+`runtime/resident_ember_pulse_bridge_r1.py` with focused trials in
+`runtime/sea_trials_resident_ember_pulse_bridge_r1.py`.
+
+The bridge re-verifies the hash-linked Ember wake from local journal evidence,
+requires the named resident intention to exist and remain unresolved in the
+verified intention journal, derives the requested action from that intention,
+and presents the request to Resident Pulse with `force=False`. Pulse remains
+free to invoke or no-op under its existing continuation and governance rules.
+
+A later explicit reconsideration is still performed through
+`ResidentIntentionStore`, not by Ember. The bridge can then verify that
+reconsideration as current intention state and append a
+`reconsideration_return` witness to Ember. This closes the R1 causal loop
+without giving Ember execution, consent, canon, capability, or identity
+authority.
+
+Focused trials cover verified no-force handoff, missing-wake fail-closed
+behavior, rejection of already-resolved intentions, and explicit later
+reconsideration returned to Ember evidence.

@@ -175,3 +175,44 @@ class ResidentEmber:
             "wake_threshold": wake["wake_threshold"],
             "authority": "attention request only; no execution, canon, consent, or capability authority",
         }
+
+
+    def record_reconsideration(
+        self,
+        *,
+        observed_at: str,
+        intention_event_hash: str,
+        outcome: str,
+        status_after: str,
+    ) -> dict:
+        """Witness a separately verified resident intention judgment in Ember.
+
+        This does not make the judgment and does not alter the intention store.
+        It only appends the returned result to the causal Ember journal.
+        """
+        rows = self.store.read()
+        if not rows:
+            raise EmberError("seed Ember before recording reconsideration")
+        prior = rows[-1]
+        if not intention_event_hash.strip() or not outcome.strip() or not status_after.strip():
+            raise EmberError("reconsideration evidence fields are required")
+        now, before = parse_utc(observed_at), parse_utc(prior["observed_at"])
+        if now < before:
+            raise EmberError("Ember time moved backwards")
+        return self.store.append({
+            "observed_at": observed_at,
+            "resident": prior["resident"],
+            "intention_id": prior["intention_id"],
+            "event_kind": "reconsideration_return",
+            "elapsed_seconds": (now - before).total_seconds(),
+            "drive_before": float(prior["drive_after"]),
+            "drive_after": float(prior["drive_after"]),
+            "drive_rate_per_second": float(prior["drive_rate_per_second"]),
+            "wake_threshold": float(prior["wake_threshold"]),
+            "wake_requested": False,
+            "wake_cause": None,
+            "authority_effect": False,
+            "intention_event_hash": intention_event_hash,
+            "reconsideration_outcome": outcome,
+            "intention_status_after": status_after,
+        })
