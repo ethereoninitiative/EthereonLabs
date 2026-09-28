@@ -65,7 +65,7 @@ class ResidentEmberPulseBridge:
         if len(records) != 1:
             raise EmberPulseBridgeError("Ember wake intention did not resolve uniquely")
         intention = records[0]
-        if intention.get("status") not in {"proposed", "active", "suspended"}:
+        if require_unresolved and intention.get("status") not in {"proposed", "active", "suspended"}:
             raise EmberPulseBridgeError("Ember wake intention is already resolved")
         return packet, intention
 
