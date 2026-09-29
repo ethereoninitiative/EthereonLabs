@@ -95,6 +95,7 @@ class ResidentEmberPulseBridge:
         self,
         *,
         project_id: Optional[str] = None,
+        observed_at: Optional[str] = None,
     ) -> dict[str, Any]:
         packet, intention = self._verified_wake()
         requested_action = str(intention.get("desired_next_action") or "").strip()
@@ -106,7 +107,7 @@ class ResidentEmberPulseBridge:
             force=False,
         )
         handoff = self.ember.record_pulse_handoff(
-            observed_at=datetime.now(timezone.utc).isoformat(),
+            observed_at=observed_at or datetime.now(timezone.utc).isoformat(),
             ember_event_hash=str(packet["ember_event_hash"]),
             pulse_invoked=bool(result.receipt.get("invoked")),
             pulse_decision_reason=str(result.receipt.get("decision_reason") or ""),
