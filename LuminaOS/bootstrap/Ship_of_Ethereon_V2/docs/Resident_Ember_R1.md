@@ -262,3 +262,35 @@ authority.
 Focused trials cover verified no-force handoff, missing-wake fail-closed
 behavior, rejection of already-resolved intentions, and explicit later
 reconsideration returned to Ember evidence.
+
+
+## Resident Encounter R1
+
+After the verified Ember wake reaches the foreground resident host, the host now
+emits a bounded `resident-encounter-r1` orientation packet.
+
+The encounter preserves:
+
+- the exact Ember event hash and wake cause;
+- drive value and threshold at wake;
+- the current verified resident intention and event hash;
+- the set of lawful reconsideration outcomes under Resident Intention R1;
+- an explicit null `selected_outcome`, so orientation is not confused with judgment.
+
+The encounter separates three things that must not collapse into one another:
+
+1. **cause of attention** — inherited Ember state;
+2. **resident judgment** — later reconsideration of the inherited intention;
+3. **execution authority** — unchanged downstream governance.
+
+The host therefore no longer presents only a pulse receipt after an Ember wake.
+It also presents the resident-facing question: what woke this cycle, what was
+inherited, and what choices remain open.
+
+Focused trials live in `runtime/sea_trials_resident_encounter_r1.py`, and the
+end-to-end host-loop trial requires the encounter packet to be emitted without
+preselecting an outcome or gaining authority.
+
+This does not make a model continuously cognitive and does not prove subjective
+continuity. It makes the next governed cycle better oriented to its verified
+causal inheritance while preserving reconsideration.

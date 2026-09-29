@@ -16,6 +16,7 @@ if str(RUNTIME_DIR) not in sys.path:
 from lumina_resident_pulse_r1 import LuminaResidentPulse
 from resident_ember_r1 import ResidentEmber
 from resident_ember_pulse_bridge_r1 import ResidentEmberPulseBridge
+from resident_encounter_r1 import ResidentEncounter
 
 
 def _emit(receipt: Dict[str, Any], *, as_json: bool) -> None:
@@ -62,6 +63,7 @@ def _tick(
                 "operator_force_used": bridged.get("operator_force_used"),
                 "authority": bridged.get("authority"),
             }
+            receipt["resident_encounter"] = ResidentEncounter(base_dir=root).build(bridged)
             return receipt
     result = resident.pulse(
         project_id=project_id,

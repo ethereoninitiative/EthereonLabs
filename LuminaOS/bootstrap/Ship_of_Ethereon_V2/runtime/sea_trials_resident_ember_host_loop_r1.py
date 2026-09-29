@@ -94,6 +94,15 @@ def main():
             and receipts[0].get("resident_wake_source") == "resident_ember",
             "first_tick_preserved_no_force": len(receipts) >= 1
             and (receipts[0].get("ember_bridge") or {}).get("operator_force_used") is False,
+            "first_tick_emitted_resident_encounter": len(receipts) >= 1
+            and (receipts[0].get("resident_encounter") or {}).get("schema_version")
+            == "resident-encounter-r1",
+            "encounter_preserves_choice": len(receipts) >= 1
+            and (receipts[0].get("resident_encounter") or {}).get("resident_choice", {}).get("selected_outcome")
+            is None,
+            "encounter_has_no_authority_effect": len(receipts) >= 1
+            and (receipts[0].get("resident_encounter") or {}).get("separation", {}).get("authority_effect")
+            is False,
             "second_tick_returned_to_cadence": len(receipts) >= 2
             and receipts[1].get("resident_wake_source") == "cadence",
             "exactly_one_handoff_recorded": len(handoffs) == 1,
