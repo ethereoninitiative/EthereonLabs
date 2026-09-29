@@ -6,6 +6,8 @@ on:
       - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/resident_ember_r1.py"
       - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/resident_ember_pulse_bridge_r1.py"
       - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_resident_ember_pulse_bridge_r1.py"
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_resident_ember_host_loop_r1.py"
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_resident_r1.py"
       - ".github/workflows/resident-ember-pulse-bridge-r1.yml"
   workflow_dispatch:
 
@@ -17,5 +19,15 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - name: Compile Ember resident host lane
+        run: |
+          python -m py_compile \
+            LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/resident_ember_r1.py \
+            LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/resident_ember_pulse_bridge_r1.py \
+            LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_resident_ember_pulse_bridge_r1.py \
+            LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_resident_ember_host_loop_r1.py \
+            LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_resident_r1.py
       - name: Run focused bridge sea trials
         run: python LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_resident_ember_pulse_bridge_r1.py
+      - name: Run resident host integration sea trial
+        run: python LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_resident_ember_host_loop_r1.py

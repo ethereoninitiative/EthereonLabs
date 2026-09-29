@@ -7,6 +7,7 @@ Ember evidence. The bridge grants no execution or identity authority.
 """
 from __future__ import annotations
 
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Optional
 
@@ -41,10 +42,31 @@ class ResidentEmberPulseBridge:
             self.base_dir / "resident_intentions"
         )
 
-    def _verified_wake(self, *, require_unresolved: bool = True) -> tuple[dict, dict]:
+    def _verified_wake(
+        self,
+        *,
+        require_unresolved: bool = True,
+        require_unhandled: bool = True,
+    ) -> tuple[dict, dict]:
         packet = self.ember.wake_packet()
+        if packet is None and not require_unhandled:
+            rows = self.ember.store.read()
+            wakes = [row for row in rows if row.get("wake_requested")]
+            if wakes:
+                wake = wakes[-1]
+                packet = {
+                    "schema_version": "resident-ember-wake-r1",
+                    "resident": wake["resident"],
+                    "intention_id": wake["intention_id"],
+                    "ember_event_hash": wake["event_hash"],
+                    "ember_sequence": wake["sequence"],
+                    "wake_cause": wake["wake_cause"],
+                    "drive_at_wake": wake["drive_after"],
+                    "wake_threshold": wake["wake_threshold"],
+                    "authority": "attention request only; no execution, canon, consent, or capability authority",
+                }
         if packet is None:
-            raise EmberPulseBridgeError("no Ember wake is available")
+            raise EmberPulseBridgeError("no unhandled Ember wake is available")
         rows = self.ember.store.read()
         matching = [
             row for row in rows
@@ -73,6 +95,7 @@ class ResidentEmberPulseBridge:
         self,
         *,
         project_id: Optional[str] = None,
+        observed_at: Optional[str] = None,
     ) -> dict[str, Any]:
         packet, intention = self._verified_wake()
         requested_action = str(intention.get("desired_next_action") or "").strip()
@@ -83,6 +106,12 @@ class ResidentEmberPulseBridge:
             requested_action=requested_action,
             force=False,
         )
+        handoff = self.ember.record_pulse_handoff(
+            observed_at=observed_at or datetime.now(timezone.utc).isoformat(),
+            ember_event_hash=str(packet["ember_event_hash"]),
+            pulse_invoked=bool(result.receipt.get("invoked")),
+            pulse_decision_reason=str(result.receipt.get("decision_reason") or ""),
+        )
         return {
             "schema_version": "resident-ember-pulse-bridge-r1",
             "ember_wake": packet,
@@ -91,6 +120,7 @@ class ResidentEmberPulseBridge:
             "requested_action": requested_action,
             "operator_force_used": False,
             "pulse_receipt": result.receipt,
+            "ember_handoff_event_hash": handoff.get("event_hash"),
             "authority": (
                 "verified attention handoff only; Pulse and downstream governance retain "
                 "all execution authority, and explicit resident reconsideration remains separate"
@@ -103,7 +133,7 @@ class ResidentEmberPulseBridge:
         reconsideration_receipt: dict,
         observed_at: str,
     ) -> dict:
-        packet, _ = self._verified_wake(require_unresolved=False)
+        packet, _ = self._verified_wake(require_unresolved=False, require_unhandled=False)
         event = dict(reconsideration_receipt.get("event") or {})
         request = dict(event.get("request") or {})
         provenance = dict(event.get("provenance") or {})
