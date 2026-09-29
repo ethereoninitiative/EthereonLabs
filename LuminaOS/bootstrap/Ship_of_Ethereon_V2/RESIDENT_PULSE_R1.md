@@ -28,6 +28,8 @@ python bin/lumina-resident --project-id <project> --interval-seconds 0 --max-pul
 
 The resident process stays in the foreground and can be stopped by the operator. R1 does not install a system service, login item, launch agent, or background daemon.
 
+When a persisted Resident Ember journal exists, each host tick advances that bounded timer-derived drive before the ordinary pulse. A newly eligible, intention-backed Ember wake is presented through the verified Ember -> Pulse bridge exactly once and is then marked by a hash-linked `pulse_handoff` event. The handoff never forces Pulse; downstream continuation and governance retain their existing authority.
+
 ## Pulse decision law
 
 A normal pulse inspects the existing project-return surface and bounded self-guidance preflight.
@@ -107,7 +109,7 @@ The focused GitHub workflow `.github/workflows/lumina-resident-pulse-r1.yml` com
 Resident Pulse R1 is a foreground resident process, not yet an operating-system service. It does not yet:
 
 - start automatically at boot/login;
-- receive filesystem, network, calendar, message, or sensor events;
+- receive filesystem, network, calendar, message, or sensor events; the only additional wake source currently integrated is persisted Resident Ember timer-derived drive;
 - prioritize multiple event sources;
 - allocate free attention toward self-originated exploratory goals;
 - mutate projects autonomously;
