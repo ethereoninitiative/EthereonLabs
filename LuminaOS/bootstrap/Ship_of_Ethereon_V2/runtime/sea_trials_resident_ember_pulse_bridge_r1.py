@@ -165,7 +165,8 @@ def trial_explicit_reconsideration_returns_to_ember():
         assert returned["intention_status_after"] == "abandoned"
         assert returned["intention_event_hash"] == reconsidered["event"]["record_hash"]
         assert returned["authority_effect"] is False
-        assert bridge.ember.wake_packet()["intention_id"] == INTENTION
+        assert bridge.ember.wake_packet() is None
+        assert bridge.ember.store.read()[-1]["event_kind"] == "reconsideration_return"
 
 
 def main():
