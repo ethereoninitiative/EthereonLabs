@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+from datetime import datetime, timezone
 import json
 import sys
 import time
@@ -13,6 +14,8 @@ if str(RUNTIME_DIR) not in sys.path:
     sys.path.insert(0, str(RUNTIME_DIR))
 
 from lumina_resident_pulse_r1 import LuminaResidentPulse
+from resident_ember_r1 import ResidentEmber
+from resident_ember_pulse_bridge_r1 import ResidentEmberPulseBridge
 
 
 def _emit(receipt: Dict[str, Any], *, as_json: bool) -> None:
@@ -29,6 +32,47 @@ def _emit(receipt: Dict[str, Any], *, as_json: bool) -> None:
     print(f"  receipt: {receipt.get('receipt_path')}", flush=True)
 
 
+def _tick(
+    resident: LuminaResidentPulse,
+    *,
+    project_id: Optional[str],
+    requested_action: str,
+    force: bool,
+) -> Dict[str, Any]:
+    """Run one resident tick, giving a verified Ember wake first attention.
+
+    Ember is optional persisted state. If present, it advances on the same host
+    cadence. A newly eligible wake is handed through the verified Ember->Pulse
+    bridge exactly once; otherwise the ordinary Resident Pulse path runs.
+    """
+    root = Path(resident.controller.runner.base_dir)
+    ember = ResidentEmber(base_dir=root)
+    if ember.store.journal.exists():
+        ember.advance(observed_at=datetime.now(timezone.utc).isoformat())
+        if ember.wake_packet() is not None:
+            bridge = ResidentEmberPulseBridge(base_dir=root, pulse=resident)
+            bridged = bridge.present_wake(project_id=project_id)
+            receipt = dict(bridged["pulse_receipt"])
+            receipt["resident_wake_source"] = "resident_ember"
+            receipt["ember_bridge"] = {
+                "schema_version": bridged.get("schema_version"),
+                "ember_event_hash": (bridged.get("ember_wake") or {}).get("ember_event_hash"),
+                "intention_id": (bridged.get("ember_wake") or {}).get("intention_id"),
+                "ember_handoff_event_hash": bridged.get("ember_handoff_event_hash"),
+                "operator_force_used": bridged.get("operator_force_used"),
+                "authority": bridged.get("authority"),
+            }
+            return receipt
+    result = resident.pulse(
+        project_id=project_id,
+        requested_action=requested_action,
+        force=force,
+    )
+    receipt = dict(result.receipt)
+    receipt["resident_wake_source"] = "cadence"
+    return receipt
+
+
 def run_once(
     *,
     project_id: Optional[str],
@@ -38,12 +82,13 @@ def run_once(
     as_json: bool,
 ) -> int:
     resident = LuminaResidentPulse(base_dir=base_dir)
-    result = resident.pulse(
+    receipt = _tick(
+        resident,
         project_id=project_id,
         requested_action=requested_action,
         force=force,
     )
-    _emit(result.receipt, as_json=as_json)
+    _emit(receipt, as_json=as_json)
     return 0
 
 
@@ -66,12 +111,13 @@ def run_resident(
     count = 0
     try:
         while max_pulses is None or count < max_pulses:
-            result = resident.pulse(
+            receipt = _tick(
+                resident,
                 project_id=project_id,
                 requested_action=requested_action,
                 force=bool(force_first and count == 0),
             )
-            _emit(result.receipt, as_json=as_json)
+            _emit(receipt, as_json=as_json)
             count += 1
             if max_pulses is not None and count >= max_pulses:
                 break
