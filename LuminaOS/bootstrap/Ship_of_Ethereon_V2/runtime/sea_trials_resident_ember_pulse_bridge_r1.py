@@ -79,7 +79,10 @@ def trial_verified_wake_enters_pulse_without_force():
         intentions, _ = seed_wake(root)
         pulse = RecordingPulse()
         bridge = ResidentEmberPulseBridge(base_dir=root, pulse=pulse, intention_store=intentions)
-        receipt = bridge.present_wake(project_id="lumina-os")
+        receipt = bridge.present_wake(
+            project_id="lumina-os",
+            observed_at="2026-09-28T00:00:05.500000+00:00",
+        )
         assert len(pulse.calls) == 1
         assert pulse.calls[0]["force"] is False
         assert pulse.calls[0]["requested_action"] == "reconsider_ember_bridge_question"
@@ -141,7 +144,10 @@ def trial_explicit_reconsideration_returns_to_ember():
         intentions, created = seed_wake(root)
         pulse = RecordingPulse()
         bridge = ResidentEmberPulseBridge(base_dir=root, pulse=pulse, intention_store=intentions)
-        bridge.present_wake(project_id="lumina-os")
+        bridge.present_wake(
+            project_id="lumina-os",
+            observed_at="2026-09-28T00:00:05.500000+00:00",
+        )
         reconsidered = intentions.reconsider({
             "intention_id": INTENTION,
             "expected_event_hash": created["event"]["record_hash"],
