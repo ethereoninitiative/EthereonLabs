@@ -164,6 +164,13 @@ class ResidentEmber:
         if not wakes:
             return None
         wake = wakes[-1]
+        handled = {
+            row.get("ember_event_hash")
+            for row in rows
+            if row.get("event_kind") == "pulse_handoff"
+        }
+        if wake.get("event_hash") in handled:
+            return None
         return {
             "schema_version": "resident-ember-wake-r1",
             "resident": wake["resident"],
@@ -175,6 +182,61 @@ class ResidentEmber:
             "wake_threshold": wake["wake_threshold"],
             "authority": "attention request only; no execution, canon, consent, or capability authority",
         }
+
+
+    def record_pulse_handoff(
+        self,
+        *,
+        observed_at: str,
+        ember_event_hash: str,
+        pulse_invoked: bool,
+        pulse_decision_reason: str,
+    ) -> dict:
+        """Mark one verified wake as presented to Pulse.
+
+        This is consumption evidence only. It grants no execution authority and
+        prevents a resident cadence from re-presenting the same causal wake.
+        """
+        rows = self.store.read()
+        if not rows:
+            raise EmberError("seed Ember before recording pulse handoff")
+        wake = next(
+            (
+                row for row in rows
+                if row.get("event_hash") == ember_event_hash
+                and row.get("wake_requested") is True
+            ),
+            None,
+        )
+        if wake is None:
+            raise EmberError("pulse handoff must reference a verified Ember wake")
+        if any(
+            row.get("event_kind") == "pulse_handoff"
+            and row.get("ember_event_hash") == ember_event_hash
+            for row in rows
+        ):
+            raise EmberError("Ember wake already handed to Pulse")
+        prior = rows[-1]
+        now, before = parse_utc(observed_at), parse_utc(prior["observed_at"])
+        if now < before:
+            raise EmberError("Ember time moved backwards")
+        return self.store.append({
+            "observed_at": observed_at,
+            "resident": prior["resident"],
+            "intention_id": prior["intention_id"],
+            "event_kind": "pulse_handoff",
+            "elapsed_seconds": (now - before).total_seconds(),
+            "drive_before": float(prior["drive_after"]),
+            "drive_after": float(prior["drive_after"]),
+            "drive_rate_per_second": float(prior["drive_rate_per_second"]),
+            "wake_threshold": float(prior["wake_threshold"]),
+            "wake_requested": False,
+            "wake_cause": None,
+            "authority_effect": False,
+            "ember_event_hash": ember_event_hash,
+            "pulse_invoked": bool(pulse_invoked),
+            "pulse_decision_reason": str(pulse_decision_reason or ""),
+        })
 
 
     def record_reconsideration(
