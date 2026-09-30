@@ -1,0 +1,14 @@
+[Unit]
+Description=Lumina Resident Ember real-time habitat
+After=local-fs.target
+
+[Service]
+Type=simple
+WorkingDirectory=__BOOTSTRAP_ROOT__
+ExecStart=__PYTHON__ __BOOTSTRAP_ROOT__/runtime/resident_ember_realtime_host_r1.py --base-dir __STATE_ROOT__ --project-id lumina-os --interval-seconds 1
+Restart=no
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=default.target
