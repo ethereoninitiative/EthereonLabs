@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>org.ethereon.lumina.resident-ember</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>__PYTHON__</string>
+    <string>__BOOTSTRAP_ROOT__/runtime/resident_ember_realtime_host_r1.py</string>
+    <string>--base-dir</string>
+    <string>__STATE_ROOT__</string>
+    <string>--project-id</string>
+    <string>lumina-os</string>
+    <string>--interval-seconds</string>
+    <string>1</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>__BOOTSTRAP_ROOT__</string>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <false/>
+  <key>StandardOutPath</key>
+  <string>__STATE_ROOT__/resident_ember_host/stdout.log</string>
+  <key>StandardErrorPath</key>
+  <string>__STATE_ROOT__/resident_ember_host/stderr.log</string>
+</dict>
+</plist>
