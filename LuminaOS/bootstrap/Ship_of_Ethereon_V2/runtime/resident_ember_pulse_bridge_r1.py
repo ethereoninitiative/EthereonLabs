@@ -105,6 +105,7 @@ class ResidentEmberPulseBridge:
             project_id=project_id,
             requested_action=requested_action,
             force=False,
+            ember_wake=packet,
         )
         handoff = self.ember.record_pulse_handoff(
             observed_at=observed_at or datetime.now(timezone.utc).isoformat(),
