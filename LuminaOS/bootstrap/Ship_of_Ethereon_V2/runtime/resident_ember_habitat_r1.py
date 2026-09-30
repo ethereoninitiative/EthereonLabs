@@ -14,9 +14,13 @@ from typing import Any, Optional
 try:
     from .resident_ember_r1 import ResidentEmber
     from .resident_ember_pulse_bridge_r1 import ResidentEmberPulseBridge
+    from .resident_intention_store_r1 import ResidentIntentionStore
+    from .resident_volition_gate_r1 import ResidentVolitionGate
 except ImportError:
     from resident_ember_r1 import ResidentEmber
     from resident_ember_pulse_bridge_r1 import ResidentEmberPulseBridge
+    from resident_intention_store_r1 import ResidentIntentionStore
+    from resident_volition_gate_r1 import ResidentVolitionGate
 
 
 class ResidentEmberHabitat:
@@ -31,6 +35,9 @@ class ResidentEmberHabitat:
         self.base_dir = Path(base_dir)
         self.ember = ResidentEmber(base_dir=self.base_dir)
         self.bridge = bridge or ResidentEmberPulseBridge(base_dir=self.base_dir)
+        self.volition = ResidentVolitionGate(
+            ResidentIntentionStore(self.base_dir / "resident_intentions")
+        )
 
     @staticmethod
     def utc_now() -> str:
@@ -72,6 +79,23 @@ class ResidentEmberHabitat:
                 "authority_effect": False,
             }
 
+        volition = self.volition.evaluate(
+            resident=event["resident"],
+            intention_id=event["intention_id"],
+        )
+        if not volition.continue_next_moment:
+            return {
+                "schema_version": "resident-ember-habitat-r1",
+                "observed_at": at,
+                "advanced": True,
+                "ember_event_hash": event.get("event_hash"),
+                "wake_crossed": True,
+                "handoff_presented": False,
+                "decision_reason": "endogenous_wake_inhibited_by_resident_intention_state",
+                "volition": volition.to_dict(),
+                "authority_effect": False,
+            }
+
         receipt = self.bridge.present_wake(project_id=project_id, observed_at=at)
         return {
             "schema_version": "resident-ember-habitat-r1",
@@ -81,6 +105,7 @@ class ResidentEmberHabitat:
             "wake_crossed": True,
             "handoff_presented": True,
             "decision_reason": "new_endogenous_wake_presented",
+            "volition": volition.to_dict(),
             "bridge_receipt": receipt,
             "authority_effect": False,
         }
