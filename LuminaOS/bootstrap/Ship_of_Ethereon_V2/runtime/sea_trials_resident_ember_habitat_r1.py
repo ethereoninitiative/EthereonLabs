@@ -1,5 +1,6 @@
 """Focused controls for Resident Ember Habitat R1."""
 from __future__ import annotations
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from types import SimpleNamespace
 import tempfile
@@ -106,8 +107,9 @@ def trial_threshold_crossing_causes_one_handoff():
 def trial_frozen_drive_never_wakes():
     with tempfile.TemporaryDirectory() as tmp:
         habitat, pulse = fixture(Path(tmp), rate=0.0, threshold=0.5)
+        origin = datetime(2026, 9, 30, 22, 30, tzinfo=timezone.utc)
         for second in (10, 100, 1000):
-            result = habitat.tick(observed_at=f"2026-09-30T22:{30 + second // 60:02d}:{second % 60:02d}+00:00")
+            result = habitat.tick(observed_at=(origin + timedelta(seconds=second)).isoformat())
             assert result["wake_crossed"] is False
         assert pulse.calls == []
 
