@@ -1,6 +1,6 @@
 {
-  "version": "0.9",
-  "description": "Minimal capability registry for the Ethereon Runtime Spine, now including continuity restore, workspace-host handshake support, checkpoint-refreshed bounded Lumina self-guidance, quantum-concepts boundary artifacts, Psi-42 v1.7 hybrid topology probes, and Psi-42 v1.8 doctrine-aligned transceiver diagnostics under explicit authority boundaries.",
+  "version": "0.10",
+  "description": "Minimal capability registry for the Ethereon Runtime Spine, including continuity restore, workspace-host handshake support, checkpoint-refreshed bounded Lumina self-guidance, first-class bounded IRP-R1 interchange, quantum-concepts boundary artifacts, Psi-42 v1.7 hybrid topology probes, and Psi-42 v1.8 doctrine-aligned transceiver diagnostics under explicit authority boundaries.",
   "capabilities": [
     {
       "capability_id": "session_state_manager",
@@ -157,6 +157,19 @@
       "authority_boundary": "Classifies quantum-adjacent terms and preferred runtime terminology. Advisory boundary registry only; may not define governance law, mode legality, canon state, checkpoint legality, or user consent.",
       "dependencies": [],
       "feature_flag": "ETHEREON_RESONANCE"
+    },
+    {
+      "capability_id": "interresident_resonance_exchange",
+      "name": "Interresident Resonance Exchange",
+      "module_path": "interresident_resonance_r1.py",
+      "status": "experimental-active",
+      "category": "structural",
+      "allowed_modes": ["Continuity", "Sandbox", "DryDock", "Observation"],
+      "mutation_scope": "artifact",
+      "requires_validation": false,
+      "authority_boundary": "Validates, compares, renders, seals, appends, and verifies bounded IRP-R1 exchange artifacts. Declared identities remain unauthenticated; the capability grants no governance, canon, execution, checkpoint, consent, or identity authority.",
+      "dependencies": [],
+      "feature_flag": null
     },
     {
       "capability_id": "branch_resolution_model",

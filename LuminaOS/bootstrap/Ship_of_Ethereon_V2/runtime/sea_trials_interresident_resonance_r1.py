@@ -335,6 +335,20 @@ class ResonanceTrials(unittest.TestCase):
         self.assertEqual(receipt["response"]["interpretations"][0]["confidence_bps"], 5400)
         self.assertFalse(protocol.complete(record).authority_granted)
 
+    def test_host_entrypoint_resonance_route(self):
+        host = HERE.parent / "bin" / "lumina"
+        scope = ["--project", SCOPE["project_id"], "--encounter", SCOPE["encounter_scope"]]
+        result = subprocess.run(
+            [sys.executable, str(host), "resonance", "validate", str(FIXTURE)] + scope,
+            cwd=HERE.parent,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        receipt = strict_json(result.stdout)
+        self.assertEqual(receipt["protocol_version"], "IRP-R1")
+        self.assertFalse(receipt["authority_granted"])
+
     def test_committed_demo_and_cli(self):
         self.assertEqual(load(FIXTURE), self.packets)
         cli = HERE / "interresident_resonance_r1.py"

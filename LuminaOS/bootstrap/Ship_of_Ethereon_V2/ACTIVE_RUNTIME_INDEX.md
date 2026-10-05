@@ -88,11 +88,13 @@ See `docs/Lumina_Arrival_R1.md` for selection, return and integrity limits.
 
 ### Interresident Resonance Protocol status
 
-`runtime/interresident_resonance_r1.py` implements standalone IRP-R1 structured
-packet validation, hash-bound evidence/lineage, a bounded append-only exchange
-ledger, structural comparison preserving disagreement, and an orientation
-projection. Its CLI is explicit; it is not host-wired or capability-exposed.
-Declared identities are unauthenticated and validation grants no authority.
+`runtime/interresident_resonance_r1.py` implements IRP-R1 structured packet
+validation, hash-bound evidence/lineage, a bounded append-only exchange ledger,
+structural comparison preserving disagreement, and an orientation projection.
+`bin/lumina resonance` now exposes its existing validate, compare, render, seal,
+append, and verify operations through the standard local host entrypoint. The
+capability registry declares this bounded artifact capability without extending
+its authority. Declared identities are unauthenticated and validation grants no authority.
 The three-origin demonstration is synthetic, with no provider model calls.
 See `docs/Interresident_Resonance_Protocol_R1.md`.
 
@@ -163,7 +165,7 @@ Project, Harbor session, runtime session, restore session, and host session rema
 | Pinned source and selected continuity arrival | `runtime/lumina_arrival_r1.py`, `studio/lumina_arrival_cli_r1.py` | Explicit `bin/lumina arrive`; no provider calls |
 | Ethereon repository curriculum | `runtime/lumina_ai_orientation_profile_ethereon_r1.json` | Declarative profile |
 | Orientation protocol documentation | `docs/Lumina_AI_Orientation_Protocol_R1.md` | Human-readable contract |
-| Structured interresident interchange | `runtime/interresident_resonance_r1.py`, `runtime/interresident_resonance_packet_r1.schema.json` | Standalone non-governing CLI and orientation projection |
+| Structured interresident interchange | `runtime/interresident_resonance_r1.py`, `runtime/interresident_resonance_packet_r1.schema.json`, `bin/lumina` | First-class `lumina resonance` host route plus non-governing orientation projection |
 | IRP fixture and validation | `runtime/interresident_resonance_demo_r1.py`, `runtime/sea_trials_interresident_resonance_r1.py`, `artifacts/interresident_resonance/fixture_r1/exchange.json` | Synthetic three-origin exchange; DryDock sea trial |
 | Orientation validation | `runtime/sea_trials_lumina_ai_orientation_protocol_r1.py` | Standalone sea trial |
 

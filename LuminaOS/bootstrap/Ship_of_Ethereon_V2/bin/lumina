@@ -250,6 +250,22 @@ def cmd_doctor(args: argparse.Namespace) -> int:
     return _run(cmd, cwd=BOOTSTRAP_ROOT)
 
 
+def cmd_resonance(args: argparse.Namespace) -> int:
+    cmd = [_python(), str(RUNTIME_DIR / "interresident_resonance_r1.py"), args.resonance_command]
+    if getattr(args, "file", None):
+        cmd.append(str(args.file))
+    cmd.extend(["--project", str(args.project), "--encounter", str(args.encounter)])
+    if getattr(args, "ledger", None):
+        cmd.extend(["--ledger", str(args.ledger)])
+    if getattr(args, "parents_file", None):
+        cmd.extend(["--parents-file", str(args.parents_file)])
+    if getattr(args, "expected_head", None):
+        cmd.extend(["--expected-head", str(args.expected_head)])
+    if getattr(args, "required_head", None):
+        cmd.extend(["--required-head", str(args.required_head)])
+    return _run(cmd, cwd=BOOTSTRAP_ROOT)
+
+
 def cmd_vessel(args: argparse.Namespace) -> int:
     cmd = [_python(), str(STUDIO_DIR / "lumina_vessel_transfer_r1.py"), args.vessel_command]
     if getattr(args, "project_id", None):
@@ -389,6 +405,27 @@ def build_parser() -> argparse.ArgumentParser:
     studio.add_argument("--host", default=None)
     studio.add_argument("--port", type=int, default=None)
     studio.set_defaults(func=cmd_studio)
+
+    resonance = sub.add_parser(
+        "resonance",
+        help="Validate, compare, render, seal, append, or verify bounded IRP-R1 interchange.",
+    )
+    resonance_sub = resonance.add_subparsers(dest="resonance_command", required=True)
+    for name in ["validate", "compare", "render", "seal", "append", "verify"]:
+        p = resonance_sub.add_parser(name)
+        p.add_argument("--project", required=True)
+        p.add_argument("--encounter", required=True)
+        if name != "verify":
+            p.add_argument("file")
+        if name in {"append", "verify"}:
+            p.add_argument("--ledger", required=True)
+        if name == "seal":
+            p.add_argument("--parents-file", default=None)
+        if name == "append":
+            p.add_argument("--expected-head", required=True)
+        if name == "verify":
+            p.add_argument("--required-head", default=None)
+        p.set_defaults(func=cmd_resonance)
 
     vessel = sub.add_parser(
         "vessel",
