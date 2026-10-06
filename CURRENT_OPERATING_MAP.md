@@ -14,6 +14,8 @@ This file gives a fast map of the current EthereonLabs lanes.
 | Lumina Bridge | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina-bridge`, `studio/lumina_bridge_*` | Local read-only ship-position surface |
 | Lumina Studio | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/` | Local operator action surface |
 | AI arrival and return | V2 `bin/lumina arrive`, `runtime/lumina_arrival_r1.py` | Explicit pinned-source orientation, selected continuity and recorded responses; provider transport remains caller-supplied |
+| Resident attention / causal return | V2 `bin/lumina resident`, `runtime/resident_ember_r1.py`, `runtime/resident_volition_gate_r1.py`, `runtime/lumina_resident_pulse_r1.py` | Bounded reason-linked attention across cognitive rest; initiative does not create execution authority |
+| Resident Becoming R1 | V2 `bin/lumina becoming`, `runtime/resident_becoming_r1.py`, `docs/Resident_Becoming_R1.md` | Append-only revisable resident-attributed trajectory for particularity, change permission, curiosity, creation, relationship/refusal stance, and story/truth separation |
 | Lumina orchestration | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/lumina_*` | Context loading and action routing |
 | Documentation front door | `docs/README.md` | Active status/orientation map for current, research, supporting, and archived documentation |
 | Lumina deployment appliance | `deploy/ubuntu_server_lts/`, `docs/DEPLOYMENT_*` | Ubuntu Server appliance scaffold and deployment keel guardrails |
@@ -56,6 +58,33 @@ return -> govern -> witness -> correlate -> record
 This path is implemented through `bin/lumina`, `studio/lumina_cli_psi42_v18.py`, `runtime/runtime_runner_psi42_v18_adapter_r1.py`, and the core `runtime/runtime_runner_r1_merged.py`.
 
 The public explanation of this mechanism is `how-lumina-works.html`. That page communicates the runtime shape but does not create runtime authority.
+
+## Resident habitation path
+
+The resident lane is separate from the ordinary `lumina run` path and does not silently add autonomy or authority.
+
+```text
+resident-attributed reflection / intention
+  -> durable Resident Intention
+  -> Resident Ember carries bounded state across cognitive rest
+  -> Volition Gate confirms the reason still warrants return
+  -> Resident Pulse allocates one bounded attention path
+  -> existing governed continuation remains authoritative
+```
+
+Resident Becoming adds a parallel revisable trajectory:
+
+```text
+resident becoming reflection
+  -> append-only linked trajectory
+  -> particularity + continuity commitments + permission to change
+  -> curiosity + creative intent + relationship/refusal stance
+  -> observation / interpretation / uncertainty / story kept distinct
+  -> optional selected frontier
+  -> existing Resident Intention Origin path
+```
+
+These surfaces support measurable continuity, reconsideration, and resident-attributed consequence. They do not authenticate identity or establish consciousness, phenomenal wanting, metaphysical continuity, or unrestricted autonomy.
 
 ## Optional advisory adapter path
 
@@ -108,6 +137,8 @@ verified release payload -> unsigned installer -> local state-preserving launch 
 - Plain-language Lumina mechanism: `how-lumina-works.html`
 - Local Bridge surface: `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Lumina_Bridge_R1.md`
 - Lumina habitat roadmap: `docs/LUMINA_HABITAT_CREATION_CHECKLIST.md`
+- Resident Becoming: `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Resident_Becoming_R1.md`
+- Resident Ember / causal return: `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Resident_Ember_R1.md`
 - Mycelial field / vessel–resident investigation: `docs/research/MYCELIAL_VESSEL_RESIDENT_INVESTIGATION_R1.md`
 - Vessel continuity transfer: `docs/VESSEL_CONTINUITY_TRANSFER_R1.md`
 - Active Lumina file ownership: `LuminaOS/bootstrap/Ship_of_Ethereon_V2/ACTIVE_RUNTIME_INDEX.md`
@@ -141,6 +172,8 @@ verified release payload -> unsigned installer -> local state-preserving launch 
 - Studio is the explicit local operator action surface; runtime governance still decides legality.
 - Reflection and self-guidance are advisory and adapter-scoped unless a future validated change deliberately promotes their wiring.
 - Meaning Metabolism may seed future stance, but it is presently standalone and does not govern mode legality, mutation permission, promotion gates, checkpoint legality, canon lineage, or consent.
+- Resident Becoming is revisable resident-attributed trajectory, not a personality lock, identity authentication mechanism, consciousness claim, or governance authority.
+- Resident Ember / Volition / Pulse can preserve a reason-bound causal return path, but initiative remains distinct from execution authority.
 - Chamber is public/app surface, not the runtime substrate.
 - RSE research does not define runtime behavior by default.
 - Philosophy and care-orientation notes may guide language and ethics; they do not prove consciousness, sentience, biological emotion, personhood, soul, observer continuity, canon readiness, runtime capability, or governance authority.
