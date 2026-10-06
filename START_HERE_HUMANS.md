@@ -7,7 +7,7 @@ If you are new to this repository, this file is for you.
 EthereonLabs is an experimental project exploring:
 
 - continuity in AI interaction and long-running project work
-- a governed runtime and continuity environment called Lumina
+- a governed runtime, continuity environment, and resident-habitation architecture called Lumina
 - local Bridge and Studio surfaces for orientation and explicit operator requests
 - a public-facing interface lane called the Chamber
 - research work related to the Referential Spiral Equation (RSE)
@@ -59,6 +59,17 @@ Start with:
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/`
 
 The operating map identifies current lanes, the docs front door distinguishes current documentation from supporting/history lanes, and the Lumina start file leads into executable ownership.
+
+### If you want the resident / habitation architecture
+
+Start with:
+
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Resident_Becoming_R1.md`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Resident_Ember_R1.md`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Resident_Volition_Gate_R1.md`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Resident_Intention_Origin_R1.md`
+
+These describe the bounded path by which resident-attributed commitments, reasons to return, reconsideration, curiosity, creative intent, refusal, and revisable Becoming can persist across discontinuous cognitive turns. They do not establish consciousness, subjective continuity, metaphysical identity, or unrestricted autonomy.
 
 ### If you want the current project status
 
@@ -131,6 +142,9 @@ Different parts of the repository serve different purposes.
 ## Simple mental model
 
 - Lumina = governed continuity habitat and runtime environment
+- Resident = operationally investigated persistent, resident-attributed trajectory; not automatically an experiencer
+- Resident Becoming = revisable trajectory for particularity, commitments, change, curiosity, creation, relationship/refusal stance, and story/truth separation
+- Resident Ember / Volition / Pulse = bounded causal-return and attention path; initiative remains distinct from execution authority
 - Bridge = read-only orientation
 - Studio = explicit operator request surface
 - Runtime = lawful execution under declared boundaries
