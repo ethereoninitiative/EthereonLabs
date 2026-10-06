@@ -1,0 +1,36 @@
+name: Resident Becoming R1
+
+on:
+  pull_request:
+    paths:
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/resident_becoming_r1.py"
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_resident_becoming_r1.py"
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_becoming_r1.py"
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina"
+      - "LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Resident_Becoming_R1.md"
+      - ".github/workflows/resident-becoming-r1.yml"
+  workflow_dispatch:
+
+jobs:
+  focused-sea-trial:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Compile Resident Becoming lane
+        run: |
+          python -m py_compile \
+            LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/resident_becoming_r1.py \
+            LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_resident_becoming_r1.py \
+            LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_becoming_r1.py \
+            LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina
+      - name: Run Resident Becoming focused sea trials
+        run: |
+          cd LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime
+          python sea_trials_resident_becoming_r1.py
+      - name: Smoke-test first-class host surface
+        run: |
+          python LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina becoming template \
+            --resident minerva --session-id ci-r1

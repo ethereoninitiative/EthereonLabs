@@ -320,6 +320,7 @@ def build_parser() -> argparse.ArgumentParser:
     if str(STUDIO_DIR) not in sys.path:
         sys.path.insert(0, str(STUDIO_DIR))
     from lumina_intention_r1 import add_arguments as intention_arguments, run as intention_run
+    from lumina_becoming_r1 import add_arguments as becoming_arguments, run as becoming_run
     from lumina_meaning_memory_r1 import configure_parser as configure_memory, execute as execute_memory
     from lumina_arrival_cli_r1 import configure_parser as configure_arrival, execute as execute_arrival
 
@@ -330,6 +331,13 @@ def build_parser() -> argparse.ArgumentParser:
     intention = sub.add_parser("intention", help="Create, discover, and explicitly reconsider resident intentions.")
     intention_arguments(intention)
     intention.set_defaults(func=intention_run)
+
+    becoming = sub.add_parser(
+        "becoming",
+        help="Record or inspect a revisable resident-attributed becoming trajectory.",
+    )
+    becoming_arguments(becoming)
+    becoming.set_defaults(func=becoming_run)
 
     memory = sub.add_parser("memory", help="Curate, review, and inspect evidence-backed advisory memory.")
     configure_memory(memory)

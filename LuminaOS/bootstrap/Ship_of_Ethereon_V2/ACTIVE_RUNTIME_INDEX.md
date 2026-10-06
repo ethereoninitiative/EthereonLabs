@@ -207,6 +207,7 @@ Orientation records what sources were supplied and how a connected model separat
 | Recursive reflection motif | `runtime/lumina_reflective_autonomy_layer_r1.py` | Used by the explicit reflective/self-guided adapter |
 | Reflection-before-guidance bridge | `runtime/runtime_runner_reflective_self_guided_bridge_r1.py` | Optional alternate runner path |
 | Meaning metabolism / assimilation ledger | `runtime/lumina_meaning_metabolism_layer_r1.py`, `runtime/lumina_meaning_evidence_r1.py`, `studio/lumina_meaning_memory_r1.py` | Explicit curation; reviewed, source-checked recall in core and adapter context bundles |
+| Revisable resident becoming trajectory | `runtime/resident_becoming_r1.py`, `studio/lumina_becoming_r1.py`, `docs/Resident_Becoming_R1.md` | First-class `lumina becoming` host surface; may preserve resident-attributed particularity, change permission, curiosity, creation, relationship/refusal stance, story, and an explicit future-return choice without gaining authority |
 
 The reflective/self-guided adapter follows this extension shape:
 
@@ -261,6 +262,7 @@ The return panel composes explicit supplied return/host/stance/history with the 
 | Local command entry | `bin/lumina` |
 | Bounded continuation surface | `studio/lumina_continue_r1.py`, `runtime/lumina_continue_controller_r1.py` |
 | Resident attention surface | `studio/lumina_resident_r1.py`, `runtime/lumina_resident_pulse_r1.py`, `runtime/resident_ember_r1.py`, `bin/lumina resident` |
+| Resident becoming surface | `studio/lumina_becoming_r1.py`, `runtime/resident_becoming_r1.py`, `bin/lumina becoming` |
 | Installer and doctor | `install/install_lumina.sh`, `install/lumina_doctor.py` |
 | Observer service | `services/lumina_observer_service.py` |
 | Read-only Bridge R2 position and field surface | `bin/lumina-bridge`, `studio/lumina_bridge_state_r1.py`, `studio/lumina_bridge_field_r1.py`, `studio/lumina_bridge_return_r1.py`, `studio/lumina_bridge_server_r2.py`, `docs/LUMINA_HARBOR_BRIDGE_WITNESS_R1.md` |
