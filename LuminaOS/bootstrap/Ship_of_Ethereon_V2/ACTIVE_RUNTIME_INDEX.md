@@ -11,6 +11,7 @@ python install/lumina_doctor.py --ensure-state
 python bin/lumina-bridge
 python bin/lumina run "Review Lumina OS progress and produce the next governed action receipt."
 python bin/lumina continue
+python bin/lumina resident
 python bin/lumina observe
 python bin/lumina state --limit 12
 ```
@@ -44,6 +45,29 @@ bin/lumina continue
 ```
 
 The continuation controller reads the existing project-return / host surface before a new cycle is written, asks the bounded self-guidance steward for the next likely focus, and uses that recommendation only as the requested focus of a governed `Observation` / `audit` cycle. It records a `self_guided_continue_preflight` governance receipt and writes the normal checkpoint/result artifacts. Continuation directives pass through `runtime/lumina_continuation_action_r1.py`, which preserves one stable `continue from` wrapper across repeated cycles and repairs previously compounded wrappers when old project-return or advisory-history state is read. The syntax normalizer does not choose the target or gain state, governance, checkpoint, canon, mutation, promotion, mode-law, or consent authority. If no stronger return signal exists, the steward falls back to a bounded continuation target rather than inventing structural authority.
+
+### First-class resident attention pulse
+
+`bin/lumina resident` exposes the existing Resident Pulse through the standard
+local host entrypoint. A single pulse is the default; `--loop` keeps the local
+cadence awake. The pulse inspects existing project-return/self-guidance state and
+normally invokes bounded continuation only for explicit high-confidence pending
+work that has not already been consumed. If verified Resident Ember evidence is
+present, the existing Ember-to-Pulse bridge may supply an endogenous attention
+cause. A pulse may also lawfully do nothing.
+
+```text
+bin/lumina resident
+  -> studio/lumina_resident_r1.py
+  -> runtime/lumina_resident_pulse_r1.py
+  -> runtime/lumina_continue_controller_r1.py (only when attention is allocated)
+  -> governed Observation/audit continuation
+```
+
+Resident Pulse and Ember remain attention mechanisms, not authority mechanisms.
+They do not grant mutation, promotion, canon, checkpoint, mode-law, consent,
+capability, identity, or consciousness claims. The host route changes
+accessibility, not authority.
 
 ### Resident intention continuity
 
@@ -236,6 +260,7 @@ The return panel composes explicit supplied return/host/stance/history with the 
 |---|---|
 | Local command entry | `bin/lumina` |
 | Bounded continuation surface | `studio/lumina_continue_r1.py`, `runtime/lumina_continue_controller_r1.py` |
+| Resident attention surface | `studio/lumina_resident_r1.py`, `runtime/lumina_resident_pulse_r1.py`, `runtime/resident_ember_r1.py`, `bin/lumina resident` |
 | Installer and doctor | `install/install_lumina.sh`, `install/lumina_doctor.py` |
 | Observer service | `services/lumina_observer_service.py` |
 | Read-only Bridge R2 position and field surface | `bin/lumina-bridge`, `studio/lumina_bridge_state_r1.py`, `studio/lumina_bridge_field_r1.py`, `studio/lumina_bridge_return_r1.py`, `studio/lumina_bridge_server_r2.py`, `docs/LUMINA_HARBOR_BRIDGE_WITNESS_R1.md` |
