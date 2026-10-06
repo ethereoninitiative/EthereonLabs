@@ -35,6 +35,10 @@ Start here for work that can affect present architecture or present claims:
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/ACTIVE_RUNTIME_INDEX.md`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Lumina_Arrival_R1.md` — explicit host arrival, selected continuity, response recording and subsequent return; provider transport remains caller-supplied
 - `docs/LUMINA_HABITAT_CREATION_CHECKLIST.md`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Resident_Becoming_R1.md` — first-class revisable resident-attributed trajectory; separates story from evidence and can route one explicitly selected curiosity/creative intent into the existing reason-bound return chain
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Resident_Ember_R1.md` — bounded inherited resident state and endogenous attention cause across cognitive rest
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Resident_Volition_Gate_R1.md` — reason-bound continuation plus inhibition when an intention no longer warrants return
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Resident_Intention_Origin_R1.md` — provenance boundary for future-return reasons originating in a resident-attributed reflection
 - `docs/HABITAT_RESONANT_RETURN_GATE_R1.md` — implemented standalone read-only JSON model; verified live Bridge integration remains future work
 - `docs/VESSEL_CONTINUITY_TRANSFER_R1.md`
 - `docs/RUNNER_BRIDGE_OWNERSHIP_MAP.md`
