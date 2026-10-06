@@ -13,6 +13,7 @@ cd LuminaOS/bootstrap/Ship_of_Ethereon_V2
 python install/lumina_doctor.py --ensure-state
 python bin/lumina-bridge
 python bin/lumina run "Review Lumina OS progress and produce the next governed action receipt."
+python bin/lumina resident
 python bin/lumina observe
 python bin/lumina state --limit 12
 ```
@@ -125,6 +126,24 @@ This path currently performs:
 - checkpoint and runtime receipt emission
 
 It does **not** automatically execute the reflective/self-guided adapter or Meaning Metabolism layer.
+
+### Resident attention path
+
+The standard host entrypoint now exposes the bounded Resident Pulse directly:
+
+```text
+bin/lumina resident
+  -> studio/lumina_resident_r1.py
+  -> runtime/lumina_resident_pulse_r1.py
+  -> bounded continuation only when attention is lawfully allocated
+```
+
+The default command performs one pulse and exits. `lumina resident --loop`
+keeps a local cadence awake. Most pulses may do nothing. Verified Resident Ember
+state can request attention through the existing Ember-to-Pulse bridge, but
+neither elapsed time, inherited drive, Pulse, nor Ember creates execution,
+mutation, promotion, canon, consent, capability, identity, or consciousness
+authority.
 
 ### Optional reflective / self-guided path
 

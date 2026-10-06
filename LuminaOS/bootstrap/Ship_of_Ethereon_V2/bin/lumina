@@ -139,6 +139,37 @@ def cmd_continue(args: argparse.Namespace) -> int:
     return _run(cmd, cwd=BOOTSTRAP_ROOT)
 
 
+def cmd_resident(args: argparse.Namespace) -> int:
+    """Expose the existing bounded Resident Pulse through the standard host entrypoint."""
+    project_id = args.project_id
+    if not project_id:
+        active = _capture_json([_python(), str(INSTALL_DIR / "lumina_project_registry.py"), "active", "--json"])
+        project_id = active.get("active_project_slug") or "lumina-os"
+
+    cmd = [
+        _python(),
+        str(STUDIO_DIR / "lumina_resident_r1.py"),
+        "--project-id",
+        str(project_id),
+        "--action",
+        str(args.action),
+    ]
+    cmd.append("--resident" if args.loop else "--once")
+    if args.json:
+        cmd.append("--json")
+    if args.force:
+        cmd.append("--force")
+    if args.force_first:
+        cmd.append("--force-first")
+    if args.loop:
+        cmd.extend(["--interval-seconds", str(args.interval_seconds)])
+        if args.max_pulses is not None:
+            cmd.extend(["--max-pulses", str(args.max_pulses)])
+    if args.base_dir:
+        cmd.extend(["--base-dir", str(args.base_dir)])
+    return _run(cmd, cwd=BOOTSTRAP_ROOT)
+
+
 def cmd_presets(args: argparse.Namespace) -> int:
     payload = _read_presets()
     presets = payload.get("presets", {}) if isinstance(payload, dict) else {}
@@ -331,6 +362,21 @@ def build_parser() -> argparse.ArgumentParser:
     continue_cmd.add_argument("--full-json", action="store_true")
     continue_cmd.add_argument("--base-dir", default=None, help=argparse.SUPPRESS)
     continue_cmd.set_defaults(func=cmd_continue)
+
+    resident = sub.add_parser(
+        "resident",
+        help="Run one bounded resident attention pulse or keep the local pulse loop awake.",
+    )
+    resident.add_argument("--project-id", default=None)
+    resident.add_argument("--action", default="continue_from_latest_checkpoint")
+    resident.add_argument("--loop", action="store_true", help="Keep pulsing on a local cadence; default is one pulse.")
+    resident.add_argument("--interval-seconds", type=float, default=300.0)
+    resident.add_argument("--max-pulses", type=int, default=None)
+    resident.add_argument("--force", action="store_true", help="For a single pulse, override the attention threshold.")
+    resident.add_argument("--force-first", action="store_true", help="For loop mode, force only the first pulse.")
+    resident.add_argument("--json", action="store_true")
+    resident.add_argument("--base-dir", default=None, help=argparse.SUPPRESS)
+    resident.set_defaults(func=cmd_resident)
 
     presets = sub.add_parser("presets", help="List local operator presets.")
     presets.add_argument("--json", action="store_true")
