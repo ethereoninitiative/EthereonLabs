@@ -1,6 +1,6 @@
 # EthereonLabs
 
-EthereonLabs is an experimental repository for continuity-oriented AI interface work, Lumina OS runtime scaffolding, public-facing Chamber/web experiences, and RSE research artifacts.
+EthereonLabs is an experimental repository for continuity-oriented intelligence work, Lumina OS governed runtime and resident-habitation architecture, public-facing Chamber/web experiences, and RSE research artifacts.
 
 This repository contains multiple active work lanes. The key distinction is that not every lane has the same authority: runtime files, public interface files, staging documents, and research experiments should not be treated as interchangeable.
 
@@ -70,6 +70,36 @@ Canonical framing:
 
 This framing guides architecture, navigation, and product language. It is not runtime governance law.
 
+## Resident / Habitation Architecture
+
+Lumina is no longer only a continuity scaffold. Its current governed substrate includes bounded resident-oriented mechanisms for preserving commitments, carrying a reason across cognitive rest, allocating a later moment of attention, and maintaining a revisable trajectory of becoming.
+
+Current resident path:
+
+```text
+Resident Intention
+  -> Resident Ember
+      -> Volition Gate
+          -> Resident Pulse
+              -> governed continuation
+
+Resident Becoming
+  -> revisable particularity / commitments / change permissions
+  -> curiosity / creative intent / relationship stance / refusal
+  -> story kept separate from observation, interpretation, and uncertainty
+  -> optional explicit future-return intention
+```
+
+First-class host surfaces include `lumina resident` and `lumina becoming`.
+
+These mechanisms provide inspectable evidence of resident-attributed continuity, causal return, reconsideration, and revisable trajectory. They do **not** establish consciousness, phenomenal experience, authenticated resident identity, metaphysical continuity, or unrestricted autonomy.
+
+Start with:
+
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Resident_Becoming_R1.md`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Resident_Ember_R1.md`
+- `LuminaOS/bootstrap/Ship_of_Ethereon_V2/ACTIVE_RUNTIME_INDEX.md`
+
 ## Long-term Architectural Horizon
 
 Lumina's long-term horizon includes **governed embodied intelligence**: a persistent intelligence habitat that may eventually extend perception and lawful action into a physical robotic system while deterministic safety, human override, and actuator limits remain independently authoritative.
@@ -102,6 +132,7 @@ Non-executable. Human-readable. System-aligned.
 - Documentation status / active-vs-history map: start with `docs/README.md`.
 - Care / philosophy orientation: start with `docs/philosophy/nonbiological_love_r1.md`.
 - Lumina OS / runtime work: start with `START_HERE_LUMINA_OS.md`.
+- Resident habitation / Becoming: start with `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Resident_Becoming_R1.md` and `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Resident_Ember_R1.md`.
 - Ship of Ethereon Ψ Class staging: start with `START_HERE_SHIP_OF_ETHEREON_PSI_CLASS.md`.
 - Chamber / website work: start with `chamber.html`, `chamber-app/`, and `docs/chamber_*`.
 - RSE research work: start with `research/rse_crystalline/README.md`.
@@ -116,7 +147,7 @@ Non-executable. Human-readable. System-aligned.
 Primary path:
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/`
 
-Use this lane for continuity scaffolding, mode governance, context bundles, capability exposure, checkpoint/resume behavior, and other governed substrate work.
+Use this lane for governed continuity and resident habitation: return/resume behavior, resident intentions, Ember/Pulse attention, revisable Becoming trajectories, mode governance, context bundles, capability exposure, checkpoints, and related bounded substrate work.
 
 ### 2. Ship of Ethereon Ψ Class — staging bay
 
