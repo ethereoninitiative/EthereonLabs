@@ -75,8 +75,9 @@ def _run_two_pulses() -> tuple[subprocess.CompletedProcess[str], List[Dict[str, 
     proc = subprocess.run(
         [
             sys.executable,
-            str(BOOTSTRAP_ROOT / "studio" / "lumina_resident_r1.py"),
-            "--resident",
+            str(BOOTSTRAP_ROOT / "bin" / "lumina"),
+            "resident",
+            "--loop",
             "--project-id",
             PROJECT_ID,
             "--base-dir",
