@@ -103,9 +103,13 @@ class GovernanceIntegrityChain:
             self.log_path.resolve().relative_to((root / ".lumina_state").resolve())
         except ValueError:
             return
-        committed = root / "artifacts/runtime_truth/current/governance_chain_0001.jsonl"
-        if not committed.is_file():
-            raise ValueError("committed promotion governance is missing")
+        # Import lazily: the verifier itself imports this governance store.
+        try:
+            from .post_promotion_verifier_r2 import resolve_verified_committed_current_evidence
+        except ImportError:
+            from post_promotion_verifier_r2 import resolve_verified_committed_current_evidence
+        committed_governance, _, _, _ = resolve_verified_committed_current_evidence(root)
+        committed = root / committed_governance
         source = GovernanceIntegrityChain(committed, seed_committed_canon=False)
         if not source.verify_chain()["valid"] or not source._rows():
             raise ValueError("committed promotion governance is invalid")
