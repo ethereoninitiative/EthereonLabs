@@ -230,6 +230,54 @@ def run() -> dict:
                 p.name: p.read_bytes() for p in (root / DEFAULT_ARTIFACT_DIR).iterdir() if p.is_file()}
             checks["current_canon_still_genesis"] = verify(root=root)["canon_head"] == "canon-0001"
 
+            # Activate a reviewed successor only inside this temporary Git repository,
+            # then prove that the next governed promotion extends canon-0002, not genesis.
+            activated = promote("activate-canon-0002")
+            prepare(root=root, state_dir=activated)
+            prepared_paths = layout(root, target)
+            current_paths = {
+                key: root / DEFAULT_ARTIFACT_DIR / prepared_paths[key].name
+                for key in ("governance_chain", "canon_lineage", "promotion_receipt", "validation_artifact")
+            }
+            for key, destination in current_paths.items():
+                shutil.copyfile(prepared_paths[key], destination)
+            active_receipt = json.loads(current_paths["promotion_receipt"].read_text())
+            active_receipt["authority_scope"] = "committed_current_canon"
+            active_receipt["evidence_paths"] = {
+                key: path.relative_to(root).as_posix()
+                for key, path in current_paths.items() if key != "promotion_receipt"
+            }
+            write_json(current_paths["promotion_receipt"], active_receipt)
+            shutil.rmtree(target)
+            git(root, "add", ".")
+            git(root, "commit", "-qm", "isolated activation of canon-0002 evidence")
+            checks["activated_second_canon_verifies"] = (
+                verify(root=root).get("passed") is True
+                and verify(root=root).get("canon_head") == "canon-0002"
+            )
+            (root / "candidate.txt").write_text("candidate after canon-0002\\n", encoding="utf-8")
+            git(root, "add", "candidate.txt")
+            git(root, "commit", "-qm", "isolated candidate for canon-0003")
+            later_state = promote("successor-after-activation")
+            next_target = root / PREPARED / "canon-0003"
+            later_result = prepare(root=root, state_dir=later_state, target=next_target)
+            later_paths = layout(root, next_target)
+            checks["successor_after_activation_is_canon_0003"] = (
+                later_result.get("passed") is True
+                and later_result.get("canon_head") == "canon-0003"
+                and later_result.get("canon_parent") == "canon-0002"
+                and verify_prepared(root, next_target).get("passed") is True
+            )
+            checks["third_successor_preserves_committed_second_canon"] = (
+                later_paths["governance_chain"].read_bytes().startswith(
+                    current_paths["governance_chain"].read_bytes()
+                )
+                and later_paths["canon_lineage"].read_bytes().startswith(
+                    current_paths["canon_lineage"].read_bytes()
+                )
+                and verify(root=root).get("canon_head") == "canon-0002"
+            )
+
     return {"trial": "canonical_promotion_export_r1", "passed": all(checks.values()), "checks": checks,
             "rejections": rejected, "failed_checks": [key for key, passed in checks.items() if not passed],
             "authority_boundary": "Isolated Git repository only. No prepared or active successor is committed to the live repository."}
