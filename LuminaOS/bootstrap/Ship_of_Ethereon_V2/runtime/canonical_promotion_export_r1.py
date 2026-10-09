@@ -12,14 +12,14 @@ import tempfile
 try:
     from .post_promotion_verifier_r2 import (
         DEFAULT_ARTIFACT_DIR, DEFAULT_GOVERNANCE, DEFAULT_LINEAGE,
-        DEFAULT_PROMOTION, read_json, read_jsonl, resolve_evidence_path, verify,
+        DEFAULT_PROMOTION, read_json, read_jsonl, resolve_evidence_path, resolve_verified_committed_current_evidence, verify,
     )
     from .repo_paths_r1 import repo_root
     from .runtime_spine_r1 import ModeGuard
 except ImportError:
     from post_promotion_verifier_r2 import (
         DEFAULT_ARTIFACT_DIR, DEFAULT_GOVERNANCE, DEFAULT_LINEAGE,
-        DEFAULT_PROMOTION, read_json, read_jsonl, resolve_evidence_path, verify,
+        DEFAULT_PROMOTION, read_json, read_jsonl, resolve_evidence_path, resolve_verified_committed_current_evidence, verify,
     )
     from repo_paths_r1 import repo_root
     from runtime_spine_r1 import ModeGuard
@@ -81,23 +81,19 @@ def portable_verification(root: Path, result: dict) -> dict:
     return result
 
 
-def baseline(root: Path) -> tuple[bytes, bytes]:
-    require(verify(root=root).get("passed") is True, "committed current canon fails post-promotion verification")
-    for relative in (DEFAULT_GOVERNANCE, DEFAULT_LINEAGE, DEFAULT_PROMOTION):
-        path = relative_file(root, relative)
-        require(path.read_bytes() == git(root, "show", f"HEAD:{relative.as_posix()}"),
-                "current canon differs from committed evidence")
-    return (root / DEFAULT_GOVERNANCE).read_bytes(), (root / DEFAULT_LINEAGE).read_bytes()
+def baseline(root: Path) -> tuple[Path, Path, bytes, bytes]:
+    governance, lineage, _, _ = resolve_verified_committed_current_evidence(root)
+    return governance, lineage, (root / governance).read_bytes(), (root / lineage).read_bytes()
 
 
 def successor(root: Path, governance: Path, lineage: Path) -> str:
-    committed_governance, committed_lineage = baseline(root)
+    current_governance, current_lineage, committed_governance, committed_lineage = baseline(root)
     governance_bytes = governance.read_bytes()
     lineage_bytes = lineage.read_bytes()
     # Byte prefixes preserve all committed records, including their hashes.
     require(governance_bytes.startswith(committed_governance), "governance is not an append-only committed successor")
     require(lineage_bytes.startswith(committed_lineage), "lineage is not an append-only committed successor")
-    parents = read_jsonl(root / DEFAULT_LINEAGE)
+    parents = read_jsonl(root / current_lineage)
     rows = read_jsonl(lineage)
     require(len(rows) == len(parents) + 1, "prepare exactly one successor of committed canon")
     head = rows[-1]
@@ -105,7 +101,7 @@ def successor(root: Path, governance: Path, lineage: Path) -> str:
     require(head.get("prev_lineage_hash") == parents[-1]["lineage_record_hash"], "successor lineage hash does not extend committed canon")
     expected = f"canon-{len(parents) + 1:04d}"
     require(head.get("canon_version") == expected, "successor version does not extend committed canon")
-    new_events = read_jsonl(governance)[len(read_jsonl(root / DEFAULT_GOVERNANCE)):]
+    new_events = read_jsonl(governance)[len(read_jsonl(root / current_governance)):]
     promotions = [row for row in new_events if row.get("event_type") == "promotion"
                   and row.get("allowed") is True and row.get("canonical_change") is True]
     require(len(promotions) == 1 and promotions[0].get("record_hash") == head.get("governance_event_hash"),
