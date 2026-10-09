@@ -94,6 +94,33 @@ def resolve_current_evidence_set(root: Path) -> tuple[Path, Path, Path, str]:
     )
 
 
+
+def resolve_verified_committed_current_evidence(root: Path) -> tuple[Path, Path, Path, str]:
+    """Require the selected current canon to be valid and byte-for-byte committed.
+
+    A later, partial numbered set must fail rather than fall back to genesis.
+    The Git index or an uncommitted working-tree receipt is not promotion authority.
+    """
+    root = root.resolve()
+    governance, lineage, promotion, head = resolve_current_evidence_set(root)
+    result = verify(root=root)
+    if result.get("passed") is not True or result.get("canon_head") != head:
+        raise ValueError(f"committed current canon fails post-promotion verification: {head}")
+
+    for relative in (governance, lineage, promotion):
+        try:
+            committed = subprocess.run(
+                ["git", "show", f"HEAD:{relative.as_posix()}"],
+                cwd=root, check=True, capture_output=True,
+            ).stdout
+            working = (root / relative).read_bytes()
+        except (OSError, subprocess.CalledProcessError) as exc:
+            raise ValueError(f"current canon is not committed: {relative}") from exc
+        if working != committed:
+            raise ValueError(f"current canon differs from committed evidence: {relative}")
+    return governance, lineage, promotion, head
+
+
 def resolve_evidence_path(root: Path, reference: Any) -> Optional[Path]:
     if not isinstance(reference, str) or not reference.strip():
         return None
