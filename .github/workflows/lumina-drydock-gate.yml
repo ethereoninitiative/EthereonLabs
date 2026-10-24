@@ -110,6 +110,7 @@ jobs:
           python sea_trials_context_bundle_repo_truth_r1.py
           python sea_trials_lumina_return_host_r1.py
           python sea_trials_meaning_recall_r1.py
+          python sea_trials_memory_use_gate_r1.py --receipt-out ../../../../.lumina_state/memory_use_gate_r1_validation_receipt.json
           python sea_trials_stationary_habitation_cold_return_r1.py
           python sea_trials_lumina_self_guidance_r1.py
           python sea_trials_lumina_continue_cli_r1.py
@@ -141,6 +142,15 @@ jobs:
           python sea_trials_post_promotion_verifier_r2.py
           python sea_trials_current_canon_resolution_r1.py
           python sea_trials_canonical_promotion_export_r1.py
+
+      - name: Preserve Memory Use Gate R1 validation receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: memory-use-gate-r1-validation-${{ github.sha }}
+          path: .lumina_state/memory_use_gate_r1_validation_receipt.json
+          if-no-files-found: warn
+          retention-days: 90
 
       - name: Verify prepared canonical evidence
         run: python LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/canonical_promotion_export_r1.py verify

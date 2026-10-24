@@ -27,6 +27,28 @@
       "authority_boundary": "Owns governed runtime execution under mode, mutation, promotion, capability, checkpoint, and receipt boundaries."
     },
     {
+      "surface_id": "memory_use_gate_r1",
+      "name": "Consequence-sensitive advisory Memory Use Gate R1",
+      "status": "active-explicit-cli",
+      "default_wiring": false,
+      "paths": [
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/memory_use_gate_r1.py",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_meaning_memory_r1.py",
+        "docs/MEMORY_USE_GATE_R1.md"
+      ],
+      "validation_paths": [
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_memory_use_gate_r1.py",
+        ".github/workflows/lumina-drydock-gate.yml"
+      ],
+      "validation_receipt": {
+        "schema_version": "memory_use_gate_r1_validation_receipt",
+        "emitted_by": "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_memory_use_gate_r1.py",
+        "ci_artifact_prefix": "memory-use-gate-r1-validation-",
+        "state": "generated-on-CI-execution-not-a-committed-passing-claim"
+      },
+      "authority_boundary": "Advisory inclusion/verify/abstain for one evidence-grounded record and action risk. No default action-executor enforcement, authenticated verifier, mode/capability/canon authorization, or proof of identity/consciousness/continuity."
+    },
+    {
       "surface_id": "lumina_bridge_r2",
       "name": "Lumina Bridge R2",
       "status": "active-read-only",
