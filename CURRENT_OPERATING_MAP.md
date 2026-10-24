@@ -108,7 +108,7 @@ The Meaning Metabolism layer validates this advisory sequence in isolation:
 reflect -> assimilate -> seed future guidance
 ```
 
-It is not currently exposed as a capability or wired into the default host or reflective/self-guided runner paths.
+The existing evidence-grounded meaning recall is recomputed into default and self-guided runner context bundles, but is advisory and does not authorize action. `bin/lumina memory use` adds an **explicit**, consequence-sensitive, read-only decision for a selected record; it is not yet enforced by the default action executor. See `docs/MEMORY_USE_GATE_R1.md`.
 
 Bridge distinction:
 
