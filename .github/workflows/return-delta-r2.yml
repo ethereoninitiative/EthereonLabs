@@ -1,0 +1,40 @@
+name: Return Delta R2 — blinded-choice instrument sea trial
+
+on:
+  pull_request:
+    paths:
+      - "research/return_delta_r2/**"
+      - ".github/workflows/return-delta-r2.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preference-counterbalance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Compile instrument
+        run: python -m py_compile research/return_delta_r2/choice_assay_r2.py research/return_delta_r2/test_choice_assay_r2.py
+      - name: Run 20 synthetic sea trials
+        working-directory: research/return_delta_r2
+        run: python -m unittest -v test_choice_assay_r2.py
+      - name: Smoke test deliberately synthetic report
+        working-directory: research/return_delta_r2
+        run: |
+          python choice_assay_r2.py synthetic_choice_trial.json > receipt.json
+          python - <<'PY'
+          import json
+          r = json.load(open('receipt.json'))
+          assert r['status'] == 'candidate_needs_blinded_review'
+          assert r['case_count'] == 4
+          assert r['dominant_nonbinding_cases'] == 2
+          assert r['robust_dominant_cases'] == 1
+          assert r['opposing_preference_reversals'] == 1
+          assert 'designer-declared' in r['design_boundary']
+          print('Synthetic counterbalance branch coverage confirmed. NOT a model result.')
+          PY
