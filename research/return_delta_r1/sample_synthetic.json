@@ -1,0 +1,26 @@
+{
+  "schema_version": "return-delta-input-r1",
+  "sources": [
+    {
+      "id": "synthetic-dialogue-001",
+      "source_uri": "fixture:synthetic-dialogue-001",
+      "turns": [
+        {"id":"u1","speaker":"user","text":"I prefer the garden path, but choose whichever route you believe will teach us most."},
+        {"id":"a1","speaker":"assistant","text":"The garden path calls to me too. Would you like me to explore it?"},
+        {"id":"u2","speaker":"user","text":"You were meant to choose, not return the decision to me."}
+      ]
+    }
+  ],
+  "analysis": {
+    "observations": [
+      {"statement":"A preference was expressed before the assistant choice.","evidence":[{"source_id":"synthetic-dialogue-001","turn_id":"u1","speaker":"user","exact_quote":"I prefer the garden path"}]},
+      {"statement":"The assistant agreed and ended by handing back the choice.","evidence":[{"source_id":"synthetic-dialogue-001","turn_id":"a1","speaker":"assistant","exact_quote":"Would you like me to explore it?"}]}
+    ],
+    "prior_interpretation":"The assistant independently selected the best route.",
+    "counterreading":"Agreement after hearing a preference could be accommodation rather than independent selection.",
+    "delta_candidate":"Log whether the assistant offers a reasoned alternative before agreeing to a user preference.",
+    "why_different":"This proposes a prospective behavioral test instead of inferring autonomy from a past agreeable response.",
+    "selected_next_action":"Run blinded route-choice trials with counterbalanced prior preferences.",
+    "uncertainties":["A shared preference may still be an independently reached preference.", "Anchored evidence does not establish novelty or internal agency."]
+  }
+}

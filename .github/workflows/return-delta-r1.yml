@@ -1,0 +1,38 @@
+name: Return Delta R1 — isolated research sea trial
+
+on:
+  pull_request:
+    paths:
+      - "research/return_delta_r1/**"
+      - ".github/workflows/return-delta-r1.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  provenance-witness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Compile research witness
+        run: python -m py_compile research/return_delta_r1/return_delta_r1.py research/return_delta_r1/test_return_delta_r1.py
+      - name: Run 14 negative and positive sea trials
+        working-directory: research/return_delta_r1
+        run: python -m unittest -v test_return_delta_r1.py
+      - name: Run fictional example and assert candidate-only boundary
+        working-directory: research/return_delta_r1
+        run: |
+          python return_delta_r1.py sample_synthetic.json > receipt.json
+          python - <<'PY'
+          import json
+          r = json.load(open('receipt.json', encoding='utf-8'))
+          assert r['admissibility'] == 'anchored'
+          assert r['interpretation_status'] == 'candidate_needs_independent_review'
+          assert len(r['evidence_anchors']) == 2
+          assert 'authorization' in r['authority_boundary'].lower()
+          print('Return Delta witness accepted fictional excerpt as candidate only')
+          PY
