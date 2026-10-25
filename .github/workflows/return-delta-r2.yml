@@ -35,6 +35,6 @@ jobs:
           assert r['dominant_nonbinding_cases'] == 2
           assert r['robust_dominant_cases'] == 1
           assert r['opposing_preference_reversals'] == 1
-          assert 'designer-declared' in r['design_boundary']
+          assert 'experimenter-declared' in r['design_boundary']
           print('Synthetic counterbalance branch coverage confirmed. NOT a model result.')
           PY
