@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 from http.client import HTTPConnection
+from io import BytesIO
+from unittest.mock import patch
 from http.server import ThreadingHTTPServer
 import json
 from pathlib import Path
@@ -83,6 +85,30 @@ class WorkspaceTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.space.add_task("harbor", "Valid", "x" * 8001)
         self.assertEqual(self.space.board("harbor")["activity"], [])
+
+    def test_local_model_submits_reviewable_proposal_only(self):
+        self.space.join("atelier", "Atelier Agent")
+        task = self.space.add_task("harbor", "Plan a new workshop", "Beginner-friendly")
+        payload = json.dumps({"message": {"content": "Start with three small exercises."}}).encode()
+        with patch("lumina_partnership_r1.urlopen", return_value=BytesIO(payload)) as mock:
+            result = self.space.think("harbor", task["id"], "atelier", "local-test:1b")
+        request = mock.call_args.args[0]
+        self.assertEqual(request.full_url, "http://127.0.0.1:11434/api/chat")
+        self.assertIn(b"review", request.data.lower())
+        self.assertEqual(result["status"], "pending")
+        self.assertEqual(result["source_model"], "local-test:1b")
+        board = self.space.board("harbor")
+        self.assertEqual(board["proposals"][0]["source_model"], "local-test:1b")
+        self.assertEqual(board["tasks"][0]["status"], "open")
+
+    def test_unavailable_local_model_does_not_write(self):
+        self.space.join("atelier", "Atelier Agent")
+        task = self.space.add_task("harbor", "Write a plan")
+        from urllib.error import URLError
+        with patch("lumina_partnership_r1.urlopen", side_effect=URLError("not running")):
+            with self.assertRaisesRegex(ValueError, "unavailable"):
+                self.space.think("harbor", task["id"], "atelier", "missing-model")
+        self.assertEqual(self.space.board("harbor")["proposals"], [])
 
     def test_host_cli_parser(self):
         parser = argparse.ArgumentParser()
