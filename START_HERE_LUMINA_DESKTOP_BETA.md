@@ -6,6 +6,12 @@ This lane turns the governed Lumina repository into a machine-resident desktop p
 
 ## Current entry points
 
+The first human–AI shared-workspace increment is documented at
+`docs/LUMINA_PARTNERSHIP_WORKSPACE_R1.md`. After updating the installed app payload,
+launch it via `lumina partnership serve` through the installed Lumina command.
+It is a local-first preview, not yet a separately packaged or physically
+verified public installer release.
+
 Read:
 
 - `docs/LUMINA_DESKTOP_BETA_R1_WINDOWS_HOST_FOUNDATION.md`
