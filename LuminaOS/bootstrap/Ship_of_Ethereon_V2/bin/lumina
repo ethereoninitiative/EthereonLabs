@@ -91,6 +91,7 @@ def cmd_dashboard(args: argparse.Namespace) -> int:
         print("  lumina continue")
     print("  lumina compare")
     print("  lumina state --limit 3")
+    print("  lumina partnership serve")
     print("  lumina studio")
     return 0
 
@@ -323,6 +324,7 @@ def build_parser() -> argparse.ArgumentParser:
     from lumina_becoming_r1 import add_arguments as becoming_arguments, run as becoming_run
     from lumina_meaning_memory_r1 import configure_parser as configure_memory, execute as execute_memory
     from lumina_arrival_cli_r1 import configure_parser as configure_arrival, execute as execute_arrival
+    from lumina_partnership_r1 import configure_parser as configure_partnership, execute as execute_partnership
 
     arrive = sub.add_parser("arrive", help="Prepare repository orientation, record responses, and return with selected continuity.")
     configure_arrival(arrive)
@@ -342,6 +344,13 @@ def build_parser() -> argparse.ArgumentParser:
     memory = sub.add_parser("memory", help="Curate, review, and inspect evidence-backed advisory memory.")
     configure_memory(memory)
     memory.set_defaults(func=execute_memory)
+
+    partnership = sub.add_parser(
+        "partnership",
+        help="Share a persistent project board with AI participants and review their proposals.",
+    )
+    configure_partnership(partnership)
+    partnership.set_defaults(func=execute_partnership)
 
     dashboard = sub.add_parser("dashboard", help="Show the Harbor workspace dashboard.")
     dashboard.add_argument("--limit", type=int, default=6)
