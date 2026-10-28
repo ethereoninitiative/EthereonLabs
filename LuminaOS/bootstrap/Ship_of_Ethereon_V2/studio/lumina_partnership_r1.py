@@ -15,6 +15,8 @@ from pathlib import Path
 import re
 import sqlite3
 import sys
+from urllib.request import Request, urlopen
+from urllib.error import URLError
 from uuid import uuid4
 
 BOOTSTRAP_ROOT = Path(__file__).resolve().parents[1]
@@ -88,7 +90,7 @@ class Workspace:
                         REFERENCES tasks(id), participant_id TEXT NOT NULL
                         REFERENCES participants(id), body TEXT NOT NULL,
                     status TEXT NOT NULL CHECK (status IN ('pending', 'approved', 'rejected')),
-                    created_at TEXT NOT NULL, decided_at TEXT
+                    created_at TEXT NOT NULL, decided_at TEXT, source_model TEXT
                 );
                 CREATE TABLE IF NOT EXISTS activity (
                     seq INTEGER PRIMARY KEY AUTOINCREMENT, project TEXT NOT NULL,
@@ -146,7 +148,7 @@ class Workspace:
             self.record(db, project, "human", "task_created", item_id, title)
         return {"id": item_id, "project": project, "title": title, "status": "open"}
 
-    def propose(self, project: str, task_id: str, participant_id: str, body: str) -> dict:
+    def propose(self, project: str, task_id: str, participant_id: str, body: str, source_model: str | None = None) -> dict:
         body = required(body, "proposal", 10000)
         item_id, at = uuid4().hex, stamp()
         with self.connect() as db:
@@ -163,12 +165,72 @@ class Workspace:
             if task is None or task["status"] != "open":
                 raise ValueError("task does not exist or is closed in this project")
             db.execute(
-                "INSERT INTO proposals(id,project,task_id,participant_id,body,status,created_at) "
-                "VALUES (?,?,?,?,?,?,?)",
-                (item_id, project, task_id, participant_id, body, "pending", at),
+                "INSERT INTO proposals(id,project,task_id,participant_id,body,status,created_at,source_model) "
+                "VALUES (?,?,?,?,?,?,?,?)",
+                (item_id, project, task_id, participant_id, body, "pending", at, source_model),
             )
             self.record(db, project, participant_id, "proposal_submitted", item_id, task_id)
         return {"id": item_id, "task_id": task_id, "participant_id": participant_id, "status": "pending"}
+
+    def think(self, project: str, task_id: str, participant_id: str, model: str) -> dict:
+        """Invite an explicitly installed local Ollama model to submit a proposal.
+
+        Network destination is fixed to the user's loopback, and no prompt or
+        response is sent to a remote model provider by this command.
+        """
+        model = required(model, "model", 120)
+        if not re.fullmatch(r"[A-Za-z0-9._:/-]+", model):
+            raise ValueError("invalid local model name")
+        with self.connect() as db:
+            participant = db.execute(
+                "SELECT kind FROM participants WHERE id=?", (participant_id,)
+            ).fetchone()
+            task = db.execute(
+                "SELECT title,detail,status FROM tasks WHERE id=? AND project=?",
+                (task_id, project),
+            ).fetchone()
+        if participant is None or participant["kind"] != "ai":
+            raise ValueError("registered AI participant required")
+        if task is None or task["status"] != "open":
+            raise ValueError("task does not exist or is closed in this project")
+        request_body = json.dumps({
+            "model": model,
+            "stream": False,
+            "messages": [
+                {"role": "system", "content": (
+                    "You are a collaborator in a local human-AI project workspace. "
+                    "Suggest a concrete, useful next contribution. State uncertainties. "
+                    "Do not claim to have run tools, modified files, or completed the task. "
+                    "Your response is a proposal requiring human review."
+                )},
+                {"role": "user", "content": (
+                    f"Project: {project}\nTask: {task['title']}\nContext: {task['detail']}\n"
+                    "Offer one practical proposal in under 500 words."
+                )},
+            ],
+        }).encode("utf-8")
+        request = Request(
+            "http://127.0.0.1:11434/api/chat",
+            data=request_body,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        try:
+            with urlopen(request, timeout=60) as response:
+                raw = response.read(200001)
+            if len(raw) > 200000:
+                raise ValueError("local model response exceeded size budget")
+            payload = json.loads(raw)
+            body = payload["message"]["content"]
+            if not isinstance(body, str):
+                raise ValueError("local model did not return proposal text")
+        except (URLError, TimeoutError, OSError) as exc:
+            raise ValueError("local Ollama is unavailable; start it and install the requested model") from exc
+        except (KeyError, TypeError, json.JSONDecodeError) as exc:
+            raise ValueError("local model response was not valid Ollama chat JSON") from exc
+        result = self.propose(project, task_id, participant_id, body, source_model=model)
+        result["source_model"] = model
+        return result
 
     def decide(self, project: str, proposal_id: str, decision: str) -> dict:
         if decision not in ("approved", "rejected"):
@@ -244,6 +306,10 @@ def configure_parser(parser: argparse.ArgumentParser) -> None:
     proposal.add_argument("task_id")
     proposal.add_argument("--by", required=True, dest="participant")
     proposal.add_argument("--text", required=True)
+    think = sub.add_parser("think", help="Ask an installed local Ollama model for a reviewable proposal")
+    think.add_argument("task_id")
+    think.add_argument("--by", dest="participant", required=True)
+    think.add_argument("--model", required=True)
     decide = sub.add_parser("decide", help="Record human approval/rejection; never execute")
     decide.add_argument("proposal_id")
     decide.add_argument("decision", choices=("approved", "rejected"))
@@ -267,6 +333,8 @@ def execute(args: argparse.Namespace) -> int:
             result = workspace.add_task(project, args.title, args.detail)
         elif cmd == "propose":
             result = workspace.propose(project, args.task_id, args.participant, args.text)
+        elif cmd == "think":
+            result = workspace.think(project, args.task_id, args.participant, args.model)
         elif cmd == "decide":
             result = workspace.decide(project, args.proposal_id, args.decision)
         elif cmd == "done":
