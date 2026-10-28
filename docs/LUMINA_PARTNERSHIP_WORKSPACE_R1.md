@@ -33,9 +33,11 @@ distribution):
 & "$env:LOCALAPPDATA\Lumina\bin\lumina.cmd" partnership serve
 ~~~
 
-The existing developer-preview Windows installer distributes the host command
-and repository tree. This PR does **not** claim an updated downloadable installer
-has been built, signed, or tested on a physical PC.
+The Windows graphical installer and checkout installer have been updated to add
+**Lumina Partnership** to the Start Menu, launching this local browser board.
+The installed app includes the new host command when built from this change.
+This PR does **not** claim an updated downloadable installer has been built,
+signed, or tested on a physical PC.
 
 ## Agent participation
 
