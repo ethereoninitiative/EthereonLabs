@@ -48,6 +48,7 @@ Source: "{#PayloadRoot}\EthereonLabs\deploy\windows_desktop_r1\launchers\lumina-
 [Icons]
 Name: "{group}\Lumina Bridge"; Filename: "{app}\bin\lumina-bridge.cmd"; WorkingDir: "{app}\app\EthereonLabs\LuminaOS\bootstrap\Ship_of_Ethereon_V2"
 Name: "{group}\Lumina Studio"; Filename: "{app}\bin\lumina.cmd"; Parameters: "studio"; WorkingDir: "{app}\app\EthereonLabs\LuminaOS\bootstrap\Ship_of_Ethereon_V2"
+Name: "{group}\Lumina Partnership"; Filename: "{app}\bin\lumina.cmd"; Parameters: "partnership serve"; WorkingDir: "{app}\app\EthereonLabs\LuminaOS\bootstrap\Ship_of_Ethereon_V2"
 Name: "{group}\Lumina Doctor"; Filename: "{app}\bin\lumina.cmd"; Parameters: "doctor"; WorkingDir: "{app}\app\EthereonLabs\LuminaOS\bootstrap\Ship_of_Ethereon_V2"
 
 [Run]
