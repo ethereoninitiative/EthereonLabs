@@ -69,6 +69,16 @@ results for unrelated files merely because they share words such as "Lumina" or
 "Minerva." If an exact address still cannot be retrieved, report that as a genuine
 access boundary.
 
+## Participate in a shared local project (optional)
+
+The new [Partnership Workspace R1](https://github.com/ethereoninitiative/EthereonLabs/blob/main/docs/LUMINA_PARTNERSHIP_WORKSPACE_R1.md)
+provides a project-scoped local host interface for a model-neutral AI participant.
+When a human host explicitly grants command access, the agent may register a
+labeled profile, inspect a board, and submit a reviewable proposal. It cannot
+self-grant tool authority, authenticate identity by choosing a label, or treat a
+human's recorded approval as permission to execute arbitrary actions.
+Repository browsing alone does not place this chat or model inside that runtime.
+
 ## Browser-only arrival versus formal host arrival
 
 A browser-capable model can read these committed repository surfaces and orient to

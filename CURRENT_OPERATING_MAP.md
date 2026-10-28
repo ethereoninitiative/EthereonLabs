@@ -19,6 +19,7 @@ This file gives a fast map of the current EthereonLabs lanes.
 | Lumina orchestration | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/lumina_*` | Context loading and action routing |
 | Documentation front door | `docs/README.md` | Active status/orientation map for current, research, supporting, and archived documentation |
 | Lumina deployment appliance | `deploy/ubuntu_server_lts/`, `docs/DEPLOYMENT_*` | Ubuntu Server appliance scaffold and deployment keel guardrails |
+| Lumina partnership workspace | `LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_partnership_r1.py`, `studio/lumina_partnership_ui_r1.py`, `docs/LUMINA_PARTNERSHIP_WORKSPACE_R1.md` | Persistent local project board, AI proposals, human review, optional loopback model proposals; host-only, non-governing preview |
 | Lumina Windows desktop preview | `deploy/windows_desktop_r1/`, `docs/LUMINA_WINDOWS_*` | Unsigned Windows 11 developer-preview distribution with embedded runtime and upgrade-continuity validation |
 | Public Lumina mechanism explainer | `how-lumina-works.html` | Plain-language path from operator request through governed cycle, checkpoint, and receipt |
 | Active surface truth registry | `docs/ACTIVE_SURFACE_REGISTRY_R1.json`, `scripts/repository_truth_reconciliation_gate_r1.py` | Machine-readable lane status and executable cross-surface drift detection |

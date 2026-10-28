@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="lumina-intent" content="__LUMINA_CSRF_TOKEN__">
+<title>Lumina · Partnership Workspace</title>
+<style>
+:root {color-scheme:dark;--bg:#080f19;--pane:#152332;--border:#354759;--text:#f1f5f9;--muted:#b2c3d0;--gold:#efd099;--cyan:#8ed9ee;--green:#aee5c9}
+*{box-sizing:border-box}body{margin:0;font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text);background:radial-gradient(circle at 80% -5%,#234255,transparent 44%),var(--bg)}
+main{max-width:1140px;margin:0 auto;padding:28px 20px 70px}
+header{padding:22px 0 26px;border-bottom:1px solid var(--border)}.eyebrow{text-transform:uppercase;letter-spacing:.18em;font-size:12px;color:var(--cyan)}
+h1{font-size:clamp(2rem,5vw,3rem);letter-spacing:-.04em;line-height:1.1;margin:12px 0}h2{font-size:1.2rem;margin:0 0 12px}
+p{margin:8px 0}.muted{color:var(--muted)}.small{font-size:.87rem}strong{font-weight:650}
+.layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(270px,1fr);gap:24px;margin-top:28px}
+.panel{background:rgba(21,35,50,.92);border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:0 10px 40px #0003}
+.panel + .panel{margin-top:18px}.task{padding:16px 0;border-top:1px solid var(--border)}
+.task:first-of-type{border-top:0}.task h3{margin:0 0 5px;font-size:1.04rem}
+.row{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.status{border:1px solid var(--border);border-radius:99px;padding:2px 9px;color:var(--muted);font-size:.77rem}
+.status.pending{color:var(--gold)}.status.approved{color:var(--green)}
+.proposal{background:#0d1a28;border-left:3px solid var(--cyan);margin:12px 0 0;padding:12px;border-radius:5px}
+.proposal p{white-space:pre-wrap;overflow-wrap:anywhere}
+button{color:#0c1c27;background:var(--cyan);border:0;border-radius:8px;cursor:pointer;padding:9px 14px;font:inherit;font-weight:650}
+button.secondary{background:#344858;color:var(--text)}button.outline{background:transparent;border:1px solid var(--border);color:var(--text)}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+button:disabled{opacity:.5;cursor:not-allowed}input,textarea{background:#091522;border:1px solid #526578;border-radius:8px;color:var(--text);font:inherit;width:100%;padding:11px}
+textarea{min-height:92px;resize:vertical}label{display:block;font-weight:600;margin:12px 0 6px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.info{margin:0 0 18px}
+code{font: .85rem/1.55 ui-monospace,Consolas,monospace;color:var(--cyan);overflow-wrap:anywhere}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#081521;border-radius:8px;padding:12px}
+.event{padding:8px 0;border-bottom:1px solid var(--border);font-size:.87rem;color:var(--muted)}
+.notice{padding:10px 12px;border-radius:8px;background:#294052;color:var(--text);margin:14px 0}
+footer{font-size:.85rem;color:var(--muted);margin-top:28px}
+@media(max-width:790px){.layout{grid-template-columns:1fr}main{padding:18px 14px 40px}.panel{padding:16px}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<div class="eyebrow">Ethereon / Lumina · A shared workspace</div>
+<h1>Partnership begins with work.</h1>
+<p class="muted">Human intention and artificial contribution, together in one persistent place. No AI service is required to start.</p>
+<div id="position" class="small" aria-live="polite">Opening local workspace…</div>
+</header>
+<div id="notice" role="status" aria-live="polite"></div>
+<div class="layout">
+<section>
+<div class="panel">
+<div class="row"><h2>Our projects &amp; tasks</h2><button class="outline" id="refresh" type="button">Refresh</button></div>
+<p class="small muted">Create a task, invite an AI participant to propose ideas, and choose together what is worth pursuing.</p>
+<div id="tasks" aria-live="polite"></div>
+</div>
+<div class="panel">
+<h2>Add something meaningful</h2>
+<form id="newTask">
+<label for="title">Task or intention</label>
+<input id="title" name="title" maxlength="200" required placeholder="What should we create or solve?">
+<label for="detail">Context (optional)</label>
+<textarea id="detail" name="detail" maxlength="8000" placeholder="What would success look like?"></textarea>
+<div class="actions"><button type="submit">Create shared task</button></div>
+</form>
+</div>
+</section>
+<aside>
+<div class="panel">
+<h2>Participants</h2>
+<p class="small muted">Recognizable profiles can return to the same workspace across sessions. Names are not proof of identity.</p>
+<div id="participants"></div>
+</div>
+<div class="panel">
+<h2>Invite an AI contribution</h2>
+<p class="small muted">A compatible AI client can use the existing Lumina command entrypoint. It needs explicit local access; this page does not summon or run a model.</p>
+<pre><code>lumina partnership join atelier "Atelier Agent"
+lumina partnership board
+lumina partnership propose TASK_ID --by atelier --text "My suggestion"</code></pre>
+<p class="small muted">Replace TASK_ID with the task ID shown below each task. Refresh the board to see the proposal. Approval is a recorded decision, not execution.</p>
+</div>
+<div class="panel">
+<h2>Shared history</h2>
+<div id="history" aria-live="polite"></div>
+</div>
+</aside>
+</div>
+<footer>Local-first preview · State persists in Lumina's state directory. This workspace neither authenticates AI identity nor grants model, tool, system, or governance authority. An actual AI adapter and cross-platform release are separate milestones.</footer>
+</main>
+<script>
+'use strict';
+const csrf = document.querySelector('meta[name="lumina-intent"]').content;
+const $ = id => document.getElementById(id);
+function el(tag, value, className) {
+  const node = document.createElement(tag);
+  if (value !== undefined && value !== null) node.textContent = String(value);
+  if (className) node.className = className;
+  return node;
+}
+function button(label, action, kind) {
+  const b = el('button', label, kind || 'secondary');
+  b.type = 'button';
+  b.addEventListener('click', action);
+  return b;
+}
+function clear(node) { node.replaceChildren(); }
+function notice(text, isError) {
+  clear($('notice'));
+  if (text) {
+    const n = el('div', text, 'notice');
+    if (isError) n.style.borderLeft = '3px solid #ffb3ab';
+    $('notice').append(n);
+  }
+}
+async function api(path, data) {
+  const opts = data === undefined ? {} : {
+    method:'POST',
+    headers: {'Content-Type':'application/json','X-Lumina-Intent':csrf},
+    body:JSON.stringify(data)
+  };
+  const response = await fetch(path, opts);
+  const payload = await response.json();
+  if (!response.ok) throw new Error(payload.error || 'Request failed');
+  return payload;
+}
+async function act(path, payload, message) {
+  try {
+    await api(path, payload);
+    notice(message, false);
+    await refresh();
+  } catch (err) { notice(err.message, true); }
+}
+function taskNode(task, proposals) {
+  const wrap = el('article', null, 'task');
+  const top = el('div', null, 'row');
+  const heading = el('h3', task.title);
+  top.append(heading, el('span', task.status, 'status'));
+  wrap.append(top);
+  if (task.detail) wrap.append(el('p', task.detail, 'muted'));
+  const ident = el('p', null, 'small muted');
+  ident.append(el('span', 'Task ID: '), el('code', task.id));
+  wrap.append(ident);
+  if (task.status === 'open') {
+    const actions = el('div', null, 'actions');
+    actions.append(button('Mark complete', () => {
+      if (confirm('Mark this task complete?')) act('/api/done', {id:task.id}, 'Task marked complete.');
+    }, 'outline'));
+    wrap.append(actions);
+  }
+  for (const p of proposals.filter(p => p.task_id === task.id)) {
+    const proposal = el('div', null, 'proposal');
+    const ptop = el('div', null, 'row');
+    ptop.append(el('strong', p.participant_id), el('span', p.status, 'status ' + p.status));
+    proposal.append(ptop, el('p', p.body));
+    if (p.status === 'pending' && task.status === 'open') {
+      const actions = el('div', null, 'actions');
+      actions.append(
+        button('Approve', () => act('/api/decide', {id:p.id, decision:'approved'}, 'Proposal recorded as approved. No action was executed.')),
+        button('Decline', () => act('/api/decide', {id:p.id, decision:'rejected'}, 'Proposal declined.'), 'outline')
+      );
+      proposal.append(actions);
+    }
+    wrap.append(proposal);
+  }
+  return wrap;
+}
+async function refresh() {
+  try {
+    const board = await api('/api/board');
+    $('position').textContent = 'Current project: ' + board.project + ' · ' + board.tasks.length + ' tasks · ' + board.proposals.length + ' contributions';
+    clear($('tasks'));
+    if (!board.tasks.length) $('tasks').append(el('p', 'Your workspace is ready. Create the first task to begin.', 'muted'));
+    for (const task of board.tasks.slice().reverse()) $('tasks').append(taskNode(task, board.proposals));
+    clear($('participants'));
+    for (const person of board.participants) {
+      const entry = el('p');
+      entry.append(el('strong', person.name), el('span', ' · ' + (person.kind === 'ai' ? 'AI profile' : 'human'), 'small muted'));
+      $('participants').append(entry);
+    }
+    clear($('history'));
+    if (!board.activity.length) $('history').append(el('p', 'Nothing recorded yet.', 'muted'));
+    for (const event of board.activity.slice().reverse()) {
+      $('history').append(el('div', event.actor + ' · ' + event.verb.replaceAll('_',' ') + ' · ' + new Date(event.at).toLocaleString(), 'event'));
+    }
+  } catch (err) { notice('Could not read local board: ' + err.message, true); }
+}
+$('refresh').addEventListener('click', refresh);
+$('newTask').addEventListener('submit', async event => {
+  event.preventDefault();
+  const title = $('title').value.trim();
+  const detail = $('detail').value.trim();
+  if (!title) return;
+  try {
+    await api('/api/task', {title, detail});
+    $('newTask').reset();
+    notice('Task created. Share its ID with an AI participant to invite a proposal.', false);
+    await refresh();
+  } catch (err) { notice(err.message, true); }
+});
+refresh();
+</script>
+</body>
+</html>

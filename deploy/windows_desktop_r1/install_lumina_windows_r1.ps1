@@ -146,6 +146,13 @@ if (-not $SkipShortcuts) {
     $StudioShortcut.WorkingDirectory = $BootstrapRoot
     $StudioShortcut.Description = "Open Lumina Studio"
     $StudioShortcut.Save()
+
+    $PartnershipShortcut = $Shell.CreateShortcut((Join-Path $StartMenuRoot "Lumina Partnership.lnk"))
+    $PartnershipShortcut.TargetPath = $LuminaCmd
+    $PartnershipShortcut.Arguments = "partnership serve"
+    $PartnershipShortcut.WorkingDirectory = $BootstrapRoot
+    $PartnershipShortcut.Description = "Open the local human-AI partnership workspace"
+    $PartnershipShortcut.Save()
 }
 
 $Receipt = [ordered]@{
