@@ -8,6 +8,7 @@ executes a tool, modifies project files, or acquires runtime authority.
 from __future__ import annotations
 
 import argparse
+from contextlib import contextmanager
 from datetime import datetime, timezone
 import json
 import os
@@ -106,12 +107,17 @@ class Workspace:
                 ("human", "Local human", "human", stamp()),
             )
 
-    def connect(self) -> sqlite3.Connection:
+    @contextmanager
+    def connect(self):
         db = sqlite3.connect(self.path, timeout=10)
-        db.row_factory = sqlite3.Row
-        db.execute("PRAGMA foreign_keys = ON")
-        db.execute("PRAGMA busy_timeout = 10000")
-        return db
+        try:
+            db.row_factory = sqlite3.Row
+            db.execute("PRAGMA foreign_keys = ON")
+            db.execute("PRAGMA busy_timeout = 10000")
+            with db:
+                yield db
+        finally:
+            db.close()
 
     @staticmethod
     def record(db: sqlite3.Connection, project: str, actor: str, verb: str, subject: str, detail: str) -> None:
