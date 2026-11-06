@@ -190,7 +190,7 @@ def compact_receipt(result: Dict[str, Any]) -> Dict[str, Any]:
     governance = result.get("governance", {}) or {}
     exposed = result.get("exposed_capabilities", []) or []
     harmonic_witness = harmonic_witness_from_result(result)
-    return {
+    receipt = {
         "run_id": result.get("run_id"),
         "created_at": result.get("created_at"),
         "requested_mode": result.get("requested_mode"),
@@ -214,6 +214,9 @@ def compact_receipt(result: Dict[str, Any]) -> Dict[str, Any]:
         "harmonic_witness": harmonic_witness,
         "continuity_shape": harmonic_witness.get("continuity_shape"),
     }
+    if "scoped_memory_use" in governance:
+        receipt["scoped_memory_use"] = governance["scoped_memory_use"]
+    return receipt
 
 
 def run_lumina_cycle(args: argparse.Namespace) -> Dict[str, Any]:
@@ -244,7 +247,8 @@ def run_lumina_cycle(args: argparse.Namespace) -> Dict[str, Any]:
             "spiral_reference": "RSE-v1",
         }
 
-    runner = RuntimeRunner()
+    base_dir = getattr(args, "base_dir", None)
+    runner = RuntimeRunner(base_dir=base_dir) if base_dir else RuntimeRunner()
     result = runner.run_cycle(
         current_mode=args.current_mode,
         target_mode=args.target_mode,
@@ -261,6 +265,8 @@ def run_lumina_cycle(args: argparse.Namespace) -> Dict[str, Any]:
         ethereonic_overlay=overlay,
         context_bundle_overrides=context_overrides,
         project_id=args.project_id,
+        meaning_source_root=getattr(args, "source_root", None),
+        memory_id=getattr(args, "memory_id", None),
     )
     return result.to_dict()
 
@@ -297,6 +303,9 @@ def parse_args(argv: Optional[List[str]] = None) -> argparse.Namespace:
     parser.add_argument("--action-type", default="audit", choices=sorted(VALID_ACTION_TYPES))
     parser.add_argument("--action", default=None, help="Stable requested_action label. Defaults to a prompt-derived slug.")
     parser.add_argument("--project-id", default="lumina-os")
+    parser.add_argument("--memory-id", help="Require a reviewed, exact-scope procedure for this mutation.")
+    parser.add_argument("--source-root", help="Root for the selected memory's evidence paths.")
+    parser.add_argument("--base-dir", help=argparse.SUPPRESS)
     parser.add_argument("--focus", default="continuity", choices=["architecture", "continuity", "expression", "integration", "governance_review"])
     parser.add_argument("--depth", default="structural", choices=["surface", "structural", "foundational"])
     parser.add_argument("--intent", default="verify", choices=["read", "build", "verify", "compose"])
@@ -307,7 +316,10 @@ def parse_args(argv: Optional[List[str]] = None) -> argparse.Namespace:
     parser.add_argument("--ethereonic-overlay", action="store_true", help="Attach optional expressive overlay while preserving boundary law.")
     parser.add_argument("--json", action="store_true", help="Print full JSON result instead of compact receipt.")
     parser.add_argument("--receipt-json", action="store_true", help="Print compact receipt as JSON.")
-    return parser.parse_args(argv)
+    args = parser.parse_args(argv)
+    if args.memory_id is not None and (args.action_type != "mutation" or not args.action or len(args.artifacts) != 1):
+        parser.error("--memory-id requires --action-type mutation, --action, and exactly one --artifact")
+    return args
 
 
 def main(argv: Optional[List[str]] = None) -> int:
@@ -321,7 +333,7 @@ def main(argv: Optional[List[str]] = None) -> int:
             print(json.dumps(receipt, indent=2))
         else:
             print_human_receipt(receipt)
-    return 0
+    return int(args.memory_id is not None and result.get("halted", False))
 
 
 if __name__ == "__main__":

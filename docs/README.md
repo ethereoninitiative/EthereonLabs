@@ -43,7 +43,7 @@ Start here for work that can affect present architecture or present claims:
 - `docs/VESSEL_CONTINUITY_TRANSFER_R1.md`
 - `docs/RUNNER_BRIDGE_OWNERSHIP_MAP.md`
 - `docs/GOVERNANCE_CANON_SEED_PLAN.md`
-- `docs/MEMORY_USE_GATE_R1.md` — explicit local memory-use receipt, consequence tiers, preserved raw history, and untrusted verifier-input boundary; not default action-executor wiring
+- `docs/MEMORY_USE_GATE_R1.md` — read-only memory-use receipts, consequence tiers, and the opt-in scoped procedure veto on the local DryDock mutation path
 
 These documents orient current work. Runtime legality still belongs to executable governance and validated receipts.
 

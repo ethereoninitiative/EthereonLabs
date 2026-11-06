@@ -1,6 +1,6 @@
 # Memory Use Gate R1 — operating boundary
 
-**Status:** explicit local CLI check, read-only. **Policy:** `memory_use_gate_r1`.
+The `memory_use_gate_r1` policy provides a read-only advisory CLI check and an opt-in scoped veto in the local DryDock mutation path.
 **Evidence owner:** the existing append-only meaning-assimilation ledger, not this gate.
 **Execution path:** `bin/lumina memory use` → `studio/lumina_meaning_memory_r1.py` → `runtime/memory_use_gate_r1.py`.
 
@@ -21,7 +21,7 @@ For a source-matching, reviewed, eligible memory:
 | either | caller reports failed | `abstain` |
 | either | lifecycle/controls invalid or unknown | `abstain` |
 
-**Important:** `--verifier-available` and `--verifier-result` are caller-supplied observations, **not cryptographically authenticated verifier receipts**. R1 does not discover a verifier, attest verifier identity, or grant downstream execution authority. A real high-stakes integrator must supply and independently trust the verifier; a plain CLI flag alone is not a trustworthy high-stakes approval. A successful gate check also does **not** override mode, capability, consent, canon, or mutation law. The default runtime still injects its existing reviewed meaning-recall projection, not these action-specific decisions. An action executor must explicitly consume this gate before using a memory for an action.
+`--verifier-available` and `--verifier-result` report caller observations. A high-consequence integrator must independently authenticate its verifier. Ordinary runs rebuild reviewed recall as advisory context. Action-specific decisions apply only to an explicitly selected record on the path below, and existing mode, capability, consent, canon, and mutation rules still apply.
 
 ## Operator example
 
@@ -33,12 +33,37 @@ python LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina memory use \
 
 Use `--base-dir` if the memory was curated in a nondefault runner state directory. The command prints one JSON receipt, with `schema_version`, `policy_version`, `project_id`, `evidence_identifier`, `evidence_hash`, original source-path/hash references, `lifecycle_state`, `control_state`, `inclusion_decision`, `inclusion_reason`, `action_consequence`, `verification_decision`, `verifier_available`, `verifier_result`, `final_disposition`, and `authority_boundary`. It does not print source text. Exit codes: **0** proceed, **2** verify, **1** abstain.
 
+## Scoped Memory Boundary R1
+
+An operator can curate a procedure for one project, action ID, and artifact reference with the existing `memory record` and `memory review` commands. Add a `procedure_scope` field to the candidate JSON alongside `future_behavior` and the other meaning fields.
+
+```json
+{"procedure_scope": {"action": "prepare-local-label", "artifact": "cards/workshop-a.txt"}}
+```
+
+The action is a stable lowercase ID. The artifact is a single normalized relative reference. The project is bound by the ledger. Retention binds the declared scope and procedure to the reviewed record digest and its source evidence. Earlier unscoped records keep their existing advisory behavior. Reviewed scoped records appear under `memory recall` as `scoped_evidence` with attribution and scope. Their procedure text enters an action context only on the explicit matching path.
+
+```bash
+python LuminaOS/bootstrap/Ship_of_Ethereon_V2/bin/lumina run \
+  "Prepare a local workshop label." --project-id PROJECT \
+  --target-mode DryDock --action-type mutation --action prepare-local-label \
+  --artifact cards/workshop-a.txt --memory-id MEMORY_ID --receipt-json
+```
+
+The current request supplies the action and artifact separately from the ledger. The runtime first applies ordinary governance, then checks the selected procedure before capability exposure and the return-host handshake. A mismatch, missing record, or ineligible record produces a halted receipt and a `scoped_memory_confirmation_required` checkpoint. A matched reviewed record may enter the request context after the ordinary mode check. The validated action completes the existing local runtime cycle and writes its return-host checkpoint. A scoped request exits **1** if halted and **0** if completed. `memory use` by itself reports the scoped record as evidence and abstains without a current task.
+
 ## Executable validation and receipt
 
 ```bash
 cd LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime
 python sea_trials_memory_use_gate_r1.py
 python sea_trials_meaning_recall_r1.py
+python sea_trials_scoped_memory_boundary_r1.py \
+  --receipt-out ../../../../.lumina_state/scoped_memory_boundary_r1_validation_receipt.json
 ```
 
-The focused sea trial tests the real ledger and CLI, consequence contrast, revoked and archived history, unknown/missing/conflicting controls, changed sources, verifier absence/failure, and byte-for-byte historical preservation. It emits a machine-readable `memory_use_gate_r1_validation_receipt` to stdout. DryDock also writes and uploads the receipt as `memory-use-gate-r1-validation-<commit>`; **only completed CI jobs establish a passing result**. DryDock runs the broader runtime, host, and documentation checks. No resident identity, consciousness, independently reproduced cross-vessel selfhood, or continuity claim follows from persistent bytes.
+The original gate trial covers consequence and lifecycle changes, corrupt or missing input, verifier failure, and history preservation. The scoped trial curates a procedure attributed to its source run, then starts fresh CLI processes for a no-memory baseline, an exact match, an adjacent action, and a held-out artifact supplied only after curation. It checks the existing mode denial separately, verifies which runs completed the return host, and compares the ledger bytes before and after. Its validation receipt records the tested Git HEAD, timestamp, source and receiving sessions, hashes, policy decisions, and observed outcomes. This establishes local process return with attributed evidence.
+
+The trial also revokes the retained procedure in a separate CLI process and retries the same successful request in a fresh process. The request still matches scope and passes the mode check. The runtime records the `revoked` decision and halts before the return host runs. The receipt binds the revocation review to the original record digest and verifies that the review appended to the ledger and that the retry preserved those bytes.
+
+DryDock uploads the two receipts as `memory-use-gate-r1-validation-<commit>` and `scoped-memory-boundary-r1-validation-<commit>`. The receipt status and tested commit identify the outcome of each execution.

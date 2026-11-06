@@ -11,10 +11,12 @@ try:
     from .runtime_spine_r1 import ContextBundleBuilder, GovernanceLog, ModeGuard, SessionEngine
     from .canon_lineage_store_r1 import CanonLineageStore
     from .lumina_meaning_metabolism_layer_r1 import MeaningAssimilationLedger
+    from .memory_use_gate_r1 import evaluate_memory_use
 except Exception:
     from runtime_spine_r1 import ContextBundleBuilder, GovernanceLog, ModeGuard, SessionEngine
     from canon_lineage_store_r1 import CanonLineageStore
     from lumina_meaning_metabolism_layer_r1 import MeaningAssimilationLedger
+    from memory_use_gate_r1 import evaluate_memory_use
 
 try:
     from .psi42_transceiver_v1_6 import Config as Psi42Config, ResonanceTransceiverV16
@@ -623,11 +625,14 @@ class RuntimeRunner:
         project_id: Optional[str] = None,
         coupling_receipts: Optional[List[Dict[str, Any]]] = None,
         meaning_source_root: Optional[str | Path] = None,
+        memory_id: Optional[str] = None,
     ) -> RunnerResult:
         target_mode = target_mode or current_mode
         action_type = action_type.lower().strip()
         if action_type not in VALID_ACTION_TYPES:
             raise ValueError(f"Invalid action_type '{action_type}'. Expected one of: {sorted(VALID_ACTION_TYPES)}")
+        if memory_id is not None and (action_type != "mutation" or not project_id):
+            raise ValueError("scoped memory use requires a mutation request and a project ID")
         if action_type == "promotion" and promotion_payload is None:
             raise ValueError("action_type='promotion' requires promotion_payload")
 
@@ -765,11 +770,12 @@ class RuntimeRunner:
         if not isinstance(memory_context, dict):
             memory_context = {}
             context_bundle_payload["memory_context"] = memory_context
-        memory_context["meaning_recall"] = MeaningAssimilationLedger(
-            self.base_dir / "meaning_memory", create=False,
-        ).recall(
+        memory_context.pop("scoped_procedure", None)
+        meaning_ledger = MeaningAssimilationLedger(self.base_dir / "meaning_memory", create=False)
+        source_root = meaning_source_root or repo_path or _repo_root()
+        memory_context["meaning_recall"] = meaning_ledger.recall(
             self._resolve_lumina_project_id(project_id, requested_action, raw_user_input),
-            source_root=meaning_source_root or repo_path or _repo_root(),
+            source_root=source_root,
         )
         if MycelialFieldReplayBridge is not None:
             context_bundle_payload = MycelialFieldReplayBridge.attach_to_context_bundle(
@@ -883,6 +889,49 @@ class RuntimeRunner:
                     governance=governance,
                     checkpoint_label="symbolic_dependency_denied",
                     halt_reason=symbolic["reason"],
+                )
+
+        if memory_id is not None:
+            scope_receipt = evaluate_memory_use(
+                meaning_ledger, project_id=project_id, evidence_identifier=memory_id,
+                source_root=source_root,
+                action_consequence="low" if target_mode == "DryDock" and target_is_canonical is False else "high",
+                requested_scope={"action": requested_action, "artifact": artifacts[0] if len(artifacts) == 1 else None},
+            )
+            procedure = scope_receipt.pop("advisory_procedure", None)
+            allowed = scope_receipt["final_disposition"] == "proceed"
+            if allowed:
+                memory_context["scoped_procedure"] = {
+                    "assimilation_id": memory_id,
+                    "source_record_digest": scope_receipt["evidence_hash"],
+                    "procedure_scope": scope_receipt["declared_scope"],
+                    "future_behavior": procedure,
+                }
+                self._write_context_bundle_payload(context_bundle_payload)
+            scope_receipt.update(allowed=allowed, used_as_procedure=allowed)
+            governance["scoped_memory_use"] = scope_receipt
+            self._append_governance_event(
+                event_type="scoped_memory_use",
+                session_id=session.session_id,
+                previous_mode=target_mode,
+                new_mode=target_mode,
+                allowed=allowed,
+                reason=scope_receipt["inclusion_reason"],
+                requested_action=requested_action,
+                action_type=action_type,
+                metadata=scope_receipt,
+            )
+            if not allowed:
+                return self._halted_result(
+                    session_id=session.session_id,
+                    current_mode=current_mode,
+                    target_mode=target_mode,
+                    requested_action=requested_action,
+                    action_type=action_type,
+                    context_bundle_id=context_bundle.bundle_id,
+                    governance=governance,
+                    checkpoint_label="scoped_memory_confirmation_required",
+                    halt_reason="scoped memory requires current confirmation before this mutation",
                 )
 
         promotion_record: Optional[Dict[str, Any]] = None
