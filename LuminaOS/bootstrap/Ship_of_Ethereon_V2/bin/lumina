@@ -113,6 +113,14 @@ def cmd_run(args: argparse.Namespace) -> int:
         cmd.append("--json")
     if ethereonic_overlay:
         cmd.append("--ethereonic-overlay")
+    for option, value in (("--action", args.action), ("--project-id", args.project_id), ("--memory-id", args.memory_id)):
+        if value is not None:
+            cmd.extend([option, value])
+    for option, path in (("--source-root", args.source_root), ("--base-dir", args.base_dir)):
+        if path:
+            cmd.extend([option, str(Path(path).expanduser().resolve())])
+    for artifact in args.artifacts:
+        cmd.extend(["--artifact", artifact])
     cmd.extend(["--target-mode", str(target_mode), "--action-type", str(action_type), "--focus", str(focus), "--depth", str(depth), "--intent", str(intent)])
     return _run(cmd, cwd=BOOTSTRAP_ROOT)
 
@@ -361,6 +369,12 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--preset", default=None)
     run.add_argument("--target-mode", default=None)
     run.add_argument("--action-type", default=None)
+    run.add_argument("--action", help="Stable action ID for this request.")
+    run.add_argument("--artifact", action="append", dest="artifacts", default=[], help="Artifact reference in scope.")
+    run.add_argument("--project-id", help="Project ID for this cycle.")
+    run.add_argument("--memory-id", help="Require a reviewed, exact-scope procedure for this mutation.")
+    run.add_argument("--source-root", help="Root for the selected memory's evidence paths.")
+    run.add_argument("--base-dir", help=argparse.SUPPRESS)
     run.add_argument("--focus", default=None)
     run.add_argument("--depth", default=None)
     run.add_argument("--intent", default=None)

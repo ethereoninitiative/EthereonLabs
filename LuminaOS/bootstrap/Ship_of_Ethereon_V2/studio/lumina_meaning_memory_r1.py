@@ -63,7 +63,8 @@ def execute(args: argparse.Namespace) -> int:
             if args.decision == "retain":
                 proposed = {"timestamp_utc": review.reviewed_at, "project_id": args.project_id, "review": review.to_dict()}
                 check = recall_entries([*entries, proposed], project_id=args.project_id, source_root=args.source_root)
-                if not any(seed["assimilation_id"] == args.assimilation_id for seed in check["guidance_seeds"]):
+                eligible = check["guidance_seeds"] + check["scoped_evidence"]
+                if not any(seed["assimilation_id"] == args.assimilation_id for seed in eligible):
                     reason = next((item["reason"] for item in check["withheld"] if item["assimilation_id"] == args.assimilation_id), check.get("error", "ineligible"))
                     raise ValueError(f"cannot retain this record: {reason}; preserve it and create a new candidate if needed")
             output = ledger.append_review(project_id=args.project_id, review=review)

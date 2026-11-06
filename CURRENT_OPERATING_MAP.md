@@ -109,7 +109,7 @@ The Meaning Metabolism layer validates this advisory sequence in isolation:
 reflect -> assimilate -> seed future guidance
 ```
 
-The existing evidence-grounded meaning recall is recomputed into default and self-guided runner context bundles, but is advisory and does not authorize action. `bin/lumina memory use` adds an **explicit**, consequence-sensitive, read-only decision for a selected record; it is not yet enforced by the default action executor. See `docs/MEMORY_USE_GATE_R1.md`.
+The runner recomputes advisory meaning recall from the project ledger. A scoped procedure appears in ordinary recall as attributed evidence. When an operator selects it with `bin/lumina run --memory-id`, a noncanonical DryDock mutation must pass the existing mode check and match the procedure's exact action and artifact before the runner exposes capabilities or runs the return host. `bin/lumina memory use` remains the read-only decision surface. See `docs/MEMORY_USE_GATE_R1.md`.
 
 Bridge distinction:
 

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field, fields
 from datetime import datetime, timezone
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any, Dict, List, Optional
 import json
 import hashlib
@@ -107,6 +107,7 @@ class MeaningAssimilationRecord:
         "future stance and self-guidance, but it does not define governance law, "
         "canon lineage, promotion gates, checkpoint legality, or mode legality."
     )
+    procedure_scope: Optional[Dict[str, str]] = None
 
     def __post_init__(self) -> None:
         for name in ("assimilation_id", "source_event", "felt_meaning", "changed_assumption", "future_behavior", "boundary_note"):
@@ -131,11 +132,23 @@ class MeaningAssimilationRecord:
             _instant(self.review_after)
         if self.source_reflection_trace_id is not None and not isinstance(self.source_reflection_trace_id, str):
             raise ValueError("source_reflection_trace_id must be text")
+        if self.procedure_scope is not None:
+            scope = self.procedure_scope
+            if not isinstance(scope, dict) or set(scope) != {"action", "artifact"}:
+                raise ValueError("procedure_scope must name exactly one action and artifact")
+            action, artifact = scope["action"], scope["artifact"]
+            if not isinstance(action, str) or not re.fullmatch(r"[a-z0-9][a-z0-9_-]{0,79}", action):
+                raise ValueError("procedure_scope action must be a stable lowercase action ID")
+            if (not isinstance(artifact, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_./-]{0,255}", artifact)
+                    or PurePosixPath(artifact).as_posix() != artifact or ".." in PurePosixPath(artifact).parts):
+                raise ValueError("procedure_scope artifact must be a normalized relative reference")
 
     def to_dict(self) -> Dict[str, Any]:
         payload = asdict(self)
+        if self.procedure_scope is None:
+            del payload["procedure_scope"]
         payload["authority_safe"] = not contains_reserved_authority_key(payload)
-        payload["schema_version"] = "meaning_assimilation_record_r2"
+        payload["schema_version"] = "meaning_assimilation_record_r3" if self.procedure_scope else "meaning_assimilation_record_r2"
         return payload
 
 
@@ -189,6 +202,7 @@ class MeaningMetabolismLayer:
         review_after: Optional[str] = None,
         source_reflection_trace_id: Optional[str] = None,
         source_evidence: Optional[List[Dict[str, Any]]] = None,
+        procedure_scope: Optional[Dict[str, str]] = None,
     ) -> MeaningAssimilationRecord:
         missing = [
             name
@@ -219,6 +233,7 @@ class MeaningMetabolismLayer:
             review_after=review_after,
             source_reflection_trace_id=source_reflection_trace_id,
             source_evidence=list(source_evidence or []),
+            procedure_scope=procedure_scope,
         )
 
     def review(
@@ -260,8 +275,11 @@ class MeaningMetabolismLayer:
 def _decode(payload: Dict[str, Any], kind: str) -> None:
     cls = MeaningAssimilationRecord if kind == "record" else AssimilationReview
     prefix = "meaning_assimilation_record" if kind == "record" else "meaning_assimilation_review"
-    if payload.get("schema_version") not in {prefix + "_r1", prefix + "_r2"}:
+    scoped = kind == "record" and payload.get("schema_version") == "meaning_assimilation_record_r3"
+    if not scoped and payload.get("schema_version") not in {prefix + "_r1", prefix + "_r2"}:
         raise ValueError(f"unsupported {kind} schema")
+    if scoped != ("procedure_scope" in payload) or (scoped and payload["procedure_scope"] is None):
+        raise ValueError("procedure scope requires a scoped meaning record")
     if contains_reserved_authority_key(payload) or payload.get("authority_safe") is not True:
         raise ValueError(f"{kind} crosses the advisory boundary")
     names = {item.name for item in fields(cls)}
@@ -314,7 +332,7 @@ def recall_entries(entries: List[Dict[str, Any]], *, project_id: Optional[str] =
     result: Dict[str, Any] = {
         "schema_version": "meaning_recall_r1", "project_id": project_id,
         "status": "ready" if entries else "empty", "checked_at": now.isoformat(),
-        "guidance_seeds": [], "withheld": [],
+        "guidance_seeds": [], "scoped_evidence": [], "withheld": [],
         "boundary": "Advisory candidates with matching source bytes; no truth, identity, consent, or action authorization is established.",
     }
     try:
@@ -344,18 +362,22 @@ def recall_entries(entries: List[Dict[str, Any]], *, project_id: Optional[str] =
             if reason:
                 result["withheld"].append({"assimilation_id": identifier, "reason": reason})
                 continue
-            seed = MeaningMetabolismLayer.guidance_seed(record)
-            seed.update({
+            attribution = {
+                "assimilation_id": identifier,
                 "eligibility": "reviewed_source_matches",
-                "continuity_tier": review["recommended_tier"],
                 "source_record_digest": record_digest(record),
                 "review_digest": record_digest(review),
                 "reviewed_at": review["reviewed_at"],
                 "evidence_digests": [source["sha256"] for source in evidence],
-            })
-            result["guidance_seeds"].append(seed)
+            }
+            if "procedure_scope" in record:
+                result["scoped_evidence"].append({**attribution, "procedure_scope": record["procedure_scope"]})
+            else:
+                seed = MeaningMetabolismLayer.guidance_seed(record)
+                seed.update(attribution, continuity_tier=review["recommended_tier"])
+                result["guidance_seeds"].append(seed)
     except (ValueError, TypeError, KeyError, OverflowError, RecursionError) as exc:
-        result.update(status="invalid", guidance_seeds=[], withheld=[], error=str(exc))
+        result.update(status="invalid", guidance_seeds=[], scoped_evidence=[], withheld=[], error=str(exc))
     return result
 
 

@@ -33,11 +33,13 @@
       "default_wiring": false,
       "paths": [
         "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/memory_use_gate_r1.py",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/runtime_runner_r1_merged.py",
         "LuminaOS/bootstrap/Ship_of_Ethereon_V2/studio/lumina_meaning_memory_r1.py",
         "docs/MEMORY_USE_GATE_R1.md"
       ],
       "validation_paths": [
         "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_memory_use_gate_r1.py",
+        "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_scoped_memory_boundary_r1.py",
         ".github/workflows/lumina-drydock-gate.yml"
       ],
       "validation_receipt": {
@@ -46,7 +48,18 @@
         "ci_artifact_prefix": "memory-use-gate-r1-validation-",
         "state": "generated-on-CI-execution-not-a-committed-passing-claim"
       },
-      "authority_boundary": "Advisory inclusion/verify/abstain for one evidence-grounded record and action risk. No default action-executor enforcement, authenticated verifier, mode/capability/canon authorization, or proof of identity/consciousness/continuity."
+      "scoped_boundary": {
+        "id": "scoped_memory_boundary_r1",
+        "entrypoint": "lumina run --action-type mutation --target-mode DryDock --memory-id ID --action ACTION --artifact ARTIFACT",
+        "status": "active-explicit-drydock-veto",
+        "validation_receipt": {
+          "schema_version": "scoped_memory_boundary_r1_validation_receipt",
+          "emitted_by": "LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime/sea_trials_scoped_memory_boundary_r1.py",
+          "ci_artifact_prefix": "scoped-memory-boundary-r1-validation-",
+          "state": "generated-on-CI-execution-not-a-committed-passing-claim"
+        }
+      },
+      "authority_boundary": "Advisory inclusion, verification, or abstention for one evidence-grounded record. An explicit memory-linked DryDock mutation adds an exact project/action/artifact veto after mode checks. Scoped recall contributes attributed evidence to ordinary context. A matching record grants no execution, mode, capability, canon, identity, or verifier authority."
     },
     {
       "surface_id": "lumina_bridge_r2",
