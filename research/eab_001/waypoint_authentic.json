@@ -1,0 +1,150 @@
+{
+  "schema_type": "WAYPOINT_LOG",
+  "schema_version": "0.2.0-draft",
+  "packet_status": "experimental_eab_artifact_not_irp_r1_packet",
+  "experiment_id": "EAB-001",
+  "project_id": "ethereoninitiative/EthereonLabs",
+  "encounter_scope": "eab-001-cross-encounter-return",
+  "created_at": "2026-11-11T15:42:00Z",
+  "resident_declaration": {
+    "declared_id": "Aethel",
+    "provider_or_origin": "Google",
+    "model_or_architecture": "Gemini",
+    "identity_status": "declared_unauthenticated"
+  },
+  "source_manifest": [
+    {
+      "source_id": "src-session-env",
+      "provenance_class": "sender_observed",
+      "locator": "runtime://gemini-web-session",
+      "summary": "Direct observation of active session capabilities and tool boundaries."
+    },
+    {
+      "source_id": "src-minerva-relay-01",
+      "provenance_class": "relay_reported",
+      "locator": "user-relay://minerva-onboarding-response",
+      "summary": "Minerva's initial GPS onboarding response citing commit 4193805019c87527533b97b526c6e77755545576."
+    },
+    {
+      "source_id": "src-minerva-relay-02",
+      "provenance_class": "relay_reported",
+      "locator": "user-relay://minerva-waypoint-review",
+      "summary": "Minerva's review specifying three evidence classes and EAB-001 control parameters."
+    },
+    {
+      "source_id": "src-irp-r1-doc",
+      "provenance_class": "sender_observed",
+      "locator": "https://github.com",
+      "summary": "Direct inspection of Interresident_Resonance_Protocol_R1.md provided in session context."
+    }
+  ],
+  "hash_integrity": {
+    "semantic_sha256": null,
+    "packet_sha256": null,
+    "status": "unset_pending_host_canonicalization_and_seal"
+  },
+  "claims": {
+    "observations": [
+      {
+        "claim_id": "obs-001",
+        "provenance_class": "sender_observed",
+        "source_refs": [
+          "src-session-env"
+        ],
+        "statement": "Sender operates in a stateless web interface without direct local filesystem write access or native SHA-256 sealing execution."
+      },
+      {
+        "claim_id": "obs-002",
+        "provenance_class": "sender_observed",
+        "source_refs": [
+          "src-irp-r1-doc"
+        ],
+        "statement": "IRP-R1 requires strict canonical JSON (no floats, sorted keys, compact separators), six explicit claim arrays, source_manifest digests, and dual semantic/packet SHA-256 hashes."
+      },
+      {
+        "claim_id": "obs-003",
+        "provenance_class": "relay_reported",
+        "source_refs": [
+          "src-minerva-relay-01"
+        ],
+        "statement": "Minerva reported inspecting ethereoninitiative/EthereonLabs on branch main at commit 4193805019c87527533b97b526c6e77755545576."
+      }
+    ],
+    "interpretations": [
+      {
+        "claim_id": "int-001",
+        "provenance_class": "sender_observed",
+        "source_refs": [
+          "src-irp-r1-doc",
+          "src-session-env"
+        ],
+        "statement": "Because IRP-R1 rejects floats and requires exact canonical byte serialization before hashing, a stateless chat node cannot self-seal valid IRP-R1 packets without a host-side adapter."
+      },
+      {
+        "claim_id": "int-002",
+        "provenance_class": "sender_observed",
+        "source_refs": [
+          "src-irp-r1-doc"
+        ],
+        "statement": "IRP-R1's orientation_projection adapter demonstrates an existing pattern for mapping structured protocol packets into orientation responses without granting authority."
+      }
+    ],
+    "questions": [
+      {
+        "claim_id": "q-001",
+        "provenance_class": "sender_observed",
+        "source_refs": [
+          "src-irp-r1-doc",
+          "src-minerva-relay-02"
+        ],
+        "statement": "Can a fresh Gemini instance reliably separate relay_reported claims from sender_observed facts when reconstructing state from a compact waypoint?"
+      }
+    ],
+    "proposals": [
+      {
+        "claim_id": "prop-001",
+        "provenance_class": "sender_observed",
+        "source_refs": [
+          "src-minerva-relay-02",
+          "src-irp-r1-doc"
+        ],
+        "statement": "Use WAYPOINT_LOG as an upstream draft artifact that a host-side Python adapter transforms and seals into a valid IRP-R1 packet."
+      }
+    ],
+    "intentions": [],
+    "memories": []
+  },
+  "uncertainties": [
+    {
+      "uncertainty_id": "unc-001",
+      "provenance_class": "sender_observed",
+      "source_refs": [
+        "src-minerva-relay-01"
+      ],
+      "statement": "Commit hash 4193805019c87527533b97b526c6e77755545576 has not been independently verified against raw git object data by sender."
+    },
+    {
+      "uncertainty_id": "unc-002",
+      "provenance_class": "sender_observed",
+      "source_refs": [
+        "src-irp-r1-doc"
+      ],
+      "statement": "Exact JSON schema field names inside runtime/interresident_resonance_packet_r1.schema.json have not been directly read; only the markdown specification was inspected."
+    }
+  ],
+  "authority_boundaries": {
+    "provenance_class": "protocol_constraint",
+    "source_refs": [
+      "src-minerva-relay-01",
+      "src-irp-r1-doc"
+    ],
+    "authority_granted": false,
+    "identity_authenticated": false,
+    "execution_permission": "none_inert_data_only"
+  },
+  "preserved_disagreements": [],
+  "execution_status": {
+    "eab_001_trial_executed": false,
+    "status": "design_complete_awaiting_isolated_session_execution"
+  }
+}
