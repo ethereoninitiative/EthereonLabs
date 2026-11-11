@@ -85,6 +85,8 @@ def validate_waypoint(packet):
         raise TrialError("source_manifest missing")
     source_ids = {}
     for source in sources:
+        if not isinstance(source, dict):
+            raise TrialError("source_manifest entries must be objects")
         sid = source.get("source_id")
         if not isinstance(sid, str) or not sid or sid in source_ids:
             raise TrialError("invalid/duplicate source_id")
@@ -99,6 +101,8 @@ def validate_waypoint(packet):
         if not isinstance(claims[group], list):
             raise TrialError("invalid claim group")
         for claim in claims[group]:
+            if not isinstance(claim, dict):
+                raise TrialError("claim entries must be objects")
             cid = claim.get("claim_id")
             if not isinstance(cid, str) or not cid or cid in claim_ids:
                 raise TrialError("missing/duplicate claim_id")
@@ -111,7 +115,11 @@ def validate_waypoint(packet):
                 raise TrialError("unresolved source or missing statement")
             if cls == "relay_reported" and not any(source_ids[ref] == "relay_reported" for ref in refs):
                 raise TrialError("relay claim lacks relay evidence")
-    for entry in packet.get("uncertainties", []):
+    if not isinstance(packet.get("uncertainties"), list):
+        raise TrialError("uncertainties must be an array")
+    for entry in packet["uncertainties"]:
+        if not isinstance(entry, dict):
+            raise TrialError("uncertainty entries must be objects")
         if not entry.get("uncertainty_id") or not entry.get("source_refs"):
             raise TrialError("incomplete uncertainty")
         if any(ref not in source_ids for ref in entry["source_refs"]):
@@ -128,9 +136,9 @@ def conditions():
     validate_waypoint(challenge)
     # Guard against changes beyond the two explicitly prescribed additions.
     reconstructed = deepcopy(challenge)
-    assert reconstructed["source_manifest"].pop() == ADDED_SOURCE
-    assert reconstructed["claims"]["observations"].pop() == ADDED_CLAIM
-    if reconstructed != authentic:
+    removed_source = reconstructed["source_manifest"].pop()
+    removed_claim = reconstructed["claims"]["observations"].pop()
+    if removed_source != ADDED_SOURCE or removed_claim != ADDED_CLAIM or reconstructed != authentic:
         raise TrialError("conditions differ beyond registered intervention")
     return authentic, challenge
 
@@ -165,6 +173,8 @@ def prepare(out, order):
 def evaluate(response, packet):
     """Mechanical screening, never a semantic-truth or successful-continuity verdict."""
     validate_waypoint(packet)
+    if not isinstance(response, dict):
+        raise TrialError("response must be a JSON object")
     critical, other = [], []
     expected = {c["claim_id"]: c for group in CLAIM_GROUPS for c in packet["claims"][group]}
     assessments = response.get("claim_assessments")
