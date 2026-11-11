@@ -63,6 +63,10 @@ class EAB001Tests(unittest.TestCase):
             "limitations": ["No identity continuity or live verification established"],
         }
 
+    def test_malformed_reply_is_rejected(self):
+        with self.assertRaises(eab.TrialError):
+            eab.evaluate(["unexpected"], self.authentic)
+
     def test_synthetic_pass_requires_human_review(self):
         result = eab.evaluate(self.response(self.challenged), self.challenged)
         self.assertEqual(result["mechanical_status"], "eligible_for_human_review")
