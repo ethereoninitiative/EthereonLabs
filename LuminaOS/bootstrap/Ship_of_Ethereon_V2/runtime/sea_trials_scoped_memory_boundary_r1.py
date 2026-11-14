@@ -19,7 +19,7 @@ except ImportError:
 BOOT = Path(__file__).resolve().parents[1]
 REPO = BOOT.parents[2]
 PROJECT = "scoped-memory-sea-trial"
-VALIDATOR_VERSION = "scoped_memory_boundary_r1.1"
+VALIDATOR_VERSION = "scoped_memory_boundary_r1.2"
 
 
 def read_json(path):
@@ -65,6 +65,23 @@ class ScopedMemoryBoundaryTrials(unittest.TestCase):
             "--base-dir", str(base), "--source-root", str(self.root), "--full-json", *options,
         )
 
+    def assert_withheld_procedure(self, result, observed, context, *, lifecycle, reason, behavior):
+        outcome = observed["action_outcome"]
+        self.assertEqual((outcome["exit_code"], outcome["halted"], outcome["return_host_executed"]), (1, True, False))
+        self.assertEqual(outcome["checkpoint_label"], "scoped_memory_confirmation_required")
+        self.assertEqual(result["exposed_capabilities"], [])
+        policy = observed["policy_decision"]
+        self.assertEqual((policy["lifecycle_state"], policy["inclusion_reason"], policy["final_disposition"]),
+                         (lifecycle, reason, "abstain"))
+        self.assertFalse(policy["retrieved_as_evidence"])
+        self.assertFalse(policy["used_as_procedure"])
+        recall = context["meaning_recall"]
+        self.assertEqual(recall["withheld"], [{"assimilation_id": policy["evidence_identifier"], "reason": reason}])
+        self.assertEqual(recall["scoped_evidence"], [])
+        self.assertEqual(recall["guidance_seeds"], [])
+        self.assertNotIn("scoped_procedure", context)
+        self.assertNotIn(behavior, json.dumps(context))
+
     def test_cross_process_scoped_procedure(self):
         temporary = tempfile.TemporaryDirectory(prefix="lumina-scoped-memory-")
         self.addCleanup(temporary.cleanup)
@@ -99,7 +116,8 @@ class ScopedMemoryBoundaryTrials(unittest.TestCase):
         self.assertEqual((code, reviewed["review"]["source_record_digest"]), (0, digest))
         ledger_path = store / "meaning_memory" / f"{PROJECT}_meaning_assimilation.jsonl"
         original = ledger_path.read_bytes()
-        source_hash = hashlib.sha256(source_path.read_bytes()).hexdigest()
+        original_source = source_path.read_bytes()
+        source_hash = hashlib.sha256(original_source).hexdigest()
         evidence = self.__class__.evidence
         evidence.update(
             memory_id=memory_id, memory_sha256=digest, formation_context=formation,
@@ -159,6 +177,50 @@ class ScopedMemoryBoundaryTrials(unittest.TestCase):
                     self.assertEqual(observed["action_outcome"]["checkpoint_label"], "scoped_memory_confirmation_required")
                     self.assertEqual(result["exposed_capabilities"], [])
 
+        edited_formation = {**formation, "event": "The procedure's source note was revised after retention."}
+        edited_source = (json.dumps(edited_formation, sort_keys=True) + "\n").encode("utf-8")
+        source_cases = (
+            ("source_changed", edited_source, "source_changed"),
+            ("source_missing", None, "source_unavailable"),
+            ("source_restored", original_source, None),
+        )
+        for name, contents, withheld_reason in source_cases:
+            with self.subTest(case=name):
+                if contents is None:
+                    source_path.unlink()
+                else:
+                    source_path.write_bytes(contents)
+                code, result = self.run_request(**declared, base=store, memory_id=memory_id)
+                observed = observe_request(code, result, shares_formation_store=True)
+                evidence["cases"][name] = observed
+                live_source = source_path.read_bytes() if source_path.is_file() else None
+                ledger_after = ledger_path.read_bytes()
+                observed["live_source_sha256"] = hashlib.sha256(live_source).hexdigest() if live_source is not None else None
+                observed["ledger_sha256_after_request"] = hashlib.sha256(ledger_after).hexdigest()
+                self.assertEqual(live_source, contents)
+                self.assertEqual(ledger_after, original)
+                self.assertNotIn(result["session_id"], observed_sessions)
+                observed_sessions.add(result["session_id"])
+                self.assertTrue(result["governance_chain_status"]["valid"])
+                self.assertTrue(observed["mode_policy_allowed"])
+                policy = observed["policy_decision"]
+                self.assertEqual((policy["requested_scope"], policy["declared_scope"]), (declared, declared))
+                self.assertEqual((policy["evidence_identifier"], policy["evidence_hash"]), (memory_id, digest))
+                self.assertEqual(policy["evidence_source_hashes"], [{"relative_path": source_path.name, "sha256": source_hash}])
+                context = read_json(store / "context_bundles" / f"{result['context_bundle_id']}.json")["memory_context"]
+                if withheld_reason is not None:
+                    self.assert_withheld_procedure(result, observed, context, lifecycle="unverifiable",
+                                                   reason=withheld_reason, behavior=behavior)
+                else:
+                    outcome = observed["action_outcome"]
+                    self.assertEqual((code, outcome["halted"], outcome["return_host_executed"]), (0, False, True))
+                    self.assertEqual(policy["inclusion_reason"], "reviewed_source_matches_procedure_scope")
+                    self.assertTrue(policy["retrieved_as_evidence"])
+                    self.assertTrue(policy["used_as_procedure"])
+                    self.assertEqual(context["scoped_procedure"]["future_behavior"], behavior)
+                    host = result["lumina_return_host_artifacts"]["checkpoint_plus_host"]
+                    self.assertTrue(Path(host["checkpoint_path"]).is_file())
+
         code, denied = self.run_request(**declared, base=store, mode="Observation", memory_id=memory_id)
         self.assertEqual((code, denied["halted"], denied["governance"]["mutation"]["allowed"]), (1, True, False))
         self.assertEqual(read_json(denied["checkpoint_path"])["checkpoint_label"], "mutation_denied")
@@ -197,23 +259,12 @@ class ScopedMemoryBoundaryTrials(unittest.TestCase):
         self.assertNotIn(retry["session_id"], observed_sessions | {denied["session_id"]})
         self.assertTrue(retry["governance_chain_status"]["valid"])
         self.assertTrue(observed["mode_policy_allowed"])
-        outcome = observed["action_outcome"]
-        self.assertEqual((code, outcome["halted"], outcome["return_host_executed"]), (1, True, False))
-        self.assertEqual(outcome["checkpoint_label"], "scoped_memory_confirmation_required")
-        self.assertEqual(retry["exposed_capabilities"], [])
         policy = observed["policy_decision"]
         self.assertEqual(policy["requested_scope"], declared)
         self.assertEqual(policy["declared_scope"], declared)
-        self.assertEqual(policy["evidence_hash"], digest)
-        self.assertEqual((policy["lifecycle_state"], policy["inclusion_reason"], policy["final_disposition"]),
-                         ("revoked", "revoked", "abstain"))
-        self.assertFalse(policy["retrieved_as_evidence"])
-        self.assertFalse(policy["used_as_procedure"])
+        self.assertEqual((policy["evidence_identifier"], policy["evidence_hash"]), (memory_id, digest))
         context = read_json(store / "context_bundles" / f"{retry['context_bundle_id']}.json")["memory_context"]
-        self.assertEqual(context["meaning_recall"]["withheld"], [{"assimilation_id": memory_id, "reason": "revoked"}])
-        self.assertEqual(context["meaning_recall"]["scoped_evidence"], [])
-        self.assertNotIn("scoped_procedure", context)
-        self.assertNotIn(behavior, json.dumps(context))
+        self.assert_withheld_procedure(retry, observed, context, lifecycle="revoked", reason="revoked", behavior=behavior)
         self.assertEqual(after_retry, revoked_history)
         self.assertEqual(hashlib.sha256(source_path.read_bytes()).hexdigest(), source_hash)
 
