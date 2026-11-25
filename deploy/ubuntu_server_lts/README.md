@@ -88,7 +88,7 @@ Use a disposable Ubuntu Server LTS VM first. Preparation and activation are inte
 2. Have the operator configure real database credentials and a private (0600) regular environment file. Provision the database and apply the SQL migrations separately under reviewed instructions; never use placeholder passwords.
 3. Create a real host-of-record file outside the repository from the example. Do not pass the checked-in example as proof of enrollment.
 4. Run the deployment doctor and resolve all halt conditions. It exits 1 on reported halt conditions and 0 on a passing structural report.
-5. Treat a passing report only as readiness for the next DryDock, not authorization or proof of working services. Validate database connectivity, unit contents and service account isolation, reconcile the older orchestrator timer with the active V2 host, and review actual state ownership before any separate operator-approved activation.
+5. Treat a passing report only as readiness for the next DryDock, not authorization or proof of working services. Validate database connectivity, unit contents and service account isolation, verify the updated governed-cycle service on an actual systemd host, and review actual state ownership before any separate operator-approved activation.
 6. Validate receipts, logs, queue persistence and restart/reboot behavior in the VM before considering a dedicated host.
 
 Example non-mutating preflight (replace the host ID and registry path with real operator-maintained values):
@@ -122,3 +122,18 @@ into:
 ## Next likely hardening move
 
 After this scaffold, the next threshold is to validate the appliance end-to-end on a real Ubuntu Server VM, emit a deployment drydock receipt, and then decide whether accepted Chamber queue items should emit governed runtime execution records under explicit policy.
+
+
+## Governed observation cycle R1
+
+The proposed Ubuntu timer now invokes `governed_appliance_cycle_r1.py`, which invokes the existing V2 `bin/lumina run` host entrypoint with a fixed Observation/audit request and explicit runtime base beneath `/var/lib/lumina`. It requires an affirmative governance-chain witness, a non-halted result, the expected action/mode, and existing receipt evidence paths within the chosen state root before reporting success. A halted runtime result is a failed appliance cycle even if the CLI process exits zero. No arbitrary shell command, model call, system mutation, or privilege escalation is added.
+
+The core runner, project/session registries, state browser and Bridge state now honor explicitly configured `LUMINA_STATE_ROOT`, preserving their previous behavior when unset. This is a targeted alignment, not proof that every experimental or legacy surface honors it. The service no longer receives Chamber database credentials; systemd's StateDirectory, LogsDirectory and read-only system mounts constrain this service. These are proposed unit settings, not a tested isolation boundary. The service account is still shared with Chamber; separation and authenticated authorization remain required before host maintenance.
+
+Offline integration trial from a complete checkout:
+
+```bash
+python3 deploy/ubuntu_server_lts/sea_trials_governed_appliance_cycle_r1.py
+```
+
+The trial invokes two fresh CLI processes against one temporary state root, checks evidence retention and shared governance log, and checks the state browser sees both runs. This is not an OS reboot, concurrent-writer test or systemd execution. Do not activate the timer until the existing deployment preflight and real Ubuntu VM checks are satisfied.

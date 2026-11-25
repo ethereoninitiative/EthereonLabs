@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 import argparse
 import json
+import os
 
 try:
     from .runtime_spine_r1 import ContextBundleBuilder, GovernanceLog, ModeGuard, SessionEngine
@@ -87,7 +88,12 @@ def _repo_root() -> Path:
 
 
 RUNTIME_ROOT = _repo_root() / "LuminaOS" / "bootstrap" / "Ship_of_Ethereon_V2" / "runtime"
-STATE_ROOT = _repo_root() / ".lumina_state" / "ship_of_ethereon_v2"
+# Honor explicit appliance state without changing the legacy unset default.
+STATE_ROOT = (
+    Path(os.environ["LUMINA_STATE_ROOT"]).expanduser().resolve()
+    if os.environ.get("LUMINA_STATE_ROOT")
+    else _repo_root() / ".lumina_state" / "ship_of_ethereon_v2"
+)
 
 BASE_DIR = STATE_ROOT / "runtime_runner_r1_actiontype_logging"
 REGISTRY_PATH = RUNTIME_ROOT / "capability_registry_r1.json"

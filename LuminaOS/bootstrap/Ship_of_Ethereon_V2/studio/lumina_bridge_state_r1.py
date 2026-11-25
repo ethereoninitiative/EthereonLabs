@@ -11,13 +11,19 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 import json
+import os
 from pathlib import Path
 from typing import Any, Dict, Optional
 
 STUDIO_ROOT = Path(__file__).resolve().parent
 BOOTSTRAP_ROOT = STUDIO_ROOT.parent
 REPO_ROOT = Path(__file__).resolve().parents[4]
-STATE_ROOT = REPO_ROOT / ".lumina_state" / "ship_of_ethereon_v2"
+# Honor explicit appliance state without changing the legacy unset default.
+STATE_ROOT = (
+    Path(os.environ["LUMINA_STATE_ROOT"]).expanduser().resolve()
+    if os.environ.get("LUMINA_STATE_ROOT")
+    else REPO_ROOT / ".lumina_state" / "ship_of_ethereon_v2"
+)
 DEFAULT_RUNTIME_BASE = STATE_ROOT / "runtime_runner_r1_actiontype_logging"
 
 try:
