@@ -102,6 +102,9 @@ jobs:
         working-directory: LuminaOS/bootstrap/Ship_of_Ethereon_V2/install
         run: python sea_trials_host_alignment_r1.py
 
+      - name: Hearth Linux shell bridge fixture sea trial
+        run: python LuminaOS/bootstrap/Ship_of_Ethereon_V2/services/hearth_shell_bridge_trial_r1.py --sea-trial
+
       - name: Core sea trials
         working-directory: LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime
         run: |
