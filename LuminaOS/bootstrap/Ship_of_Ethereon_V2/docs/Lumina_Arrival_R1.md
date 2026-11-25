@@ -164,3 +164,7 @@ in fresh processes through all five modules and a subsequent arrival, updated
 committed sources, explicit selection, memory revocation, source changes, receipt
 tampering, rollback, stale writes and partial receipts. Replies are scripted;
 the demonstrated result is a functioning arrival-and-return transport path.
+
+## OpenAI-first connection experiment
+
+See [OStroNaut 001 — OpenAI Arrival connection R1](../arrival/README.md) for the staged official local SDK integration and its verification boundary. It does not yet transmit Arrival packets or establish a resident session.
