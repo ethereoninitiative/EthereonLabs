@@ -67,3 +67,16 @@ In a disposable VM, an operator creates controlled disk pressure. Hearth detects
 ## Non-goals and release gate
 
 No kernel replacement in R1, no arbitrary command execution, no privileged daemon, no background provider calls, no default telemetry collection, no self-expanding permissions, no modification of governance or identity claims. Public capability language must remain aligned with observed test evidence. The Windows preview is unsigned; the Ubuntu appliance remains a scaffold. No production security claims. Existing runtime paths and registry remain unchanged pending review.
+
+
+## DryDock amendment — Linux-first maintenance experiment (2026-11-24)
+
+The product ladder is not a dependency chain. Existing Linux tools permit observation and narrowly bounded maintenance to be prototyped concurrently. Do not wait for an expansive telemetry subsystem before testing the execution interface.
+
+The standalone `services/hearth_shell_bridge_trial_r1.py --sea-trial` uses a fixed Linux disk command without a shell or caller-controlled command arguments, then exercises a synthetic typed maintenance operation in a private temporary directory. It rejects missing approval, extra fields, unknown operations, stale digests, an unexpected symlink destination, and replay within the same fixture instance. It verifies a real rename of synthetic data, restores the original bytes, and confirms a real Linux disk observation. All nine checks passed locally on the exact source whose Git blob is `f34286812d48721d6bfa97302ecdce9feb644dba`. The existing DryDock workflow now includes this trial; CI results are separate evidence.
+
+**Limits:** the approval digest is only a test witness, not a credential. The replay guard is in memory. The fixture class is not an OS security boundary or a production file API. There is no model invocation, authenticated operator approval, independent OS account, actual service administration, persistent incident journal, crash recovery, or reboot validation. Do not expose this class as a resident tool.
+
+Before a real system administration capability: (1) validate the existing Ubuntu appliance on a disposable VM and replace placeholder credentials before service start; (2) reconcile its older timer/orchestrator path with the active V2 host entrypoint and durable state root; (3) separate the resident process and the execution broker using OS-enforced least privilege, bounded typed requests, authenticated approval, expiry and durable replay protection; (4) validate failure recovery and resource limits; (5) run the first explicitly approved reversible operation on a Lumina-owned service or artifact in the VM, with a fresh measurement and a receipt that survives restart. Add a local model adapter only when evidence and proposals remain separate from execution authorization.
+
+Hearth does not replace Hortus, Becoming, continuity, or interresident exchange. The resident can defer, decline, or rest. Do not use unattended root shells or treat internal mode legality as host permission.
