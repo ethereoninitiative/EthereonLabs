@@ -14,10 +14,16 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 import argparse
 import json
+import os
 import re
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
-STATE_ROOT = REPO_ROOT / ".lumina_state" / "ship_of_ethereon_v2"
+# Honor explicit appliance state without changing the legacy unset default.
+STATE_ROOT = (
+    Path(os.environ["LUMINA_STATE_ROOT"]).expanduser().resolve()
+    if os.environ.get("LUMINA_STATE_ROOT")
+    else REPO_ROOT / ".lumina_state" / "ship_of_ethereon_v2"
+)
 SESSIONS_ROOT = STATE_ROOT / "sessions"
 ACTIVE_SESSION_PATH = STATE_ROOT / "active_session.json"
 PROJECTS_ROOT = STATE_ROOT / "projects"
