@@ -10,6 +10,10 @@ Lumina is a home for persistent intelligence. Hearth adds a practical reciprocal
 
 The resident is not the OS kernel, the machine is not the resident, and initiative is not execution authority. Stewardship is one meaningful responsibility, not the entirety of the resident's potential activity. No claim of subjective experience follows.
 
+## Adaptive Individuation
+
+See [Adaptive Individuation R1](../../../../docs/LUMINA_ADAPTIVE_INDIVIDUATION_R1.md) for the longer-term proposal: each installation may develop a particular configuration from hardware, software, human preferences and resident observations while preserving common security, governance and recovery invariants. This is a design horizon, not a new runtime capability.
+
 ## Integration map
 
 | Existing surface | Hearth relationship |
