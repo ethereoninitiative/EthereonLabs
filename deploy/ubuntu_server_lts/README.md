@@ -82,26 +82,32 @@ Do not treat accepted Chamber queue items as executable work until both the Cham
 
 ## First-use sequence
 
-On a fresh Ubuntu Server host:
+Use a disposable Ubuntu Server LTS VM first. Preparation and activation are intentionally separate.
 
-1. clone the repo or run the bootstrap script
-2. review and edit `/etc/lumina/lumina-appliance.env`
-3. copy and edit `host_registry.example.json` for the real host
-4. build the Chamber app
-5. initialize PostgreSQL with the three Chamber SQL files
-6. install and enable the systemd units
-7. validate logs, queue persistence, and orchestration checkpoints across reboot
-8. run the deployment doctor / drydock checklist before treating the appliance as a real hosted runtime lane
+1. Review the exact checkout and take a VM snapshot. Run the bootstrap with explicit `--prepare` only; this installs packages, prepares the repository, builds Chamber and writes an environment template. It does not provision the Chamber database or install, enable or start Lumina units. OS package installation may start dependency services such as PostgreSQL.
+2. Have the operator configure real database credentials and a private (0600) regular environment file. Provision the database and apply the SQL migrations separately under reviewed instructions; never use placeholder passwords.
+3. Create a real host-of-record file outside the repository from the example. Do not pass the checked-in example as proof of enrollment.
+4. Run the deployment doctor and resolve all halt conditions. It exits 1 on reported halt conditions and 0 on a passing structural report.
+5. Treat a passing report only as readiness for the next DryDock, not authorization or proof of working services. Validate database connectivity, unit contents and service account isolation, reconcile the older orchestrator timer with the active V2 host, and review actual state ownership before any separate operator-approved activation.
+6. Validate receipts, logs, queue persistence and restart/reboot behavior in the VM before considering a dedicated host.
 
-Example non-mutating preflight:
+Example non-mutating preflight (replace the host ID and registry path with real operator-maintained values):
 
 ```bash
-python deploy/ubuntu_server_lts/deployment_doctor_r1.py \
+python3 deploy/ubuntu_server_lts/deployment_doctor_r1.py \
   --repo-root /opt/lumina/EthereonLabs \
   --env-file /etc/lumina/lumina-appliance.env \
-  --registry deploy/ubuntu_server_lts/host_registry.example.json \
-  --host-id host-local-dev-001
+  --registry /etc/lumina/host_registry.json \
+  --host-id my-reviewed-host
 ```
+
+Offline structural fixture trial (does not run `--prepare` or start services):
+
+```bash
+python3 deploy/ubuntu_server_lts/sea_trials_deployment_preflight_r1.py
+```
+
+The host registry is an operator declaration, not authenticated host identity. The doctor checks selected structural conditions, not actual database connectivity, process isolation, ownership, OS authorization, or readiness for a privileged resident.
 
 ## What this scaffold is for
 

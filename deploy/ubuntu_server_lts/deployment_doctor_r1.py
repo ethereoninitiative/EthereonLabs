@@ -53,15 +53,23 @@ class DeploymentDoctor:
             return
         try:
             payload = json.loads(self.registry_path.read_text(encoding="utf-8"))
-        except Exception as exc:
-            self.add("host_registry_parse", False, "halt", f"Host registry could not be parsed: {exc}")
+        except (OSError, UnicodeError, json.JSONDecodeError):
+            self.add("host_registry_parse", False, "halt", "Host registry could not be read or parsed")
             return
-        hosts = payload.get("hosts", [])
-        for host in hosts:
-            if host.get("host_id") == self.host_id:
-                self.host_record = host
-                break
+        if not isinstance(payload, dict) or not isinstance(payload.get("hosts"), list):
+            self.add("host_registry_shape", False, "halt", "Expected an object containing a hosts list")
+            return
+        hosts = payload["hosts"]
+        if any(not isinstance(host, dict) or not isinstance(host.get("host_id"), str) or not host["host_id"].strip() for host in hosts):
+            self.add("host_registry_shape", False, "halt", "Invalid host record")
+            return
+        ids = [host["host_id"] for host in hosts]
+        if len(ids) != len(set(ids)):
+            self.add("host_registry_unique", False, "halt", "Duplicate host identifiers")
+            return
+        self.host_record = next((host for host in hosts if host["host_id"] == self.host_id), None)
         self.add("host_registry_exists", True, "info", f"Host registry loaded: {self.registry_path}")
+        self.add("host_registry_not_example", self.registry_path.resolve() != (self.repo_root / "deploy/ubuntu_server_lts/host_registry.example.json").resolve(), "halt", "A checked-in example is not a deployed host record")
         self.add("host_record_found", self.host_record is not None, "halt", f"Host id requested: {self.host_id}")
 
     def check_host_record(self) -> None:
@@ -85,6 +93,13 @@ class DeploymentDoctor:
         missing = [field for field in required_fields if field not in host or host.get(field) in (None, "", [])]
         self.add("host_required_fields", not missing, "halt", f"Missing fields: {missing}" if missing else "All required host fields present")
         self.add("host_not_revoked", host.get("revoked_at") in (None, ""), "halt", f"revoked_at={host.get('revoked_at')}")
+        list_fields = ("operator_user_ids", "allowed_runtime_paths", "allowed_action_types")
+        string_fields = [field for field in required_fields if field not in list_fields]
+        valid_types = all(isinstance(host.get(field), str) and host[field].strip() for field in string_fields) and all(isinstance(host.get(field), list) and all(isinstance(item, str) and item.strip() for item in host[field]) for field in list_fields)
+        self.add("host_field_types", bool(valid_types), "halt", "Host fields must have the declared string or list-of-strings shape")
+        if not valid_types:
+            self.host_record = None
+            return
 
         expected_user = host.get("service_user")
         current_user = getpass.getuser()
@@ -104,14 +119,24 @@ class DeploymentDoctor:
             self.add(f"runtime_path_exists_{idx}", path.exists(), "halt", f"runtime_path={path}")
         state_root = Path(host.get("state_root", "/var/lib/lumina"))
         log_root = Path(host.get("log_root", "/var/log/lumina"))
-        self.add("state_root_exists", state_root.exists(), "warn", f"state_root={state_root}")
-        self.add("log_root_exists", log_root.exists(), "warn", f"log_root={log_root}")
+        self.add("state_root_exists", state_root.is_dir(), "halt", f"state_root={state_root}")
+        self.add("log_root_exists", log_root.is_dir(), "halt", f"log_root={log_root}")
 
     def check_env_file(self) -> None:
         if not self.env_file.exists():
             self.add("env_file_exists", False, "halt", f"env_file={self.env_file}")
             return
-        text = self.env_file.read_text(encoding="utf-8", errors="replace")
+        if not self.env_file.is_file() or self.env_file.is_symlink():
+            self.add("env_file_regular", False, "halt", "Expected a regular non-symlink environment file")
+            return
+        try:
+            text = self.env_file.read_text(encoding="utf-8")
+            mode = self.env_file.stat().st_mode
+        except (OSError, UnicodeError):
+            self.add("env_file_readable", False, "halt", "Environment file could not be read")
+            return
+        self.add("env_file_private", (mode & 0o077) == 0, "halt", "Environment file must not grant group or other access")
+        self.add("env_database_config_present", any(line.strip().startswith("DATABASE_URL=") and line.partition("=")[2].strip() for line in text.splitlines()), "halt", "DATABASE_URL must be configured")
         self.add("env_file_exists", True, "info", f"env_file={self.env_file}")
         placeholder_terms = ["SET_USER", "SET_PASSWORD", "SET_DBNAME", "change-me", "https://example.com"]
         present = [term for term in placeholder_terms if term in text]
@@ -167,4 +192,6 @@ if __name__ == "__main__":
         registry_path=Path(args.registry),
         host_id=args.host_id,
     )
-    print(json.dumps(doctor.run(), indent=2))
+    report = doctor.run()
+    print(json.dumps(report, indent=2))
+    raise SystemExit(0 if report["passed"] else 1)

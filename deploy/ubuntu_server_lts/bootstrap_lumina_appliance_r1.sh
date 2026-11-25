@@ -71,31 +71,11 @@ EOF
   fi
 }
 
-initialize_database() {
-  sudo -u postgres psql -tc "SELECT 1 FROM pg_roles WHERE rolname='chamber'" | grep -q 1 || \
-    sudo -u postgres psql -c "CREATE ROLE chamber LOGIN PASSWORD 'change-me';"
-  sudo -u postgres psql -tc "SELECT 1 FROM pg_database WHERE datname='chamber'" | grep -q 1 || \
-    sudo -u postgres createdb -O chamber chamber
-  sudo -u postgres psql -d chamber -f "${REPO_ROOT}/chamber_data_model_r1.sql"
-  sudo -u postgres psql -d chamber -f "${REPO_ROOT}/chamber_sessions_extension_r1.sql"
-  sudo -u postgres psql -d chamber -f "${REPO_ROOT}/chamber_advisory_queue_extension_r1.sql"
-}
-
-install_systemd_units() {
-  cp "${REPO_ROOT}/deploy/ubuntu_server_lts/lumina-orchestrator.service" /etc/systemd/system/
-  cp "${REPO_ROOT}/deploy/ubuntu_server_lts/lumina-orchestrator.timer" /etc/systemd/system/
-  cp "${REPO_ROOT}/deploy/ubuntu_server_lts/chamber-advisory.service" /etc/systemd/system/
-  systemctl daemon-reload
-  systemctl enable chamber-advisory.service
-  systemctl enable lumina-orchestrator.timer
-}
-
-start_services() {
-  systemctl restart chamber-advisory.service
-  systemctl restart lumina-orchestrator.timer
-}
-
 main() {
+  if [[ "$#" -ne 1 || "${1:-}" != "--prepare" ]]; then
+    echo "Usage: $0 --prepare (preparation only; no Lumina service activation)" >&2
+    return 2
+  fi
   require_root
   install_packages
   ensure_service_user
@@ -103,10 +83,9 @@ main() {
   checkout_repo
   install_node_dependencies
   write_env_template
-  initialize_database
-  install_systemd_units
-  start_services
-  echo "Lumina Appliance bootstrap scaffold complete. Review ${ENV_FILE} and change placeholder database credentials."
+  echo "Lumina preparation complete. No Lumina units installed, enabled, or started."
+  echo "Database provisioning and service activation require separate reviewed operator steps."
+  echo "Review ${ENV_FILE}; run deployment doctor before activation planning."
 }
 
 main "$@"
