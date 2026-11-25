@@ -1,0 +1,14 @@
+[Unit]
+Description=Hearth local read-only broker socket
+
+[Socket]
+ListenStream=/run/lumina-hearth.sock
+Accept=yes
+SocketUser=root
+SocketGroup=lumina
+SocketMode=0660
+RemoveOnStop=true
+MaxConnections=8
+
+[Install]
+WantedBy=sockets.target
