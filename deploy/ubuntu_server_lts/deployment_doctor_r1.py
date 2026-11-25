@@ -53,8 +53,8 @@ class DeploymentDoctor:
             return
         try:
             payload = json.loads(self.registry_path.read_text(encoding="utf-8"))
-        except Exception as exc:
-            self.add("host_registry_parse", False, "halt", f"Host registry could not be parsed: {exc}")
+        except (OSError, UnicodeError, json.JSONDecodeError):
+            self.add("host_registry_parse", False, "halt", "Host registry could not be read or parsed")
             return
         if not isinstance(payload, dict) or not isinstance(payload.get("hosts"), list):
             self.add("host_registry_shape", False, "halt", "Expected an object containing a hosts list")
@@ -93,6 +93,13 @@ class DeploymentDoctor:
         missing = [field for field in required_fields if field not in host or host.get(field) in (None, "", [])]
         self.add("host_required_fields", not missing, "halt", f"Missing fields: {missing}" if missing else "All required host fields present")
         self.add("host_not_revoked", host.get("revoked_at") in (None, ""), "halt", f"revoked_at={host.get('revoked_at')}")
+        list_fields = ("operator_user_ids", "allowed_runtime_paths", "allowed_action_types")
+        string_fields = [field for field in required_fields if field not in list_fields]
+        valid_types = all(isinstance(host.get(field), str) and host[field].strip() for field in string_fields) and all(isinstance(host.get(field), list) and all(isinstance(item, str) and item.strip() for item in host[field]) for field in list_fields)
+        self.add("host_field_types", bool(valid_types), "halt", "Host fields must have the declared string or list-of-strings shape")
+        if not valid_types:
+            self.host_record = None
+            return
 
         expected_user = host.get("service_user")
         current_user = getpass.getuser()
@@ -112,8 +119,8 @@ class DeploymentDoctor:
             self.add(f"runtime_path_exists_{idx}", path.exists(), "halt", f"runtime_path={path}")
         state_root = Path(host.get("state_root", "/var/lib/lumina"))
         log_root = Path(host.get("log_root", "/var/log/lumina"))
-        self.add("state_root_exists", state_root.exists(), "warn", f"state_root={state_root}")
-        self.add("log_root_exists", log_root.exists(), "warn", f"log_root={log_root}")
+        self.add("state_root_exists", state_root.is_dir(), "halt", f"state_root={state_root}")
+        self.add("log_root_exists", log_root.is_dir(), "halt", f"log_root={log_root}")
 
     def check_env_file(self) -> None:
         if not self.env_file.exists():
