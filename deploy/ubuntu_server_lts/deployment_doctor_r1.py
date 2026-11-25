@@ -56,12 +56,20 @@ class DeploymentDoctor:
         except Exception as exc:
             self.add("host_registry_parse", False, "halt", f"Host registry could not be parsed: {exc}")
             return
-        hosts = payload.get("hosts", [])
-        for host in hosts:
-            if host.get("host_id") == self.host_id:
-                self.host_record = host
-                break
+        if not isinstance(payload, dict) or not isinstance(payload.get("hosts"), list):
+            self.add("host_registry_shape", False, "halt", "Expected an object containing a hosts list")
+            return
+        hosts = payload["hosts"]
+        if any(not isinstance(host, dict) or not isinstance(host.get("host_id"), str) or not host["host_id"].strip() for host in hosts):
+            self.add("host_registry_shape", False, "halt", "Invalid host record")
+            return
+        ids = [host["host_id"] for host in hosts]
+        if len(ids) != len(set(ids)):
+            self.add("host_registry_unique", False, "halt", "Duplicate host identifiers")
+            return
+        self.host_record = next((host for host in hosts if host["host_id"] == self.host_id), None)
         self.add("host_registry_exists", True, "info", f"Host registry loaded: {self.registry_path}")
+        self.add("host_registry_not_example", self.registry_path.resolve() != (self.repo_root / "deploy/ubuntu_server_lts/host_registry.example.json").resolve(), "halt", "A checked-in example is not a deployed host record")
         self.add("host_record_found", self.host_record is not None, "halt", f"Host id requested: {self.host_id}")
 
     def check_host_record(self) -> None:
@@ -111,7 +119,17 @@ class DeploymentDoctor:
         if not self.env_file.exists():
             self.add("env_file_exists", False, "halt", f"env_file={self.env_file}")
             return
-        text = self.env_file.read_text(encoding="utf-8", errors="replace")
+        if not self.env_file.is_file() or self.env_file.is_symlink():
+            self.add("env_file_regular", False, "halt", "Expected a regular non-symlink environment file")
+            return
+        try:
+            text = self.env_file.read_text(encoding="utf-8")
+            mode = self.env_file.stat().st_mode
+        except (OSError, UnicodeError):
+            self.add("env_file_readable", False, "halt", "Environment file could not be read")
+            return
+        self.add("env_file_private", (mode & 0o077) == 0, "halt", "Environment file must not grant group or other access")
+        self.add("env_database_config_present", any(line.strip().startswith("DATABASE_URL=") and line.partition("=")[2].strip() for line in text.splitlines()), "halt", "DATABASE_URL must be configured")
         self.add("env_file_exists", True, "info", f"env_file={self.env_file}")
         placeholder_terms = ["SET_USER", "SET_PASSWORD", "SET_DBNAME", "change-me", "https://example.com"]
         present = [term for term in placeholder_terms if term in text]
@@ -167,4 +185,6 @@ if __name__ == "__main__":
         registry_path=Path(args.registry),
         host_id=args.host_id,
     )
-    print(json.dumps(doctor.run(), indent=2))
+    report = doctor.run()
+    print(json.dumps(report, indent=2))
+    raise SystemExit(0 if report["passed"] else 1)
