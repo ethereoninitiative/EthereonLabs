@@ -114,6 +114,9 @@ jobs:
       - name: Hearth Linux broker protocol sea trial
         run: python deploy/ubuntu_server_lts/sea_trials_hearth_broker_r1.py
 
+      - name: OpenAI Arrival connection fixture trial
+        run: node LuminaOS/bootstrap/Ship_of_Ethereon_V2/arrival/sea_trials_openai_arrival_r1.mjs
+
       - name: Core sea trials
         working-directory: LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime
         run: |
