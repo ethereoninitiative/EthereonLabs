@@ -1,0 +1,21 @@
+[Unit]
+Description=Hearth bounded read-only broker connection
+
+[Service]
+Type=exec
+User=lumina-hearth
+Group=lumina-hearth
+ExecStart=/usr/bin/python3 /opt/lumina/EthereonLabs/deploy/ubuntu_server_lts/hearth_broker_r1.py serve-stdio --allowed-user lumina
+StandardInput=socket
+StandardOutput=journal
+StandardError=journal
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+RestrictAddressFamilies=AF_UNIX
+CapabilityBoundingSet=
+AmbientCapabilities=
+UMask=0077
+RuntimeMaxSec=10
