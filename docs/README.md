@@ -31,6 +31,8 @@ Start here for work that can affect present architecture or present claims:
 
 ### Lumina runtime and habitat
 
+- [Adaptive Individuation R1](LUMINA_ADAPTIVE_INDIVIDUATION_R1.md) — proposed architecture for machine-specific evolution under shared invariants; not implemented or governing.
+
 - `START_HERE_LUMINA_OS.md`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/ACTIVE_RUNTIME_INDEX.md`
 - `LuminaOS/bootstrap/Ship_of_Ethereon_V2/docs/Lumina_Arrival_R1.md` — explicit host arrival, selected continuity, response recording and subsequent return; provider transport remains caller-supplied
