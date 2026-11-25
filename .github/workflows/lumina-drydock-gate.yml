@@ -117,6 +117,9 @@ jobs:
       - name: OpenAI Arrival connection fixture trial
         run: node LuminaOS/bootstrap/Ship_of_Ethereon_V2/arrival/sea_trials_openai_arrival_r1.mjs
 
+      - name: Arrival wizard consent and account-binding trial
+        run: node LuminaOS/bootstrap/Ship_of_Ethereon_V2/arrival/sea_trials_arrival_wizard_r1.mjs
+
       - name: Core sea trials
         working-directory: LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime
         run: |
