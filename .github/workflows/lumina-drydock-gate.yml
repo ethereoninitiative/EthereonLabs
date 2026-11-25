@@ -108,6 +108,9 @@ jobs:
       - name: Ubuntu deployment preflight fixture sea trial
         run: python deploy/ubuntu_server_lts/sea_trials_deployment_preflight_r1.py
 
+      - name: Governed Ubuntu appliance cycle sea trial
+        run: python deploy/ubuntu_server_lts/sea_trials_governed_appliance_cycle_r1.py
+
       - name: Core sea trials
         working-directory: LuminaOS/bootstrap/Ship_of_Ethereon_V2/runtime
         run: |
