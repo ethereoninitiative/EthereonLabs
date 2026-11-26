@@ -1,0 +1,82 @@
+{
+  "model": "finite normalized power-law kernel; zero prehistory; complex unit tone",
+  "L": 256,
+  "T": 2048,
+  "p": 1.618033988749895,
+  "g": 0.65,
+  "rows": [
+    {
+      "rotation": "phi",
+      "alpha": 0.6180339887498949,
+      "eta": 0,
+      "primary": 2.857142857142857,
+      "mirror": 0,
+      "mirror_ratio": 0,
+      "max_last64_error": 9.151586372650966e-13
+    },
+    {
+      "rotation": "phi",
+      "alpha": 0.6180339887498949,
+      "eta": 0.3,
+      "primary": 2.802527305175916,
+      "mirror": 0.500872545396841,
+      "mirror_ratio": 0.1787217360814977,
+      "max_last64_error": 1.1293903701941339e-12
+    },
+    {
+      "rotation": "sqrt2",
+      "alpha": 0.41421356237309515,
+      "eta": 0,
+      "primary": 2.857142857142857,
+      "mirror": 0,
+      "mirror_ratio": 0,
+      "max_last64_error": 9.45594228307063e-13
+    },
+    {
+      "rotation": "sqrt2",
+      "alpha": 0.41421356237309515,
+      "eta": 0.3,
+      "primary": 2.830646610980044,
+      "mirror": 0.5518769394282234,
+      "mirror_ratio": 0.1949649727689424,
+      "max_last64_error": 7.718557359972533e-13
+    },
+    {
+      "rotation": "one_seventh",
+      "alpha": 0.14285714285714285,
+      "eta": 0,
+      "primary": 2.857142857142857,
+      "mirror": 0,
+      "mirror_ratio": 0,
+      "max_last64_error": 2.3672298110304516e-13
+    },
+    {
+      "rotation": "one_seventh",
+      "alpha": 0.14285714285714285,
+      "eta": 0.3,
+      "primary": 2.7894404833268025,
+      "mirror": 0.47626528233203136,
+      "mirror_ratio": 0.170738642813421,
+      "max_last64_error": 2.886627902121943e-13
+    },
+    {
+      "rotation": "near_zero",
+      "alpha": 0.01,
+      "eta": 0,
+      "primary": 2.8571428571428568,
+      "mirror": 0,
+      "mirror_ratio": 0,
+      "max_last64_error": 2.928043532045777e-14
+    },
+    {
+      "rotation": "near_zero",
+      "alpha": 0.01,
+      "eta": 0.3,
+      "primary": 3.243773219676765,
+      "mirror": 1.1726114657234161,
+      "mirror_ratio": 0.3614961300655489,
+      "max_last64_error": 4.658758278013451e-14
+    }
+  ],
+  "checks": "all passed"
+}
